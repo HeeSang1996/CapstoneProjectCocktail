@@ -34,7 +34,7 @@ public class CocktailIngredientAdapter extends RecyclerView.Adapter<CocktailIngr
         }
 
         public void setItem(CocktailIngredient item) {
-            textForIngredient.setText(item.getName());
+            textForIngredient.setText(item.getIngredient_name());
         }
     }
 
