@@ -20,10 +20,7 @@ import org.techtown.capstoneprojectcocktail.R;
 
 public class MyPageFragment extends Fragment {
 
-    private MyPageViewModel myPageViewModel;
-
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        myPageViewModel = ViewModelProviders.of(this).get(MyPageViewModel.class);
         View root = inflater.inflate(R.layout.fragment_mypage, container, false);
 
         Button bookmarkButtonMyPage = root.findViewById(R.id.button_bookmark_myPage);
@@ -31,14 +28,6 @@ public class MyPageFragment extends Fragment {
             @Override
             public void onClick(View view){
                 Snackbar.make(view, "북마크 기능이 들어갈 예정입니다", Snackbar.LENGTH_LONG).setAction("Action", null).show();
-            }
-        });
-
-        Button memoButtonMyPage = root.findViewById(R.id.button_memo_myPage);
-        memoButtonMyPage.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view){
-                Snackbar.make(view, "마이 메모 기능이 들어갈 예정입니다", Snackbar.LENGTH_LONG).setAction("Action", null).show();
             }
         });
 

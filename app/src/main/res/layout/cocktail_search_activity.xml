@@ -9,16 +9,16 @@
 
     <EditText
         android:id="@+id/editText_search"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="40dp"
         android:layout_marginHorizontal="5dp"
-        android:layout_marginVertical="10dp"
+        android:layout_marginTop="10dp"
         android:autoSizeTextType="uniform"
         android:background="@drawable/button_home_search"
         android:gravity="center_vertical"
         android:paddingHorizontal="12dp"
         android:paddingVertical="5dp"
-        android:hint="Search"
+        android:hint="검색"
         android:textColorHint="#99FFFFFF"
         android:drawableLeft="@mipmap/outline_search_white_18dp"
         android:textAllCaps="false"
@@ -28,17 +28,54 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintRight_toRightOf="parent" />
 
+    <Switch
+        android:id="@+id/switch_userRecipe_search"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:text="사용자 레시피"
+        android:layout_marginHorizontal="10dp"
+        android:layout_marginTop="10dp"
+        android:gravity="center_vertical"
+        android:textColor="#3366D6"
+        android:singleLine="true"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editText_search"/>
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="30dp"
+        android:layout_marginHorizontal="5dp"
+        android:layout_marginTop="10dp"
+        android:padding="5dp"
+        android:text = "정렬순서:"
+        android:gravity="right|center_vertical"
+        android:autoSizeTextType="uniform"
+        android:textColor="#3366D6"
+        app:layout_constraintLeft_toRightOf="@+id/switch_userRecipe_search"
+        app:layout_constraintTop_toBottomOf="@+id/editText_search"
+        app:layout_constraintRight_toLeftOf="@+id/spinner_orderBy_search"/>
+
+    <Spinner
+        android:id="@+id/spinner_orderBy_search"
+        android:layout_width="120dp"
+        android:layout_height="30dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="10dp"
+        android:spinnerMode="dropdown"
+        android:entries="@array/spinnerOrderByArray"
+        app:layout_constraintTop_toBottomOf="@+id/editText_search"
+        app:layout_constraintRight_toRightOf="parent" />
+
     <LinearLayout
         android:id="@+id/linearLayout_cocktail_search"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:orientation="horizontal"
         android:layout_marginHorizontal="5dp"
-        android:layout_marginVertical="10dp"
         app:layout_constraintBottom_toTopOf="@+id/constraintLayout_bottom_background_search"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/editText_search">
+        app:layout_constraintTop_toBottomOf="@+id/spinner_orderBy_search">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerViewForCocktail_search"
@@ -55,6 +92,5 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent">
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

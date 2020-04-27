@@ -77,22 +77,8 @@
             android:padding="15dp"
             android:text="Bookmark"
             android:textAllCaps="false"
-            android:textColor="#DDEFEF" />
-
-        <Button
-            android:id="@+id/button_memo_myPage"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="30dp"
-            android:layout_marginVertical="10dp"
-            android:layout_weight="1"
-            android:autoSizeTextType="uniform"
-            android:background="@drawable/button_shape"
-            android:gravity="center_vertical"
-            android:padding="15dp"
-            android:text="My Memo"
-            android:textAllCaps="false"
-            android:textColor="#DDEFEF" />
+            android:textColor="#DDEFEF"
+            android:singleLine="true"/>
 
         <Button
             android:id="@+id/button_comment_myPage"
@@ -107,7 +93,8 @@
             android:padding="15dp"
             android:autoSizeTextType="uniform"
             android:gravity="center_vertical"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            android:singleLine="true"/>
 
         <Button
             android:id="@+id/button_favorite_myPage"
@@ -122,7 +109,8 @@
             android:padding="15dp"
             android:autoSizeTextType="uniform"
             android:gravity="center_vertical"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            android:singleLine="true"/>
 
         <Button
             android:id="@+id/button_simulation_myPage"
@@ -137,7 +125,8 @@
             android:padding="15dp"
             android:autoSizeTextType="uniform"
             android:gravity="center_vertical"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            android:singleLine="true"/>
 
         <Button
             android:id="@+id/button_upload_myPage"
@@ -152,7 +141,8 @@
             android:padding="15dp"
             android:autoSizeTextType="uniform"
             android:gravity="center_vertical"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            android:singleLine="true"/>
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -45,8 +45,6 @@ import java.util.Map;
 import static androidx.constraintlayout.widget.Constraints.TAG;
 
 public class HomeFragment extends Fragment {
-
-    private HomeViewModel homeViewModel;
     public FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     public void setDocument() {
@@ -113,15 +111,7 @@ public class HomeFragment extends Fragment {
     }
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        homeViewModel = ViewModelProviders.of(this).get(HomeViewModel.class);
         View root = inflater.inflate(R.layout.fragment_home, container, false);
-        final TextView textView = root.findViewById(R.id.text_home);
-        homeViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
-            }
-        });
 
         Button searchButtonHome = root.findViewById(R.id.button_search_home);
         searchButtonHome.setOnClickListener(new View.OnClickListener(){
