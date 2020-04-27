@@ -2,9 +2,11 @@ package org.techtown.capstoneprojectcocktail;
 
 public class CocktailIngredient {
     String name;
+    int id;
 
-    public CocktailIngredient(String name) {
+    public CocktailIngredient(String name, int id) {
         this.name = name;
+        this.id = id;
     }
 
     public String getName() {
@@ -13,5 +15,13 @@ public class CocktailIngredient {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }

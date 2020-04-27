@@ -93,7 +93,7 @@
         android:paddingVertical="5dp"
         android:text="Search"
         android:textAllCaps="false"
-        android:textColor="#DDEFEF"
+        android:textColor="#99FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -101,11 +101,11 @@
         app:layout_constraintVertical_bias="0.0" />
 
     <LinearLayout
-        android:id="@+id/linearLayout_cocktail"
+        android:id="@+id/linearLayout_cocktail_search"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:orientation="vertical"
-        app:layout_constraintBottom_toTopOf="@+id/constraintLayout_bottom_background"
+        app:layout_constraintBottom_toTopOf="@+id/constraintLayout_bottom_background_home"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/button_search_home">
@@ -117,7 +117,7 @@
     </LinearLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraintLayout_bottom_background"
+        android:id="@+id/constraintLayout_bottom_background_home"
         android:layout_width="match_parent"
         android:layout_height="70dp"
         android:background="#00B0FF"

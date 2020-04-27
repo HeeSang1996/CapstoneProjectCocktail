@@ -42,7 +42,7 @@ public class CocktailIngredientAdapter extends RecyclerView.Adapter<CocktailIngr
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
-        View itemView = inflater.inflate(R.layout.cocktail_ingredient, viewGroup, false);
+        View itemView = inflater.inflate(R.layout.cocktail_ingredient_button_home, viewGroup, false);
 
         return new ViewHolder(itemView, this);
     }
