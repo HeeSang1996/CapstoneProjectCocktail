@@ -2,6 +2,7 @@ package org.techtown.capstoneprojectcocktail.ui.home;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,23 +18,98 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import org.techtown.capstoneprojectcocktail.Cocktail;
 import org.techtown.capstoneprojectcocktail.CocktailAdapter;
 import org.techtown.capstoneprojectcocktail.CocktailIngredient;
 import org.techtown.capstoneprojectcocktail.CocktailIngredientAdapter;
 import org.techtown.capstoneprojectcocktail.CocktailRecipeActivity;
-import org.techtown.capstoneprojectcocktail.CocktailSearchActivity;
 import org.techtown.capstoneprojectcocktail.MainActivity;
 import org.techtown.capstoneprojectcocktail.OnCocktailIngredientItemClickListener;
 import org.techtown.capstoneprojectcocktail.OnCocktailItemClickListener;
 import org.techtown.capstoneprojectcocktail.R;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import static androidx.constraintlayout.widget.Constraints.TAG;
+
 public class HomeFragment extends Fragment {
 
     private HomeViewModel homeViewModel;
+    public FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+    public void setDocument() {
+        Map<String, Object> Ingredient_info = new HashMap<>();
+        Ingredient_info.put("Ingredient_name", "테스트");
+        Ingredient_info.put("Ingredient_type", "베이스");
+        Ingredient_info.put("abv", "테스트");
+        Ingredient_info.put("sugar_rate", 24);
+        Ingredient_info.put("salty", 0);
+        Ingredient_info.put("bitter", 0);
+        Ingredient_info.put("sour", 0);
+        Ingredient_info.put("flavour", "개같은 맛과 향");
+        Ingredient_info.put("specific_gravity", 0.135);
+        Map<String, Number> Ingredient_color = new HashMap<>();
+
+        Ingredient_color.put("Red", 210);
+        Ingredient_color.put("Green", 0);
+        Ingredient_color.put("Blue", 0);
+
+        Ingredient_info.put("Ingredient_color", Ingredient_color);
+
+        db.collection("Ingredient").document("5006")
+                .set(Ingredient_info)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d(TAG, "DocumentSnapshot successfully written!");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "Error writing document", e);
+                    }
+                });
+        // [END set_document]
+
+        //Map<String, Object> data = new HashMap<>();
+        // [START set_with_id]
+        //db.collection("Ingredient").document("5006").set(data);
+        // [END set_with_id]
+
+        //가져오기
+        DocumentReference docRef = db.collection("Ingredient").document("5006");
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        //해당 데이터 전부 읽어오기
+                        Log.d(TAG, "DocumentSnapshot data: " + document.getData());
+                        //일부만 읽어오기
+                        String name = (String) document.get("Ingredient_name");
+                        Log.d(TAG, "DocumentSnapshot data: " + name);
+                    } else {
+                        Log.d(TAG, "No such document");
+                    }
+                } else {
+                    Log.d(TAG, "get failed with ", task.getException());
+                }
+            }
+        });
+    }
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         homeViewModel = ViewModelProviders.of(this).get(HomeViewModel.class);
@@ -50,9 +126,8 @@ public class HomeFragment extends Fragment {
         searchButtonHome.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
-                //Snackbar.make(view, "서치 기능이 들어갈 예정입니다", Snackbar.LENGTH_LONG).setAction("Action", null).show();
-                Intent intent = new Intent(view.getContext(), CocktailSearchActivity.class);
-                startActivity(intent);
+                Snackbar.make(view, "서치 기능이 들어갈 예정입니다", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+
             }
         });
 
@@ -61,6 +136,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Snackbar.make(view, "시뮬레이션 기능이 들어갈 예정입니다.", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                setDocument();
             }
         });
 
@@ -69,22 +145,22 @@ public class HomeFragment extends Fragment {
         recyclerViewForIngredientHome.setLayoutManager(layoutManagerForIngredientHome);
         final CocktailIngredientAdapter adapterForIngredientHome = new CocktailIngredientAdapter();
 
-        adapterForIngredientHome.addItem(new CocktailIngredient("Rum0", 0));
-        adapterForIngredientHome.addItem(new CocktailIngredient("Whisky0", 1));
-        adapterForIngredientHome.addItem(new CocktailIngredient("Rum1",2 ));
-        adapterForIngredientHome.addItem(new CocktailIngredient("Whisky1", 3));
-        adapterForIngredientHome.addItem(new CocktailIngredient("Rum2", 4));
-        adapterForIngredientHome.addItem(new CocktailIngredient("Whisky2", 5));
-        adapterForIngredientHome.addItem(new CocktailIngredient("Rum3", 6));
-        adapterForIngredientHome.addItem(new CocktailIngredient("Whisky3", 7));
-        adapterForIngredientHome.addItem(new CocktailIngredient("Rum4", 8));
-        adapterForIngredientHome.addItem(new CocktailIngredient("Whisky4", 9));
-        adapterForIngredientHome.addItem(new CocktailIngredient("Rum5", 10));
-        adapterForIngredientHome.addItem(new CocktailIngredient("Whisky5", 11));
-        adapterForIngredientHome.addItem(new CocktailIngredient("Rum6", 12));
-        adapterForIngredientHome.addItem(new CocktailIngredient("Whisky6", 13));
-        adapterForIngredientHome.addItem(new CocktailIngredient("Rum7", 14));
-        adapterForIngredientHome.addItem(new CocktailIngredient("Whisky7", 15));
+//        adapterForIngredientHome.addItem(new CocktailIngredient("Rum0", "base"));
+//        adapterForIngredientHome.addItem(new CocktailIngredient("Whisky0"));
+//        adapterForIngredientHome.addItem(new CocktailIngredient("Rum1"));
+//        adapterForIngredientHome.addItem(new CocktailIngredient("Whisky1"));
+//        adapterForIngredientHome.addItem(new CocktailIngredient("Rum2"));
+//        adapterForIngredientHome.addItem(new CocktailIngredient("Whisky2"));
+//        adapterForIngredientHome.addItem(new CocktailIngredient("Rum3"));
+//        adapterForIngredientHome.addItem(new CocktailIngredient("Whisky3"));
+//        adapterForIngredientHome.addItem(new CocktailIngredient("Rum4"));
+//        adapterForIngredientHome.addItem(new CocktailIngredient("Whisky4"));
+//        adapterForIngredientHome.addItem(new CocktailIngredient("Rum5"));
+//        adapterForIngredientHome.addItem(new CocktailIngredient("Whisky5"));
+//        adapterForIngredientHome.addItem(new CocktailIngredient("Rum6"));
+//        adapterForIngredientHome.addItem(new CocktailIngredient("Whisky6"));
+//        adapterForIngredientHome.addItem(new CocktailIngredient("Rum7"));
+//        adapterForIngredientHome.addItem(new CocktailIngredient("Whisky7"));
 
         recyclerViewForIngredientHome.setAdapter(adapterForIngredientHome);
 
@@ -92,7 +168,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onItemClick(CocktailIngredientAdapter.ViewHolder holder, View view, int position) {
                 CocktailIngredient item = adapterForIngredientHome.getItem(position);
-                Toast.makeText(getActivity().getApplicationContext(),"선택된 재료: " + item.getName() +" 재료의 ID: "+item.getId(),Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity().getApplicationContext(),"선택된 재료: " + item.getIngredient_name(),Toast.LENGTH_LONG).show();
             }
         });
 
@@ -101,26 +177,26 @@ public class HomeFragment extends Fragment {
         recyclerViewForCocktailHome.setLayoutManager(layoutManagerForCocktailHome);
         final CocktailAdapter adapterForCocktailHome = new CocktailAdapter();
 
-        adapterForCocktailHome.addItem(new Cocktail("맛있는 칵테일 1",0,"맛있는 칵테일 1의 설명 정말 맛있다맛있는 칵테일 1의 설명 정말 맛있다맛있는 칵테일 1의 설명 정말 맛있다맛있는 칵테일 1의 설명 정말 맛있다맛있는 칵테일 1의 설명 정말 맛있다맛있는 칵테일 1의 설명 정말 맛있다맛있는 칵테일 1의 설명 정말 맛있다맛있는 칵테일 1의 설명 정말 맛있다맛있는 칵테일 1의 설명 정말 맛있다맛있는 칵테일 1의 설명 정말 맛있다맛있는 칵테일 1의 설명 정말 맛있다맛있는 칵테일 1의 설명 정말 맛있다맛있는 칵테일 1의 설명 정말 맛있다맛있는 칵테일 1의 설명 정말 맛있다맛있는 칵테일 1의 설명 정말 맛있다","10%"));
-        adapterForCocktailHome.addItem(new Cocktail("맛있는 칵테일 2",1, "맛있는 칵테일 2의 설명 정말 맛있다","10%"));
-        adapterForCocktailHome.addItem(new Cocktail("맛있는 칵테일 3",2, "맛있는 칵테일 3의 설명 정말 맛있다","10%"));
-        adapterForCocktailHome.addItem(new Cocktail("맛있는 칵테일 4",3, "맛있는 칵테일 4의 설명 정말 맛있다","10%"));
-        adapterForCocktailHome.addItem(new Cocktail("맛있는 칵테일 5",4, "맛있는 칵테일 5의 설명 정말 맛있다","10%"));
-        adapterForCocktailHome.addItem(new Cocktail("맛있는 칵테일 6",5, "맛있는 칵테일 6의 설명 정말 맛있다","10%"));
-        adapterForCocktailHome.addItem(new Cocktail("맛있는 칵테일 7",6, "맛있는 칵테일 7의 설명 정말 맛있다","10%"));
-        adapterForCocktailHome.addItem(new Cocktail("맛있는 칵테일 8",7, "맛있는 칵테일 8의 설명 정말 맛있다","10%"));
-        adapterForCocktailHome.addItem(new Cocktail("맛있는 칵테일 9",8, "맛있는 칵테일 9의 설명 정말 맛있다","10%"));
-        adapterForCocktailHome.addItem(new Cocktail("맛있는 칵테일 10",9, "맛있는 칵테일 10의 설명 정말 맛있다","10%"));
-        adapterForCocktailHome.addItem(new Cocktail("맛있는 칵테일 11",10, "맛있는 칵테일 11의 설명 정말 맛있다","10%"));
-        adapterForCocktailHome.addItem(new Cocktail("맛있는 칵테일 12",11, "맛있는 칵테일 12의 설명 정말 맛있다","10%"));
-        adapterForCocktailHome.addItem(new Cocktail("맛있는 칵테일 13",12, "맛있는 칵테일 13의 설명 정말 맛있다","10%"));
-        adapterForCocktailHome.addItem(new Cocktail("맛있는 칵테일 14",13, "맛있는 칵테일 14의 설명 정말 맛있다","10%"));
-        adapterForCocktailHome.addItem(new Cocktail("맛있는 칵테일 15",14, "맛있는 칵테일 15의 설명 정말 맛있다","10%"));
-        adapterForCocktailHome.addItem(new Cocktail("맛있는 칵테일 16",15, "맛있는 칵테일 16의 설명 정말 맛있다","10%"));
-        adapterForCocktailHome.addItem(new Cocktail("맛있는 칵테일 17",16, "맛있는 칵테일 17의 설명 정말 맛있다","10%"));
-        adapterForCocktailHome.addItem(new Cocktail("맛있는 칵테일 18",17, "맛있는 칵테일 18의 설명 정말 맛있다","10%"));
-        adapterForCocktailHome.addItem(new Cocktail("맛있는 칵테일 19",18, "맛있는 칵테일 19의 설명 정말 맛있다","10%"));
-        adapterForCocktailHome.addItem(new Cocktail("맛있는 칵테일 20",19, "맛있는 칵테일 20의 설명 정말 맛있다","10%"));
+//        adapterForCocktailHome.addItem(new Cocktail("맛있는 칵테일 1","맛있는 칵테일 1의 설명 정말 맛있다맛있는 칵테일 1의 설명 정말 맛있다맛있는 칵테일 1의 설명 정말 맛있다맛있는 칵테일 1의 설명 정말 맛있다맛있는 칵테일 1의 설명 정말 맛있다맛있는 칵테일 1의 설명 정말 맛있다맛있는 칵테일 1의 설명 정말 맛있다맛있는 칵테일 1의 설명 정말 맛있다맛있는 칵테일 1의 설명 정말 맛있다맛있는 칵테일 1의 설명 정말 맛있다맛있는 칵테일 1의 설명 정말 맛있다맛있는 칵테일 1의 설명 정말 맛있다맛있는 칵테일 1의 설명 정말 맛있다맛있는 칵테일 1의 설명 정말 맛있다맛있는 칵테일 1의 설명 정말 맛있다","10%"));
+//        adapterForCocktailHome.addItem(new Cocktail("맛있는 칵테일 2","맛있는 칵테일 2의 설명 정말 맛있다","10%"));
+//        adapterForCocktailHome.addItem(new Cocktail("맛있는 칵테일 3","맛있는 칵테일 3의 설명 정말 맛있다","10%"));
+//        adapterForCocktailHome.addItem(new Cocktail("맛있는 칵테일 4","맛있는 칵테일 4의 설명 정말 맛있다","10%"));
+//        adapterForCocktailHome.addItem(new Cocktail("맛있는 칵테일 5","맛있는 칵테일 5의 설명 정말 맛있다","10%"));
+//        adapterForCocktailHome.addItem(new Cocktail("맛있는 칵테일 6","맛있는 칵테일 6의 설명 정말 맛있다","10%"));
+//        adapterForCocktailHome.addItem(new Cocktail("맛있는 칵테일 7","맛있는 칵테일 7의 설명 정말 맛있다","10%"));
+//        adapterForCocktailHome.addItem(new Cocktail("맛있는 칵테일 8","맛있는 칵테일 8의 설명 정말 맛있다","10%"));
+//        adapterForCocktailHome.addItem(new Cocktail("맛있는 칵테일 9","맛있는 칵테일 9의 설명 정말 맛있다","10%"));
+//        adapterForCocktailHome.addItem(new Cocktail("맛있는 칵테일 10","맛있는 칵테일 10의 설명 정말 맛있다","10%"));
+//        adapterForCocktailHome.addItem(new Cocktail("맛있는 칵테일 11","맛있는 칵테일 11의 설명 정말 맛있다","10%"));
+//        adapterForCocktailHome.addItem(new Cocktail("맛있는 칵테일 12","맛있는 칵테일 12의 설명 정말 맛있다","10%"));
+//        adapterForCocktailHome.addItem(new Cocktail("맛있는 칵테일 13","맛있는 칵테일 13의 설명 정말 맛있다","10%"));
+//        adapterForCocktailHome.addItem(new Cocktail("맛있는 칵테일 14","맛있는 칵테일 14의 설명 정말 맛있다","10%"));
+//        adapterForCocktailHome.addItem(new Cocktail("맛있는 칵테일 15","맛있는 칵테일 15의 설명 정말 맛있다","10%"));
+//        adapterForCocktailHome.addItem(new Cocktail("맛있는 칵테일 16","맛있는 칵테일 16의 설명 정말 맛있다","10%"));
+//        adapterForCocktailHome.addItem(new Cocktail("맛있는 칵테일 17","맛있는 칵테일 17의 설명 정말 맛있다","10%"));
+//        adapterForCocktailHome.addItem(new Cocktail("맛있는 칵테일 18","맛있는 칵테일 18의 설명 정말 맛있다","10%"));
+//        adapterForCocktailHome.addItem(new Cocktail("맛있는 칵테일 19","맛있는 칵테일 19의 설명 정말 맛있다","10%"));
+//        adapterForCocktailHome.addItem(new Cocktail("맛있는 칵테일 20","맛있는 칵테일 20의 설명 정말 맛있다","10%"));
 
         recyclerViewForCocktailHome.setAdapter(adapterForCocktailHome);
 
@@ -128,7 +204,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onItemClick(CocktailAdapter.ViewHolder holder, View view, int position) {
                 Cocktail item = adapterForCocktailHome.getItem(position);
-                Toast.makeText(getActivity().getApplicationContext(),"선택된 칵테일: " + item.getName()+" 재료의 ID: "+item.getId(),Toast.LENGTH_LONG).show();
+                //Toast.makeText(getActivity().getApplicationContext(),"선택된 칵테일: " + item.getName(),Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(view.getContext(), CocktailRecipeActivity.class);
                 startActivity(intent);
             }
