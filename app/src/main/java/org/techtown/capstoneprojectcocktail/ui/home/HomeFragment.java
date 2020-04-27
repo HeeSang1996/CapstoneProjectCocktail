@@ -129,6 +129,7 @@ public class HomeFragment extends Fragment {
             public void onClick(View view){
                 //Snackbar.make(view, "서치 기능이 들어갈 예정입니다", Snackbar.LENGTH_LONG).setAction("Action", null).show();
                 Intent intent = new Intent(view.getContext(), CocktailSearchActivity.class);
+                intent.putExtra("ingredientName", "");
                 startActivity(intent);
 
             }
@@ -147,7 +148,6 @@ public class HomeFragment extends Fragment {
         LinearLayoutManager layoutManagerForIngredientHome = new LinearLayoutManager(root.getContext(), LinearLayoutManager.HORIZONTAL,false);
         recyclerViewForIngredientHome.setLayoutManager(layoutManagerForIngredientHome);
         final CocktailIngredientAdapter adapterForIngredientHome = new CocktailIngredientAdapter();
-
 
         //수정필 테스트용
         Map<String, Number> ingredient_color = new HashMap<String, Number>();
@@ -168,7 +168,11 @@ public class HomeFragment extends Fragment {
             @Override
             public void onItemClick(CocktailIngredientAdapter.ViewHolder holder, View view, int position) {
                 CocktailIngredient item = adapterForIngredientHome.getItem(position);
-                Toast.makeText(getActivity().getApplicationContext(),"선택된 재료: " + item.getIngredient_name(),Toast.LENGTH_LONG).show();
+
+                Intent intent = new Intent(view.getContext(), CocktailSearchActivity.class);
+                intent.putExtra("ingredientName", item.getIngredient_name());
+                startActivity(intent);
+                //Toast.makeText(getActivity().getApplicationContext(),"선택된 재료: " + item.getIngredient_name(),Toast.LENGTH_LONG).show();
             }
         });
 
@@ -176,7 +180,6 @@ public class HomeFragment extends Fragment {
         LinearLayoutManager layoutManagerForCocktailHome = new LinearLayoutManager(root.getContext(), LinearLayoutManager.HORIZONTAL,false);
         recyclerViewForCocktailHome.setLayoutManager(layoutManagerForCocktailHome);
         final CocktailAdapter adapterForCocktailHome = new CocktailAdapter();
-
 
         //수정필 테스트용
         for(int i=0; i<20; i++) {
@@ -194,6 +197,7 @@ public class HomeFragment extends Fragment {
                 Cocktail item = adapterForCocktailHome.getItem(position);
                 //Toast.makeText(getActivity().getApplicationContext(),"선택된 칵테일: " + item.getName(),Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(view.getContext(), CocktailRecipeActivity.class);
+                intent.putExtra("cocktailName", item.getName());
                 startActivity(intent);
             }
         });

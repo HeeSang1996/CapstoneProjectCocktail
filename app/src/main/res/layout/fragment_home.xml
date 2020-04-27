@@ -74,7 +74,9 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerViewForIngredient"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:paddingRight="5dp"
+            android:clipToPadding="false">
 
         </androidx.recyclerview.widget.RecyclerView>
     </LinearLayout>
