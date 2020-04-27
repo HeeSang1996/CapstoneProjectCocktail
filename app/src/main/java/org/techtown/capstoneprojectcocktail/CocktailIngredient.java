@@ -69,7 +69,6 @@ public class CocktailIngredient {
             String flavour,
             float specific_gravity,
             Map<String, Number> Ingredient_color) {
-
         this.Ingredient_name =Ingredient_name;
         this.Ingredient_type =Ingredient_type;
         this.abv =abv;

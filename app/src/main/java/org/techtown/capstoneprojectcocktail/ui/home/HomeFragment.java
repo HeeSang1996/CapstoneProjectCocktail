@@ -33,6 +33,7 @@ import org.techtown.capstoneprojectcocktail.CocktailAdapter;
 import org.techtown.capstoneprojectcocktail.CocktailIngredient;
 import org.techtown.capstoneprojectcocktail.CocktailIngredientAdapter;
 import org.techtown.capstoneprojectcocktail.CocktailRecipeActivity;
+import org.techtown.capstoneprojectcocktail.CocktailSearchActivity;
 import org.techtown.capstoneprojectcocktail.MainActivity;
 import org.techtown.capstoneprojectcocktail.OnCocktailIngredientItemClickListener;
 import org.techtown.capstoneprojectcocktail.OnCocktailItemClickListener;
@@ -126,7 +127,9 @@ public class HomeFragment extends Fragment {
         searchButtonHome.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
-                Snackbar.make(view, "서치 기능이 들어갈 예정입니다", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                //Snackbar.make(view, "서치 기능이 들어갈 예정입니다", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                Intent intent = new Intent(view.getContext(), CocktailSearchActivity.class);
+                startActivity(intent);
 
             }
         });
@@ -145,22 +148,19 @@ public class HomeFragment extends Fragment {
         recyclerViewForIngredientHome.setLayoutManager(layoutManagerForIngredientHome);
         final CocktailIngredientAdapter adapterForIngredientHome = new CocktailIngredientAdapter();
 
-//        adapterForIngredientHome.addItem(new CocktailIngredient("Rum0", "base"));
-//        adapterForIngredientHome.addItem(new CocktailIngredient("Whisky0"));
-//        adapterForIngredientHome.addItem(new CocktailIngredient("Rum1"));
-//        adapterForIngredientHome.addItem(new CocktailIngredient("Whisky1"));
-//        adapterForIngredientHome.addItem(new CocktailIngredient("Rum2"));
-//        adapterForIngredientHome.addItem(new CocktailIngredient("Whisky2"));
-//        adapterForIngredientHome.addItem(new CocktailIngredient("Rum3"));
-//        adapterForIngredientHome.addItem(new CocktailIngredient("Whisky3"));
-//        adapterForIngredientHome.addItem(new CocktailIngredient("Rum4"));
-//        adapterForIngredientHome.addItem(new CocktailIngredient("Whisky4"));
-//        adapterForIngredientHome.addItem(new CocktailIngredient("Rum5"));
-//        adapterForIngredientHome.addItem(new CocktailIngredient("Whisky5"));
-//        adapterForIngredientHome.addItem(new CocktailIngredient("Rum6"));
-//        adapterForIngredientHome.addItem(new CocktailIngredient("Whisky6"));
-//        adapterForIngredientHome.addItem(new CocktailIngredient("Rum7"));
-//        adapterForIngredientHome.addItem(new CocktailIngredient("Whisky7"));
+
+        //수정필 테스트용
+        Map<String, Number> ingredient_color = new HashMap<String, Number>();
+        ingredient_color.put("red", 0);
+        for(int i = 0; i < 10 ; i ++) {
+            adapterForIngredientHome.addItem(new CocktailIngredient("Rum" + i,
+                    "base", 0, 0, 0, 0, 0,
+                    "칵테일이 짜다 애미야", 0, ingredient_color));
+            adapterForIngredientHome.addItem(new CocktailIngredient("Whisky" + i,
+                    "base", 0, 0, 0, 0, 0,
+                    "칵테일이 짜다 애미야", 0, ingredient_color));
+        }
+        //수정필 테스트용
 
         recyclerViewForIngredientHome.setAdapter(adapterForIngredientHome);
 
@@ -177,26 +177,14 @@ public class HomeFragment extends Fragment {
         recyclerViewForCocktailHome.setLayoutManager(layoutManagerForCocktailHome);
         final CocktailAdapter adapterForCocktailHome = new CocktailAdapter();
 
-//        adapterForCocktailHome.addItem(new Cocktail("맛있는 칵테일 1","맛있는 칵테일 1의 설명 정말 맛있다맛있는 칵테일 1의 설명 정말 맛있다맛있는 칵테일 1의 설명 정말 맛있다맛있는 칵테일 1의 설명 정말 맛있다맛있는 칵테일 1의 설명 정말 맛있다맛있는 칵테일 1의 설명 정말 맛있다맛있는 칵테일 1의 설명 정말 맛있다맛있는 칵테일 1의 설명 정말 맛있다맛있는 칵테일 1의 설명 정말 맛있다맛있는 칵테일 1의 설명 정말 맛있다맛있는 칵테일 1의 설명 정말 맛있다맛있는 칵테일 1의 설명 정말 맛있다맛있는 칵테일 1의 설명 정말 맛있다맛있는 칵테일 1의 설명 정말 맛있다맛있는 칵테일 1의 설명 정말 맛있다","10%"));
-//        adapterForCocktailHome.addItem(new Cocktail("맛있는 칵테일 2","맛있는 칵테일 2의 설명 정말 맛있다","10%"));
-//        adapterForCocktailHome.addItem(new Cocktail("맛있는 칵테일 3","맛있는 칵테일 3의 설명 정말 맛있다","10%"));
-//        adapterForCocktailHome.addItem(new Cocktail("맛있는 칵테일 4","맛있는 칵테일 4의 설명 정말 맛있다","10%"));
-//        adapterForCocktailHome.addItem(new Cocktail("맛있는 칵테일 5","맛있는 칵테일 5의 설명 정말 맛있다","10%"));
-//        adapterForCocktailHome.addItem(new Cocktail("맛있는 칵테일 6","맛있는 칵테일 6의 설명 정말 맛있다","10%"));
-//        adapterForCocktailHome.addItem(new Cocktail("맛있는 칵테일 7","맛있는 칵테일 7의 설명 정말 맛있다","10%"));
-//        adapterForCocktailHome.addItem(new Cocktail("맛있는 칵테일 8","맛있는 칵테일 8의 설명 정말 맛있다","10%"));
-//        adapterForCocktailHome.addItem(new Cocktail("맛있는 칵테일 9","맛있는 칵테일 9의 설명 정말 맛있다","10%"));
-//        adapterForCocktailHome.addItem(new Cocktail("맛있는 칵테일 10","맛있는 칵테일 10의 설명 정말 맛있다","10%"));
-//        adapterForCocktailHome.addItem(new Cocktail("맛있는 칵테일 11","맛있는 칵테일 11의 설명 정말 맛있다","10%"));
-//        adapterForCocktailHome.addItem(new Cocktail("맛있는 칵테일 12","맛있는 칵테일 12의 설명 정말 맛있다","10%"));
-//        adapterForCocktailHome.addItem(new Cocktail("맛있는 칵테일 13","맛있는 칵테일 13의 설명 정말 맛있다","10%"));
-//        adapterForCocktailHome.addItem(new Cocktail("맛있는 칵테일 14","맛있는 칵테일 14의 설명 정말 맛있다","10%"));
-//        adapterForCocktailHome.addItem(new Cocktail("맛있는 칵테일 15","맛있는 칵테일 15의 설명 정말 맛있다","10%"));
-//        adapterForCocktailHome.addItem(new Cocktail("맛있는 칵테일 16","맛있는 칵테일 16의 설명 정말 맛있다","10%"));
-//        adapterForCocktailHome.addItem(new Cocktail("맛있는 칵테일 17","맛있는 칵테일 17의 설명 정말 맛있다","10%"));
-//        adapterForCocktailHome.addItem(new Cocktail("맛있는 칵테일 18","맛있는 칵테일 18의 설명 정말 맛있다","10%"));
-//        adapterForCocktailHome.addItem(new Cocktail("맛있는 칵테일 19","맛있는 칵테일 19의 설명 정말 맛있다","10%"));
-//        adapterForCocktailHome.addItem(new Cocktail("맛있는 칵테일 20","맛있는 칵테일 20의 설명 정말 맛있다","10%"));
+
+        //수정필 테스트용
+        for(int i=0; i<20; i++) {
+            adapterForCocktailHome.addItem(new Cocktail("맛있는 칵테일 " + i, i, "맛있는 칵테일 " + i + "의 설명 정말 맛있다 맛있는 칵테일" + i +
+                    "의 설명 정말 맛있다 맛있는 칵테일" + i +"의 설명 정말 맛있다 맛있는 칵테일" + i +"의 설명 정말 맛있다 맛있는 칵테일" + i +"의 설명 정말 맛있다 맛있는 칵테일" + i +
+                    "의 설명 정말 맛있다 맛있는 칵테일" + i +"의 설명 정말 맛있다 맛있는 칵테일" + i +"의 설명 정말 맛있다 맛있는 칵테일" + i +"의 설명", i*10 + " %"));
+        }
+        //수정필 테스트용
 
         recyclerViewForCocktailHome.setAdapter(adapterForCocktailHome);
 
