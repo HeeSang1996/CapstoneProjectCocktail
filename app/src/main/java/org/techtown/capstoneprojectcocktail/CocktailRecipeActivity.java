@@ -17,7 +17,13 @@ public class CocktailRecipeActivity extends AppCompatActivity {
         Intent intent = getIntent();
 
         TextView textForCocktailName = (TextView) findViewById(R.id.textView_cocktailName_recipe);
+        TextView textForCocktailDescription = (TextView) findViewById(R.id.textView_cocktailDescription_recipe);
+        TextView textForCocktailIngredient = (TextView) findViewById(R.id.textView_cocktailIngredient_recipe);
         String cocktailName = intent.getExtras().getString("cocktailName");
+        String cocktailDescription = intent.getExtras().getString("cocktailDescription");
+        String cocktailIngredient = intent.getExtras().getString("cocktailIngredient");
         textForCocktailName.setText(cocktailName);
+        textForCocktailDescription.setText(cocktailDescription);
+        textForCocktailIngredient.setText(cocktailIngredient);
     }
 }

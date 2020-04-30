@@ -10,16 +10,16 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
-public class CocktailAdapter extends RecyclerView.Adapter<CocktailAdapter.ViewHolder> implements OnCocktailItemClickListener {
+public class CocktailAdapterForHome extends RecyclerView.Adapter<CocktailAdapterForHome.ViewHolder> implements OnCocktailItemClickListenerForHome {
     ArrayList<Cocktail> items = new ArrayList<Cocktail>();
-    OnCocktailItemClickListener listener;
+    OnCocktailItemClickListenerForHome listener;
 
     public class ViewHolder extends RecyclerView.ViewHolder{
         TextView textForCocktailName;
         TextView textForCocktailDescription;
         TextView textForCocktailABV;
 
-        public ViewHolder (View itemView, final OnCocktailItemClickListener listener){
+        public ViewHolder (View itemView, final OnCocktailItemClickListenerForHome listener){
             super(itemView);
 
             textForCocktailName = itemView.findViewById(R.id.textView_cocktailName_home);
@@ -80,7 +80,7 @@ public class CocktailAdapter extends RecyclerView.Adapter<CocktailAdapter.ViewHo
         items.set(position, item);
     }
 
-    public void setOnItemClickListener(OnCocktailItemClickListener listener){
+    public void setOnItemClickListener(OnCocktailItemClickListenerForHome listener){
         this.listener = listener;
     }
 

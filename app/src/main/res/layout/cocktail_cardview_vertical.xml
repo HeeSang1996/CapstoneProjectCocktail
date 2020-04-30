@@ -3,87 +3,89 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="250dp"
-    android:orientation="vertical">
+    android:layout_height="120dp"
+    android:orientation="vertical"
+    android:padding="5dp">
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:cardBackgroundColor="#FFFFFF"
         app:cardCornerRadius="20dp"
-        app:cardElevation="5dp"
-        app:cardUseCompatPadding="true">
+        app:cardElevation="5dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="horizontal"
-            android:layout_marginHorizontal="10dp"
-            android:layout_marginVertical="20dp">
+            android:orientation="horizontal">
 
             <ImageView
                 android:id="@+id/imageView_cocktail_search"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginVertical="1dp"
-                android:layout_weight="4"
+                android:layout_weight="3"
                 android:layout_margin="10dp"
                 app:srcCompat="@drawable/cocktail_sample_image" />
 
-            <TextView
-                android:id="@+id/textView_cocktailName_home"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_marginVertical="1dp"
-                android:layout_weight="1"
-                android:text="칵테일 이름"
-                android:gravity="center"
-                android:ellipsize="end"
-                android:maxLines="1"
-                android:textSize="22sp"
-                android:textStyle="bold"/>
-
-            <TextView
-                android:id="@+id/textView_cocktailDescription_home"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_marginVertical="1dp"
-                android:layout_weight="2"
-                android:text="칵테일 설명"
-                android:maxLines="4"
-                android:gravity="center"
-                android:ellipsize="end"
-                android:textSize="12sp"/>
-
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:orientation="horizontal">
-
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="6"
+                android:orientation="vertical">
                 <TextView
-                    android:id="@+id/textView_simpleABV_home"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:text="ABV"
-                    android:gravity="right|center_vertical"
-                    android:textSize="18sp"
-                    android:textColor="#00B0FF"/>
-
-                <TextView
-                    android:id="@+id/textView_cocktailABV_home"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="2"
-                    android:text="10%"
-                    android:textSize="20sp"
-                    android:gravity="center"
-                    android:textStyle="bold"
+                    android:id="@+id/textView_cocktailName_search"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="3dp"
+                    android:text="칵테일 이름"
+                    android:gravity="left|center_vertical"
                     android:ellipsize="end"
                     android:maxLines="1"
-                    android:textColor="#00B0FF"/>
+                    android:textSize="18sp"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:id="@+id/textView_cocktailDescription_search"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginVertical="1dp"
+                    android:layout_weight="1"
+                    android:text="칵테일 설명"
+                    android:maxLines="3"
+                    android:gravity="left|center_vertical"
+                    android:ellipsize="end"
+                    android:textSize="12sp"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginVertical="3dp">
+
+                    <TextView
+                        android:id="@+id/textView_simpleABV_search"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="ABV"
+                        android:gravity="right|center_vertical"
+                        android:textSize="16sp"
+                        android:textColor="#00B0FF"/>
+
+                    <TextView
+                        android:id="@+id/textView_cocktailABV_search"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:text="10%"
+                        android:textSize="18sp"
+                        android:gravity="center"
+                        android:textStyle="bold"
+                        android:ellipsize="end"
+                        android:maxLines="1"
+                        android:textColor="#00B0FF"/>
+                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
     </androidx.cardview.widget.CardView>

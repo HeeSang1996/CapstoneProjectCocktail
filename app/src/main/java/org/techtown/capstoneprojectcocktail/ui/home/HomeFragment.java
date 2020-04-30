@@ -7,14 +7,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -29,14 +24,13 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import org.techtown.capstoneprojectcocktail.Cocktail;
-import org.techtown.capstoneprojectcocktail.CocktailAdapter;
+import org.techtown.capstoneprojectcocktail.CocktailAdapterForHome;
 import org.techtown.capstoneprojectcocktail.CocktailIngredient;
 import org.techtown.capstoneprojectcocktail.CocktailIngredientAdapter;
 import org.techtown.capstoneprojectcocktail.CocktailRecipeActivity;
 import org.techtown.capstoneprojectcocktail.CocktailSearchActivity;
-import org.techtown.capstoneprojectcocktail.MainActivity;
 import org.techtown.capstoneprojectcocktail.OnCocktailIngredientItemClickListener;
-import org.techtown.capstoneprojectcocktail.OnCocktailItemClickListener;
+import org.techtown.capstoneprojectcocktail.OnCocktailItemClickListenerForHome;
 import org.techtown.capstoneprojectcocktail.R;
 
 import java.util.HashMap;
@@ -121,7 +115,6 @@ public class HomeFragment extends Fragment {
                 Intent intent = new Intent(view.getContext(), CocktailSearchActivity.class);
                 intent.putExtra("ingredientName", "");
                 startActivity(intent);
-
             }
         });
 
@@ -169,25 +162,32 @@ public class HomeFragment extends Fragment {
         RecyclerView recyclerViewForCocktailHome = root.findViewById(R.id.recyclerViewForCocktail_home);
         LinearLayoutManager layoutManagerForCocktailHome = new LinearLayoutManager(root.getContext(), LinearLayoutManager.HORIZONTAL,false);
         recyclerViewForCocktailHome.setLayoutManager(layoutManagerForCocktailHome);
-        final CocktailAdapter adapterForCocktailHome = new CocktailAdapter();
+        final CocktailAdapterForHome adapterForCocktailHome = new CocktailAdapterForHome();
 
         //수정필 테스트용
         for(int i=0; i<20; i++) {
-            adapterForCocktailHome.addItem(new Cocktail("맛있는 칵테일 " + i, i, "맛있는 칵테일 " + i + "의 설명 정말 맛있다 맛있는 칵테일" + i +
-                    "의 설명 정말 맛있다 맛있는 칵테일" + i +"의 설명 정말 맛있다 맛있는 칵테일" + i +"의 설명 정말 맛있다 맛있는 칵테일" + i +"의 설명 정말 맛있다 맛있는 칵테일" + i +
-                    "의 설명 정말 맛있다 맛있는 칵테일" + i +"의 설명 정말 맛있다 맛있는 칵테일" + i +"의 설명 정말 맛있다 맛있는 칵테일" + i +"의 설명", i*10 + " %"));
+            if( i ==5){
+                adapterForCocktailHome.addItem(new Cocktail("맛있는 칵테일 " + i, i, "맛있는 칵테일 " + i + "의 설명 정말 맛있다 맛있는 칵테일" + i +
+                        "의 설명 정말 맛있다 ", "Whisky1",i*10 + " %"));
+            }
+            else{
+                adapterForCocktailHome.addItem(new Cocktail("맛있는 칵테일 " + i, i, "맛있는 칵테일 " + i + "의 설명 정말 맛있다 맛있는 칵테일" + i +
+                        "의 설명 정말 맛있다 ", "Whisky0",i*10 + " %"));
+            }
         }
         //수정필 테스트용
 
         recyclerViewForCocktailHome.setAdapter(adapterForCocktailHome);
 
-        adapterForCocktailHome.setOnItemClickListener(new OnCocktailItemClickListener() {
+        adapterForCocktailHome.setOnItemClickListener(new OnCocktailItemClickListenerForHome() {
             @Override
-            public void onItemClick(CocktailAdapter.ViewHolder holder, View view, int position) {
+            public void onItemClick(CocktailAdapterForHome.ViewHolder holder, View view, int position) {
                 Cocktail item = adapterForCocktailHome.getItem(position);
                 //Toast.makeText(getActivity().getApplicationContext(),"선택된 칵테일: " + item.getName(),Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(view.getContext(), CocktailRecipeActivity.class);
                 intent.putExtra("cocktailName", item.getName());
+                intent.putExtra("cocktailDescription",item.getDescription());
+                intent.putExtra("cocktailIngredient",item.getIngredient());
                 startActivity(intent);
             }
         });

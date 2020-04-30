@@ -4,12 +4,14 @@ public class Cocktail {
     String name;
     int id;
     String description;
+    String ingredient;
     String abvNum;
 
-    public Cocktail(String name, int id, String description, String abvNum) {
+    public Cocktail(String name, int id, String description, String ingredient, String abvNum) {
         this.name = name;
         this.id = id;
         this.description = description;
+        this.ingredient = ingredient;
         this.abvNum = abvNum;
     }
 
@@ -35,6 +37,14 @@ public class Cocktail {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getIngredient() {
+        return ingredient;
+    }
+
+    public void setIngredient(String ingredient) {
+        this.ingredient = ingredient;
     }
 
     public String getAbvNum() {
