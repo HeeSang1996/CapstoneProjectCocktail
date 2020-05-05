@@ -39,6 +39,7 @@ public class CocktailUploadActivity extends AppCompatActivity {
     private static final int REQUEST_IMAGE_CAPTURE = 672;
     private String imageFilePath;
     private Uri photoUri;
+    private boolean imageCheck = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -143,12 +144,23 @@ public class CocktailUploadActivity extends AppCompatActivity {
         uploadButtonCocktailUpload.setOnClickListener(new OnSingleClickListener(){
             @Override
             public void onSingleClick(View view){
-                if (editTextForCocktailName.getError()==null && editTextForCocktailHowToMake.getError()==null
-                        && editTextForCocktailDescription.getError()==null){
-                    Toast.makeText(getApplicationContext(), "업로드 성공!", Toast.LENGTH_SHORT).show();
+                String stringForCocktailName = editTextForCocktailName.getText().toString().trim();
+                String stringForCocktailHowToMake = editTextForCocktailHowToMake.getText().toString().trim();
+                String stringForCocktailDescription = editTextForCocktailDescription.getText().toString().trim();
+                if (imageCheck==false){
+                    Toast.makeText(getApplicationContext(), "업로드 실패! 칵테일 사진을 함께 업로드 해주세요!", Toast.LENGTH_SHORT).show();
+                }
+                else if(stringForCocktailName.getBytes().length==0 || stringForCocktailHowToMake.getBytes().length==0
+                        || stringForCocktailDescription.getBytes().length==0){
+                    Toast.makeText(getApplicationContext(), "업로드 실패! 빈칸을 남기지 말아주세요!", Toast.LENGTH_SHORT).show();
+                }
+                else if (editTextForCocktailName.getError()!=null || editTextForCocktailHowToMake.getError()!=null
+                        || editTextForCocktailDescription.getError()!=null){
+                    Toast.makeText(getApplicationContext(), "업로드 실패! 문자 길이를 준수해주세요!", Toast.LENGTH_SHORT).show();
                 }
                 else{
-                    Toast.makeText(getApplicationContext(), "업로드 실패! 문자 길이를 준수해주세요!", Toast.LENGTH_SHORT).show();
+                    //영진이 파트
+                    Toast.makeText(getApplicationContext(), "업로드 성공!", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -195,6 +207,7 @@ public class CocktailUploadActivity extends AppCompatActivity {
             }
 
             ((ImageView) findViewById(R.id.imageView_cocktail_upload)).setImageBitmap(rotate(bitmap, exifDegree));
+            imageCheck =true;
         }
     }
 
