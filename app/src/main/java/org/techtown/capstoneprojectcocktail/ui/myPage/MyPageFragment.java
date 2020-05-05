@@ -1,5 +1,6 @@
 package org.techtown.capstoneprojectcocktail.ui.myPage;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +17,8 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.google.android.material.snackbar.Snackbar;
 
+import org.techtown.capstoneprojectcocktail.CocktailSearchActivity;
+import org.techtown.capstoneprojectcocktail.CocktailUploadActivity;
 import org.techtown.capstoneprojectcocktail.R;
 
 public class MyPageFragment extends Fragment {
@@ -59,7 +62,9 @@ public class MyPageFragment extends Fragment {
         uploadButtonMyPage.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
-                Snackbar.make(view, "레시피 업로드 기능이 들어갈 예정입니다", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                //Snackbar.make(view, "레시피 업로드 기능이 들어갈 예정입니다", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                Intent intent = new Intent(view.getContext(), CocktailUploadActivity.class);
+                startActivity(intent);
             }
         });
 

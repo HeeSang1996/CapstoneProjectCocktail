@@ -33,6 +33,12 @@
             android:windowSoftInputMode="adjustNothing"
             android:launchMode="singleTop">
         </activity>
+
+        <activity
+            android:name=".CocktailUploadActivity"
+            android:label="  Upload"
+            android:launchMode="singleTop">
+        </activity>
     </application>
 
 </manifest>
