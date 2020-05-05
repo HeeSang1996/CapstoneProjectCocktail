@@ -12,9 +12,12 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -51,12 +54,102 @@ public class CocktailUploadActivity extends AppCompatActivity {
             }
         });
 
+        TextInputLayout textInputLayoutForCocktailName = findViewById(R.id.textInputLayout_cocktailName_cocktail_upload);
+        textInputLayoutForCocktailName.setCounterEnabled(true);
+        textInputLayoutForCocktailName.setCounterMaxLength(20);
+        final EditText editTextForCocktailName = textInputLayoutForCocktailName.getEditText();
+
+        editTextForCocktailName.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if(s.length()>20) {
+                    editTextForCocktailName.setError("20자 이하로 입력해주세요!");
+                }
+                else
+                {
+                    editTextForCocktailName.setError(null);
+                }
+            }
+        });
+
+        TextInputLayout textInputLayoutForCocktailHowToMake = findViewById(R.id.textInputLayout_cocktailHowToMake_cocktail_upload);
+        textInputLayoutForCocktailHowToMake.setCounterEnabled(true);
+        textInputLayoutForCocktailHowToMake.setCounterMaxLength(300);
+        final EditText editTextForCocktailHowToMake = textInputLayoutForCocktailHowToMake.getEditText();
+
+        editTextForCocktailHowToMake.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if(s.length()>300) {
+                    editTextForCocktailHowToMake.setError("300자 이하로 입력해주세요!");
+                }
+                else
+                {
+                    editTextForCocktailHowToMake.setError(null);
+                }
+            }
+        });
+
+        TextInputLayout textInputLayoutForCocktailDescription = findViewById(R.id.textInputLayout_cocktailDescription_cocktail_upload);
+        textInputLayoutForCocktailDescription.setCounterEnabled(true);
+        textInputLayoutForCocktailDescription.setCounterMaxLength(300);
+        final EditText editTextForCocktailDescription = textInputLayoutForCocktailDescription.getEditText();
+
+        editTextForCocktailDescription.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if(s.length()>300) {
+                    editTextForCocktailDescription.setError("300자 이하로 입력해주세요!");
+                }
+                else
+                {
+                    editTextForCocktailDescription.setError(null);
+                }
+            }
+        });
+
         Button uploadButtonCocktailUpload = findViewById(R.id.button_upload_cocktail_upload);
         uploadButtonCocktailUpload.setOnClickListener(new OnSingleClickListener(){
             @Override
             public void onSingleClick(View view){
-                //영진 여기 채워줘 나중에 ㅎ
-                Snackbar.make(view, "업로드를 하자", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                if (editTextForCocktailName.getError()==null && editTextForCocktailHowToMake.getError()==null
+                        && editTextForCocktailDescription.getError()==null){
+                    Toast.makeText(getApplicationContext(), "업로드 성공!", Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    Toast.makeText(getApplicationContext(), "업로드 실패! 문자 길이를 준수해주세요!", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -68,19 +161,6 @@ public class CocktailUploadActivity extends AppCompatActivity {
                 finish();
             }
         });
-
-        TextInputLayout textInputLayoutForCocktailName = findViewById(R.id.textInputLayout_cocktailName_cocktail_upload);
-        textInputLayoutForCocktailName.setCounterEnabled(true);
-        textInputLayoutForCocktailName.setCounterMaxLength(20);
-
-        TextInputLayout textInputLayoutForCocktailHowToMake = findViewById(R.id.textInputLayout_cocktailHowToMake_cocktail_upload);
-        textInputLayoutForCocktailHowToMake.setCounterEnabled(true);
-        textInputLayoutForCocktailHowToMake.setCounterMaxLength(300);
-
-        TextInputLayout textInputLayoutForCocktailDescription = findViewById(R.id.textInputLayout_cocktailDescription_cocktail_upload);
-        textInputLayoutForCocktailDescription.setCounterEnabled(true);
-        textInputLayoutForCocktailDescription.setCounterMaxLength(300);
-
 
         /*
         ChipGroup chipGroup = findViewById(R.id.chipGroup_cocktail_upload);

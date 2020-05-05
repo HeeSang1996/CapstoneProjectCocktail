@@ -35,7 +35,7 @@
                 android:textColor="#DDEFEF"
                 android:singleLine="true"
                 android:layout_gravity="center"
-                android:paddingHorizontal="50dp"/>
+                android:paddingHorizontal="30dp"/>
             
             <HorizontalScrollView
                 android:layout_width="match_parent"
@@ -55,12 +55,14 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:id ="@+id/textInputLayout_cocktailName_cocktail_upload"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                app:errorEnabled="true">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="칵테일 이름"
+                    android:textSize="18sp"
                     android:singleLine="true" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -68,29 +70,26 @@
                 android:id ="@+id/textInputLayout_cocktailHowToMake_cocktail_upload"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:textSize="18sp">
+                app:errorEnabled="true">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="재료상세 및 조주과정"
-                    android:textSize="14sp"
-                    android:maxLines="10"
-                    android:ellipsize="end"/>
+                    android:textSize="14sp" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id ="@+id/textInputLayout_cocktailDescription_cocktail_upload"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                app:errorEnabled="true">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="설명"
-                    android:textSize="14sp"
-                    android:maxLines="10"
-                    android:ellipsize="end"/>
+                    android:textSize="14sp" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <LinearLayout
