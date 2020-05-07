@@ -53,5 +53,9 @@
             android:launchMode="singleTop"
             android:screenOrientation="portrait">
         </activity>
+
+        <activity
+            android:name=".MJH_SimulatorActivity">
+        </activity>
     </application>
 </manifest>
