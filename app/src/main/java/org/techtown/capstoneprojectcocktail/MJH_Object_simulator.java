@@ -7,7 +7,7 @@ public class MJH_Object_simulator {
     public MJH_Object_simulator(int _glass_type, int _ice_type){ // step1: 잔, 얼음타입 선택
         this.simulator_step[0] = new MJH_Object_cocktail();
         this.simulator_step[0].ice_type = _ice_type; // 0=없음, 1=박스얼음, 2=원형
-        this.simulator_step[0].glass_type = _glass_type; // 0=하이볼, 1=락글라스, 2=마티니, 3=허리케인?
+        this.simulator_step[0].glass_type = _glass_type; // 0=하이볼, 1=콜린스잔, 2=락글라스, 3=마티니, 4=허리케인?
     }
 
     //빌드 스터 셰이크 푸어 롤링 (스탭번호, 재료로 사용할 스탭의 갯수, 재료로 사요할 스탭들의 인덱스, 재료의 갯수, 재료, 재료의 양)
@@ -26,16 +26,17 @@ public class MJH_Object_simulator {
 
 
     // 빌드 같이 한번에 재료 한개 넣는 칵테일 (빌드 스터 셰이크 푸어 롤링)
+    // (현재스텝번호, 연관된 스텝갯수, 연관된 스텝번호....)_
     public MJH_Object_cocktail calc_kind_build(int step_num, int associate_num, int[] associate_step, int ingredient_num, MJH_Object_ingredient[] input_ingredient, float[] input_amount){
 
         MJH_Object_cocktail cocktail_buffer = new MJH_Object_cocktail();
 
-        try {
-            if(associate_num == 1){
+        try { // 기존 스탭을 이용해 칵테일을 만들때
+            if(associate_num > 0)
                 cocktail_buffer = (MJH_Object_cocktail) this.simulator_step[associate_step[0]].clone();
-            }
-            else if(associate_num >= 1){ // 여러 단계를 사용할때
-                for(int i = 0; i < associate_num; i++){
+
+            if(associate_num > 1){ // 여러 단계를 사용할때
+                for(int i = 1; i < associate_num; i++){
                     //도수계산
                     cocktail_buffer.total_abv = calc_abv(cocktail_buffer.total_volume, cocktail_buffer.total_abv,
                             this.simulator_step[associate_step[i]].total_volume, this.simulator_step[associate_step[i]].total_abv);
@@ -45,14 +46,8 @@ public class MJH_Object_simulator {
                             cocktail_buffer.specific_gravity[0], this.simulator_step[associate_step[i]].specific_gravity[0]);
 
                     //색 변경
-                    MJH_Object_color color_buffer;
-                    if (i == 0) // 첫 인풋일때 색 셋팅
-                        cocktail_buffer.is_color[0] = new MJH_Object_color(this.simulator_step[associate_step[i]].is_color[0].rgb_red,
-                                simulator_step[associate_step[i]].is_color[0].rgb_green, simulator_step[associate_step[i]].is_color[0].rgb_blue);
-                    else { // 색 섞일때
-                        color_buffer = add_color(cocktail_buffer.is_color[0], simulator_step[associate_step[i]].is_color[0], cocktail_buffer.total_volume, this.simulator_step[associate_step[i]].total_volume);
-                        cocktail_buffer.is_color[0] = new MJH_Object_color(color_buffer.rgb_red, color_buffer.rgb_green, color_buffer.rgb_blue);
-                    }
+                    cocktail_buffer.is_color[0] = change_color(cocktail_buffer.is_color[0], simulator_step[associate_step[i]].is_color[0], cocktail_buffer.total_volume, this.simulator_step[associate_step[i]].total_volume);
+
 
                     //량 추가
                     cocktail_buffer.total_volume = cocktail_buffer.total_volume + this.simulator_step[associate_step[i]].total_volume;
@@ -65,7 +60,6 @@ public class MJH_Object_simulator {
                     //(this.simulator_step[step_num].flavour[0] = @@@
 
                 }
-
             }
 
 
@@ -78,13 +72,12 @@ public class MJH_Object_simulator {
                 calc_specific_gravity(cocktail_buffer.total_volume, input_amount[i], cocktail_buffer.specific_gravity[0], input_ingredient[i].specific_gravity);
 
                 //색 변경
-                MJH_Object_color color_buffer;
-                if (step_num == 1) // 첫 인풋일때 색 셋팅
+                if (step_num == 1 && i == 0)
                     cocktail_buffer.is_color[0] = new MJH_Object_color(input_ingredient[i].my_color.rgb_red, input_ingredient[i].my_color.rgb_green, input_ingredient[i].my_color.rgb_blue);
-                else { // 색 섞일때
-                    color_buffer = add_color(cocktail_buffer.is_color[0], input_ingredient[i].my_color, cocktail_buffer.total_volume, input_amount[i]);
-                    cocktail_buffer.is_color[0] = new MJH_Object_color(color_buffer.rgb_red, color_buffer.rgb_green, color_buffer.rgb_blue);
-                }
+                else
+                    cocktail_buffer.is_color[0] = change_color(cocktail_buffer.is_color[0], input_ingredient[i].my_color, cocktail_buffer.total_volume, input_amount[i]);
+
+
 
                 //량 추가
                 cocktail_buffer.total_volume = cocktail_buffer.total_volume + input_amount[i];
@@ -127,4 +120,11 @@ public class MJH_Object_simulator {
         float weight_add = volume_add * specific_gravity_add;
         return (weight_origin + weight_add) / (volume_origin + volume_add);
     }
+
+    public MJH_Object_color change_color( MJH_Object_color a_color, MJH_Object_color b_color, float a_volume, float b_volume ){
+        MJH_Object_color color_buffer;
+        color_buffer = add_color(a_color, b_color, a_volume, b_volume);
+        return color_buffer;
+    }
+
 }

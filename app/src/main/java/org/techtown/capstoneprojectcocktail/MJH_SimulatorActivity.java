@@ -111,7 +111,7 @@ public class MJH_SimulatorActivity extends AppCompatActivity {
 
         TextView textView1 = (TextView) findViewById(R.id.textView) ;
         textView1.setText("Color is changed.") ;
-        textView1.setBackgroundColor(Color.parseColor(test.simulator_step[1].is_color[0].get_android_color_type()));
+        textView1.setBackgroundColor(Color.parseColor(test.simulator_step[0].is_color[0].get_android_color_type()));
     }
 
 
