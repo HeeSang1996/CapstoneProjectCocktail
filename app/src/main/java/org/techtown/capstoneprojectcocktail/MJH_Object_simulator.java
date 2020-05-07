@@ -10,9 +10,9 @@ public class MJH_Object_simulator {
         this.simulator_step[0].glass_type = _glass_type; // 0=하이볼, 1=락글라스, 2=마티니, 3=허리케인?
     }
 
-    //빌드 스터 셰이크 푸어 롤링
+    //빌드 스터 셰이크 푸어 롤링 (스탭번호, 재료로 사용할 스탭의 갯수, 재료로 사요할 스탭들의 인덱스, 재료의 갯수, 재료, 재료의 양)
     public void add_step_buildings(int step_num, int associate_num, int[] associate_step, int ingredient_num, MJH_Object_ingredient[] input_ingredient, float[] amount){
-        // 스탭번호, 재료로 사용할 스탭의 갯수, 재료로 사요할 스탭들의 인덱스, 재료의 갯수, 재료, 재료의 양
+        // (스탭번호, 재료로 사용할 스탭의 갯수, 재료로 사요할 스탭들의 인덱스, 재료의 갯수, 재료, 재료의 양)
         this.simulator_step[step_num - 1] =  calc_kind_build(step_num, associate_num, associate_step, ingredient_num, input_ingredient, amount);
     }
 
@@ -37,17 +37,12 @@ public class MJH_Object_simulator {
             else if(associate_num >= 1){ // 여러 단계를 사용할때
                 for(int i = 0; i < associate_num; i++){
                     //도수계산
-                    cocktail_buffer.total_abv = (cocktail_buffer.total_volume * cocktail_buffer.total_abv + this.simulator_step[associate_step[i]].total_volume * this.simulator_step[associate_step[i]].total_abv)
-                            / (cocktail_buffer.total_volume + this.simulator_step[associate_step[i]].total_volume);
+                    cocktail_buffer.total_abv = calc_abv(cocktail_buffer.total_volume, cocktail_buffer.total_abv,
+                            this.simulator_step[associate_step[i]].total_volume, this.simulator_step[associate_step[i]].total_abv);
 
                     //비중계산
-                    float weight_origin, weight_add;
-                    float volume_origin = cocktail_buffer.total_volume, volume_add = this.simulator_step[associate_step[i]].total_volume;
-                    float new_gravity;
-                    weight_origin = cocktail_buffer.total_volume * cocktail_buffer.specific_gravity[0];
-                    weight_add = this.simulator_step[associate_step[i]].total_volume * this.simulator_step[associate_step[i]].specific_gravity[0];
-                    new_gravity = (weight_origin + weight_add) / (volume_origin + volume_add);
-                    cocktail_buffer.specific_gravity[0] = new_gravity;
+                    cocktail_buffer.specific_gravity[0] = calc_specific_gravity(cocktail_buffer.total_volume, this.simulator_step[associate_step[i]].total_volume,
+                            cocktail_buffer.specific_gravity[0], this.simulator_step[associate_step[i]].specific_gravity[0]);
 
                     //색 변경
                     MJH_Object_color color_buffer;
@@ -76,17 +71,11 @@ public class MJH_Object_simulator {
 
             for(int i = 0; i < ingredient_num; i++){
                 //도수계산
-                cocktail_buffer.total_abv = (cocktail_buffer.total_volume * cocktail_buffer.total_abv + input_amount[i] * input_ingredient[i].abv)
-                        / (cocktail_buffer.total_volume + input_amount[i]);
+                cocktail_buffer.total_abv = calc_abv(cocktail_buffer.total_volume, cocktail_buffer.total_abv,
+                        input_amount[i], input_ingredient[i].abv);
 
                 //비중계산
-                float weight_origin, weight_add;
-                float volume_origin = cocktail_buffer.total_volume, volume_add = input_amount[i];
-                float new_gravity;
-                weight_origin = cocktail_buffer.total_volume * cocktail_buffer.specific_gravity[0];
-                weight_add = input_amount[i] * input_ingredient[i].specific_gravity;
-                new_gravity = (weight_origin + weight_add) / (volume_origin + volume_add);
-                cocktail_buffer.specific_gravity[0] = new_gravity;
+                calc_specific_gravity(cocktail_buffer.total_volume, input_amount[i], cocktail_buffer.specific_gravity[0], input_ingredient[i].specific_gravity);
 
                 //색 변경
                 MJH_Object_color color_buffer;
@@ -126,5 +115,16 @@ public class MJH_Object_simulator {
 
         MJH_Object_color color_result = new MJH_Object_color(result_red, result_green, result_blue);
         return color_result;
+    }
+
+    public float calc_abv(float a_volume, float a_abv, float b_volume, float b_abv){
+       return (a_volume * a_abv + b_volume * b_abv)
+                / (a_volume + b_volume);
+    }
+
+    public float calc_specific_gravity(float volume_origin, float volume_add, float specific_gravity_origin, float specific_gravity_add){
+        float weight_origin = volume_origin * specific_gravity_origin;
+        float weight_add = volume_add * specific_gravity_add;
+        return (weight_origin + weight_add) / (volume_origin + volume_add);
     }
 }

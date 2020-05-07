@@ -129,6 +129,7 @@ public class HomeFragment extends Fragment {
                         MJH_SimulatorActivity.class); // 다음 넘어갈 클래스 지정
                 startActivity(intent); // 다음 화면으로 넘어간다
                 //////////////// By MJH
+                setDocument();
             }
         });
 
