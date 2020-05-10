@@ -13,6 +13,7 @@ public class MJH_Object_cocktail implements Cloneable{
     float[] each_abv = new float[15]; //단위 %
     float[] specific_gravity = new float[15];
     MJH_Object_color[] is_color = new MJH_Object_color[15];
+    float[] is_gradient = new float[15];
 
     float[] sugar = new float[15]; // 단위 g
     float[] sour = new float[15];
