@@ -54,7 +54,7 @@ public class MyPageFragment extends Fragment {
         simulationButtonMyPage.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
-                Snackbar.make(view, "마이 시뮬레이션 기능이 들어갈 예정입니다", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                Snackbar.make(view, "마이 칵테일 기능이 들어갈 예정입니다", Snackbar.LENGTH_LONG).setAction("Action", null).show();
             }
         });
 
