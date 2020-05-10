@@ -20,7 +20,6 @@ public class MJH_Object_simulator {
         // (스탭번호, 재료로 사용할 스탭의 갯수, 재료로 사용할 스탭들의 인덱스, 재료의 갯수, 재료, 재료의 양)
         this.simulator_step[step_num - 1] =  calc_kind_build(step_num, associate_num, associate_step, ingredient_num, input_ingredient, amount);
 
-<<<<<<< HEAD
         if(is_in == true){ // 현재 글래스에 담긴 음료에 대한 설정
            for(int i = 0; i < step_num; i++){
                 if(this.simulator_step[i].is_in_glass == true)
@@ -31,12 +30,6 @@ public class MJH_Object_simulator {
         }
 
         total_step++;
-=======
-    public void add_step_layering(int step_num, int associate_step_num, int ingredient_num, MJH_Object_ingredient[] input_ingredient, float[] amount){ // (스탭번호, 재료인풋, 재료량(ml))
-        //민준홍씹탱이거 지건맞아라
-        //컴파일 되는걸로 올려라
-        // this.simulator_step[step_num - 1] =
->>>>>>> 6b177e6df28ddd0eaa30d59f0e9a9b46e8c3d744
     }
 
     public void add_step_layering(int step_num, int associate_step_num, int ingredient_num, MJH_Object_ingredient[] input_ingredient, float[] amount, int layering_type){ // (스탭번호, 재료인풋, 재료량(ml))
