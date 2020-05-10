@@ -17,7 +17,9 @@ public class MJH_Object_simulator {
     }
 
     public void add_step_layering(int step_num, int associate_step_num, int ingredient_num, MJH_Object_ingredient[] input_ingredient, float[] amount){ // (스탭번호, 재료인풋, 재료량(ml))
-        this.simulator_step[step_num - 1] =
+        //민준홍씹탱이거 지건맞아라
+        //컴파일 되는걸로 올려라
+        // this.simulator_step[step_num - 1] =
     }
 
     public void add_step_muddle(int step_num, int associate_step_num, int ingredient_num, MJH_Object_ingredient[] input_ingredient, float[] amount){ // (스탭번호, 재료인풋, 재료량(ml류))

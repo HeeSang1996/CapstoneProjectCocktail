@@ -1,36 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/linearLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
     <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputLayoutForID_login"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="아이디" />
+            android:hint="구글 이메일"
+            android:singleLine="true"
+            android:textSize="18sp" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputLayoutForPassWord_login"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="비밀번호" />
+            android:hint="구글 비밀번호"
+            android:singleLine="true"
+            android:textSize="18sp" />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <ImageButton
-        android:id="@+id/imageButton2"
+    <Button
+        android:id="@+id/buttonForLogin_login"
         android:layout_width="match_parent"
-        android:layout_height="30dp"
-        app:srcCompat="@drawable/button_home_search" />
+        android:layout_height="wrap_content"
+        android:text="로그인" />
+
+    <!-- 수정필 임시 -->
+    <Button
+        android:id="@+id/buttonForLoginCheck_login"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="로그인 체크" />
+
+    <!-- 수정필 임시 -->
+    <Button
+        android:id="@+id/buttonForLogout_login"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="로그아웃" />
 
 
 </LinearLayout>
