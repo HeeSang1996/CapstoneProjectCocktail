@@ -4,6 +4,7 @@ public class MJH_Object_cocktail implements Cloneable{
 
     int ice_type = 0;
     int glass_type = 0;
+    boolean is_in_glass = false;
 
     int is_layering = 0; // n+1: 색의 갯수
     float total_volume = 0;
@@ -13,7 +14,8 @@ public class MJH_Object_cocktail implements Cloneable{
     float[] each_abv = new float[15]; //단위 %
     float[] specific_gravity = new float[15];
     MJH_Object_color[] is_color = new MJH_Object_color[15];
-    float[] is_gradient = new float[15];
+    int[] is_boundary_dirty = new int[15];
+    int is_gradient = 0;
 
     float[] sugar = new float[15]; // 단위 g
     float[] sour = new float[15];
@@ -36,7 +38,7 @@ public class MJH_Object_cocktail implements Cloneable{
                                 String now_flavour){
         this.is_layering = _is_layering;
 
-        if (this.is_layering == 0 && now_layer == 0){
+        if (this.is_layering == 0 || now_layer == 0){
             this.total_volume = now_volume;
             this.each_volume[now_layer] = now_volume;
             this.total_abv = now_abv;
@@ -66,6 +68,16 @@ public class MJH_Object_cocktail implements Cloneable{
             }
         }
 
+    }
+
+    public void add_vol_abv_total(){
+        this.total_volume = 0;
+        this.total_abv = 0;
+
+        for(int i = 0; i < is_layering; i++){
+            this.total_volume = this.total_volume + this.each_volume[i];
+            this.total_abv = this.total_abv + this.each_abv[i];
+        }
     }
 
 }

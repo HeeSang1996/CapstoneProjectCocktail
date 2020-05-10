@@ -12,7 +12,7 @@ public class MJH_SimulatorActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.min_cocktail_simulator_activity);
-
+/*
         // 그라데이션 커스텀뷰
         //CustomView myView = new CustomView(this);
         //setContentView(myView);
@@ -44,10 +44,13 @@ public class MJH_SimulatorActivity extends AppCompatActivity {
         System.out.println("안드컬러값" + c1.get_android_color_type());
         */
 
+/*
+
+
         MJH_Object_color c1 = new MJH_Object_color(255, 204, 51);
         MJH_Object_color c2 = new MJH_Object_color(102, 102, 102);
         MJH_Object_color result;
-
+ */
 /*
         result = add_color(c1, c2, 50, 50);
 
@@ -59,7 +62,7 @@ public class MJH_SimulatorActivity extends AppCompatActivity {
         textView1.setText("Color is changed.") ;
         textView1.setBackgroundColor(Color.parseColor(result.get_android_color_type()));
         */
-
+/*
         int[] a = new int[5];
 
         float[] amount = new float[2];
@@ -71,7 +74,7 @@ public class MJH_SimulatorActivity extends AppCompatActivity {
         input[0] = new MJH_Object_ingredient((float)0.9, (float)0.3, 5, 1, 1, 1, c1);
         input[1] = new MJH_Object_ingredient((float)0.8, (float)0.4, 5, 1, 1, 1, c1);
         MJH_Object_simulator test = new MJH_Object_simulator(0, 0);
-        test.add_step_buildings(1, 0, a, 2, input,  amount);
+        //test.add_step_buildings(1, 0, a, 2, input,  amount);
 
         System.out.println(test.simulator_step[0].is_color[0].get_android_color_type());
         System.out.println(test.simulator_step[0].total_volume);
@@ -85,7 +88,7 @@ public class MJH_SimulatorActivity extends AppCompatActivity {
         amount2[0] = 50;
 
         System.out.println("---------step2-------");
-        test.add_step_buildings(2, 1, a, 1, input2,  amount2);
+        //test.add_step_buildings(2, 1, a, 1, input2,  amount2);
         System.out.println(test.simulator_step[1].is_color[0].get_android_color_type());
         System.out.println(test.simulator_step[1].total_volume);
         System.out.println(test.simulator_step[1].total_abv);
@@ -103,7 +106,7 @@ public class MJH_SimulatorActivity extends AppCompatActivity {
         b[1] = 1;
 
         System.out.println("---------step3-------");
-        test.add_step_buildings(3, 2, b, 1, input3,  amount3);
+        //test.add_step_buildings(3, 2, b, 1, input3,  amount3);
         System.out.println(test.simulator_step[2].is_color[0].get_android_color_type());
         System.out.println(test.simulator_step[2].total_volume);
         System.out.println(test.simulator_step[2].total_abv);
@@ -112,6 +115,7 @@ public class MJH_SimulatorActivity extends AppCompatActivity {
         TextView textView1 = (TextView) findViewById(R.id.textView) ;
         textView1.setText("Color is changed.") ;
         textView1.setBackgroundColor(Color.parseColor(test.simulator_step[0].is_color[0].get_android_color_type()));
+        */
     }
 
 

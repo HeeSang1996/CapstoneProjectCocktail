@@ -2,7 +2,12 @@ package org.techtown.capstoneprojectcocktail;
 
 public class MJH_Object_simulator {
 
+    int total_step = 0;
+    int in_glass_step = 0;
     public MJH_Object_cocktail[] simulator_step = new MJH_Object_cocktail[100]; //step은 백 까지만
+
+    MJH_Object_ingredient[] muddle_list = new MJH_Object_ingredient[100];
+    int muddle_num = 0;
 
     public MJH_Object_simulator(int _glass_type, int _ice_type){ // step1: 잔, 얼음타입 선택
         this.simulator_step[0] = new MJH_Object_cocktail();
@@ -11,17 +16,52 @@ public class MJH_Object_simulator {
     }
 
     //빌드 스터 셰이크 푸어 롤링 (스탭번호, 재료로 사용할 스탭의 갯수, 재료로 사요할 스탭들의 인덱스, 재료의 갯수, 재료, 재료의 양)
-    public void add_step_buildings(int step_num, int associate_num, int[] associate_step, int ingredient_num, MJH_Object_ingredient[] input_ingredient, float[] amount){
-        // (스탭번호, 재료로 사용할 스탭의 갯수, 재료로 사요할 스탭들의 인덱스, 재료의 갯수, 재료, 재료의 양)
+    public void add_step_buildings(int step_num, int associate_num, int[] associate_step, int ingredient_num, MJH_Object_ingredient[] input_ingredient, float[] amount, boolean is_in){
+        // (스탭번호, 재료로 사용할 스탭의 갯수, 재료로 사용할 스탭들의 인덱스, 재료의 갯수, 재료, 재료의 양)
         this.simulator_step[step_num - 1] =  calc_kind_build(step_num, associate_num, associate_step, ingredient_num, input_ingredient, amount);
+
+        if(is_in == true){ // 현재 글래스에 담긴 음료에 대한 설정
+           for(int i = 0; i < step_num; i++){
+                if(this.simulator_step[i].is_in_glass == true)
+                    this.simulator_step[i].is_in_glass = false;
+            }
+            this.simulator_step[step_num - 1].is_in_glass = true;
+           in_glass_step = step_num;
+        }
+
+        total_step++;
     }
 
-    public void add_step_layering(int step_num, int associate_step_num, int ingredient_num, MJH_Object_ingredient[] input_ingredient, float[] amount){ // (스탭번호, 재료인풋, 재료량(ml))
-        this.simulator_step[step_num - 1] =
+    public void add_step_layering(int step_num, int associate_step_num, int ingredient_num, MJH_Object_ingredient[] input_ingredient, float[] amount, int layering_type){ // (스탭번호, 재료인풋, 재료량(ml))
+        MJH_Object_cocktail cocktail_buffer_layering = new MJH_Object_cocktail();
+
+        if(is_there_cocktail_in_glass() != 9999){
+            try{
+                this.simulator_step[step_num - 1] = (MJH_Object_cocktail) this.simulator_step[is_there_cocktail_in_glass()].clone();
+
+                calc_kind_layering(ingredient_num, input_ingredient, amount, layering_type);
+
+                for(int i = 0; i < step_num; i++){
+                    if(this.simulator_step[i].is_in_glass == true)
+                        this.simulator_step[i].is_in_glass = false;
+                }
+                this.simulator_step[step_num - 1].is_in_glass = true;
+                in_glass_step = step_num;
+            }catch (Exception e){ }
+        }
+        else{
+            calc_kind_layering(ingredient_num, input_ingredient, amount, layering_type);
+            this.simulator_step[step_num - 1].is_in_glass = true;
+            this.simulator_step[step_num - 1].is_layering = ingredient_num;
+            in_glass_step = step_num;
+        }
+        total_step++;
     }
 
-    public void add_step_muddle(int step_num, int associate_step_num, int ingredient_num, MJH_Object_ingredient[] input_ingredient, float[] amount){ // (스탭번호, 재료인풋, 재료량(ml류))
-
+    public void add_step_muddle(int step_num, int associate_step_num, int ingredient_num, MJH_Object_ingredient[] input_ingredient){
+        for( int i = muddle_num; i < (muddle_num+ingredient_num); i++){
+            muddle_list[i] = input_ingredient[i - muddle_num];
+        }
     }
 
 
@@ -93,6 +133,32 @@ public class MJH_Object_simulator {
         return cocktail_buffer;
     }
 
+    //현재 그래디언트는 한번만됨
+    public void calc_kind_layering(int ingredient_num, MJH_Object_ingredient[] input_ingredient, float[] amount, int layering_type){
+        //int layering_type: 0,1,2->약,중,강 그라데이션, 3->완벽한 플로팅, 4->어설픈 플로팅
+
+        int layer_num_buffer = this.simulator_step[in_glass_step - 1].is_layering;
+
+        if(layering_type == 0){
+            array_push_for_gradient(input_ingredient[0], amount[0], 30);
+            this.simulator_step[in_glass_step - 1].is_layering++;
+        }
+        if(layering_type == 1){
+            array_push_for_gradient(input_ingredient[0], amount[0], 50);
+            this.simulator_step[in_glass_step - 1].is_layering++;
+        }
+        if(layering_type == 2){
+            this.simulator_step[in_glass_step - 1].is_layering = make_layer(layer_num_buffer, ingredient_num, input_ingredient, amount);
+        }
+        if(layering_type == 3){
+            this.simulator_step[in_glass_step - 1].is_layering = make_layer(layer_num_buffer, ingredient_num, input_ingredient, amount);
+            for(int i = layer_num_buffer; i < this.simulator_step[in_glass_step - 1].is_layering; i++){
+                this.simulator_step[in_glass_step - 1].is_boundary_dirty[i] = 1; //1이면 yes
+            }
+        }
+
+        this.simulator_step[in_glass_step - 1].add_vol_abv_total();
+    }
 
     public MJH_Object_color add_color(MJH_Object_color color_one, MJH_Object_color color_two, float vol_one, float vol_two){
         float result_red;
@@ -124,4 +190,62 @@ public class MJH_Object_simulator {
         return color_buffer;
     }
 
+    public int is_there_cocktail_in_glass(){
+
+        for(int i = 0; i < total_step; i++){
+            if(this.simulator_step[i].is_in_glass == true)
+                return i;
+        }
+        return 9999;
+    }
+
+    public void array_push_for_gradient(MJH_Object_ingredient input_ingredient, float amount, int gradient_rate){
+        for(int i = 14; i > 0; i--){ // 내용물 shift, 맨밑엔 시럽이!
+            this.simulator_step[in_glass_step - 1].each_volume[i] = this.simulator_step[in_glass_step - 1].each_volume[i-1];
+            this.simulator_step[in_glass_step - 1].each_abv[i] = this.simulator_step[in_glass_step - 1].each_abv[i-1];
+            this.simulator_step[in_glass_step - 1].specific_gravity [i] = this.simulator_step[in_glass_step - 1].specific_gravity [i-1];
+            this.simulator_step[in_glass_step - 1].is_color[i] = this.simulator_step[in_glass_step - 1].is_color[i-1];
+
+            this.simulator_step[in_glass_step - 1].sugar[i] = this.simulator_step[in_glass_step - 1].sugar[i-1];
+            this.simulator_step[in_glass_step - 1].sour[i] = this.simulator_step[in_glass_step - 1].sour[i-1];
+            this.simulator_step[in_glass_step - 1].salty[i] = this.simulator_step[in_glass_step - 1].salty[i-1];
+            this.simulator_step[in_glass_step - 1].bitter[i] = this.simulator_step[in_glass_step - 1].bitter[i-1];
+        }
+
+        this.simulator_step[in_glass_step - 1].each_volume[0] = amount;
+        this.simulator_step[in_glass_step - 1].each_abv[0] = input_ingredient.abv;
+        this.simulator_step[in_glass_step - 1].specific_gravity [0] = input_ingredient.specific_gravity;
+        this.simulator_step[in_glass_step - 1].is_color[0] = input_ingredient.my_color;
+        this.simulator_step[in_glass_step - 1].is_gradient = gradient_rate;
+
+        this.simulator_step[in_glass_step - 1].sugar[0]= input_ingredient.sugar;
+        this.simulator_step[in_glass_step - 1].sour[0] = input_ingredient.sour;
+        this.simulator_step[in_glass_step - 1].salty[0] = input_ingredient.salty;
+        this.simulator_step[in_glass_step - 1].bitter[0] = input_ingredient.bitter;
+    }
+
+    public int make_layer(int now_layer, int ingredient_num, MJH_Object_ingredient[] input_ingredient, float[] amount){
+        int return_value = now_layer + ingredient_num;
+
+        for(int i = now_layer; i <  return_value ; i++){
+            this.simulator_step[in_glass_step - 1].each_volume[i] = amount[i -now_layer];
+            this.simulator_step[in_glass_step - 1].each_abv[i] = input_ingredient[i -now_layer].abv;
+            this.simulator_step[in_glass_step - 1].specific_gravity[i] = input_ingredient[i -now_layer].specific_gravity;
+            this.simulator_step[in_glass_step - 1].is_color[i] = input_ingredient[i -now_layer].my_color;
+
+            this.simulator_step[in_glass_step - 1].sugar[i]= input_ingredient[i -now_layer].sugar;
+            this.simulator_step[in_glass_step - 1].sour[i] = input_ingredient[i -now_layer].sour;
+            this.simulator_step[in_glass_step - 1].salty[i] = input_ingredient[i -now_layer].salty;
+            this.simulator_step[in_glass_step - 1].bitter[i] = input_ingredient[i -now_layer].bitter;
+        }
+
+        return return_value;
+    }
 }
+
+/*
+public MJH_Object_ingredient simul_step_to_ingredient(MJH_Object_cocktail s){
+    MJH_Object_ingredient retrun_ingre = new MJH_Object_ingredient(s.specific_gravity[0], s.total_abv, s.sugar[0], s.sour[0], s.salty[0], s.bitter[0], s.is_color[0]);
+    return retrun_ingre;
+}
+*/
