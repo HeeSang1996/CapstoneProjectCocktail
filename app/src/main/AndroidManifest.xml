@@ -55,6 +55,14 @@
         </activity>
 
         <activity
+            android:name=".LoginPageActivity"
+            android:label="  Sign in"
+            android:windowSoftInputMode="adjustNothing"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait">
+        </activity>
+
+        <activity
             android:name=".MJH_SimulatorActivity">
         </activity>
     </application>

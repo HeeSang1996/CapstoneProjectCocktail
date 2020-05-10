@@ -39,7 +39,7 @@ public class LoginPageActivity extends AppCompatActivity {
             @Override
             public void onSingleClick(View view){
                 //영진 여기다가 로그인 체크 출력하는 함수 박아주셈
-                Snackbar.make(view, "로그인체크", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                Snackbar.make(view, "로그인체크: ", Snackbar.LENGTH_LONG).setAction("Action", null).show();
             }
         });
 
