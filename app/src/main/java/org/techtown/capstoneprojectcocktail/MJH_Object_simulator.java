@@ -17,7 +17,7 @@ public class MJH_Object_simulator {
     }
 
     public void add_step_layering(int step_num, int associate_step_num, int ingredient_num, MJH_Object_ingredient[] input_ingredient, float[] amount){ // (스탭번호, 재료인풋, 재료량(ml))
-
+        this.simulator_step[step_num - 1] =
     }
 
     public void add_step_muddle(int step_num, int associate_step_num, int ingredient_num, MJH_Object_ingredient[] input_ingredient, float[] amount){ // (스탭번호, 재료인풋, 재료량(ml류))
@@ -48,7 +48,6 @@ public class MJH_Object_simulator {
                     //색 변경
                     cocktail_buffer.is_color[0] = change_color(cocktail_buffer.is_color[0], simulator_step[associate_step[i]].is_color[0], cocktail_buffer.total_volume, this.simulator_step[associate_step[i]].total_volume);
 
-
                     //량 추가
                     cocktail_buffer.total_volume = cocktail_buffer.total_volume + this.simulator_step[associate_step[i]].total_volume;
 
@@ -76,8 +75,6 @@ public class MJH_Object_simulator {
                     cocktail_buffer.is_color[0] = new MJH_Object_color(input_ingredient[i].my_color.rgb_red, input_ingredient[i].my_color.rgb_green, input_ingredient[i].my_color.rgb_blue);
                 else
                     cocktail_buffer.is_color[0] = change_color(cocktail_buffer.is_color[0], input_ingredient[i].my_color, cocktail_buffer.total_volume, input_amount[i]);
-
-
 
                 //량 추가
                 cocktail_buffer.total_volume = cocktail_buffer.total_volume + input_amount[i];
