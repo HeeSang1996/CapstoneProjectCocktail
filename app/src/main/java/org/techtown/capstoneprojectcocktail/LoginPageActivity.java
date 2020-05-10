@@ -1,9 +1,13 @@
 package org.techtown.capstoneprojectcocktail;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -33,6 +37,7 @@ public class LoginPageActivity extends AppCompatActivity {
                 String email = editTextForLoginID.getText().toString();
                 String passWord = editTextForLoginPassWord.getText().toString();
                 Snackbar.make(view, "로그인ID "+email + " 로그인패스워드 " + passWord, Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                finish();
             }
         });
 
