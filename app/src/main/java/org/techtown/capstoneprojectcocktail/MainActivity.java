@@ -56,15 +56,23 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         //실험용
         //수정필
         //네비게이션바 이름변경, Sign in, Sign out check
+        /*
         View headerView = navigationView.getHeaderView(0);
         TextView navUsername = headerView.findViewById(R.id.userNameText_nav);
         navUsername.setText("Your Text Here");
+         */
 
         //Menu menuView = navigationView.getMenu();
         //MenuItem logoutItem = menuView.findItem(R.id.nav_signInCheck);
         //logoutItem.setVisible(false);
         //navigationView.getMenu().findItem(R.id.nav_signInString).setVisible(false);
         //setup();
+    }
+
+    @Override
+    protected void onResume(){
+        super.onResume();
+        Toast.makeText(this,"on resume 콜",Toast.LENGTH_LONG).show();
     }
 
     @Override

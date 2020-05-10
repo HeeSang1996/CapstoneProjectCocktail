@@ -169,7 +169,6 @@ public class CocktailUploadActivity extends AppCompatActivity {
         cancelButtonCocktailUpload.setOnClickListener(new OnSingleClickListener(){
             @Override
             public void onSingleClick(View view){
-                //Snackbar.make(view, "으악 쥬금", Snackbar.LENGTH_LONG).setAction("Action", null).show();
                 finish();
             }
         });
