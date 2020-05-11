@@ -21,20 +21,29 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.FileProvider;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 public class CocktailUploadActivity extends AppCompatActivity {
     private static final int REQUEST_IMAGE_CAPTURE = 672;
@@ -42,14 +51,17 @@ public class CocktailUploadActivity extends AppCompatActivity {
     private Uri photoUri;
     private FirebaseAuth mAuth;
     private boolean imageCheck = false;
+    FirebaseFirestore db;
+    String stringForCocktailName;
+    String stringForCocktailHowToMake;
+    String stringForCocktailDescription;
+    String TAG = "DocSnippets";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.cocktail_upload_activity);
-
-        mAuth = FirebaseAuth.getInstance();
-
         Button takePictureButtonCocktailUpload = findViewById(R.id.button_takePicture_cocktail_upload);
         takePictureButtonCocktailUpload.setOnClickListener(new OnSingleClickListener(){
             @Override
@@ -148,9 +160,10 @@ public class CocktailUploadActivity extends AppCompatActivity {
         uploadButtonCocktailUpload.setOnClickListener(new OnSingleClickListener(){
             @Override
             public void onSingleClick(View view){
-                String stringForCocktailName = editTextForCocktailName.getText().toString().trim();
-                String stringForCocktailHowToMake = editTextForCocktailHowToMake.getText().toString().trim();
-                String stringForCocktailDescription = editTextForCocktailDescription.getText().toString().trim();
+                stringForCocktailName = editTextForCocktailName.getText().toString();
+                stringForCocktailHowToMake = editTextForCocktailHowToMake.getText().toString();
+                stringForCocktailDescription = editTextForCocktailDescription.getText().toString();
+
                 if (imageCheck==false){
                     Toast.makeText(getApplicationContext(), "업로드 실패! 칵테일 사진을 함께 업로드 해주세요!", Toast.LENGTH_SHORT).show();
                 }
@@ -164,7 +177,35 @@ public class CocktailUploadActivity extends AppCompatActivity {
                 }
                 else{
                     //영진이 파트
-                    Toast.makeText(getApplicationContext(), "업로드 성공!", Toast.LENGTH_SHORT).show();
+                    db = FirebaseFirestore.getInstance();
+                    mAuth = FirebaseAuth.getInstance();
+
+                    FirebaseUser user = mAuth.getCurrentUser();
+                    Map<String, Object> uploadRecipe = new HashMap<>();
+
+                    uploadRecipe.put("칵테일 이름", stringForCocktailName);
+                    uploadRecipe.put("만드는 방법", stringForCocktailHowToMake);
+                    uploadRecipe.put("칵테일 설명", stringForCocktailDescription);
+
+                    Log.w(TAG, stringForCocktailName);
+                    Log.w(TAG, stringForCocktailHowToMake);
+                    Log.w(TAG, stringForCocktailDescription);
+                    db.collection("Self").document(user.getUid()+stringForCocktailName)
+                            .set(uploadRecipe)
+                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    Toast.makeText(getApplicationContext(), "업로드 성공!", Toast.LENGTH_SHORT).show();
+                                    Log.w(TAG, "DocumentSnapshot successfully written!");
+                                }
+                            })
+                            .addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Toast.makeText(getApplicationContext(), "업로드 실패! 다시 확인해주세요!", Toast.LENGTH_SHORT).show();
+                                    Log.w(TAG, "Error writing document", e);
+                                }
+                            });
                 }
             }
         });

@@ -43,38 +43,38 @@ public class HomeFragment extends Fragment {
     public FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     public void setDocument() {
-        Map<String, Object> Ingredient_info = new HashMap<>();
-        Ingredient_info.put("Ingredient_name", "테스트");
-        Ingredient_info.put("Ingredient_type", "베이스");
-        Ingredient_info.put("abv", 0);
-        Ingredient_info.put("sugar_rate", 24);
-        Ingredient_info.put("salty", 0);
-        Ingredient_info.put("bitter", 0);
-        Ingredient_info.put("sour", 0);
-        Ingredient_info.put("flavour", "개같은 맛과 향");
-        Ingredient_info.put("specific_gravity", 0.135);
-        Map<String, Number> Ingredient_color = new HashMap<>();
-
-        Ingredient_color.put("Red", 210);
-        Ingredient_color.put("Green", 0);
-        Ingredient_color.put("Blue", 0);
-
-        Ingredient_info.put("Ingredient_color", Ingredient_color);
-
-        db.collection("Ingredient").document("5006")
-                .set(Ingredient_info)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Log.d(TAG, "DocumentSnapshot successfully written!");
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.w(TAG, "Error writing document", e);
-                    }
-                });
+//        Map<String, Object> Ingredient_info = new HashMap<>();
+//        Ingredient_info.put("Ingredient_name", "테스트");
+//        Ingredient_info.put("Ingredient_type", "베이스");
+//        Ingredient_info.put("abv", 0);
+//        Ingredient_info.put("sugar_rate", 24);
+//        Ingredient_info.put("salty", 0);
+//        Ingredient_info.put("bitter", 0);
+//        Ingredient_info.put("sour", 0);
+//        Ingredient_info.put("flavour", "개같은 맛과 향");
+//        Ingredient_info.put("specific_gravity", 0.135);
+//        Map<String, Number> Ingredient_color = new HashMap<>();
+//
+//        Ingredient_color.put("Red", 210);
+//        Ingredient_color.put("Green", 0);
+//        Ingredient_color.put("Blue", 0);
+//
+//        Ingredient_info.put("Ingredient_color", Ingredient_color);
+//
+//        db.collection("Ingredient").document("5006")
+//                .set(Ingredient_info)
+//                .addOnSuccessListener(new OnSuccessListener<Void>() {
+//                    @Override
+//                    public void onSuccess(Void aVoid) {
+//                        Log.d(TAG, "DocumentSnapshot successfully written!");
+//                    }
+//                })
+//                .addOnFailureListener(new OnFailureListener() {
+//                    @Override
+//                    public void onFailure(@NonNull Exception e) {
+//                        Log.w(TAG, "Error writing document", e);
+//                    }
+//                });
         // [END set_document]
 
         //Map<String, Object> data = new HashMap<>();
@@ -129,7 +129,7 @@ public class HomeFragment extends Fragment {
                         MJH_SimulatorActivity.class); // 다음 넘어갈 클래스 지정
                 startActivity(intent); // 다음 화면으로 넘어간다
                 //////////////// By MJH
-                //setDocument();
+                setDocument();
             }
         });
 
