@@ -14,12 +14,15 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import org.techtown.capstoneprojectcocktail.Cocktail;
 import org.techtown.capstoneprojectcocktail.CocktailAdapterForHome;
@@ -170,15 +173,55 @@ public class HomeFragment extends Fragment {
 
         //수정필 테스트용
         //영진 여기 확인
-        for(int i=0; i<20; i++) {
-            if( i ==5){
-                adapterForCocktailHome.addItem(new Cocktail("맛있는 칵테일 " + i, i, "맛있는 칵테일 " + i + "의 설명 정말 맛있다 맛있는 칵테일" + i +
-                        "의 설명 정말 맛있다 ", "Whisky1",i*10 + " %","url"));
-            }
-            else{
-                adapterForCocktailHome.addItem(new Cocktail("맛있는 칵테일 " + i, i, "맛있는 칵테일 " + i + "의 설명 정말 맛있다 맛있는 칵테일" + i +
-                        "의 설명 정말 맛있다 ", "Whisky0",i*10 + " %","url"));
-            }
+//        for(int i=0; i<20; i++) {
+//
+//            if( i ==5){
+//                adapterForCocktailHome.addItem(new Cocktail("맛있는 칵테일 " + i, i, "맛있는 칵테일 " + i + "의 설명 정말 맛있다 맛있는 칵테일" + i +
+//                        "의 설명 정말 맛있다 ", "Whisky1",i*10 + " %","url"));
+//            }
+//            else{
+//                adapterForCocktailHome.addItem(new Cocktail("맛있는 칵테일 " + i, i, "맛있는 칵테일 " + i + "의 설명 정말 맛있다 맛있는 칵테일" + i +
+//                        "의 설명 정말 맛있다 ", "Whisky0",i*10 + " %","url"));
+//            }
+//        }
+        //adapterForCocktailHome.addItem(new Cocktail((String) document.get("Recipe_name"), 5000+ finalI, (String) document.get("method"), (String) document.get("Recipe_Base"), (String) document.get("abv"),(String) document.get("ref")));
+        final String[] Recipe_name = new String[20];
+        final int[] ID = new int[20];
+        final String[] method = new String[20];
+        final String[] Recipe_Base = new String[20];
+        final String[] abv = new String[20];
+        final String[] ref = new String[20];
+
+        db = FirebaseFirestore.getInstance();
+
+        for(int i=0; i < 20; i++)
+        {
+            final int finalI = i;
+            DocumentReference docRef = db.collection("Recipe").document(String.valueOf(i+6001));
+            docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot document = task.getResult();
+                        if (document.exists()) {
+                            //Log.d(TAG, "DocumentSnapshot data: " + document.getData());
+                            Recipe_name[0] = (String) document.get("Recipe_name");
+                            ID[0] = 6001+ finalI;
+                            method[0] = (String) document.get("method");
+                            Recipe_Base[0] = (String) document.get("Recipe_Base");
+                            //abv[0] = (String) document.get("abv");
+                            abv[0] = "시발";
+                            ref[0] = (String) document.get("ref");
+                            Log.d(TAG, "DocumentSnapshot data: " + Recipe_name[0] + ID[0]+ method[0]+ Recipe_Base[0]+ abv[0]+ref[0]);
+                            adapterForCocktailHome.addItem(new Cocktail(Recipe_name[0], ID[0], method[0], Recipe_Base[0], abv[0],ref[0]));
+                        } else {
+                            Log.d(TAG, "No such document");
+                        }
+                    } else {
+                        Log.d(TAG, "get failed with ", task.getException());
+                    }
+                }
+            });
         }
         //수정필 테스트용
 

@@ -33,7 +33,6 @@ public class DrawUrlImageTask extends AsyncTask<String, Void, Bitmap> {
                 e.printStackTrace();
             }
         }
-
         return bitmap;
     }
 

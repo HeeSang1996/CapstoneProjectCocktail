@@ -1,13 +1,23 @@
 package org.techtown.capstoneprojectcocktail;
 
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.ViewTarget;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 
@@ -21,6 +31,7 @@ public class CocktailAdapterForHome extends RecyclerView.Adapter<CocktailAdapter
         TextView textForCocktailABV;
         ImageView imageForCocktail;
 
+        StorageReference storageReference = FirebaseStorage.getInstance().getReference();
         public ViewHolder (View itemView, final OnCocktailItemClickListenerForHome listener){
             super(itemView);
 
@@ -41,11 +52,27 @@ public class CocktailAdapterForHome extends RecyclerView.Adapter<CocktailAdapter
         }
 
         public void setItem(Cocktail item) {
-            String imageUrl = item.getImageUrl();
+            FirebaseStorage storage = FirebaseStorage.getInstance();
+
+            StorageReference gsReference = storage.getReferenceFromUrl(item.getImageUrl());
+
+            gsReference.getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
+                @Override
+                public void onComplete(@NonNull Task<Uri> task) {
+                    if (task.isSuccessful()) {
+                        // Glide 이용하여 이미지뷰에 로딩
+                        Glide.with(itemView)
+                                .load(task.getResult())
+                                .into(imageForCocktail);
+                    } else {
+                        // URL을 가져오지 못하면 토스트 메세지
+                    }
+                }
+            });
             textForCocktailName.setText(item.getName());
             textForCocktailDescription.setText(item.getDescription());
             textForCocktailABV.setText(item.getAbvNum());
-            imageForCocktail.setImageResource(R.mipmap.ic_launcher_round);
+            //Glide.with(itemView).load(imageUrl).into(imageForCocktail);
         }
     }
 
