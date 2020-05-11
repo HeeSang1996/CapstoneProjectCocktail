@@ -5,84 +5,43 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.Map;
 
 import static androidx.constraintlayout.widget.Constraints.TAG;
 
 public class CocktailIngredientList {
-    private String Ingredient_num;
-    private CocktailIngredient Ingredient_List[];
-
+    public CocktailIngredient[] Ingredient_list;
     FirebaseFirestore db;
-    CollectionReference Ingredients = db.collection("Ingredient");
-    DocumentReference docRef = db.collection("Ingredient").document(Ingredient_num);
 
     public CocktailIngredientList(
-            String Ingredient_num,
-            final CocktailIngredient Ingredient_List[]) {
+            final CocktailIngredient[] Ingredient_list
+           ) {
+        db = FirebaseFirestore.getInstance();
+        DocumentReference docRef;
 
-        /*
-        db.collection("Ingredient").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>()
+        for(int i=1; i < 128; i++)
         {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task)
-            {
-                if (task.isSuccessful())
-                {
-                    for (QueryDocumentSnapshot document : task.getResult())
-                    {
-                        Log.d(TAG, document.getId() + " => " + document.getData());
-                    }
-                }
-                else
-                    Log.d(TAG, "Error getting documents: ", task.getException());
-            }
-        });
-        */
-        /*
-        for(int i = 0; i < 128; i++)
-        {
+            docRef = db.collection("Ingredient").document(String.valueOf(i+5000));
             final int finalI = i;
             docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                 @Override
                 public void onSuccess(DocumentSnapshot documentSnapshot) {
-                    //documentSnapshot.toObject(CocktailIngredient.class);
-                    Ingredient_List[finalI] = documentSnapshot.toObject(CocktailIngredient.class);
+                    Ingredient_list[finalI] = documentSnapshot.toObject(CocktailIngredient.class);
                 }
             });
         }
-        */
+        this.Ingredient_list = Ingredient_list;
     }
+    public CocktailIngredient[] getIngredient_list(int number) {
 
-    public String getIngredient_num() {
-        return Ingredient_num;
-    }
-
-    public CocktailIngredient getIngredient_List(int num) {
-        return Ingredient_List[num];
-    }
-
-    public void getLog(){
-        db.collection("Ingredient").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>()
-        {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task)
-            {
-                if (task.isSuccessful())
-                {
-                    for (QueryDocumentSnapshot document : task.getResult())
-                    {
-                        Log.d(TAG, document.getId() + " => " + document.getData());
-                    }
-                }
-                else
-                    Log.d(TAG, "Error getting documents: ", task.getException());
-            }
-        });
+        return getIngredient_list(number);
     }
 }
+
+
