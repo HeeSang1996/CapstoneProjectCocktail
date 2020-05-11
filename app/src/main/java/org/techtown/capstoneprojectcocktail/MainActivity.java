@@ -14,6 +14,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreSettings;
 
@@ -36,6 +38,7 @@ import java.io.IOException;
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private static final int REQUEST_PROFILE = 264;
     private AppBarConfiguration mAppBarConfiguration;
+    private FirebaseAuth mAuth;
     DrawerLayout drawerLayout;
     NavigationView navigationView;
     NavController navController;
@@ -45,6 +48,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mAuth = FirebaseAuth.getInstance();
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         drawerLayout = findViewById(R.id.drawer_layout);
@@ -79,7 +83,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     protected void onResume(){
         super.onResume();
-        Toast.makeText(this,"on resume 콜",Toast.LENGTH_LONG).show();
+        mAuth = FirebaseAuth.getInstance();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if (currentUser != null) {
+            navigationView.getMenu().findItem(R.id.nav_signInString).setVisible(false);
+            navigationView.getMenu().findItem(R.id.nav_signOutString).setVisible(true);
+            Toast.makeText(this,"on resume 콜 로그인",Toast.LENGTH_LONG).show();
+        }
+        else{
+            navigationView.getMenu().findItem(R.id.nav_signInString).setVisible(true);
+            navigationView.getMenu().findItem(R.id.nav_signOutString).setVisible(false);
+            Toast.makeText(this,"on resume 콜 로그아웃",Toast.LENGTH_LONG).show();
+        }
     }
 
     @Override

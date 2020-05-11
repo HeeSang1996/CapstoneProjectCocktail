@@ -16,12 +16,15 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import org.techtown.capstoneprojectcocktail.CocktailSearchActivity;
 import org.techtown.capstoneprojectcocktail.CocktailUploadActivity;
 import org.techtown.capstoneprojectcocktail.R;
 
 public class MyPageFragment extends Fragment {
+    private FirebaseAuth mAuth;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_mypage, container, false);
@@ -30,7 +33,14 @@ public class MyPageFragment extends Fragment {
         bookmarkButtonMyPage.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
-                Snackbar.make(view, "북마크 기능이 들어갈 예정입니다", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                mAuth = FirebaseAuth.getInstance();
+                FirebaseUser currentUser = mAuth.getCurrentUser();
+                if (currentUser != null) {
+                    Snackbar.make(view, "북마크 기능이 들어갈 예정입니다 로그인상태", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                }
+                else{
+                    Snackbar.make(view, "북마크 기능이 들어갈 예정입니다 로그인 해주세요", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                }
             }
         });
 
@@ -38,7 +48,14 @@ public class MyPageFragment extends Fragment {
         commentButtonMyPage.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
-                Snackbar.make(view, "마이 코멘트 기능이 들어갈 예정입니다", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                mAuth = FirebaseAuth.getInstance();
+                FirebaseUser currentUser = mAuth.getCurrentUser();
+                if (currentUser != null) {
+                    Snackbar.make(view, "마이 코멘트 기능이 들어갈 예정입니다 로그인상태", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                }
+                else{
+                    Snackbar.make(view, "마이 코멘트 기능이 들어갈 예정입니다 로그인 해주세요", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                }
             }
         });
 
@@ -46,7 +63,14 @@ public class MyPageFragment extends Fragment {
         favoriteButtonMyPage.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
-                Snackbar.make(view, "마이 페이버릿 기능이 들어갈 예정입니다", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                mAuth = FirebaseAuth.getInstance();
+                FirebaseUser currentUser = mAuth.getCurrentUser();
+                if (currentUser != null) {
+                    Snackbar.make(view, "마이 페이버릿 기능이 들어갈 예정입니다 로그인상태", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                }
+                else{
+                    Snackbar.make(view, "마이 페이버릿 기능이 들어갈 예정입니다 로그인 해주세요", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                }
             }
         });
 
@@ -54,7 +78,14 @@ public class MyPageFragment extends Fragment {
         simulationButtonMyPage.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
-                Snackbar.make(view, "마이 칵테일 기능이 들어갈 예정입니다", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                mAuth = FirebaseAuth.getInstance();
+                FirebaseUser currentUser = mAuth.getCurrentUser();
+                if (currentUser != null) {
+                    Snackbar.make(view, "마이 칵테일 기능이 들어갈 예정입니다 로그인상태", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                }
+                else{
+                    Snackbar.make(view, "마이 칵테일 기능이 들어갈 예정입니다 로그인 해주세요", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                }
             }
         });
 
@@ -63,8 +94,16 @@ public class MyPageFragment extends Fragment {
             @Override
             public void onClick(View view){
                 //Snackbar.make(view, "레시피 업로드 기능이 들어갈 예정입니다", Snackbar.LENGTH_LONG).setAction("Action", null).show();
-                Intent intent = new Intent(view.getContext(), CocktailUploadActivity.class);
-                startActivity(intent);
+                mAuth = FirebaseAuth.getInstance();
+                FirebaseUser currentUser = mAuth.getCurrentUser();
+                if (currentUser != null) {
+                    Snackbar.make(view, "마이 업로드 로그인 완료", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                    Intent intent = new Intent(view.getContext(), CocktailUploadActivity.class);
+                    startActivity(intent);
+                }
+                else{
+                    Snackbar.make(view, "마이 업로드 로그인 해주세요", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                }
             }
         });
 
