@@ -1,67 +1,36 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout  xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/linearLayout"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:gravity="center" >
+
+    <!-- 구글 로그인 버튼 -->
+    <com.google.android.gms.common.SignInButton
+        android:id="@+id/sign_in_button"
+        android:layout_width="254dp"
+        android:layout_height="50sp">
+    </com.google.android.gms.common.SignInButton>
 
     <ImageView
-        android:id="@+id/profileImageView_login"
-        android:layout_width="130dp"
-        android:layout_height="130dp"
-        android:layout_gravity="center"
-        android:contentDescription="@string/nav_header_desc"
-        android:maxWidth="130dp"
-        android:maxHeight="130dp"
-        android:padding="@dimen/nav_header_vertical_spacing"
-        app:srcCompat="@mipmap/ic_launcher_round" />
+        android:id="@+id/sign_out_button"
+        android:layout_width="253dp"
+        android:layout_height="42dp"
+        android:layout_below="@+id/sign_in_button"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:background="@drawable/common_google_signin_btn_icon_disabled" />
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/textInputLayoutForID_login"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="구글 이메일"
-            android:singleLine="true"
-            android:textSize="18sp" />
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/textInputLayoutForPassWord_login"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="구글 비밀번호"
-            android:singleLine="true"
-            android:textSize="18sp" />
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <Button
-        android:id="@+id/buttonForLogin_login"
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/mStatusTextView"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="로그인" />
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/sign_in_button"
+        android:layout_marginTop="99dp"
+        android:text="TextView" />
 
-    <!-- 수정필 임시 -->
-    <Button
-        android:id="@+id/buttonForLoginCheck_login"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="로그인 체크" />
-
-    <!-- 수정필 임시 -->
-    <Button
-        android:id="@+id/buttonForLogout_login"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="로그아웃" />
-
-
-</LinearLayout>
+</RelativeLayout >
