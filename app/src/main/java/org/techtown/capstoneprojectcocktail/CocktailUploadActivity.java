@@ -177,6 +177,7 @@ public class CocktailUploadActivity extends AppCompatActivity {
                 }
                 else{
                     //영진이 파트
+                    //git test
                     db = FirebaseFirestore.getInstance();
                     mAuth = FirebaseAuth.getInstance();
 
