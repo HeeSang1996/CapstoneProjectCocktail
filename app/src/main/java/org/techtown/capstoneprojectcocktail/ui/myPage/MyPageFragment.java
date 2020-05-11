@@ -39,7 +39,7 @@ public class MyPageFragment extends Fragment {
                     Snackbar.make(view, "북마크 기능이 들어갈 예정입니다 로그인상태", Snackbar.LENGTH_LONG).setAction("Action", null).show();
                 }
                 else{
-                    Snackbar.make(view, "북마크 기능이 들어갈 예정입니다 로그인 해주세요", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                    Snackbar.make(view, "Bookmark 기능은 로그인한 유저만 이용할 수 있습니다.", Snackbar.LENGTH_LONG).setAction("Action", null).show();
                 }
             }
         });
@@ -54,7 +54,7 @@ public class MyPageFragment extends Fragment {
                     Snackbar.make(view, "마이 코멘트 기능이 들어갈 예정입니다 로그인상태", Snackbar.LENGTH_LONG).setAction("Action", null).show();
                 }
                 else{
-                    Snackbar.make(view, "마이 코멘트 기능이 들어갈 예정입니다 로그인 해주세요", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                    Snackbar.make(view, "My Comment 기능은 로그인한 유저만 이용할 수 있습니다.", Snackbar.LENGTH_LONG).setAction("Action", null).show();
                 }
             }
         });
@@ -69,7 +69,7 @@ public class MyPageFragment extends Fragment {
                     Snackbar.make(view, "마이 페이버릿 기능이 들어갈 예정입니다 로그인상태", Snackbar.LENGTH_LONG).setAction("Action", null).show();
                 }
                 else{
-                    Snackbar.make(view, "마이 페이버릿 기능이 들어갈 예정입니다 로그인 해주세요", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                    Snackbar.make(view, "My Favorite 기능은 로그인한 유저만 이용할 수 있습니다.", Snackbar.LENGTH_LONG).setAction("Action", null).show();
                 }
             }
         });
@@ -84,7 +84,7 @@ public class MyPageFragment extends Fragment {
                     Snackbar.make(view, "마이 칵테일 기능이 들어갈 예정입니다 로그인상태", Snackbar.LENGTH_LONG).setAction("Action", null).show();
                 }
                 else{
-                    Snackbar.make(view, "마이 칵테일 기능이 들어갈 예정입니다 로그인 해주세요", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                    Snackbar.make(view, "My Cocktail 기능은 로그인한 유저만 이용할 수 있습니다.", Snackbar.LENGTH_LONG).setAction("Action", null).show();
                 }
             }
         });
@@ -101,7 +101,7 @@ public class MyPageFragment extends Fragment {
                     startActivity(intent);
                 }
                 else{
-                    Snackbar.make(view, "마이 업로드 로그인 해주세요", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                    Snackbar.make(view, "Recipe upload 기능은 로그인한 유저만 이용할 수 있습니다.", Snackbar.LENGTH_LONG).setAction("Action", null).show();
                 }
             }
         });
