@@ -6,13 +6,15 @@ public class Cocktail {
     String description;
     String ingredient;
     String abvNum;
+    String imageUrl;
 
-    public Cocktail(String name, int id, String description, String ingredient, String abvNum) {
+    public Cocktail(String name, int id, String description, String ingredient, String abvNum, String imageUrl) {
         this.name = name;
         this.id = id;
         this.description = description;
         this.ingredient = ingredient;
         this.abvNum = abvNum;
+        this.imageUrl = imageUrl;
     }
 
     public String getName() {
@@ -53,5 +55,13 @@ public class Cocktail {
 
     public void setAbvNum(String abvNum) {
         this.abvNum = abvNum;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 }

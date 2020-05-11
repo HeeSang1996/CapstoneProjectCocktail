@@ -34,7 +34,12 @@ import org.techtown.capstoneprojectcocktail.OnCocktailIngredientButtonItemClickL
 import org.techtown.capstoneprojectcocktail.OnCocktailItemClickListenerForHome;
 import org.techtown.capstoneprojectcocktail.R;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static androidx.constraintlayout.widget.Constraints.TAG;
@@ -138,14 +143,13 @@ public class HomeFragment extends Fragment {
         recyclerViewForIngredientButton.setLayoutManager(layoutManagerForIngredientButton);
         final CocktailIngredientButtonAdapter adapterForIngredientButton = new CocktailIngredientButtonAdapter();
 
-        //수정필 테스트용
         //영진 여기 확인
-        String[] main_keyword = {"가니쉬", "데킬라", "럼", "리큐르", "맥주", "베르무트", "보드카", "브랜디", " 와인", "위스키", "주스", "진"};
-
-        for(int i = 0; i < 10 ; i ++) {
-            adapterForIngredientButton.addItem(new CocktailIngredientButton("Rum" + i));
+        //String[] main_keyword = {"가니쉬", "데킬라", "럼", "리큐르", "맥주", "베르무트", "보드카", "브랜디", "와인", "위스키", "주스", "진"};
+        List<String> main_keyword = new ArrayList<>(Arrays.asList("가니쉬", "데킬라", "럼", "리큐르", "맥주", "베르무트", "보드카", "브랜디", "와인", "위스키", "주스", "진"));
+        Collections.shuffle(main_keyword);
+        for(int i = 0; i < main_keyword.size() ; i ++) {
+            adapterForIngredientButton.addItem(new CocktailIngredientButton(main_keyword.get(i)));
         }
-        //수정필 테스트용
 
         recyclerViewForIngredientButton.setAdapter(adapterForIngredientButton);
         adapterForIngredientButton.setOnItemClickListener(new OnCocktailIngredientButtonItemClickListener() {
@@ -169,11 +173,11 @@ public class HomeFragment extends Fragment {
         for(int i=0; i<20; i++) {
             if( i ==5){
                 adapterForCocktailHome.addItem(new Cocktail("맛있는 칵테일 " + i, i, "맛있는 칵테일 " + i + "의 설명 정말 맛있다 맛있는 칵테일" + i +
-                        "의 설명 정말 맛있다 ", "Whisky1",i*10 + " %"));
+                        "의 설명 정말 맛있다 ", "Whisky1",i*10 + " %","url"));
             }
             else{
                 adapterForCocktailHome.addItem(new Cocktail("맛있는 칵테일 " + i, i, "맛있는 칵테일 " + i + "의 설명 정말 맛있다 맛있는 칵테일" + i +
-                        "의 설명 정말 맛있다 ", "Whisky0",i*10 + " %"));
+                        "의 설명 정말 맛있다 ", "Whisky0",i*10 + " %","url"));
             }
         }
         //수정필 테스트용

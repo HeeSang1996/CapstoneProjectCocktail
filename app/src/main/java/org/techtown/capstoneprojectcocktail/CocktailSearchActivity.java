@@ -53,11 +53,11 @@ public class CocktailSearchActivity extends AppCompatActivity implements TextWat
         for(int i=0; i<20; i++) {
             if( i ==5){
                 adapterForCocktailSearch.addItem(new Cocktail("맛있는 칵테일 " + i, i, "맛있는 칵테일 " + i + "의 설명 정말 맛있다 맛있는 칵테일" + i + "의 설명 정말 맛있다",
-                        "Whisky1", i*10 + " %"));
+                        "Whisky1", i*10 + " %","url"));
             }
             else{
                 adapterForCocktailSearch.addItem(new Cocktail("맛있는 칵테일 " + i, i, "맛있는 칵테일 " + i + "의 설명 정말 맛있다 맛있는 칵테일" + i + "의 설명 정말 맛있다",
-                        "Whisky0", i*10 + " %"));
+                        "Whisky0", i*10 + " %","url"));
             }
         }
         //수정필 테스트용
@@ -79,16 +79,13 @@ public class CocktailSearchActivity extends AppCompatActivity implements TextWat
 
     @Override
     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
     }
 
     @Override
     public void onTextChanged(CharSequence s, int start, int before, int count) {
-
     }
 
     @Override
     public void afterTextChanged(Editable s) {
-
     }
 }
