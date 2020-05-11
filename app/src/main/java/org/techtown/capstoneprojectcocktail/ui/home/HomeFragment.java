@@ -14,8 +14,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
@@ -26,11 +24,13 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import org.techtown.capstoneprojectcocktail.Cocktail;
 import org.techtown.capstoneprojectcocktail.CocktailAdapterForHome;
 import org.techtown.capstoneprojectcocktail.CocktailIngredient;
-import org.techtown.capstoneprojectcocktail.CocktailIngredientAdapter;
+import org.techtown.capstoneprojectcocktail.CocktailIngredientButton;
+import org.techtown.capstoneprojectcocktail.CocktailIngredientButtonAdapter;
 import org.techtown.capstoneprojectcocktail.CocktailRecipeActivity;
 import org.techtown.capstoneprojectcocktail.CocktailSearchActivity;
 import org.techtown.capstoneprojectcocktail.MJH_SimulatorActivity;
-import org.techtown.capstoneprojectcocktail.OnCocktailIngredientItemClickListener;
+import org.techtown.capstoneprojectcocktail.OnCocktailIngredientButtonItemClickListener;
+import org.techtown.capstoneprojectcocktail.OnCocktailIngredientButtonItemClickListener;
 import org.techtown.capstoneprojectcocktail.OnCocktailItemClickListenerForHome;
 import org.techtown.capstoneprojectcocktail.R;
 
@@ -133,37 +133,30 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        RecyclerView recyclerViewForIngredientHome = root.findViewById(R.id.recyclerViewForIngredient);
-        LinearLayoutManager layoutManagerForIngredientHome = new LinearLayoutManager(root.getContext(), LinearLayoutManager.HORIZONTAL,false);
-        recyclerViewForIngredientHome.setLayoutManager(layoutManagerForIngredientHome);
-        final CocktailIngredientAdapter adapterForIngredientHome = new CocktailIngredientAdapter();
+        RecyclerView recyclerViewForIngredientButton = root.findViewById(R.id.recyclerViewForIngredient);
+        LinearLayoutManager layoutManagerForIngredientButton = new LinearLayoutManager(root.getContext(), LinearLayoutManager.HORIZONTAL,false);
+        recyclerViewForIngredientButton.setLayoutManager(layoutManagerForIngredientButton);
+        final CocktailIngredientButtonAdapter adapterForIngredientButton = new CocktailIngredientButtonAdapter();
 
         //수정필 테스트용
-        Map<String, Number> ingredient_color = new HashMap<String, Number>();
-        ingredient_color.put("red", 0);
+        //영진 여기 확인
         for(int i = 0; i < 10 ; i ++) {
-            adapterForIngredientHome.addItem(new CocktailIngredient("Rum" + i,
-                    "base", 0, 0, 0, 0, 0,
-                    "칵테일이 짜다 애미야", 0, ingredient_color));
-            adapterForIngredientHome.addItem(new CocktailIngredient("Whisky" + i,
-                    "base", 0, 0, 0, 0, 0,
-                    "칵테일이 짜다 애미야", 0, ingredient_color));
+            adapterForIngredientButton.addItem(new CocktailIngredientButton("Rum" + i));
         }
         //수정필 테스트용
 
-        recyclerViewForIngredientHome.setAdapter(adapterForIngredientHome);
-
-        adapterForIngredientHome.setOnItemClickListener(new OnCocktailIngredientItemClickListener() {
+        recyclerViewForIngredientButton.setAdapter(adapterForIngredientButton);
+        adapterForIngredientButton.setOnItemClickListener(new OnCocktailIngredientButtonItemClickListener() {
             @Override
-            public void onItemClick(CocktailIngredientAdapter.ViewHolder holder, View view, int position) {
-                CocktailIngredient item = adapterForIngredientHome.getItem(position);
+            public void onItemClick(CocktailIngredientButtonAdapter.ViewHolder holder, View view, int position) {
+                CocktailIngredientButton item = adapterForIngredientButton.getItem(position);
 
                 Intent intent = new Intent(view.getContext(), CocktailSearchActivity.class);
-                intent.putExtra("ingredientName", item.getIngredient_name());
+                intent.putExtra("ingredientName", item.getIngredientCategorizedName());
                 startActivity(intent);
-                //Toast.makeText(getActivity().getApplicationContext(),"선택된 재료: " + item.getIngredient_name(),Toast.LENGTH_LONG).show();
             }
         });
+
 
         RecyclerView recyclerViewForCocktailHome = root.findViewById(R.id.recyclerViewForCocktail_home);
         LinearLayoutManager layoutManagerForCocktailHome = new LinearLayoutManager(root.getContext(), LinearLayoutManager.HORIZONTAL,false);
@@ -171,6 +164,7 @@ public class HomeFragment extends Fragment {
         final CocktailAdapterForHome adapterForCocktailHome = new CocktailAdapterForHome();
 
         //수정필 테스트용
+        //영진 여기 확인
         for(int i=0; i<20; i++) {
             if( i ==5){
                 adapterForCocktailHome.addItem(new Cocktail("맛있는 칵테일 " + i, i, "맛있는 칵테일 " + i + "의 설명 정말 맛있다 맛있는 칵테일" + i +

@@ -10,31 +10,29 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
-public class CocktailIngredientAdapter extends RecyclerView.Adapter<CocktailIngredientAdapter.ViewHolder> implements OnCocktailIngredientItemClickListener {
-    ArrayList<CocktailIngredient> items = new ArrayList<CocktailIngredient>();
-    OnCocktailIngredientItemClickListener listener;
-
+public class CocktailIngredientButtonAdapter extends RecyclerView.Adapter<CocktailIngredientButtonAdapter.ViewHolder> implements OnCocktailIngredientButtonItemClickListener{
+    ArrayList<CocktailIngredientButton> items = new ArrayList<CocktailIngredientButton>();
+    OnCocktailIngredientButtonItemClickListener listener;
     public class ViewHolder extends RecyclerView.ViewHolder{
-        TextView textForIngredient;
-
-        public ViewHolder (View itemView, final OnCocktailIngredientItemClickListener listener){
+        TextView ingredientButtonTextView;
+        public ViewHolder(View itemView,final OnCocktailIngredientButtonItemClickListener listener){
             super(itemView);
 
-            textForIngredient = itemView.findViewById(R.id.text_ingredient_home);
+            ingredientButtonTextView = itemView.findViewById(R.id.text_ingredient_home);
 
             itemView.setOnClickListener(new View.OnClickListener(){
                 @Override
-                public void onClick(View view){
+                public void onClick (View view){
                     int position = getAdapterPosition();
                     if(listener != null){
-                        listener.onItemClick(ViewHolder.this, view, position);
+                        listener.onItemClick(ViewHolder.this,view,position);
                     }
                 }
             });
         }
 
-        public void setItem(CocktailIngredient item) {
-            textForIngredient.setText(item.getIngredient_name());
+        public void setItem(CocktailIngredientButton item){
+            ingredientButtonTextView.setText(item.getIngredientCategorizedName());
         }
     }
 
@@ -49,7 +47,7 @@ public class CocktailIngredientAdapter extends RecyclerView.Adapter<CocktailIngr
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int position) {
-        CocktailIngredient item = items.get(position);
+        CocktailIngredientButton item = items.get(position);
         viewHolder.setItem(item);
     }
 
@@ -58,28 +56,28 @@ public class CocktailIngredientAdapter extends RecyclerView.Adapter<CocktailIngr
         return items.size();
     }
 
-    public void addItem(CocktailIngredient item){
+    public void addItem(CocktailIngredientButton item){
         items.add(item);
     }
 
-    public void setItems(ArrayList<CocktailIngredient> items){
+    public void setItems (ArrayList<CocktailIngredientButton> items){
         this.items = items;
     }
 
-    public CocktailIngredient getItem(int position){
+    public CocktailIngredientButton getItem(int position){
         return items.get(position);
     }
 
-    public void setItems(int position, CocktailIngredient item){
+    public void setItem(int position, CocktailIngredientButton item){
         items.set(position, item);
     }
 
-    public void setOnItemClickListener(OnCocktailIngredientItemClickListener listener){
+    public void setOnItemClickListener(OnCocktailIngredientButtonItemClickListener listener){
         this.listener = listener;
     }
 
     @Override
-    public void onItemClick(ViewHolder holder,View view,int position){
+    public void onItemClick(ViewHolder holder, View view, int position){
         if(listener!=null){
             listener.onItemClick(holder,view,position);
         }
