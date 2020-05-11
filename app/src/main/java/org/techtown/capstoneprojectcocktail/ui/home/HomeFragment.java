@@ -140,6 +140,8 @@ public class HomeFragment extends Fragment {
 
         //수정필 테스트용
         //영진 여기 확인
+        String[] main_keyword = {"가니쉬", "데킬라", "럼", "리큐르", "맥주", "베르무트", "보드카", "브랜디", " 와인", "위스키", "주스", "진"};
+
         for(int i = 0; i < 10 ; i ++) {
             adapterForIngredientButton.addItem(new CocktailIngredientButton("Rum" + i));
         }
