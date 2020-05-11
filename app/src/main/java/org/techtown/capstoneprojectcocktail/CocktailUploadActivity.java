@@ -208,6 +208,7 @@ public class CocktailUploadActivity extends AppCompatActivity {
                             });
                         }
                     });
+                    uploadRecipe.put("칵테일 만든이", user.getUid());
                     uploadRecipe.put("칵테일 이름", stringForCocktailName);
                     uploadRecipe.put("만드는 방법", stringForCocktailHowToMake);
                     uploadRecipe.put("칵테일 설명", stringForCocktailDescription);
