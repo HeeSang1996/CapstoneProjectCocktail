@@ -26,8 +26,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.FileProvider;
 
+import com.google.android.gms.tasks.Continuation;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.snackbar.Snackbar;
@@ -37,9 +40,12 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -52,11 +58,13 @@ public class CocktailUploadActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private boolean imageCheck = false;
     FirebaseFirestore db;
+    FirebaseUser user;
+    FirebaseStorage storage;
     String stringForCocktailName;
     String stringForCocktailHowToMake;
     String stringForCocktailDescription;
     String TAG = "DocSnippets";
-
+    File photoFile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -177,16 +185,33 @@ public class CocktailUploadActivity extends AppCompatActivity {
                 }
                 else{
                     //영진이 파트
-                    //git test
                     db = FirebaseFirestore.getInstance();
                     mAuth = FirebaseAuth.getInstance();
+                    user = mAuth.getCurrentUser();
+                    storage = FirebaseStorage.getInstance();
+                    StorageReference storageRef = storage.getReference();
+                    final StorageReference recvRef;
 
-                    FirebaseUser user = mAuth.getCurrentUser();
-                    Map<String, Object> uploadRecipe = new HashMap<>();
+                    final Map<String, Object> uploadRecipe = new HashMap<>();
 
+                    Uri file = Uri.fromFile(new File(photoFile.getPath()));
+                    recvRef = storageRef.child("Self/" + file.getLastPathSegment());
+                    recvRef.putFile(file).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            recvRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                @Override
+                                public void onSuccess(Uri uri) {
+                                    Log.d(TAG, uri.toString());
+                                    uploadRecipe.put("ref", uri.toString());
+                                }
+                            });
+                        }
+                    });
                     uploadRecipe.put("칵테일 이름", stringForCocktailName);
                     uploadRecipe.put("만드는 방법", stringForCocktailHowToMake);
                     uploadRecipe.put("칵테일 설명", stringForCocktailDescription);
+                    uploadRecipe.put("ref", "gs://sbsimulator-96f70.appspot.com/Self/"+file.getLastPathSegment());
 
                     Log.w(TAG, stringForCocktailName);
                     Log.w(TAG, stringForCocktailHowToMake);
@@ -276,7 +301,7 @@ public class CocktailUploadActivity extends AppCompatActivity {
     private void sendTakePhotoIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-            File photoFile = null;
+            photoFile = null;
             try {
                 photoFile = createImageFile();
             } catch (IOException ex) {
