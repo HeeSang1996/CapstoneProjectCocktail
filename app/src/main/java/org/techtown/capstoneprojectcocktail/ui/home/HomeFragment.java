@@ -49,6 +49,13 @@ import static androidx.constraintlayout.widget.Constraints.TAG;
 
 public class HomeFragment extends Fragment {
     public FirebaseFirestore db = FirebaseFirestore.getInstance();
+    String[] Recipe_name = new String[20];
+    int[] ID = new int[20];
+    String[] method = new String[20];
+    String[] Recipe_Base = new String[20];
+    String[] abv = new String[20];
+    String[] ref = new String[20];
+    int count;
 
     public void setDocument() {
 //        Map<String, Object> Ingredient_info = new HashMap<>();
@@ -173,31 +180,12 @@ public class HomeFragment extends Fragment {
 
         //수정필 테스트용
         //영진 여기 확인
-//        for(int i=0; i<20; i++) {
-//
-//            if( i ==5){
-//                adapterForCocktailHome.addItem(new Cocktail("맛있는 칵테일 " + i, i, "맛있는 칵테일 " + i + "의 설명 정말 맛있다 맛있는 칵테일" + i +
-//                        "의 설명 정말 맛있다 ", "Whisky1",i*10 + " %","url"));
-//            }
-//            else{
-//                adapterForCocktailHome.addItem(new Cocktail("맛있는 칵테일 " + i, i, "맛있는 칵테일 " + i + "의 설명 정말 맛있다 맛있는 칵테일" + i +
-//                        "의 설명 정말 맛있다 ", "Whisky0",i*10 + " %","url"));
-//            }
-//        }
-        //adapterForCocktailHome.addItem(new Cocktail((String) document.get("Recipe_name"), 5000+ finalI, (String) document.get("method"), (String) document.get("Recipe_Base"), (String) document.get("abv"),(String) document.get("ref")));
-        final String[] Recipe_name = new String[20];
-        final int[] ID = new int[20];
-        final String[] method = new String[20];
-        final String[] Recipe_Base = new String[20];
-        final String[] abv = new String[20];
-        final String[] ref = new String[20];
-
-        db = FirebaseFirestore.getInstance();
-
         for(int i=0; i < 20; i++)
         {
-            final int finalI = i;
+            List<String> list;
+            count = i;
             DocumentReference docRef = db.collection("Recipe").document(String.valueOf(i+6001));
+
             docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -205,15 +193,15 @@ public class HomeFragment extends Fragment {
                         DocumentSnapshot document = task.getResult();
                         if (document.exists()) {
                             //Log.d(TAG, "DocumentSnapshot data: " + document.getData());
-                            Recipe_name[0] = (String) document.get("Recipe_name");
-                            ID[0] = 6001+ finalI;
-                            method[0] = (String) document.get("method");
-                            Recipe_Base[0] = (String) document.get("Recipe_Base");
+                            Recipe_name[count] = (String) document.get("Recipe_name");
+                            ID[count] = 6001+ count;
+                            method[count] = (String) document.get("method");
+                            Recipe_Base[count] = (String) document.get("Recipe_Base");
                             //abv[0] = (String) document.get("abv");
-                            abv[0] = "시발";
-                            ref[0] = (String) document.get("ref");
-                            Log.d(TAG, "DocumentSnapshot data: " + Recipe_name[0] + ID[0]+ method[0]+ Recipe_Base[0]+ abv[0]+ref[0]);
-                            adapterForCocktailHome.addItem(new Cocktail(Recipe_name[0], ID[0], method[0], Recipe_Base[0], abv[0],ref[0]));
+                            abv[count] = "시발";
+                            ref[count] = (String) document.get("ref");
+                            adapterForCocktailHome.addItem(new Cocktail(Recipe_name[count], ID[count], method[count], Recipe_Base[count], abv[count],ref[count]));
+                            Log.d(TAG, "DocumentSnapshot data: " + Recipe_name[count] + ID[count]+ method[count]+ Recipe_Base[count]+ abv[count]+ref[count]);
                         } else {
                             Log.d(TAG, "No such document");
                         }
@@ -223,6 +211,44 @@ public class HomeFragment extends Fragment {
                 }
             });
         }
+        for(int i=0; i<20; i++) {
+            Log.d(TAG, "DocumentSnapshot data: " + Recipe_name[i]);
+            Log.d(TAG, "Count" + i);
+        }
+//        for(int i=0; i<20; i++) {
+//                adapterForCocktailHome.addItem(new Cocktail(Recipe_name[i], i, "맛있는 칵테일 " + i + "의 설명 정말 맛있다 맛있는 칵테일" + i +
+//                        "의 설명 정말 맛있다 ", "Whisky0",i*10 + " %","gs://sbsimulator-96f70.appspot.com/Recipe/BETWEEN THE SHEETS.jpg"));
+//        }
+
+//        for(int i=0; i < 20; i++)
+//        {
+//            final int finalI = i;
+//            DocumentReference docRef = db.collection("Recipe").document(String.valueOf(i+6001));
+//            docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+//                @Override
+//                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+//                    if (task.isSuccessful()) {
+//                        DocumentSnapshot document = task.getResult();
+//                        if (document.exists()) {
+//                            //Log.d(TAG, "DocumentSnapshot data: " + document.getData());
+//                            Recipe_name[0] = (String) document.get("Recipe_name");
+//                            ID[0] = 6001+ finalI;
+//                            method[0] = (String) document.get("method");
+//                            Recipe_Base[0] = (String) document.get("Recipe_Base");
+//                            //abv[0] = (String) document.get("abv");
+//                            abv[0] = "시발";
+//                            ref[0] = (String) document.get("ref");
+//                            Log.d(TAG, "DocumentSnapshot data: " + Recipe_name[0] + ID[0]+ method[0]+ Recipe_Base[0]+ abv[0]+ref[0]);
+//                            adapterForCocktailHome.addItem(new Cocktail(Recipe_name[0], ID[0], method[0], Recipe_Base[0], abv[0],ref[0]));
+//                        } else {
+//                            Log.d(TAG, "No such document");
+//                        }
+//                    } else {
+//                        Log.d(TAG, "get failed with ", task.getException());
+//                    }
+//                }
+//            });
+//        }
         //수정필 테스트용
 
         recyclerViewForCocktailHome.setAdapter(adapterForCocktailHome);

@@ -55,7 +55,6 @@ public class CocktailAdapterForHome extends RecyclerView.Adapter<CocktailAdapter
             FirebaseStorage storage = FirebaseStorage.getInstance();
 
             StorageReference gsReference = storage.getReferenceFromUrl(item.getImageUrl());
-
             gsReference.getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
                 @Override
                 public void onComplete(@NonNull Task<Uri> task) {
