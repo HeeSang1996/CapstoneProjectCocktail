@@ -109,10 +109,10 @@ public class HomeFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_home, container, false);
 
         Button searchButtonHome = root.findViewById(R.id.button_search_home);
+        //서치 빈칸
         searchButtonHome.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
-                //Snackbar.make(view, "서치 기능이 들어갈 예정입니다", Snackbar.LENGTH_LONG).setAction("Action", null).show();
                 Intent intent = new Intent(view.getContext(), CocktailSearchActivity.class);
                 intent.putExtra("ingredientName", "");
                 startActivity(intent);
@@ -157,7 +157,6 @@ public class HomeFragment extends Fragment {
             }
         });
 
-
         RecyclerView recyclerViewForCocktailHome = root.findViewById(R.id.recyclerViewForCocktail_home);
         LinearLayoutManager layoutManagerForCocktailHome = new LinearLayoutManager(root.getContext(), LinearLayoutManager.HORIZONTAL,false);
         recyclerViewForCocktailHome.setLayoutManager(layoutManagerForCocktailHome);
@@ -191,7 +190,6 @@ public class HomeFragment extends Fragment {
                 startActivity(intent);
             }
         });
-
         return root;
     }
 }
