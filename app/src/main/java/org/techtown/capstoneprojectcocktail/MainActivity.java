@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.ShapeDrawable;
+import android.graphics.drawable.shapes.OvalShape;
 import android.media.ExifInterface;
 import android.os.Bundle;
 import android.util.Log;
@@ -33,6 +35,7 @@ import com.google.firebase.firestore.FirebaseFirestoreSettings;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.core.view.GravityCompat;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -44,7 +47,13 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.techtown.capstoneprojectcocktail.ui.myPage.MyPageFragment;
+
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private static final int REQUEST_PROFILE = 264;
@@ -59,7 +68,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public FirebaseFirestore db;
     private MenuItem logInItem;
     private MenuItem logOutItem;
-    private Menu menuView;
+    private TextView navUserNameTextView;
+    private TextView myPageUserNameTextView;
+    private ImageView navUserProfilePictureImageView;
+    private ImageView myPageUserProfilePictureImageView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,25 +105,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             navigationView.setNavigationItemSelectedListener(this);
         }
 
-        menuView = navigationView.getMenu();
+        logInItem = navigationView.getMenu().findItem(R.id.nav_signInString);
+        logOutItem = navigationView.getMenu().findItem(R.id.nav_signOutString);
 
-        logInItem = menuView.findItem(R.id.nav_signInString);
-        logOutItem = menuView.findItem(R.id.nav_signOutString);
-
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        if (currentUser != null) {
-            logInItem.setVisible(false);
-            logOutItem.setVisible(true);
-            //Toast.makeText(this,"on start 콜 로그인",Toast.LENGTH_LONG).show();
-        }
-        else{
-            logInItem.setVisible(true);
-            logOutItem.setVisible(false);
-            //Toast.makeText(this,"on start 콜 로그아웃",Toast.LENGTH_LONG).show();
-        }
+        View headerView = navigationView.getHeaderView(0);
+        navUserNameTextView = headerView.findViewById(R.id.userNameText_nav);
+        navUserProfilePictureImageView = headerView.findViewById(R.id.profileImageView_nav);
 
         //실험용
-        //수정필
         //네비게이션바 이름변경, Sign in, Sign out check
         /*
         View headerView = navigationView.getHeaderView(0);
@@ -134,7 +136,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     @Override
-    protected void onResume(){
+    protected void onResume() {
         super.onResume();
         /*
         mAuth = FirebaseAuth.getInstance();
@@ -149,7 +151,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             navigationView.getMenu().findItem(R.id.nav_signOutString).setVisible(false);
             Toast.makeText(this,"on start 콜 로그아웃",Toast.LENGTH_LONG).show();
         }
-
          */
     }
 
@@ -161,10 +162,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-        switch(menuItem.getItemId()) {
+        switch (menuItem.getItemId()) {
             case R.id.nav_home:
             case R.id.nav_myPage:
-                NavigationUI.onNavDestinationSelected(menuItem,navController);
+                NavigationUI.onNavDestinationSelected(menuItem, navController);
                 break;
             case R.id.nav_signInString:
                 //Intent intent = new Intent(this, LoginPageActivity.class);
@@ -191,14 +192,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 GoogleSignInAccount account = task.getResult(ApiException.class);
                 firebaseAuthWithGoogle(account);
             } catch (ApiException e) {
-                Log.w(TAG, "Google sign in failed", e);
+                //Log.w(TAG, "Google sign in failed", e);
                 updateUI(null);
             }
         }
     }
 
     private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
-        Log.d(TAG, "firebaseAuthWithGoogle:" + acct.getId());
+        //Log.d(TAG, "firebaseAuthWithGoogle:" + acct.getId());
 
         AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
         mAuth.signInWithCredential(credential)
@@ -207,16 +208,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
-                            Log.e(TAG, "signInWithCredential:success");
+                            //Log.e(TAG, "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
                             updateUI(user);
-                            Log.e(TAG,"user getEmail : "+user.getEmail());
-                            Log.e(TAG,"user getDisplayName : "+user.getDisplayName());
-                            Log.e(TAG,"user getUid : "+user.getUid());
-                            Log.e(TAG,"user getPhoto : "+user.getPhotoUrl());
+                            //Log.e(TAG, "user getEmail : " + user.getEmail());
+                            //Log.e(TAG, "user getDisplayName : " + user.getDisplayName());
+                            //Log.e(TAG, "user getUid : " + user.getUid());
+                            //Log.e(TAG, "user getPhoto : " + user.getPhotoUrl());
                         } else {
                             // If sign in fails, display a message to the user.
-                            Log.w(TAG, "signInWithCredential:failure", task.getException());
+                            //Log.w(TAG, "signInWithCredential:failure", task.getException());
                             //Toast.makeText(GoogleSignInActivity.this, "Authentication Failed.", Toast.LENGTH_SHORT).show();
                             updateUI(null);
                         }
@@ -261,18 +262,42 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 });
     }
 
-    private void updateUI(FirebaseUser user) {
+    private void updateUI(final FirebaseUser currentUser) {
         //hideProgressDialog();
-        if (user != null) {
+        if (currentUser != null) {
             logInItem.setVisible(false);
             logOutItem.setVisible(true);
-            //Toast.makeText(this,"on start 콜 로그인",Toast.LENGTH_LONG).show();
-        }
-        else{
+            final Bitmap[] bitmap = new Bitmap[1];
+            Thread mThread= new Thread(){
+                @Override
+                public void run() {
+                    try{
+                        URL url = new URL(currentUser.getPhotoUrl().toString());
+                        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                        conn.setDoInput(true);
+                        conn.connect();
+                        InputStream is = conn.getInputStream();
+                        bitmap[0] = BitmapFactory.decodeStream(is);
+                    } catch (MalformedURLException ee) {
+                        ee.printStackTrace();
+                    }catch (IOException e){
+                        e.printStackTrace();
+                    }
+                }
+            };
+            mThread.start();
+            try{
+                mThread.join();
+                navUserProfilePictureImageView.setImageBitmap(bitmap[0]);
+            }catch (InterruptedException e){
+                e.printStackTrace();
+            }
+            navUserNameTextView.setText(currentUser.getDisplayName());
+        } else {
             logInItem.setVisible(true);
             logOutItem.setVisible(false);
-            //Toast.makeText(this,"on start 콜 로그아웃",Toast.LENGTH_LONG).show();
+            navUserProfilePictureImageView.setImageResource(R.mipmap.ic_launcher_round);
+            navUserNameTextView.setText("Unknown");
         }
     }
-
 }

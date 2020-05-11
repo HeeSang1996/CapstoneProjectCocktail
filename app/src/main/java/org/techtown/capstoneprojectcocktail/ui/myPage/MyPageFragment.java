@@ -109,4 +109,8 @@ public class MyPageFragment extends Fragment {
         return root;
     }
 
+    public void changeProfileImageAndText(String string){
+        TextView userNameTextView = getView().findViewById(R.id.userNameText_myPage);
+        userNameTextView.setText(string);
+    }
 }
