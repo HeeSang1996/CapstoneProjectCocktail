@@ -48,6 +48,8 @@ public class CocktailUploadActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.cocktail_upload_activity);
 
+        mAuth = FirebaseAuth.getInstance();
+
         Button takePictureButtonCocktailUpload = findViewById(R.id.button_takePicture_cocktail_upload);
         takePictureButtonCocktailUpload.setOnClickListener(new OnSingleClickListener(){
             @Override

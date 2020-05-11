@@ -97,7 +97,6 @@ public class MyPageFragment extends Fragment {
                 mAuth = FirebaseAuth.getInstance();
                 FirebaseUser currentUser = mAuth.getCurrentUser();
                 if (currentUser != null) {
-                    Snackbar.make(view, "마이 업로드 로그인 완료", Snackbar.LENGTH_LONG).setAction("Action", null).show();
                     Intent intent = new Intent(view.getContext(), CocktailUploadActivity.class);
                     startActivity(intent);
                 }
