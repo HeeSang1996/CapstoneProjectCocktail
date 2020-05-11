@@ -5,6 +5,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.Filterable;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -21,6 +22,7 @@ public class CocktailAdapterForSearch extends RecyclerView.Adapter<CocktailAdapt
         TextView textForCocktailName;
         TextView textForCocktailDescription;
         TextView textForCocktailABV;
+        ImageView imageForCocktail;
 
         public ViewHolder (View itemView, final OnCocktailItemClickListenerForSearch listener){
             super(itemView);
@@ -28,6 +30,7 @@ public class CocktailAdapterForSearch extends RecyclerView.Adapter<CocktailAdapt
             textForCocktailName = itemView.findViewById(R.id.textView_cocktailName_search);
             textForCocktailDescription = itemView.findViewById(R.id.textView_cocktailDescription_search);
             textForCocktailABV = itemView.findViewById(R.id.textView_cocktailABV_search);
+            imageForCocktail = itemView.findViewById(R.id.imageView_cocktail_search);
 
             itemView.setOnClickListener(new View.OnClickListener(){
                 @Override
@@ -41,9 +44,11 @@ public class CocktailAdapterForSearch extends RecyclerView.Adapter<CocktailAdapt
         }
 
         public void setItem(Cocktail item) {
+            String imageUrl = item.getImageUrl();
             textForCocktailName.setText(item.getName());
             textForCocktailDescription.setText(item.getDescription());
             textForCocktailABV.setText(item.getAbvNum());
+            imageForCocktail.setImageResource(R.mipmap.ic_launcher_round);
         }
     }
 

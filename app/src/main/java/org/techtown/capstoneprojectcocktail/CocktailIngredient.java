@@ -3,7 +3,7 @@ package org.techtown.capstoneprojectcocktail;
 import java.util.Map;
 
 public class CocktailIngredient {
-//    private String Ingredient_name;
+    //    private String Ingredient_name;
 //    private String Ingredient_type;
 //    private float abv;
 //    private float sugar_rate;

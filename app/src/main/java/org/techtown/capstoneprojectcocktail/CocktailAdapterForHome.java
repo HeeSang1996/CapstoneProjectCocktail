@@ -3,6 +3,7 @@ package org.techtown.capstoneprojectcocktail;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -18,6 +19,7 @@ public class CocktailAdapterForHome extends RecyclerView.Adapter<CocktailAdapter
         TextView textForCocktailName;
         TextView textForCocktailDescription;
         TextView textForCocktailABV;
+        ImageView imageForCocktail;
 
         public ViewHolder (View itemView, final OnCocktailItemClickListenerForHome listener){
             super(itemView);
@@ -25,6 +27,7 @@ public class CocktailAdapterForHome extends RecyclerView.Adapter<CocktailAdapter
             textForCocktailName = itemView.findViewById(R.id.textView_cocktailName_home);
             textForCocktailDescription = itemView.findViewById(R.id.textView_cocktailDescription_home);
             textForCocktailABV = itemView.findViewById(R.id.textView_cocktailABV_home);
+            imageForCocktail = itemView.findViewById(R.id.imageView_cocktail_home);
 
             itemView.setOnClickListener(new View.OnClickListener(){
                 @Override
@@ -38,9 +41,11 @@ public class CocktailAdapterForHome extends RecyclerView.Adapter<CocktailAdapter
         }
 
         public void setItem(Cocktail item) {
+            String imageUrl = item.getImageUrl();
             textForCocktailName.setText(item.getName());
             textForCocktailDescription.setText(item.getDescription());
             textForCocktailABV.setText(item.getAbvNum());
+            imageForCocktail.setImageResource(R.mipmap.ic_launcher_round);
         }
     }
 
