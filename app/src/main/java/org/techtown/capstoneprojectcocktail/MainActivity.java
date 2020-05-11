@@ -106,19 +106,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     @Override
-    protected void onResume(){
-        super.onResume();
+    protected void onStart(){
+        super.onStart();
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser != null) {
             navigationView.getMenu().findItem(R.id.nav_signInString).setVisible(false);
             navigationView.getMenu().findItem(R.id.nav_signOutString).setVisible(true);
-            Toast.makeText(this,"on resume 콜 로그인",Toast.LENGTH_LONG).show();
+            Toast.makeText(this,"on start 콜 로그인",Toast.LENGTH_LONG).show();
         }
         else{
             navigationView.getMenu().findItem(R.id.nav_signInString).setVisible(true);
             navigationView.getMenu().findItem(R.id.nav_signOutString).setVisible(false);
-            Toast.makeText(this,"on resume 콜 로그아웃",Toast.LENGTH_LONG).show();
+            Toast.makeText(this,"on start 콜 로그아웃",Toast.LENGTH_LONG).show();
         }
     }
 
