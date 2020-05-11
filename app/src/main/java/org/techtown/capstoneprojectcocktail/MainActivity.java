@@ -57,6 +57,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     NavigationView navigationView;
     NavController navController;
     public FirebaseFirestore db;
+    private MenuItem logInItem;
+    private MenuItem logOutItem;
+    private Menu menuView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,6 +92,23 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             navigationView.setNavigationItemSelectedListener(this);
         }
 
+        menuView = navigationView.getMenu();
+
+        logInItem = menuView.findItem(R.id.nav_signInString);
+        logOutItem = menuView.findItem(R.id.nav_signOutString);
+
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if (currentUser != null) {
+            logInItem.setVisible(false);
+            logOutItem.setVisible(true);
+            //Toast.makeText(this,"on start 콜 로그인",Toast.LENGTH_LONG).show();
+        }
+        else{
+            logInItem.setVisible(true);
+            logOutItem.setVisible(false);
+            //Toast.makeText(this,"on start 콜 로그아웃",Toast.LENGTH_LONG).show();
+        }
+
         //실험용
         //수정필
         //네비게이션바 이름변경, Sign in, Sign out check
@@ -106,8 +126,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     @Override
-    protected void onStart(){
+    public void onStart() {
         super.onStart();
+        // Check if user is signed in (non-null) and update UI accordingly.
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        updateUI(currentUser);
+    }
+
+    @Override
+    protected void onResume(){
+        super.onResume();
+        /*
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser != null) {
@@ -120,6 +149,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             navigationView.getMenu().findItem(R.id.nav_signOutString).setVisible(false);
             Toast.makeText(this,"on start 콜 로그아웃",Toast.LENGTH_LONG).show();
         }
+
+         */
     }
 
     @Override
@@ -161,6 +192,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 firebaseAuthWithGoogle(account);
             } catch (ApiException e) {
                 Log.w(TAG, "Google sign in failed", e);
+                updateUI(null);
             }
         }
     }
@@ -177,6 +209,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                             // Sign in success, update UI with the signed-in user's information
                             Log.e(TAG, "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
+                            updateUI(user);
                             Log.e(TAG,"user getEmail : "+user.getEmail());
                             Log.e(TAG,"user getDisplayName : "+user.getDisplayName());
                             Log.e(TAG,"user getUid : "+user.getUid());
@@ -185,6 +218,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
                             //Toast.makeText(GoogleSignInActivity.this, "Authentication Failed.", Toast.LENGTH_SHORT).show();
+                            updateUI(null);
                         }
 
                         // [START_EXCLUDE]
@@ -208,6 +242,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         FirebaseAuth.getInstance().signOut();
+                        updateUI(null);
                     }
                 });
     }
@@ -221,8 +256,23 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
+                        updateUI(null);
                     }
                 });
+    }
+
+    private void updateUI(FirebaseUser user) {
+        //hideProgressDialog();
+        if (user != null) {
+            logInItem.setVisible(false);
+            logOutItem.setVisible(true);
+            //Toast.makeText(this,"on start 콜 로그인",Toast.LENGTH_LONG).show();
+        }
+        else{
+            logInItem.setVisible(true);
+            logOutItem.setVisible(false);
+            //Toast.makeText(this,"on start 콜 로그아웃",Toast.LENGTH_LONG).show();
+        }
     }
 
 }
