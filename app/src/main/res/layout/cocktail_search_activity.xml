@@ -9,7 +9,7 @@
 
     <EditText
         android:id="@+id/editText_search"
-        android:layout_width="0dp"
+        android:layout_width="240dp"
         android:layout_height="40dp"
         android:layout_marginHorizontal="5dp"
         android:layout_marginTop="10dp"
@@ -25,12 +25,29 @@
         android:textColor="#FFFFFF"
         android:singleLine="true"
         app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ToggleButton
+        android:id="@+id/switch_ingredient_check"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:textOn="재료 검색 모드"
+        android:textOff="칵테일 검색 모드"
+        android:paddingHorizontal="5dp"
+        android:layout_marginHorizontal="5dp"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:textColor="#FFFFFF"
+        android:singleLine="true"
+        android:showText="true"
+        android:background="@drawable/button_home_search"
+        app:layout_constraintLeft_toRightOf="@+id/editText_search"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintRight_toRightOf="parent" />
+        app:layout_constraintRight_toRightOf="parent"/>
 
     <Switch
         android:id="@+id/switch_userRecipe_search"
-        android:layout_width="wrap_content"
+        android:layout_width="130dp"
         android:layout_height="30dp"
         android:text="사용자 레시피"
         android:layout_marginHorizontal="10dp"
@@ -41,24 +58,9 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editText_search"/>
 
-    <TextView
-        android:layout_width="0dp"
-        android:layout_height="30dp"
-        android:layout_marginHorizontal="5dp"
-        android:layout_marginTop="10dp"
-        android:padding="5dp"
-        android:text = "정렬순서:"
-        android:gravity="right|center_vertical"
-        android:autoSizeTextType="uniform"
-        android:textColor="#3366D6"
-        android:singleLine="true"
-        app:layout_constraintLeft_toRightOf="@+id/switch_userRecipe_search"
-        app:layout_constraintTop_toBottomOf="@+id/editText_search"
-        app:layout_constraintRight_toLeftOf="@+id/spinner_orderBy_search"/>
-
     <Spinner
         android:id="@+id/spinner_orderBy_search"
-        android:layout_width="120dp"
+        android:layout_width="180dp"
         android:layout_height="30dp"
         android:layout_marginRight="5dp"
         android:layout_marginTop="10dp"
@@ -76,7 +78,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spinner_orderBy_search">
+        app:layout_constraintTop_toBottomOf="@+id/switch_userRecipe_search">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerViewForCocktail_search"

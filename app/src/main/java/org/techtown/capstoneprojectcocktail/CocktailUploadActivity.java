@@ -19,7 +19,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -83,7 +85,6 @@ public class CocktailUploadActivity extends AppCompatActivity {
         textInputLayoutForCocktailName.setCounterEnabled(true);
         textInputLayoutForCocktailName.setCounterMaxLength(20);
         final EditText editTextForCocktailName = textInputLayoutForCocktailName.getEditText();
-
         editTextForCocktailName.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -111,7 +112,6 @@ public class CocktailUploadActivity extends AppCompatActivity {
         textInputLayoutForCocktailHowToMake.setCounterEnabled(true);
         textInputLayoutForCocktailHowToMake.setCounterMaxLength(300);
         final EditText editTextForCocktailHowToMake = textInputLayoutForCocktailHowToMake.getEditText();
-
         editTextForCocktailHowToMake.addTextChangedListener(new TextWatcher() {
 
             @Override
@@ -140,7 +140,6 @@ public class CocktailUploadActivity extends AppCompatActivity {
         textInputLayoutForCocktailDescription.setCounterEnabled(true);
         textInputLayoutForCocktailDescription.setCounterMaxLength(300);
         final EditText editTextForCocktailDescription = textInputLayoutForCocktailDescription.getEditText();
-
         editTextForCocktailDescription.addTextChangedListener(new TextWatcher() {
 
             @Override

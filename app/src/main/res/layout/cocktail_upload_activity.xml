@@ -36,21 +36,6 @@
                 android:singleLine="true"
                 android:layout_gravity="center"
                 android:paddingHorizontal="30dp"/>
-            
-            <HorizontalScrollView
-                android:layout_width="match_parent"
-                android:layout_height="30dp"
-                android:overScrollMode="never"
-                android:scrollbars="none">
-
-                <com.google.android.material.chip.ChipGroup
-                    android:id="@+id/chipGroup_cocktail_upload"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:singleLine="true"
-                    app:singleSelection="false">
-                </com.google.android.material.chip.ChipGroup>
-            </HorizontalScrollView>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id ="@+id/textInputLayout_cocktailName_cocktail_upload"

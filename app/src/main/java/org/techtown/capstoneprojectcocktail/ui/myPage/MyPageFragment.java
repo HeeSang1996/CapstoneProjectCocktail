@@ -1,17 +1,20 @@
 package org.techtown.capstoneprojectcocktail.ui.myPage;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
@@ -106,11 +109,11 @@ public class MyPageFragment extends Fragment {
             }
         });
 
+        ImageView profileImageView = root.findViewById(R.id.profileImageView_myPage);
+        profileImageView.setImageResource(R.mipmap.ic_launcher_round);
+        TextView profileTextView = root.findViewById(R.id.userNameText_myPage);
+        profileTextView.setText("Unknown");
         return root;
     }
 
-    public void changeProfileImageAndText(String string){
-        TextView userNameTextView = getView().findViewById(R.id.userNameText_myPage);
-        userNameTextView.setText(string);
-    }
 }

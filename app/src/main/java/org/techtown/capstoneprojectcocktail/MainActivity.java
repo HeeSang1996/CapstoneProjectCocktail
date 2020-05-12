@@ -112,6 +112,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navUserNameTextView = headerView.findViewById(R.id.userNameText_nav);
         navUserProfilePictureImageView = headerView.findViewById(R.id.profileImageView_nav);
 
+        View headerForMypage = getLayoutInflater().inflate(R.layout.fragment_mypage, null, false);
+        myPageUserNameTextView = (TextView) headerForMypage.findViewById(R.id.userNameText_myPage);
+        myPageUserProfilePictureImageView = (ImageView) headerForMypage.findViewById(R.id.profileImageView_myPage);
+
+
+        /*
+        Fragment frg = null;
+        frg = getSupportFragmentManager().findFragmentById(R.id.nav_myPage);
+        final FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.detach(frg);
+        ft.attach(frg);
+        ft.commit();
+        */
         //실험용
         //네비게이션바 이름변경, Sign in, Sign out check
         /*
@@ -133,25 +146,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
         updateUI(currentUser);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        /*
-        mAuth = FirebaseAuth.getInstance();
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        if (currentUser != null) {
-            navigationView.getMenu().findItem(R.id.nav_signInString).setVisible(false);
-            navigationView.getMenu().findItem(R.id.nav_signOutString).setVisible(true);
-            Toast.makeText(this,"on start 콜 로그인",Toast.LENGTH_LONG).show();
-        }
-        else{
-            navigationView.getMenu().findItem(R.id.nav_signInString).setVisible(true);
-            navigationView.getMenu().findItem(R.id.nav_signOutString).setVisible(false);
-            Toast.makeText(this,"on start 콜 로그아웃",Toast.LENGTH_LONG).show();
-        }
-         */
     }
 
     @Override
@@ -194,6 +188,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             } catch (ApiException e) {
                 //Log.w(TAG, "Google sign in failed", e);
                 updateUI(null);
+                Toast.makeText(getApplicationContext(),"로그인 실패! 다시 시도해주세요.",Toast.LENGTH_LONG).show();
             }
         }
     }
@@ -215,10 +210,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                             //Log.e(TAG, "user getDisplayName : " + user.getDisplayName());
                             //Log.e(TAG, "user getUid : " + user.getUid());
                             //Log.e(TAG, "user getPhoto : " + user.getPhotoUrl());
+                            Toast.makeText(getApplicationContext(),"로그인 성공!",Toast.LENGTH_LONG).show();
                         } else {
                             // If sign in fails, display a message to the user.
                             //Log.w(TAG, "signInWithCredential:failure", task.getException());
                             //Toast.makeText(GoogleSignInActivity.this, "Authentication Failed.", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(),"로그인 실패! 다시 시도해주세요.",Toast.LENGTH_LONG).show();
                             updateUI(null);
                         }
 
@@ -246,6 +243,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         updateUI(null);
                     }
                 });
+        Toast.makeText(getApplicationContext(),"로그아웃",Toast.LENGTH_LONG).show();
     }
 
     private void revokeAccess() {
@@ -289,15 +287,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             try{
                 mThread.join();
                 navUserProfilePictureImageView.setImageBitmap(bitmap[0]);
+                myPageUserProfilePictureImageView.setImageBitmap(bitmap[0]);
             }catch (InterruptedException e){
                 e.printStackTrace();
             }
             navUserNameTextView.setText(currentUser.getDisplayName());
+            myPageUserNameTextView.setText(currentUser.getDisplayName());
         } else {
             logInItem.setVisible(true);
             logOutItem.setVisible(false);
             navUserProfilePictureImageView.setImageResource(R.mipmap.ic_launcher_round);
+            myPageUserProfilePictureImageView.setImageResource(R.mipmap.ic_launcher_round);
             navUserNameTextView.setText("Unknown");
+            myPageUserNameTextView.setText("Unknown");
         }
     }
 }
