@@ -122,7 +122,7 @@ public class CocktailAdapterForSearch extends RecyclerView.Adapter<CocktailAdapt
         return items.get(position);
     }
 
-    public void setItems(int position, Cocktail item){
+    public void setItem(int position, Cocktail item){
         items.set(position, item);
     }
 
@@ -130,12 +130,22 @@ public class CocktailAdapterForSearch extends RecyclerView.Adapter<CocktailAdapt
         this.listener = listener;
     }
 
+    /*이전버전
+    문제있을시 이 부분 살리고 바로아래 ViewHolder 삭제
     @Override
     public void onItemClick(CocktailAdapterForSearch.ViewHolder holder, View view, int position){
         if(listener!=null){
             listener.onItemClick(holder,view,position);
         }
     }
+    */
+    @Override
+    public void onItemClick(ViewHolder holder, View view, int position){
+        if(listener!=null){
+            listener.onItemClick(holder,view,position);
+        }
+    }
+
 
     //수정필 필터
     /*

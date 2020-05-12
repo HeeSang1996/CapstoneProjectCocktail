@@ -1,19 +1,16 @@
 package org.techtown.capstoneprojectcocktail;
 
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.target.ViewTarget;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.storage.FirebaseStorage;
@@ -107,7 +104,7 @@ public class CocktailAdapterForHome extends RecyclerView.Adapter<CocktailAdapter
         return items.get(position);
     }
 
-    public void setItems(int position, Cocktail item){
+    public void setItem(int position, Cocktail item){
         items.set(position, item);
     }
 
