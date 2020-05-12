@@ -200,6 +200,7 @@ public class CocktailSearchActivity extends AppCompatActivity{
                 intent.putExtra("cocktailName", item.getName());
                 intent.putExtra("cocktailDescription",item.getDescription());
                 intent.putExtra("cocktailIngredient",item.getIngredient());
+                intent.putExtra("cocktailRef",item.getImageUrl());
                 startActivity(intent);
             }
         });
