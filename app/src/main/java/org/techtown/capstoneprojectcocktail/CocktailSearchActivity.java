@@ -154,6 +154,7 @@ public class CocktailSearchActivity extends AppCompatActivity{
 
         setAdapterForCocktailSearchMethod();
         //수정필 테스트용
+
         /*
         for(int i=0; i < 81; i++)
         {
@@ -193,15 +194,15 @@ public class CocktailSearchActivity extends AppCompatActivity{
                             recyclerViewForCocktailSearch.setAdapter(adapterForCocktailSearch);
 
                         } else {
-                            Log.d(TAG, "No such document");
+                            //Log.d(TAG, "No such document");
                         }
                     } else {
-                        Log.d(TAG, "get failed with ", task.getException());
+                        //Log.d(TAG, "get failed with ", task.getException());
                     }
                 }
             });
         }
-         */
+        */
         //수정필 테스트용
 
         adapterForCocktailSearch.setOnItemClickListener(new OnCocktailItemClickListenerForSearch() {
