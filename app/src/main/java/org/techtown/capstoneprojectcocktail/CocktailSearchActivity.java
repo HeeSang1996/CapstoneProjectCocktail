@@ -2,6 +2,7 @@ package org.techtown.capstoneprojectcocktail;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -33,6 +34,7 @@ public class CocktailSearchActivity extends AppCompatActivity{
     final CocktailAdapterForSearch adapterForCocktailSearch = new CocktailAdapterForSearch();
 
     public FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private static final String TAG = "DocSnippets";
 
     //레시피 정보를 받기 위한 변수들
     String[] Recipe_name = new String[81];
@@ -51,7 +53,8 @@ public class CocktailSearchActivity extends AppCompatActivity{
     long[] Ingredient_Realabv = new long[127];
     String[] Ingredient_abv = new String[127];
     String[] Ingredient_ref = new String[127];
-    String[] Ingredient_sugar = new String[127];
+    Number[] Ingredient_sugar = new Number[127];
+    String[] Ingredient_Realsugar = new String[127];
     String[] Ingredient_flavour = new String[127];
     String[] Ingredient_specific_gravity = new String[127];
     int Ingredient_count;
@@ -92,6 +95,7 @@ public class CocktailSearchActivity extends AppCompatActivity{
                     adapterForCocktailSearch.clearAllForAdapter();
                     switchForUserMade.setVisibility(View.INVISIBLE);
                     spinner.setVisibility(View.INVISIBLE);
+                    setAdapterForIngredientSearch();
                 }
                 else{
                     Toast.makeText(getApplicationContext(),"칵테일 검색 모드",Toast.LENGTH_LONG).show();
@@ -274,11 +278,11 @@ public class CocktailSearchActivity extends AppCompatActivity{
     }
 
     private void setAdapterForIngredientSearch(){
-        for(int i=0; i < 81; i++)
+        for(int i=0; i < 127; i++)
         {
             List<String> list;
             count = i;
-            DocumentReference docRef = db.collection("Recipe").document(String.valueOf(i+6001));
+            DocumentReference docRef = db.collection("Ingredient").document(String.valueOf(i+5001));
 
             final int finalI = i;
             docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -287,27 +291,31 @@ public class CocktailSearchActivity extends AppCompatActivity{
                     if (task.isSuccessful()) {
                         DocumentSnapshot document = task.getResult();
                         if (document.exists()) {
+                            //System.out.println("DocumentSnapshot data: " + document.getData());
                             //Log.d(TAG, "DocumentSnapshot data: " + document.getData());
-                            Recipe_name[count] = (String) document.get("Recipe_name");
-                            ID[count] = 6001+ count;
-                            method[count] = (String) document.get("method");
+
+                            //Log.d(TAG, "DocumentSnapshot data: " + document.getData());
+                            Ingredient_name[count] = (String) document.get("Ingredient_name"); //재료 이름
+                            //Log.d(TAG, "Ingredient_name data: " +Ingredient_name);
+                            Ingredient_ID[count] = 5001+ count;
+                            Ingredient_flavour[count] = (String) document.get("flavour"); //향(칵테일에선 설명 method)
                             //abv[0] = (String) document.get("abv");
 
-                            Recipe_Ingredient = (Map<String, Number>) document.get("Ingredient_content");
+                            //Recipe_Ingredient = (Map<String, Number>) document.get("Ingredient_content");
                             //Recipe_Base[count] = (String) document.get("Recipe_Base");
-
                             //map으로 받아온 정보를 string으로 치환한뒤 유저에게 보여줄 수 있도록 replaceall함({, }, = 삭제 ml 추가)
-                            Recipe_Base[count] = String.valueOf(Recipe_Ingredient);
-                            Recipe_Base[count] = Recipe_Base[count].replaceAll("\\,", "ml ");
-                            Recipe_Base[count] = Recipe_Base[count].replaceAll("\\{", " ");
-                            Recipe_Base[count] = Recipe_Base[count].replaceAll("\\}", "ml ");
-                            Recipe_Base[count] = Recipe_Base[count].replaceAll("\\=", " ");
+                            Ingredient_sugar[count] = (Number) document.get("sugar_rate"); //suger_rate(칵테일에선 재료와 용량)
+                            Ingredient_Realsugar[count] = Ingredient_sugar[count] + "%";
+//                            Recipe_Base[count] = Recipe_Base[count].replaceAll("\\,", "ml ");
+//                            Recipe_Base[count] = Recipe_Base[count].replaceAll("\\{", " ");
+//                            Recipe_Base[count] = Recipe_Base[count].replaceAll("\\}", "ml ");
+//                            Recipe_Base[count] = Recipe_Base[count].replaceAll("\\=", " ");
                             //long형태로 받은 abv를 유저에게 보여줄 수 있도록 %를 붙여 재저장
-                            Realabv[count] = (long) document.get("abv");
-                            abv[count] = Realabv[count] + "%";
-                            ref[count] = (String) document.get("ref");
-                            adapterForCocktailSearch.addItem(new Cocktail(Recipe_name[count], ID[count], method[count], Recipe_Base[count], abv[count],ref[count]));
-                            //Log.d(TAG, "DocumentSnapshot data: " + Recipe_name[count] + ID[count]+ method[count]+ Recipe_Base[count]+ abv[count]+ref[count]);
+                            Ingredient_Realabv[count] = (long) document.get("abv");
+                            Ingredient_abv[count] = Ingredient_Realabv[count] + "%";
+                            Ingredient_ref[count] = (String) document.get("ref");
+                            adapterForCocktailSearch.addItem(new Cocktail(Ingredient_name[count], Ingredient_ID[count], Ingredient_flavour[count], Ingredient_Realsugar[count], Ingredient_abv[count],Ingredient_ref[count]));
+                            Log.d(TAG, "Ingredient_ID data: " +  Ingredient_ID[count]);
                             //refresh 해주는 함수(아마)
                             recyclerViewForCocktailSearch.setAdapter(adapterForCocktailSearch);
 
