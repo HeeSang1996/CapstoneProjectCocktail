@@ -27,6 +27,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.List;
+import java.util.Map;
 
 import static androidx.constraintlayout.widget.Constraints.TAG;
 
@@ -43,6 +44,7 @@ public class CocktailSearchActivity extends AppCompatActivity{
     String[] Recipe_Base = new String[81];
     String[] abv = new String[81];
     String[] ref = new String[81];
+    Map<String, Number> Recipe_Ingredient;
     long[] Realabv = new long[81];
     int count;
 
@@ -176,8 +178,16 @@ public class CocktailSearchActivity extends AppCompatActivity{
                             Recipe_name[count] = (String) document.get("Recipe_name");
                             ID[count] = 6001+ count;
                             method[count] = (String) document.get("method");
-                            Recipe_Base[count] = (String) document.get("Recipe_Base");
                             //abv[0] = (String) document.get("abv");
+
+                            Recipe_Ingredient = (Map<String, Number>) document.get("Ingredient_content");
+                            //Recipe_Base[count] = (String) document.get("Recipe_Base");
+                            Recipe_Base[count] = String.valueOf(Recipe_Ingredient);
+                            Recipe_Base[count] = Recipe_Base[count].replaceAll("\\,", "ml ");
+                            Recipe_Base[count] = Recipe_Base[count].replaceAll("\\{", " ");
+                            Recipe_Base[count] = Recipe_Base[count].replaceAll("\\}", "ml ");
+                            Recipe_Base[count] = Recipe_Base[count].replaceAll("\\=", " ");
+                            Log.d(TAG, "Recipe_Base data: "+ Recipe_Base);
                             Realabv[count] = (long) document.get("abv");
                             abv[count] = Realabv[count] + "%";
                             ref[count] = (String) document.get("ref");
