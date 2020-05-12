@@ -89,13 +89,16 @@ public class CocktailSearchActivity extends AppCompatActivity{
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked){
                     Toast.makeText(getApplicationContext(),"재료 검색 모드",Toast.LENGTH_LONG).show();
+                    adapterForCocktailSearch.clearAllForAdapter();
                     switchForUserMade.setVisibility(View.INVISIBLE);
                     spinner.setVisibility(View.INVISIBLE);
                 }
                 else{
                     Toast.makeText(getApplicationContext(),"칵테일 검색 모드",Toast.LENGTH_LONG).show();
+                    adapterForCocktailSearch.clearAllForAdapter();
                     switchForUserMade.setVisibility(View.VISIBLE);
                     spinner.setVisibility(View.VISIBLE);
+                    setAdapterForCocktailSearchMethod();
                 }
             }
         });

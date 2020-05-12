@@ -196,4 +196,10 @@ public class CocktailAdapterForSearch extends RecyclerView.Adapter<CocktailAdapt
         }
         notifyDataSetChanged();
     }
+
+    public void clearAllForAdapter(){
+        items.clear();
+        items_buffer.clear();
+        notifyDataSetChanged();
+    }
 }
