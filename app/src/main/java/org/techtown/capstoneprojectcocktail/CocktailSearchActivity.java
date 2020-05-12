@@ -174,12 +174,14 @@ public class CocktailSearchActivity extends AppCompatActivity{
 
                             Recipe_Ingredient = (Map<String, Number>) document.get("Ingredient_content");
                             //Recipe_Base[count] = (String) document.get("Recipe_Base");
+
+                            //map으로 받아온 정보를 string으로 치환한뒤 유저에게 보여줄 수 있도록 replaceall함({, }, = 삭제 ml 추가)
                             Recipe_Base[count] = String.valueOf(Recipe_Ingredient);
                             Recipe_Base[count] = Recipe_Base[count].replaceAll("\\,", "ml ");
                             Recipe_Base[count] = Recipe_Base[count].replaceAll("\\{", " ");
                             Recipe_Base[count] = Recipe_Base[count].replaceAll("\\}", "ml ");
                             Recipe_Base[count] = Recipe_Base[count].replaceAll("\\=", " ");
-                            Log.d(TAG, "Recipe_Base data: "+ Recipe_Base);
+                            //long형태로 받은 abv를 유저에게 보여줄 수 있도록 %를 붙여 재저장
                             Realabv[count] = (long) document.get("abv");
                             abv[count] = Realabv[count] + "%";
                             ref[count] = (String) document.get("ref");

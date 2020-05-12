@@ -57,6 +57,7 @@ public class HomeFragment extends Fragment {
     String[] ref = new String[20];
     long[] Realabv = new long[20];
     int count;
+    Map<String, Number> Recipe_Ingredient;
 
     public void setDocument() {
 //        Map<String, Object> Ingredient_info = new HashMap<>();
@@ -198,7 +199,15 @@ public class HomeFragment extends Fragment {
                     Recipe_name[count] = (String) document.get("Recipe_name");
                     ID[count] = 6001+ count;
                     method[count] = (String) document.get("method");
-                    Recipe_Base[count] = (String) document.get("Recipe_Base");
+                    Recipe_Ingredient = (Map<String, Number>) document.get("Ingredient_content");
+                    //Recipe_Base[count] = (String) document.get("Recipe_Base");
+
+                    //map으로 받아온 정보를 string으로 치환한뒤 유저에게 보여줄 수 있도록 replaceall함({, }, = 삭제 ml 추가)
+                    Recipe_Base[count] = String.valueOf(Recipe_Ingredient);
+                    Recipe_Base[count] = Recipe_Base[count].replaceAll("\\,", "ml ");
+                    Recipe_Base[count] = Recipe_Base[count].replaceAll("\\{", " ");
+                    Recipe_Base[count] = Recipe_Base[count].replaceAll("\\}", "ml ");
+                    Recipe_Base[count] = Recipe_Base[count].replaceAll("\\=", " ");
                     //abv[0] = (String) document.get("abv");
                     Realabv[count] = (long) document.get("abv");
                     abv[count] = Realabv[count] + "%";
