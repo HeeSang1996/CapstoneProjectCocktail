@@ -81,8 +81,11 @@ public class CocktailSearchActivity extends AppCompatActivity{
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked){
                     //Toast.makeText(getApplicationContext(),"사용자 레시피 검색 ON",Toast.LENGTH_LONG).show();
+                    adapterForCocktailSearch.clearAllForAdapter();
                 }else{
                     //Toast.makeText(getApplicationContext(),"사용자 레시피 검색 OFF",Toast.LENGTH_LONG).show();
+                    adapterForCocktailSearch.clearAllForAdapter();
+                    setAdapterForCocktailSearchMethod();
                 }
             }
         });
@@ -92,17 +95,25 @@ public class CocktailSearchActivity extends AppCompatActivity{
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked){
                     Toast.makeText(getApplicationContext(),"재료 검색 모드",Toast.LENGTH_LONG).show();
+                    //switchForUserMade.setChecked(false);
                     adapterForCocktailSearch.clearAllForAdapter();
                     switchForUserMade.setVisibility(View.INVISIBLE);
                     spinner.setVisibility(View.INVISIBLE);
                     setAdapterForIngredientSearch();
                 }
                 else{
-                    Toast.makeText(getApplicationContext(),"칵테일 검색 모드",Toast.LENGTH_LONG).show();
                     adapterForCocktailSearch.clearAllForAdapter();
                     switchForUserMade.setVisibility(View.VISIBLE);
                     spinner.setVisibility(View.VISIBLE);
-                    setAdapterForCocktailSearchMethod();
+                    //유저가 올린 칵테일 검색 모드가 켜져 있을 경우
+                    if(switchForUserMade.isChecked()){
+
+                    }
+                    //유저가 올린 칵테일 검색 모드가 꺼져 있을 경우
+                    else{
+                        //Toast.makeText(getApplicationContext(),"칵테일 검색 모드",Toast.LENGTH_LONG).show();
+                        setAdapterForCocktailSearchMethod();
+                    }
                 }
             }
         });
@@ -120,12 +131,16 @@ public class CocktailSearchActivity extends AppCompatActivity{
                     //재료 검색 모드에서 검색
                     if (toggleForCocktailOrIngredient.isChecked()) {
                         Toast.makeText(getApplicationContext(), inputText + " 재료 검색", Toast.LENGTH_SHORT).show();
+                        adapterForCocktailSearch.filterForIngredient(inputText);
+                        recyclerViewForCocktailSearch.setAdapter(adapterForCocktailSearch);
                     }
                     //칵테일 검색 모드에서 검색
                     else {
                         //사용자들이 올린 칵테일 검색
                         if (switchForUserMade.isChecked()) {
                             Toast.makeText(getApplicationContext(), "사용자들이 올린 " + inputText + " 칵테일 검색", Toast.LENGTH_SHORT).show();
+                            adapterForCocktailSearch.filterForCocktail(inputText);
+                            recyclerViewForCocktailSearch.setAdapter(adapterForCocktailSearch);
                         }
                         //기존에 있는 칵테일 레시피 검색
                         else {
@@ -152,14 +167,16 @@ public class CocktailSearchActivity extends AppCompatActivity{
         });
 
         String initialText = textForSearch.getText().toString();
-        if (textForSearch.getText().toString().length()==0){
+        setAdapterForCocktailSearchMethod();
+        if (initialText.length()==0){
             Toast.makeText(getApplicationContext(),"모든 칵테일 검색",Toast.LENGTH_SHORT).show();
         }
         else{
             Toast.makeText(getApplicationContext(),initialText + " 칵테일 검색",Toast.LENGTH_SHORT).show();
+            //adapterForCocktailSearch.filterForCocktail(initialText);
+            //recyclerViewForCocktailSearch.setAdapter(adapterForCocktailSearch);
         }
 
-        setAdapterForCocktailSearchMethod();
         //수정필 테스트용
 
         /*
@@ -219,6 +236,7 @@ public class CocktailSearchActivity extends AppCompatActivity{
                 //Toast.makeText(getActivity().getApplicationContext(),"선택된 칵테일: " + item.getName(),Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(view.getContext(), CocktailRecipeActivity.class);
                 intent.putExtra("cocktailName", item.getName());
+                intent.putExtra("cocktailID",item.getId());
                 intent.putExtra("cocktailDescription",item.getDescription());
                 intent.putExtra("cocktailIngredient",item.getIngredient());
                 intent.putExtra("cocktailABV",item.getAbvNum());
