@@ -77,6 +77,8 @@ public class CocktailAdapterForSearch extends RecyclerView.Adapter<CocktailAdapt
     }
 
 
+    /*이전버전
+    문제있을시 이 부분 살리고 바로아래 ViewHolder 삭제
     @NonNull
     @Override
     public CocktailAdapterForSearch.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
@@ -84,6 +86,16 @@ public class CocktailAdapterForSearch extends RecyclerView.Adapter<CocktailAdapt
         View itemView = inflater.inflate(R.layout.cocktail_cardview_vertical, viewGroup, false);
 
         return new CocktailAdapterForSearch.ViewHolder(itemView, this);
+    }
+     */
+
+    @NonNull
+    @Override
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
+        LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
+        View itemView = inflater.inflate(R.layout.cocktail_cardview_vertical, viewGroup, false);
+
+        return new ViewHolder(itemView, this);
     }
 
     @Override
@@ -174,5 +186,4 @@ public class CocktailAdapterForSearch extends RecyclerView.Adapter<CocktailAdapt
         }
         notifyDataSetChanged();
     }
-
 }

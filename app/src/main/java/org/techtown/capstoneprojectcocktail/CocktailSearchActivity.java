@@ -67,6 +67,7 @@ public class CocktailSearchActivity extends AppCompatActivity{
         final ToggleButton toggleForCocktailOrIngredient = findViewById(R.id.switch_ingredient_check);
         final Switch switchForUserMade = findViewById(R.id.switch_userRecipe_search);
         final Spinner spinner = (Spinner) findViewById(R.id.spinner_orderBy_search);
+        final EditText textForSearch = (EditText) findViewById(R.id.editText_search);
         //final RecyclerView recyclerViewForCocktailSearch = findViewById(R.id.recyclerViewForCocktail_search);
         recyclerViewForCocktailSearch = findViewById(R.id.recyclerViewForCocktail_search);
         LinearLayoutManager layoutManagerForCocktailSearch = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL,false);
@@ -87,12 +88,12 @@ public class CocktailSearchActivity extends AppCompatActivity{
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked){
-                    //Toast.makeText(getApplicationContext(),"재료 검색 모드",Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(),"재료 검색 모드",Toast.LENGTH_LONG).show();
                     switchForUserMade.setVisibility(View.INVISIBLE);
                     spinner.setVisibility(View.INVISIBLE);
                 }
                 else{
-                    //Toast.makeText(getApplicationContext(),"칵테일 검색 모드",Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(),"칵테일 검색 모드",Toast.LENGTH_LONG).show();
                     switchForUserMade.setVisibility(View.VISIBLE);
                     spinner.setVisibility(View.VISIBLE);
                 }
@@ -100,7 +101,6 @@ public class CocktailSearchActivity extends AppCompatActivity{
         });
 
         Intent intent = getIntent();
-        final EditText textForSearch = (EditText) findViewById(R.id.editText_search);
         String ingredientName = intent.getExtras().getString("ingredientName");
         textForSearch.setImeOptions(EditorInfo.IME_ACTION_DONE);
         textForSearch.setText(ingredientName);
@@ -222,6 +222,55 @@ public class CocktailSearchActivity extends AppCompatActivity{
     }
 
     private void setAdapterForCocktailSearchMethod(){
+        for(int i=0; i < 81; i++)
+        {
+            List<String> list;
+            count = i;
+            DocumentReference docRef = db.collection("Recipe").document(String.valueOf(i+6001));
+
+            final int finalI = i;
+            docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot document = task.getResult();
+                        if (document.exists()) {
+                            //Log.d(TAG, "DocumentSnapshot data: " + document.getData());
+                            Recipe_name[count] = (String) document.get("Recipe_name");
+                            ID[count] = 6001+ count;
+                            method[count] = (String) document.get("method");
+                            //abv[0] = (String) document.get("abv");
+
+                            Recipe_Ingredient = (Map<String, Number>) document.get("Ingredient_content");
+                            //Recipe_Base[count] = (String) document.get("Recipe_Base");
+
+                            //map으로 받아온 정보를 string으로 치환한뒤 유저에게 보여줄 수 있도록 replaceall함({, }, = 삭제 ml 추가)
+                            Recipe_Base[count] = String.valueOf(Recipe_Ingredient);
+                            Recipe_Base[count] = Recipe_Base[count].replaceAll("\\,", "ml ");
+                            Recipe_Base[count] = Recipe_Base[count].replaceAll("\\{", " ");
+                            Recipe_Base[count] = Recipe_Base[count].replaceAll("\\}", "ml ");
+                            Recipe_Base[count] = Recipe_Base[count].replaceAll("\\=", " ");
+                            //long형태로 받은 abv를 유저에게 보여줄 수 있도록 %를 붙여 재저장
+                            Realabv[count] = (long) document.get("abv");
+                            abv[count] = Realabv[count] + "%";
+                            ref[count] = (String) document.get("ref");
+                            adapterForCocktailSearch.addItem(new Cocktail(Recipe_name[count], ID[count], method[count], Recipe_Base[count], abv[count],ref[count]));
+                            //Log.d(TAG, "DocumentSnapshot data: " + Recipe_name[count] + ID[count]+ method[count]+ Recipe_Base[count]+ abv[count]+ref[count]);
+                            //refresh 해주는 함수(아마)
+                            recyclerViewForCocktailSearch.setAdapter(adapterForCocktailSearch);
+
+                        } else {
+                            //Log.d(TAG, "No such document");
+                        }
+                    } else {
+                        //Log.d(TAG, "get failed with ", task.getException());
+                    }
+                }
+            });
+        }
+    }
+
+    private void setAdapterForIngredientSearch(){
         for(int i=0; i < 81; i++)
         {
             List<String> list;
