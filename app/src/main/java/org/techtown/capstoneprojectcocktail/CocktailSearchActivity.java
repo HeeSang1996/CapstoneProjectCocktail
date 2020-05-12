@@ -2,7 +2,6 @@ package org.techtown.capstoneprojectcocktail;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -28,8 +27,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.List;
 import java.util.Map;
-
-import static androidx.constraintlayout.widget.Constraints.TAG;
 
 public class CocktailSearchActivity extends AppCompatActivity{
 
@@ -59,6 +56,8 @@ public class CocktailSearchActivity extends AppCompatActivity{
     String[] Ingredient_specific_gravity = new String[127];
     int Ingredient_count;
 
+    RecyclerView recyclerViewForCocktailSearch;
+
     @Override
     protected  void onCreate(Bundle saveInstanceState){
         super.onCreate(saveInstanceState);
@@ -68,7 +67,8 @@ public class CocktailSearchActivity extends AppCompatActivity{
         final ToggleButton toggleForCocktailOrIngredient = findViewById(R.id.switch_ingredient_check);
         final Switch switchForUserMade = findViewById(R.id.switch_userRecipe_search);
         final Spinner spinner = (Spinner) findViewById(R.id.spinner_orderBy_search);
-        final RecyclerView recyclerViewForCocktailSearch = findViewById(R.id.recyclerViewForCocktail_search);
+        //final RecyclerView recyclerViewForCocktailSearch = findViewById(R.id.recyclerViewForCocktail_search);
+        recyclerViewForCocktailSearch = findViewById(R.id.recyclerViewForCocktail_search);
         LinearLayoutManager layoutManagerForCocktailSearch = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL,false);
         recyclerViewForCocktailSearch.setLayoutManager(layoutManagerForCocktailSearch);
 
@@ -152,7 +152,9 @@ public class CocktailSearchActivity extends AppCompatActivity{
             Toast.makeText(getApplicationContext(),initialText + " 칵테일 검색",Toast.LENGTH_SHORT).show();
         }
 
+        setAdapterForCocktailSearchMethod();
         //수정필 테스트용
+        /*
         for(int i=0; i < 81; i++)
         {
             List<String> list;
@@ -199,6 +201,7 @@ public class CocktailSearchActivity extends AppCompatActivity{
                 }
             });
         }
+         */
         //수정필 테스트용
 
         adapterForCocktailSearch.setOnItemClickListener(new OnCocktailItemClickListenerForSearch() {
@@ -215,5 +218,54 @@ public class CocktailSearchActivity extends AppCompatActivity{
                 startActivity(intent);
             }
         });
+    }
+
+    private void setAdapterForCocktailSearchMethod(){
+        for(int i=0; i < 81; i++)
+        {
+            List<String> list;
+            count = i;
+            DocumentReference docRef = db.collection("Recipe").document(String.valueOf(i+6001));
+
+            final int finalI = i;
+            docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot document = task.getResult();
+                        if (document.exists()) {
+                            //Log.d(TAG, "DocumentSnapshot data: " + document.getData());
+                            Recipe_name[count] = (String) document.get("Recipe_name");
+                            ID[count] = 6001+ count;
+                            method[count] = (String) document.get("method");
+                            //abv[0] = (String) document.get("abv");
+
+                            Recipe_Ingredient = (Map<String, Number>) document.get("Ingredient_content");
+                            //Recipe_Base[count] = (String) document.get("Recipe_Base");
+
+                            //map으로 받아온 정보를 string으로 치환한뒤 유저에게 보여줄 수 있도록 replaceall함({, }, = 삭제 ml 추가)
+                            Recipe_Base[count] = String.valueOf(Recipe_Ingredient);
+                            Recipe_Base[count] = Recipe_Base[count].replaceAll("\\,", "ml ");
+                            Recipe_Base[count] = Recipe_Base[count].replaceAll("\\{", " ");
+                            Recipe_Base[count] = Recipe_Base[count].replaceAll("\\}", "ml ");
+                            Recipe_Base[count] = Recipe_Base[count].replaceAll("\\=", " ");
+                            //long형태로 받은 abv를 유저에게 보여줄 수 있도록 %를 붙여 재저장
+                            Realabv[count] = (long) document.get("abv");
+                            abv[count] = Realabv[count] + "%";
+                            ref[count] = (String) document.get("ref");
+                            adapterForCocktailSearch.addItem(new Cocktail(Recipe_name[count], ID[count], method[count], Recipe_Base[count], abv[count],ref[count]));
+                            //Log.d(TAG, "DocumentSnapshot data: " + Recipe_name[count] + ID[count]+ method[count]+ Recipe_Base[count]+ abv[count]+ref[count]);
+                            //refresh 해주는 함수(아마)
+                            recyclerViewForCocktailSearch.setAdapter(adapterForCocktailSearch);
+
+                        } else {
+                            //Log.d(TAG, "No such document");
+                        }
+                    } else {
+                        //Log.d(TAG, "get failed with ", task.getException());
+                    }
+                }
+            });
+        }
     }
 }

@@ -16,7 +16,7 @@
         android:id="@+id/button1_mjh"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="롱 아일랜드 티" />
+        android:text="블루 하와이안" />
 
     <Button
         android:id="@+id/button2_mjh"
@@ -28,7 +28,7 @@
         android:id="@+id/button3_mjh"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="푸스 카페 레인보우" />
+        android:text="위스키 플롯" />
 
     <!--
     <FrameLayout

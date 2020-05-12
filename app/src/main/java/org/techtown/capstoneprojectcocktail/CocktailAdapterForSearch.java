@@ -158,4 +158,20 @@ public class CocktailAdapterForSearch extends RecyclerView.Adapter<CocktailAdapt
         }
         notifyDataSetChanged();
     }
+
+    public void filterForIngredient(String charText) {
+        charText = charText.toLowerCase(Locale.getDefault());
+        items.clear();
+        if (charText.length() == 0) {
+            items.addAll(items_buffer);
+        } else {
+            for (Cocktail potion : items_buffer) {
+                if (potion.getName().contains(charText)||potion.getIngredient().contains(charText)) {
+                    items.add(potion);
+                }
+            }
+        }
+        notifyDataSetChanged();
+    }
+
 }
