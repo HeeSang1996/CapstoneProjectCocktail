@@ -73,8 +73,21 @@ public class CocktailSearchActivity extends AppCompatActivity{
         final EditText textForSearch = (EditText) findViewById(R.id.editText_search);
         //final RecyclerView recyclerViewForCocktailSearch = findViewById(R.id.recyclerViewForCocktail_search);
         recyclerViewForCocktailSearch = findViewById(R.id.recyclerViewForCocktail_search);
+
+        Intent intent = getIntent();
+        String ingredientName = intent.getExtras().getString("ingredientName");
+        textForSearch.setImeOptions(EditorInfo.IME_ACTION_DONE);
+        textForSearch.setText(ingredientName);
+
+
+        String initialText = textForSearch.getText().toString();
+        setAdapterForCocktailSearchMethod(initialText);
+
+
         LinearLayoutManager layoutManagerForCocktailSearch = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL,false);
         recyclerViewForCocktailSearch.setLayoutManager(layoutManagerForCocktailSearch);
+
+
 
         switchForUserMade.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -85,7 +98,7 @@ public class CocktailSearchActivity extends AppCompatActivity{
                 }else{
                     //Toast.makeText(getApplicationContext(),"사용자 레시피 검색 OFF",Toast.LENGTH_LONG).show();
                     adapterForCocktailSearch.clearAllForAdapter();
-                    setAdapterForCocktailSearchMethod();
+                    setAdapterForCocktailSearchMethod("");
                 }
             }
         });
@@ -112,16 +125,12 @@ public class CocktailSearchActivity extends AppCompatActivity{
                     //유저가 올린 칵테일 검색 모드가 꺼져 있을 경우
                     else{
                         //Toast.makeText(getApplicationContext(),"칵테일 검색 모드",Toast.LENGTH_LONG).show();
-                        setAdapterForCocktailSearchMethod();
+                        setAdapterForCocktailSearchMethod("");
                     }
                 }
             }
         });
 
-        Intent intent = getIntent();
-        String ingredientName = intent.getExtras().getString("ingredientName");
-        textForSearch.setImeOptions(EditorInfo.IME_ACTION_DONE);
-        textForSearch.setText(ingredientName);
         textForSearch.setOnEditorActionListener(new TextView.OnEditorActionListener()
         {
             @Override
@@ -166,16 +175,7 @@ public class CocktailSearchActivity extends AppCompatActivity{
             }
         });
 
-        String initialText = textForSearch.getText().toString();
-        setAdapterForCocktailSearchMethod();
-        if (initialText.length()==0){
-            Toast.makeText(getApplicationContext(),"모든 칵테일 검색",Toast.LENGTH_SHORT).show();
-        }
-        else{
-            Toast.makeText(getApplicationContext(),initialText + " 칵테일 검색",Toast.LENGTH_SHORT).show();
-            //adapterForCocktailSearch.filterForCocktail(initialText);
-            //recyclerViewForCocktailSearch.setAdapter(adapterForCocktailSearch);
-        }
+
 
         //수정필 테스트용
 
@@ -246,7 +246,8 @@ public class CocktailSearchActivity extends AppCompatActivity{
         });
     }
 
-    private void setAdapterForCocktailSearchMethod(){
+    private void setAdapterForCocktailSearchMethod(String str){
+        final String _str = str;
         for(int i=0; i < 81; i++)
         {
             List<String> list;
@@ -282,7 +283,13 @@ public class CocktailSearchActivity extends AppCompatActivity{
                             adapterForCocktailSearch.addItem(new Cocktail(Recipe_name[count], ID[count], method[count], Recipe_Base[count], abv[count],ref[count]));
                             //Log.d(TAG, "DocumentSnapshot data: " + Recipe_name[count] + ID[count]+ method[count]+ Recipe_Base[count]+ abv[count]+ref[count]);
                             //refresh 해주는 함수(아마)
-                            recyclerViewForCocktailSearch.setAdapter(adapterForCocktailSearch);
+                            if (_str.length()==0){
+                                recyclerViewForCocktailSearch.setAdapter(adapterForCocktailSearch);
+                            }
+                            else{
+                                adapterForCocktailSearch.filterForCocktail(_str);
+                                recyclerViewForCocktailSearch.setAdapter(adapterForCocktailSearch);
+                            }
 
                         } else {
                             //Log.d(TAG, "No such document");
