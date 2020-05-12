@@ -3,7 +3,7 @@ package org.techtown.capstoneprojectcocktail;
 public class MJH_Object_simulator {
 
     int total_step = 0;
-    int in_glass_step = 0;
+    int in_glass_step = 1;
     public MJH_Object_cocktail[] simulator_step = new MJH_Object_cocktail[100]; //step은 백 까지만
 
     MJH_Object_ingredient[] muddle_list = new MJH_Object_ingredient[100];
@@ -34,7 +34,8 @@ public class MJH_Object_simulator {
 
     public void add_step_layering(int step_num, int associate_step_num, int ingredient_num, MJH_Object_ingredient[] input_ingredient, float[] amount, int layering_type){ // (스탭번호, 재료인풋, 재료량(ml))
         MJH_Object_cocktail cocktail_buffer_layering = new MJH_Object_cocktail();
-
+        int befor_in_glass_step = in_glass_step;
+        in_glass_step = step_num;
         if(is_there_cocktail_in_glass() != 9999){
             try{
                 this.simulator_step[step_num - 1] = (MJH_Object_cocktail) this.simulator_step[is_there_cocktail_in_glass()].clone();
@@ -46,14 +47,12 @@ public class MJH_Object_simulator {
                         this.simulator_step[i].is_in_glass = false;
                 }
                 this.simulator_step[step_num - 1].is_in_glass = true;
-                in_glass_step = step_num;
             }catch (Exception e){ }
         }
         else{
             calc_kind_layering(ingredient_num, input_ingredient, amount, layering_type);
             this.simulator_step[step_num - 1].is_in_glass = true;
             this.simulator_step[step_num - 1].is_layering = ingredient_num;
-            in_glass_step = step_num;
         }
         total_step++;
     }
@@ -148,9 +147,13 @@ public class MJH_Object_simulator {
             this.simulator_step[in_glass_step - 1].is_layering++;
         }
         if(layering_type == 2){
-            this.simulator_step[in_glass_step - 1].is_layering = make_layer(layer_num_buffer, ingredient_num, input_ingredient, amount);
+            array_push_for_gradient(input_ingredient[0], amount[0], 70);
+            this.simulator_step[in_glass_step - 1].is_layering++;
         }
         if(layering_type == 3){
+            this.simulator_step[in_glass_step - 1].is_layering = make_layer(layer_num_buffer, ingredient_num, input_ingredient, amount);
+        }
+        if(layering_type == 4){
             this.simulator_step[in_glass_step - 1].is_layering = make_layer(layer_num_buffer, ingredient_num, input_ingredient, amount);
             for(int i = layer_num_buffer; i < this.simulator_step[in_glass_step - 1].is_layering; i++){
                 this.simulator_step[in_glass_step - 1].is_boundary_dirty[i] = 1; //1이면 yes

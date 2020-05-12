@@ -2,135 +2,154 @@ package org.techtown.capstoneprojectcocktail;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import static androidx.constraintlayout.widget.Constraints.TAG;
+
 public class MJH_SimulatorActivity extends AppCompatActivity {
+
+    public FirebaseFirestore db = FirebaseFirestore.getInstance();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.min_cocktail_simulator_activity);
-/*
-        // 그라데이션 커스텀뷰
-        //CustomView myView = new CustomView(this);
-        //setContentView(myView);
 
+        MJH_Object_simulator test = new MJH_Object_simulator(0,0);
 
-        //FrameLayout fl = (FrameLayout)findViewById(R.id.frameLayout1);
-        //MyView m = new MyView(fl.getContext());
-       // setContentView(m);
-
-        //시뮬 start
-        //Object_simulator s1 = new Object_simulator("하이볼", 1); // 하이볼잔, 얼음은 각 얼음 선택
-
-        //시뮬 step1
-
+        //sample ingredient
+        MJH_Object_color color1 = new MJH_Object_color(255, 0, 0);
+        MJH_Object_color color2 = new MJH_Object_color(255, 255, 0);
+        MJH_Object_color color3 = new MJH_Object_color(155, 0, 100);
+        MJH_Object_color color4 = new MJH_Object_color(155, 255, 111);
 
         /*
-        System.out.println(c1.rgb_red);
-        System.out.println(c1.rgb_green);
-        System.out.println(c1.rgb_blue);
+        MJH_Object_ingredient[] input = new MJH_Object_ingredient[100];
+        float[] input_amount = new float[2];
+        input[0] = new MJH_Object_ingredient((float)1.01, 20, 20, 20, 20, 20, color1);
+        input_amount[0] = 20;
+        input[1] = new MJH_Object_ingredient((float)1.1, 20, 20, 20, 20, 20, color2);
+        input_amount[1] = 20;
 
-        System.out.println(c1.cmyk_black_key);
-        System.out.println(c1.cmyk_cyan);
-        System.out.println(c1.cmyk_magenta);
-        System.out.println(c1.cmyk_yellow);
+        MJH_Object_ingredient[] input2 = new MJH_Object_ingredient[100];
+        float[] input_amount2 = new float[2];
+        input2[0] = new MJH_Object_ingredient((float)1.01, 20, 20, 20, 20, 20, color3);
+        input_amount2[0] = 20;
+        input2[1] = new MJH_Object_ingredient((float)1.1, 20, 20, 20, 20, 20, color4);
+        input_amount2[1] = 20;
 
-        TextView textView1 = (TextView) findViewById(R.id.textView) ;
-        textView1.setText("Text is changed.") ;
-        textView1.setTextColor(Color.parseColor(c1.get_android_color_type()));
-        System.out.println("안드컬러값" + c1.get_android_color_type());
-        */
+        test.add_step_layering(1, 0, 2, input, input_amount, 3);
+        test.add_step_layering(2, 0, 2, input2, input_amount2, 3);
+         */
 
-/*
+        MJH_Object_ingredient[] input = new MJH_Object_ingredient[100];
+        float[] input_amount = new float[2];
+        input[0] = new MJH_Object_ingredient((float)1.01, 20, 20, 20, 20, 20, color1);
+        input_amount[0] = 20;
 
+        MJH_Object_ingredient[] input2 = new MJH_Object_ingredient[100];
+        float[] input_amount2 = new float[2];
+        input2[0] = new MJH_Object_ingredient((float)1.01, 20, 20, 20, 20, 20, color3);
+        input_amount2[0] = 20;
+        input2[1] = new MJH_Object_ingredient((float)1.1, 20, 20, 20, 20, 20, color4);
+        input_amount2[1] = 20;
 
-        MJH_Object_color c1 = new MJH_Object_color(255, 204, 51);
-        MJH_Object_color c2 = new MJH_Object_color(102, 102, 102);
-        MJH_Object_color result;
- */
-/*
-        result = add_color(c1, c2, 50, 50);
-
-        System.out.println(result.get_android_color_type());
-
-
-
-        TextView textView1 = (TextView) findViewById(R.id.textView) ;
-        textView1.setText("Color is changed.") ;
-        textView1.setBackgroundColor(Color.parseColor(result.get_android_color_type()));
-        */
-/*
-        int[] a = new int[5];
-
-        float[] amount = new float[2];
-        amount[0] = 30;
-        amount[1] = 30;
+        test.add_step_layering(1, 0, 1, input, input_amount, 3);
+        test.add_step_layering(1, 0, 1, input2, input_amount2, 0);
 
 
-        MJH_Object_ingredient[] input = new MJH_Object_ingredient[2];
-        input[0] = new MJH_Object_ingredient((float)0.9, (float)0.3, 5, 1, 1, 1, c1);
-        input[1] = new MJH_Object_ingredient((float)0.8, (float)0.4, 5, 1, 1, 1, c1);
-        MJH_Object_simulator test = new MJH_Object_simulator(0, 0);
-        //test.add_step_buildings(1, 0, a, 2, input,  amount);
-
-        System.out.println(test.simulator_step[0].is_color[0].get_android_color_type());
-        System.out.println(test.simulator_step[0].total_volume);
-        System.out.println(test.simulator_step[0].total_abv);
-        System.out.println(test.simulator_step[0].specific_gravity[0]);
-
-
-        MJH_Object_ingredient[] input2 = new MJH_Object_ingredient[1];
-        input2[0] = new MJH_Object_ingredient((float)0.8, (float)0.4, 5, 1, 1, 1, c2);
-        float[] amount2 = new float[1];
-        amount2[0] = 50;
-
-        System.out.println("---------step2-------");
-        //test.add_step_buildings(2, 1, a, 1, input2,  amount2);
-        System.out.println(test.simulator_step[1].is_color[0].get_android_color_type());
-        System.out.println(test.simulator_step[1].total_volume);
-        System.out.println(test.simulator_step[1].total_abv);
-        System.out.println(test.simulator_step[1].specific_gravity[0]);
-
-
-        MJH_Object_ingredient[] input3 = new MJH_Object_ingredient[2];
-        input3[0] = new MJH_Object_ingredient((float)0.8, (float)0.4, 5, 1, 1, 1, c1);
-        float[] amount3 = new float[2];
-        amount3[0] = 50;
-
-        int[] b = new int[5];
-
-        b[0] = 0;
-        b[1] = 1;
-
-        System.out.println("---------step3-------");
-        //test.add_step_buildings(3, 2, b, 1, input3,  amount3);
-        System.out.println(test.simulator_step[2].is_color[0].get_android_color_type());
-        System.out.println(test.simulator_step[2].total_volume);
-        System.out.println(test.simulator_step[2].total_abv);
-        System.out.println(test.simulator_step[2].specific_gravity[0]);
 
         TextView textView1 = (TextView) findViewById(R.id.textView) ;
         textView1.setText("Color is changed.") ;
-        textView1.setBackgroundColor(Color.parseColor(test.simulator_step[0].is_color[0].get_android_color_type()));
-        */
+        textView1.setBackgroundColor(Color.parseColor(test.simulator_step[test.in_glass_step - 1].is_color[1].get_android_color_type()));
+        System.out.println(test.total_step);
+        System.out.println(test.simulator_step[test.in_glass_step - 1].total_abv);
+        System.out.println(test.simulator_step[test.in_glass_step - 1].total_volume);
+        System.out.println(test.simulator_step[test.in_glass_step - 1].is_gradient);
+
+
+
     }
 
 
-    /*
-    public Object_color add_color(Object_color color_one, Object_color color_two, float vol_one, float vol_two){
-        float result_red;
-        float result_blue;
-        float result_green;
+    public void setDocument() {
+        Map<String, Object> Ingredient_info = new HashMap<>();
+        Ingredient_info.put("Ingredient_name", "테스트");
+        Ingredient_info.put("Ingredient_type", "베이스");
+        Ingredient_info.put("abv", 0);
+        Ingredient_info.put("sugar_rate", 24);
+        Ingredient_info.put("salty", 0);
+        Ingredient_info.put("bitter", 0);
+        Ingredient_info.put("sour", 0);
+        Ingredient_info.put("flavour", "개같은 맛과 향");
+        Ingredient_info.put("specific_gravity", 0.135);
+        Map<String, Number> Ingredient_color = new HashMap<>();
 
-        result_red = ((color_one.rgb_red * vol_one) + (color_two.rgb_red * vol_two)) / (vol_one + vol_two);
-        result_green = ((color_one.rgb_green * vol_one) + (color_two.rgb_green * vol_two)) / (vol_one + vol_two);
-        result_blue = ((color_one.rgb_blue * vol_one) + (color_two.rgb_blue* vol_two)) / (vol_one + vol_two);
+        Ingredient_color.put("Red", 210);
+        Ingredient_color.put("Green", 0);
+        Ingredient_color.put("Blue", 0);
 
-        Object_color color_result = new Object_color(result_red, result_green, result_blue);
-        return color_result;
+        Ingredient_info.put("Ingredient_color", Ingredient_color);
+
+        db.collection("Ingredient").document("5006")
+                .set(Ingredient_info)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d(TAG, "DocumentSnapshot successfully written!");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "Error writing document", e);
+                    }
+                });
+        // [END set_document]
+
+        //Map<String, Object> data = new HashMap<>();
+        // [START set_with_id]
+        //db.collection("Ingredient").document("5006").set(data);
+        // [END set_with_id]
     }
-    */
+
+    public void getDocument(DocumentReference docRef){
+        //가져오기
+        docRef = db.collection("Ingredient").document("5006");
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        //해당 데이터 전부 읽어오기
+                        Log.d(TAG, "DocumentSnapshot data: " + document.getData());
+                        //일부만 읽어오기
+                        String name = (String) document.get("Ingredient_name");
+                        Log.d(TAG, "DocumentSnapshot data: " + name);
+                    } else {
+                        Log.d(TAG, "No such document");
+                    }
+                } else {
+                    Log.d(TAG, "get failed with ", task.getException());
+                }
+            }
+        });
+    }
 }

@@ -23,9 +23,11 @@ import java.util.Locale;
 
 public class CocktailAdapterForSearch extends RecyclerView.Adapter<CocktailAdapterForSearch.ViewHolder> implements OnCocktailItemClickListenerForSearch{
     ArrayList<Cocktail> items = new ArrayList<Cocktail>();
+    ArrayList<Cocktail> items_buffer = new ArrayList<Cocktail>();
     OnCocktailItemClickListenerForSearch listener;
 
     public class ViewHolder extends RecyclerView.ViewHolder{
+
         TextView textForCocktailName;
         TextView textForCocktailDescription;
         TextView textForCocktailABV;
@@ -143,4 +145,20 @@ public class CocktailAdapterForSearch extends RecyclerView.Adapter<CocktailAdapt
     }
      */
     //수정필 필터
+
+
+    public void filter(String charText) {
+        charText = charText.toLowerCase(Locale.getDefault());
+        items_buffer.clear();
+        if (charText.length() == 0) {
+            items_buffer.addAll(items);
+        } else {
+            for (Cocktail potion : items) {
+                if (potion.getName().contains(charText)) {
+                    items_buffer.add(potion);
+                }
+            }
+        }
+        notifyDataSetChanged();
+    }
 }

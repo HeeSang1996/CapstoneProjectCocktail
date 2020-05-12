@@ -76,8 +76,9 @@ public class MJH_Object_cocktail implements Cloneable{
 
         for(int i = 0; i < is_layering; i++){
             this.total_volume = this.total_volume + this.each_volume[i];
-            this.total_abv = this.total_abv + this.each_abv[i];
+            this.total_abv = this.total_abv + this.each_volume[i] * this.each_abv[i] / 100;
         }
+        this.total_abv = this.total_abv / this.total_volume * 100;
     }
 
 }

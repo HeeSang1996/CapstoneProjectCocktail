@@ -36,7 +36,7 @@ import static androidx.constraintlayout.widget.Constraints.TAG;
 
 public class CocktailSearchActivity extends AppCompatActivity{
 
-    CocktailAdapterForSearch adapterForCocktailSearchChanges;
+    final CocktailAdapterForSearch adapterForCocktailSearch = new CocktailAdapterForSearch();
 
     public FirebaseFirestore db = FirebaseFirestore.getInstance();
     String[] Recipe_name = new String[20];
@@ -118,6 +118,7 @@ public class CocktailSearchActivity extends AppCompatActivity{
                                 Toast.makeText(getApplicationContext(),"사용자들이 올린 " + inputText + " 칵테일 검색",Toast.LENGTH_SHORT).show();
                             }else{
                                 Toast.makeText(getApplicationContext(),inputText + " 칵테일 검색",Toast.LENGTH_SHORT).show();
+                                adapterForCocktailSearch.filter(inputText );
                             }
                         }
                     }
@@ -142,7 +143,6 @@ public class CocktailSearchActivity extends AppCompatActivity{
         final RecyclerView recyclerViewForCocktailSearch = findViewById(R.id.recyclerViewForCocktail_search);
         LinearLayoutManager layoutManagerForCocktailSearch = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL,false);
         recyclerViewForCocktailSearch.setLayoutManager(layoutManagerForCocktailSearch);
-        final CocktailAdapterForSearch adapterForCocktailSearch = new CocktailAdapterForSearch();
 
         String initialText = textForSearch.getText().toString();
         if (textForSearch.getText().toString().length()==0){
