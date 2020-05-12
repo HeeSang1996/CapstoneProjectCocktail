@@ -173,7 +173,7 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        RecyclerView recyclerViewForCocktailHome = root.findViewById(R.id.recyclerViewForCocktail_home);
+        final RecyclerView recyclerViewForCocktailHome = root.findViewById(R.id.recyclerViewForCocktail_home);
         LinearLayoutManager layoutManagerForCocktailHome = new LinearLayoutManager(root.getContext(), LinearLayoutManager.HORIZONTAL,false);
         recyclerViewForCocktailHome.setLayoutManager(layoutManagerForCocktailHome);
         final CocktailAdapterForHome adapterForCocktailHome = new CocktailAdapterForHome();
@@ -186,35 +186,48 @@ public class HomeFragment extends Fragment {
             count = i;
             DocumentReference docRef = db.collection("Recipe").document(String.valueOf(i+6001));
 
+            final int finalI = i;
             docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                    if (task.isSuccessful()) {
-                        DocumentSnapshot document = task.getResult();
-                        if (document.exists()) {
-                            //Log.d(TAG, "DocumentSnapshot data: " + document.getData());
-                            Recipe_name[count] = (String) document.get("Recipe_name");
-                            ID[count] = 6001+ count;
-                            method[count] = (String) document.get("method");
-                            Recipe_Base[count] = (String) document.get("Recipe_Base");
-                            //abv[0] = (String) document.get("abv");
-                            abv[count] = "시발";
-                            ref[count] = (String) document.get("ref");
-                            adapterForCocktailHome.addItem(new Cocktail(Recipe_name[count], ID[count], method[count], Recipe_Base[count], abv[count],ref[count]));
-                            Log.d(TAG, "DocumentSnapshot data: " + Recipe_name[count] + ID[count]+ method[count]+ Recipe_Base[count]+ abv[count]+ref[count]);
-                        } else {
-                            Log.d(TAG, "No such document");
-                        }
-                    } else {
-                        Log.d(TAG, "get failed with ", task.getException());
-                    }
+            if (task.isSuccessful()) {
+                DocumentSnapshot document = task.getResult();
+                if (document.exists()) {
+                    //Log.d(TAG, "DocumentSnapshot data: " + document.getData());
+                    Recipe_name[count] = (String) document.get("Recipe_name");
+                    ID[count] = 6001+ count;
+                    method[count] = (String) document.get("method");
+                    Recipe_Base[count] = (String) document.get("Recipe_Base");
+                    //abv[0] = (String) document.get("abv");
+                    abv[count] = "시발";
+                    ref[count] = (String) document.get("ref");
+                    adapterForCocktailHome.addItem(new Cocktail(Recipe_name[count], ID[count], method[count], Recipe_Base[count], abv[count],ref[count]));
+                    //Log.d(TAG, "DocumentSnapshot data: " + Recipe_name[count] + ID[count]+ method[count]+ Recipe_Base[count]+ abv[count]+ref[count]);
+                    //refresh 해주는 함수(아마)
+                    recyclerViewForCocktailHome.setAdapter(adapterForCocktailHome);
+
+                } else {
+                    Log.d(TAG, "No such document");
                 }
-            });
+            } else {
+                Log.d(TAG, "get failed with ", task.getException());
+            }
         }
-        for(int i=0; i<20; i++) {
-            Log.d(TAG, "DocumentSnapshot data: " + Recipe_name[i]);
-            Log.d(TAG, "Count" + i);
+        });
         }
+        adapterForCocktailHome.setOnItemClickListener(new OnCocktailItemClickListenerForHome() {
+            @Override
+            public void onItemClick(CocktailAdapterForHome.ViewHolder holder, View view, int position) {
+                Cocktail item = adapterForCocktailHome.getItem(position);
+                //Toast.makeText(getActivity().getApplicationContext(),"선택된 칵테일: " + item.getName(),Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(view.getContext(), CocktailRecipeActivity.class);
+                intent.putExtra("cocktailName", item.getName());
+                intent.putExtra("cocktailDescription",item.getDescription());
+                intent.putExtra("cocktailIngredient",item.getIngredient());
+                startActivity(intent);
+            }
+        });
+
 //        for(int i=0; i<20; i++) {
 //                adapterForCocktailHome.addItem(new Cocktail(Recipe_name[i], i, "맛있는 칵테일 " + i + "의 설명 정말 맛있다 맛있는 칵테일" + i +
 //                        "의 설명 정말 맛있다 ", "Whisky0",i*10 + " %","gs://sbsimulator-96f70.appspot.com/Recipe/BETWEEN THE SHEETS.jpg"));
@@ -249,22 +262,6 @@ public class HomeFragment extends Fragment {
 //                }
 //            });
 //        }
-        //수정필 테스트용
-
-        recyclerViewForCocktailHome.setAdapter(adapterForCocktailHome);
-
-        adapterForCocktailHome.setOnItemClickListener(new OnCocktailItemClickListenerForHome() {
-            @Override
-            public void onItemClick(CocktailAdapterForHome.ViewHolder holder, View view, int position) {
-                Cocktail item = adapterForCocktailHome.getItem(position);
-                //Toast.makeText(getActivity().getApplicationContext(),"선택된 칵테일: " + item.getName(),Toast.LENGTH_LONG).show();
-                Intent intent = new Intent(view.getContext(), CocktailRecipeActivity.class);
-                intent.putExtra("cocktailName", item.getName());
-                intent.putExtra("cocktailDescription",item.getDescription());
-                intent.putExtra("cocktailIngredient",item.getIngredient());
-                startActivity(intent);
-            }
-        });
         return root;
     }
 }
