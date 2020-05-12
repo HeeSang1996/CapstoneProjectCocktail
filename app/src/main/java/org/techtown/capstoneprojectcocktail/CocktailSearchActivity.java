@@ -2,8 +2,6 @@ package org.techtown.capstoneprojectcocktail;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -24,12 +22,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static androidx.constraintlayout.widget.Constraints.TAG;
@@ -57,6 +53,10 @@ public class CocktailSearchActivity extends AppCompatActivity{
         final ToggleButton toggleForCocktailOrIngredient = findViewById(R.id.switch_ingredient_check);
         final Switch switchForUserMade = findViewById(R.id.switch_userRecipe_search);
         final Spinner spinner = (Spinner) findViewById(R.id.spinner_orderBy_search);
+        final RecyclerView recyclerViewForCocktailSearch = findViewById(R.id.recyclerViewForCocktail_search);
+        LinearLayoutManager layoutManagerForCocktailSearch = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL,false);
+        recyclerViewForCocktailSearch.setLayoutManager(layoutManagerForCocktailSearch);
+
         switchForUserMade.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -92,11 +92,10 @@ public class CocktailSearchActivity extends AppCompatActivity{
         textForSearch.setOnEditorActionListener(new TextView.OnEditorActionListener()
         {
             @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event)
-            {
-                if(actionId == EditorInfo.IME_ACTION_DONE)
-                {
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
                     String inputText = textForSearch.getText().toString();
+                    /*
                     if(inputText.length()==0){
                         if (toggleForCocktailOrIngredient.isChecked()){
                             Toast.makeText(getApplicationContext(),"모든 재료 검색",Toast.LENGTH_SHORT).show();
@@ -109,20 +108,18 @@ public class CocktailSearchActivity extends AppCompatActivity{
                             }
                         }
                     }
-                    else {
-                        if (toggleForCocktailOrIngredient.isChecked()){
-                            Toast.makeText(getApplicationContext(),inputText + " 재료 검색",Toast.LENGTH_SHORT).show();
-                        }
-                        else{
-                            if(switchForUserMade.isChecked()){
-                                Toast.makeText(getApplicationContext(),"사용자들이 올린 " + inputText + " 칵테일 검색",Toast.LENGTH_SHORT).show();
-                            }else{
-                                Toast.makeText(getApplicationContext(),inputText + " 칵테일 검색",Toast.LENGTH_SHORT).show();
-                                adapterForCocktailSearch.filter(inputText );
-                            }
+                     */
+                    if (toggleForCocktailOrIngredient.isChecked()) {
+                        Toast.makeText(getApplicationContext(), inputText + " 재료 검색", Toast.LENGTH_SHORT).show();
+                    } else {
+                        if (switchForUserMade.isChecked()) {
+                            Toast.makeText(getApplicationContext(), "사용자들이 올린 " + inputText + " 칵테일 검색", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(getApplicationContext(), inputText + " 칵테일 검색", Toast.LENGTH_SHORT).show();
+                            adapterForCocktailSearch.filter(inputText);
+                            recyclerViewForCocktailSearch.setAdapter(adapterForCocktailSearch);
                         }
                     }
-                    return false;
                 }
                 return false;
             }
@@ -139,10 +136,6 @@ public class CocktailSearchActivity extends AppCompatActivity{
 
             }
         });
-
-        final RecyclerView recyclerViewForCocktailSearch = findViewById(R.id.recyclerViewForCocktail_search);
-        LinearLayoutManager layoutManagerForCocktailSearch = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL,false);
-        recyclerViewForCocktailSearch.setLayoutManager(layoutManagerForCocktailSearch);
 
         String initialText = textForSearch.getText().toString();
         if (textForSearch.getText().toString().length()==0){

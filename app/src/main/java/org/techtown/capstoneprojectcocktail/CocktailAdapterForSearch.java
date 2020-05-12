@@ -4,8 +4,6 @@ import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Filter;
-import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -100,6 +98,7 @@ public class CocktailAdapterForSearch extends RecyclerView.Adapter<CocktailAdapt
 
     public void addItem(Cocktail item){
         items.add(item);
+        items_buffer.add(item);
     }
 
     public void setItems(ArrayList<Cocktail> items){
@@ -149,13 +148,14 @@ public class CocktailAdapterForSearch extends RecyclerView.Adapter<CocktailAdapt
 
     public void filter(String charText) {
         charText = charText.toLowerCase(Locale.getDefault());
-        items_buffer.clear();
+        items.clear();
         if (charText.length() == 0) {
-            items_buffer.addAll(items);
+            items.addAll(items_buffer);
         } else {
-            for (Cocktail potion : items) {
+            for (Cocktail potion : items_buffer) {
                 if (potion.getName().contains(charText)) {
-                    items_buffer.add(potion);
+                    System.out.println("1");
+                    items.add(potion);
                 }
             }
         }
