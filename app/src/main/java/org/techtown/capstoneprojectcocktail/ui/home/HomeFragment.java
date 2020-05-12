@@ -14,34 +14,27 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import org.techtown.capstoneprojectcocktail.Cocktail;
 import org.techtown.capstoneprojectcocktail.CocktailAdapterForHome;
-import org.techtown.capstoneprojectcocktail.CocktailIngredient;
 import org.techtown.capstoneprojectcocktail.CocktailIngredientButton;
 import org.techtown.capstoneprojectcocktail.CocktailIngredientButtonAdapter;
 import org.techtown.capstoneprojectcocktail.CocktailRecipeActivity;
 import org.techtown.capstoneprojectcocktail.CocktailSearchActivity;
 import org.techtown.capstoneprojectcocktail.MJH_SimulatorActivity;
 import org.techtown.capstoneprojectcocktail.OnCocktailIngredientButtonItemClickListener;
-import org.techtown.capstoneprojectcocktail.OnCocktailIngredientButtonItemClickListener;
 import org.techtown.capstoneprojectcocktail.OnCocktailItemClickListenerForHome;
 import org.techtown.capstoneprojectcocktail.R;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -235,6 +228,7 @@ public class HomeFragment extends Fragment {
                 intent.putExtra("cocktailName", item.getName());
                 intent.putExtra("cocktailDescription",item.getDescription());
                 intent.putExtra("cocktailIngredient",item.getIngredient());
+                intent.putExtra("cocktailABV",item.getAbvNum());
                 intent.putExtra("cocktailRef",item.getImageUrl());
                 startActivity(intent);
             }

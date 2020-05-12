@@ -3,8 +3,6 @@ package org.techtown.capstoneprojectcocktail;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -17,8 +15,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
-import static androidx.constraintlayout.widget.Constraints.TAG;
-
 public class CocktailRecipeActivity extends AppCompatActivity {
     @Override
     public void onCreate(Bundle saveInstanceState){
@@ -30,11 +26,13 @@ public class CocktailRecipeActivity extends AppCompatActivity {
         TextView textForCocktailName = (TextView) findViewById(R.id.textView_cocktailName_recipe);
         TextView textForCocktailDescription = (TextView) findViewById(R.id.textView_cocktailDescription_recipe);
         TextView textForCocktailIngredient = (TextView) findViewById(R.id.textView_cocktailIngredient_recipe);
+        TextView textForCocktailABV = (TextView) findViewById(R.id.textView_cocktailABV_recipe);
         final ImageView imageForCocktail = (ImageView) findViewById(R.id.imageView_cocktail_recipe);
 
         String cocktailName = intent.getExtras().getString("cocktailName");
         String cocktailDescription = intent.getExtras().getString("cocktailDescription");
         String cocktailIngredient = intent.getExtras().getString("cocktailIngredient");
+        String cocktailABV = intent.getExtras().getString("cocktailABV");
         String cocktailRef = intent.getExtras().getString("cocktailRef");
 
         FirebaseStorage storage = FirebaseStorage.getInstance();
@@ -53,9 +51,9 @@ public class CocktailRecipeActivity extends AppCompatActivity {
                 }
             }
         });
-
         textForCocktailName.setText(cocktailName);
         textForCocktailDescription.setText(cocktailDescription);
         textForCocktailIngredient.setText(cocktailIngredient);
+        textForCocktailABV.setText(cocktailABV);
     }
 }
