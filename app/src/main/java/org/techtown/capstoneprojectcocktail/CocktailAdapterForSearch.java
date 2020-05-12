@@ -124,7 +124,6 @@ public class CocktailAdapterForSearch extends RecyclerView.Adapter<CocktailAdapt
         }
     }
 
-
     //수정필 필터
     /*
     public void filter(String charText) {
@@ -145,16 +144,14 @@ public class CocktailAdapterForSearch extends RecyclerView.Adapter<CocktailAdapt
      */
     //수정필 필터
 
-
-    public void filter(String charText) {
+    public void filterForCocktail(String charText) {
         charText = charText.toLowerCase(Locale.getDefault());
         items.clear();
         if (charText.length() == 0) {
             items.addAll(items_buffer);
         } else {
             for (Cocktail potion : items_buffer) {
-                if (potion.getName().contains(charText)) {
-                    System.out.println("1");
+                if (potion.getName().contains(charText)||potion.getIngredient().contains(charText)) {
                     items.add(potion);
                 }
             }

@@ -1,9 +1,10 @@
 package org.techtown.capstoneprojectcocktail;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.TextView;
+import android.view.View;
+import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -33,6 +34,27 @@ public class MJH_SimulatorActivity extends AppCompatActivity {
 
         MJH_Object_simulator test = new MJH_Object_simulator(0,0);
 
+        Button button1 = (Button) findViewById(R.id.button1_mjh);
+        Button button2 = (Button) findViewById(R.id.button2_mjh);
+        Button button3 = (Button) findViewById(R.id.button3_mjh);
+        button1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getApplicationContext(),"1번 버튼 클릭",Toast.LENGTH_LONG).show();
+            }
+        });
+        button2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getApplicationContext(),"2번 버튼 클릭",Toast.LENGTH_LONG).show();
+            }
+        });
+        button3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getApplicationContext(),"3번 버튼 클릭",Toast.LENGTH_LONG).show();
+            }
+        });
         //sample ingredient
         MJH_Object_color color1 = new MJH_Object_color(255, 0, 0);
         MJH_Object_color color2 = new MJH_Object_color(255, 255, 0);
@@ -75,6 +97,7 @@ public class MJH_SimulatorActivity extends AppCompatActivity {
 
 
 
+        /*
         TextView textView1 = (TextView) findViewById(R.id.textView) ;
         textView1.setText("Color is changed.") ;
         textView1.setBackgroundColor(Color.parseColor(test.simulator_step[test.in_glass_step - 1].is_color[1].get_android_color_type()));
@@ -82,6 +105,7 @@ public class MJH_SimulatorActivity extends AppCompatActivity {
         System.out.println(test.simulator_step[test.in_glass_step - 1].total_abv);
         System.out.println(test.simulator_step[test.in_glass_step - 1].total_volume);
         System.out.println(test.simulator_step[test.in_glass_step - 1].is_gradient);
+         */
 
 
 

@@ -110,28 +110,20 @@ public class CocktailSearchActivity extends AppCompatActivity{
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
                     String inputText = textForSearch.getText().toString();
-                    /*
-                    if(inputText.length()==0){
-                        if (toggleForCocktailOrIngredient.isChecked()){
-                            Toast.makeText(getApplicationContext(),"모든 재료 검색",Toast.LENGTH_SHORT).show();
-                        }
-                        else{
-                            if(switchForUserMade.isChecked()){
-                                Toast.makeText(getApplicationContext(),"사용자들이 올린 모든 칵테일 검색",Toast.LENGTH_SHORT).show();
-                            }else{
-                                Toast.makeText(getApplicationContext(),"모든 칵테일 검색",Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                    }
-                     */
+                    //재료 검색 모드에서 검색
                     if (toggleForCocktailOrIngredient.isChecked()) {
                         Toast.makeText(getApplicationContext(), inputText + " 재료 검색", Toast.LENGTH_SHORT).show();
-                    } else {
+                    }
+                    //칵테일 검색 모드에서 검색
+                    else {
+                        //사용자들이 올린 칵테일 검색
                         if (switchForUserMade.isChecked()) {
                             Toast.makeText(getApplicationContext(), "사용자들이 올린 " + inputText + " 칵테일 검색", Toast.LENGTH_SHORT).show();
-                        } else {
+                        }
+                        //기존에 있는 칵테일 레시피 검색
+                        else {
                             Toast.makeText(getApplicationContext(), inputText + " 칵테일 검색", Toast.LENGTH_SHORT).show();
-                            adapterForCocktailSearch.filter(inputText);
+                            adapterForCocktailSearch.filterForCocktail(inputText);
                             recyclerViewForCocktailSearch.setAdapter(adapterForCocktailSearch);
                         }
                     }
