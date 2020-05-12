@@ -55,6 +55,7 @@ public class HomeFragment extends Fragment {
     String[] Recipe_Base = new String[20];
     String[] abv = new String[20];
     String[] ref = new String[20];
+    long[] Realabv = new long[20];
     int count;
 
     public void setDocument() {
@@ -199,7 +200,8 @@ public class HomeFragment extends Fragment {
                     method[count] = (String) document.get("method");
                     Recipe_Base[count] = (String) document.get("Recipe_Base");
                     //abv[0] = (String) document.get("abv");
-                    abv[count] = "시발";
+                    Realabv[count] = (long) document.get("abv");
+                    abv[count] = Realabv[count] + "%";
                     ref[count] = (String) document.get("ref");
                     adapterForCocktailHome.addItem(new Cocktail(Recipe_name[count], ID[count], method[count], Recipe_Base[count], abv[count],ref[count]));
                     //Log.d(TAG, "DocumentSnapshot data: " + Recipe_name[count] + ID[count]+ method[count]+ Recipe_Base[count]+ abv[count]+ref[count]);
