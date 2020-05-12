@@ -35,14 +35,27 @@ public class CocktailSearchActivity extends AppCompatActivity{
     final CocktailAdapterForSearch adapterForCocktailSearch = new CocktailAdapterForSearch();
 
     public FirebaseFirestore db = FirebaseFirestore.getInstance();
-    String[] Recipe_name = new String[20];
-    int[] ID = new int[20];
-    String[] method = new String[20];
-    String[] Recipe_Base = new String[20];
-    String[] abv = new String[20];
-    String[] ref = new String[20];
-    long[] Realabv = new long[20];
+
+    //레시피 정보를 받기 위한 변수들
+    String[] Recipe_name = new String[81];
+    int[] ID = new int[81];
+    String[] method = new String[81];
+    String[] Recipe_Base = new String[81];
+    String[] abv = new String[81];
+    String[] ref = new String[81];
+    long[] Realabv = new long[81];
     int count;
+
+    //재료 정보를 받기 위한 변수들
+    String[] Ingredient_name = new String[127];
+    int[] Ingredient_ID = new int[127];
+    long[] Ingredient_Realabv = new long[127];
+    String[] Ingredient_abv = new String[127];
+    String[] Ingredient_ref = new String[127];
+    String[] Ingredient_sugar = new String[127];
+    String[] Ingredient_flavour = new String[127];
+    String[] Ingredient_specific_gravity = new String[127];
+    int Ingredient_count;
 
     @Override
     protected  void onCreate(Bundle saveInstanceState){
@@ -146,7 +159,7 @@ public class CocktailSearchActivity extends AppCompatActivity{
         }
 
         //수정필 테스트용
-        for(int i=0; i < 20; i++)
+        for(int i=0; i < 81; i++)
         {
             List<String> list;
             count = i;
