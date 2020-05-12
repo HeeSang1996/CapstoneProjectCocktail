@@ -6,12 +6,6 @@
     android:orientation="vertical"
     tools:context=".MJH_SimulatorActivity">
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="240dp"
-        android:layout_height="283dp"
-        android:text="Hello World!" />
-
     <Button
         android:id="@+id/button1_mjh"
         android:layout_width="match_parent"
@@ -29,6 +23,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="위스키 플롯" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:srcCompat="@drawable/home_background" />
 
     <!--
     <FrameLayout
