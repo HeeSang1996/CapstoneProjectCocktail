@@ -318,8 +318,6 @@ public class CocktailSearchActivity extends AppCompatActivity{
                         if (document.exists()) {
                             //System.out.println("DocumentSnapshot data: " + document.getData());
                             //Log.d(TAG, "DocumentSnapshot data: " + document.getData());
-
-                            //Log.d(TAG, "DocumentSnapshot data: " + document.getData());
                             count = finalI;
                             Ingredient_name[count] = (String) document.get("Ingredient_name"); //재료 이름
                             //Log.d(TAG, "count"+ count + "Ingredient_name data: " +Ingredient_name[count]);
@@ -346,6 +344,11 @@ public class CocktailSearchActivity extends AppCompatActivity{
                             //refresh 해주는 함수(아마)
                             recyclerViewForCocktailSearch.setAdapter(adapterForCocktailSearch);
 
+                            //배열에 잘드갔는지 테스트한 for 구문
+                            for(int k=0; k < 127; k++)
+                            {
+                                System.out.println("array_count : "+ k + "   Ingredient_name data: " +Ingredient_name[k]);
+                            }
                         } else {
                             //Log.d(TAG, "No such document");
                         }
