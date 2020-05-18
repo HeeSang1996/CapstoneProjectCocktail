@@ -306,7 +306,7 @@ public class CocktailSearchActivity extends AppCompatActivity{
         for(int i=0; i < 127; i++)
         {
             List<String> list;
-            count = i;
+
             DocumentReference docRef = db.collection("Ingredient").document(String.valueOf(i+5001));
 
             final int finalI = i;
@@ -320,8 +320,10 @@ public class CocktailSearchActivity extends AppCompatActivity{
                             //Log.d(TAG, "DocumentSnapshot data: " + document.getData());
 
                             //Log.d(TAG, "DocumentSnapshot data: " + document.getData());
+                            count = finalI;
                             Ingredient_name[count] = (String) document.get("Ingredient_name"); //재료 이름
-                            //Log.d(TAG, "Ingredient_name data: " +Ingredient_name);
+                            //Log.d(TAG, "count"+ count + "Ingredient_name data: " +Ingredient_name[count]);
+                            System.out.println("array_count : "+ count + "   Ingredient_name data: " +Ingredient_name[count]);
                             Ingredient_ID[count] = 5001+ count;
                             Ingredient_flavour[count] = (String) document.get("flavour"); //향(칵테일에선 설명 method)
                             //abv[0] = (String) document.get("abv");
