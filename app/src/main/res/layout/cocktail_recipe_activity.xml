@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -14,90 +13,123 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
             android:layout_marginHorizontal="10dp"
-            android:layout_marginVertical="20dp">
+            android:layout_marginVertical="20dp"
+            android:orientation="vertical">
 
             <ImageView
                 android:id="@+id/imageView_cocktail_recipe"
                 android:layout_width="match_parent"
-                android:layout_height="250dp"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginVertical="1dp"
-                android:layout_margin="10dp"
+                android:layout_height="300dp"
+                android:layout_gravity="center"
                 app:srcCompat="@drawable/cocktail_sample_image" />
 
             <TextView
                 android:id="@+id/textView_cocktailName_recipe"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginHorizontal="5dp"
                 android:layout_marginVertical="1dp"
-                android:text="맛있는 칵테일 1"
-                android:gravity="left|center_vertical"
                 android:ellipsize="end"
-                android:minHeight="50dp"
+                android:gravity="left|center_vertical"
+                android:text="맛있는 칵테일의 이름"
                 android:textSize="35sp"
-                android:textStyle="bold"/>
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/textView_cocktailDescription_recipe"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginVertical="1dp"
-                android:text="맛있는 칵테일 1의 설명 정말 맛있다맛있는 칵테일 1의 설명 정말 맛있다맛있는 칵테일 1의 설명 정말 맛있다맛있는 칵테일 1의 설명 정말 맛있다맛있는 칵테일 1의 설명 정말 맛있다맛있는 칵테일 1의 설명 정말 맛있다맛있는 칵테일 1의 설명 정말 맛있다맛있는 칵테일 1의 설명 정말 맛있다맛있는 칵테일 1의 설명 정말 맛있다맛있는 칵테일 1의 설명 정말 맛있다맛있는 칵테일 1의 설명 정말 맛있다맛있는 칵테일 1의 설명 정말 맛있다맛있는 칵테일 1의 설명 정말 맛있다맛있는 칵테일 1의 설명 정말 맛있다맛있는 칵테일 1의 설명 정말 맛있다"
-                android:gravity="center"
-                android:minHeight="200dp"
-                android:textSize="20sp"/>
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginVertical="10dp"
+                android:gravity="left|center_vertical"
+                android:text="맛있는 칵테일의 설명"
+                android:textSize="20sp" />
 
             <TextView
                 android:id="@+id/textView_ingredientText_recipe"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginHorizontal="5dp"
                 android:layout_marginVertical="1dp"
-                android:text = "재료"
                 android:gravity="left|center_vertical"
-                android:layout_marginHorizontal="20dp"
-                android:textSize="25sp" />
+                android:text="재료"
+                android:textSize="25sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/textView_cocktailIngredient_recipe"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginVertical="1dp"
-                android:text="Whisky0"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginVertical="10dp"
                 android:gravity="left"
-                android:minHeight="200dp"
+                android:text="Whisky0"
                 android:textSize="20sp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_marginBottom="30dp">
+                android:layout_marginBottom="150dp">
 
                 <TextView
                     android:id="@+id/textView_ABVText_recipe"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:text="ABV"
                     android:gravity="right|center_vertical"
-                    android:textSize="25sp"
-                    android:textColor="#00B0FF"/>
+                    android:text="ABV"
+                    android:textColor="#00B0FF"
+                    android:textSize="25sp" />
 
                 <TextView
                     android:id="@+id/textView_cocktailABV_recipe"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="2"
-                    android:text="10%"
-                    android:textSize="30sp"
-                    android:gravity="center"
-                    android:textStyle="bold"
                     android:ellipsize="end"
+                    android:gravity="center"
                     android:maxLines="1"
-                    android:textColor="#00B0FF"/>
+                    android:text="10%"
+                    android:textColor="#00B0FF"
+                    android:textSize="30sp"
+                    android:textStyle="bold" />
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
-</LinearLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/floatingActionButton_bookmark_recipe"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:layout_margin="25dp"
+        app:fabSize="normal"
+        app:srcCompat="@mipmap/outline_star_border_white_18dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/floatingActionButton_thumbUp_recipe"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:layout_margin="25dp"
+        app:fabSize="normal"
+        app:srcCompat="@mipmap/outline_thumb_up_white_18dp"
+        app:layout_constraintRight_toLeftOf="@id/floatingActionButton_thumbDown_recipe"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/floatingActionButton_thumbDown_recipe"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:layout_margin="25dp"
+        app:fabSize="normal"
+        app:srcCompat="@mipmap/outline_thumb_down_white_18dp"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

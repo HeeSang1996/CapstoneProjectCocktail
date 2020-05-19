@@ -23,7 +23,7 @@
                 android:id="@+id/imageView_cocktail_search"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_gravity="center_horizontal"
+                android:layout_gravity="center"
                 android:layout_weight="3"
                 android:layout_margin="10dp"
                 app:srcCompat="@drawable/cocktail_sample_image" />

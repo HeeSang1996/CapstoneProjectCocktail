@@ -36,7 +36,6 @@
         <activity
             android:name=".CocktailRecipeActivity"
             android:label="  Information"
-            android:windowSoftInputMode="adjustNothing"
             android:launchMode="singleTop"
             android:screenOrientation="portrait">
         </activity>
