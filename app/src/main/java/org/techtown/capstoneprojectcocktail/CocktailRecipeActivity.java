@@ -203,6 +203,7 @@ public class CocktailRecipeActivity extends AppCompatActivity {
             public void onItemClick(CocktailCommentAdapter.ViewHolder holder, View view, int position) {
                 Comment item = adapterForCocktailComment.getItem(position);
                 FirebaseUser user = mAuth.getCurrentUser();
+
                 //자신이 올린 글을 선택했을 경우 삭제 가능
                 if(item.getUid()==user.getUid()){
                     //Toast.makeText(getApplicationContext(),"삭제 가능한 칵테일 " + item.getName(),Toast.LENGTH_LONG).show();
