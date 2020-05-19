@@ -8,6 +8,7 @@ import android.graphics.LinearGradient;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.graphics.Shader;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -16,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -33,13 +35,15 @@ import java.util.Map;
 import static androidx.constraintlayout.widget.Constraints.TAG;
 
 public class MJH_SimulatorActivity extends AppCompatActivity {
-
-    public FirebaseFirestore db = FirebaseFirestore.getInstance();
-    DocumentReference docRef;
+    MJH_Object_simulator simulateObject;
+    MJH_Object_ingredient[] inputIngredient;
+    float[] inputIngredientAmount;
     Canvas canvas;
+
     MJH_Object_ingredient[] ingredientList = new MJH_Object_ingredient[200];
-    int listCount;
-    String str_buffer;
+    int listCount = 0;
+    MJH_Object_color colorBuffer;
+    Map<String, Number> ingredientRGB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,8 +51,6 @@ public class MJH_SimulatorActivity extends AppCompatActivity {
         setAdapterForIngredientSearch();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.min_cocktail_simulator_activity);
-
-
 
         Bitmap bitmap = Bitmap.createBitmap(720,1480, Bitmap.Config.ARGB_8888);
         canvas = new Canvas(bitmap);
@@ -63,18 +65,68 @@ public class MJH_SimulatorActivity extends AppCompatActivity {
         Button button2 = (Button) findViewById(R.id.button2_mjh);
         Button button3 = (Button) findViewById(R.id.button3_mjh);
         button1.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onClick(View v) {
-                /*
-                Bitmap bitmap = Bitmap.createBitmap(720,1480, Bitmap.Config.ARGB_8888);
-                canvas = new Canvas(bitmap);
-                ImageView View = (ImageView) findViewById(R.id.imageView);
-                View.setImageBitmap(bitmap);
-                rendering2(canvas);
+                int glassType;
+                int iceType;
+                int cocktailListNum;
+                MJH_Object_color resultColor;
+                glassType = 0;
+                iceType = 0;
+                simulateObject = new MJH_Object_simulator(glassType, iceType);
+                for(int i=0; i < 127; i++) {
+                    System.out.println(i + ":" + ingredientList[i].name);
+                }
 
-                 */
-                System.out.println(ingredientList[0].name);
+                inputIngredient = new MJH_Object_ingredient[3];
+                inputIngredient[0] = ingredientList[2];
+                inputIngredient[1] = ingredientList[2];
+                inputIngredient[2] = ingredientList[40];
 
+                inputIngredientAmount = new float[3];
+                inputIngredientAmount[0] = 25;
+                inputIngredientAmount[1] = 25;
+                inputIngredientAmount[2] = 5;
+                simulateObject.add_step_buildings(1, 0, null, 3, inputIngredient, inputIngredientAmount, true);
+                cocktailListNum = simulateObject.is_there_cocktail_in_glass();
+                resultColor = simulateObject.simulator_step[cocktailListNum].is_color[0];
+                System.out.println(inputIngredient[0].name);
+                System.out.println(inputIngredient[1].name);
+                System.out.println(inputIngredient[2].name);
+
+                Paint paint = new Paint();
+                Paint paint_gradient = new Paint();
+
+                //바닥부
+                paint.setColor(Color.rgb(resultColor.rgb_red, resultColor.rgb_green, resultColor.rgb_blue));
+                RectF rect1 = new RectF();
+                rect1.set(110, 350, 650, 430);
+                canvas.drawArc(rect1, 180, 180, true, paint);
+
+                //위 사각
+                paint.setColor(Color.rgb(resultColor.rgb_red, resultColor.rgb_green, resultColor.rgb_blue));
+                canvas.drawRect(110, 380, 650, 1320, paint);
+
+
+                //바닥부
+                paint.setColor(Color.rgb(resultColor.rgb_red, resultColor.rgb_green, resultColor.rgb_blue));
+                RectF rect = new RectF();
+                rect.set(110, 1270, 650, 1370);
+                canvas.drawArc(rect, 0, 180, true, paint);
+
+
+                Bitmap bitmap2 = BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.highball_glass_test_ice);
+                bitmap2 = resizeBitmapImg(bitmap2, 1480);
+                canvas.drawBitmap(bitmap2, 0, 0, null);
+
+                //빛반사
+                paint.setColor(0x56FFFFFF);
+
+                canvas.drawRect(150, 75, 300, 1370, paint);
+
+                rect.set(150, 1350, 300, 1390);
+                canvas.drawArc(rect, 90, 90, true, paint);
             }
         });
         button2.setOnClickListener(new View.OnClickListener() {
@@ -110,42 +162,44 @@ public class MJH_SimulatorActivity extends AppCompatActivity {
 
 
     public void setAdapterForIngredientSearch(){
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
         DocumentReference docRef;
 
         for(int i=0; i < 127; i++) {
-            List<String> list;
             ingredientList[i] = new MJH_Object_ingredient();
             docRef = db.collection("Ingredient").document(String.valueOf(5001 + i));
 
+            final int finalI = i;
             docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                     if (task.isSuccessful()) {
                         DocumentSnapshot document = task.getResult();
                         if (document.exists()) {
-
+                            listCount = finalI;
                             try{
                                 ingredientList[listCount].name = (String)document.get("Ingredient_name");
                                 ingredientList[listCount].id = 5001+ listCount;
+                                ingredientList[listCount].abv = Float.parseFloat(document.get("abv").toString());
+                                ingredientList[listCount].sugar = Float.parseFloat(document.get("sugar_rate").toString());
+                                ingredientList[listCount].sour = Float.parseFloat(document.get("sour").toString());
+                                ingredientList[listCount].salty = Float.parseFloat(document.get("salty").toString());
+                                ingredientList[listCount].bitter = Float.parseFloat(document.get("bitter").toString());
+                                ingredientList[listCount].specific_gravity = Float.parseFloat(document.get("specific_gravity").toString());
 
-                                str_buffer = document.get("abv").toString();
-                                ingredientList[listCount].abv = Float.parseFloat(str_buffer);
-
-                                str_buffer = document.get("specific_gravity").toString();
-                                ingredientList[listCount].specific_gravity = Float.parseFloat(str_buffer);
-
-
-                                System.out.println(ingredientList[listCount].specific_gravity);
+                                ingredientRGB = (Map<String, Number>) document.getData().get("Ingredient_color");
+                                colorBuffer = new MJH_Object_color(Float.parseFloat(ingredientRGB.get("Red").toString()), Float.parseFloat(ingredientRGB.get("Green").toString()),
+                                        Float.parseFloat(ingredientRGB.get("Blue").toString()));
+                                ingredientList[listCount].my_color = colorBuffer;
                             }catch (Exception e){
-                                //에러시 수행
-                                e.printStackTrace(); //오류 출력(방법은 여러가지)
+                                e.printStackTrace();
                             }
 
                         } else {
                             Log.d(TAG, "No such document");
                         }
                     } else {
-                        //Log.d(TAG, "get failed with ", task.getException());
+                        Log.d(TAG, "get failed with ", task.getException());
                     }
                 }
             });
@@ -154,9 +208,7 @@ public class MJH_SimulatorActivity extends AppCompatActivity {
     }
 
 
-
-
-    //is_layering = 0 일때 (단일색)
+    //is_layering = 0 일때 (결과가 단일색)
     public void renderingTypeOne(Canvas canvas){
         Paint paint = new Paint();
         Paint paint_gradient = new Paint();
