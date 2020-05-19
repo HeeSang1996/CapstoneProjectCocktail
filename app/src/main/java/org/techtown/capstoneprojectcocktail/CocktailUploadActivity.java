@@ -222,6 +222,7 @@ public class CocktailUploadActivity extends AppCompatActivity {
                                 @Override
                                 public void onSuccess(Void aVoid) {
                                     Toast.makeText(getApplicationContext(), "업로드 성공!", Toast.LENGTH_SHORT).show();
+                                    finish();
                                     Log.w(TAG, "DocumentSnapshot successfully written!");
                                 }
                             })
