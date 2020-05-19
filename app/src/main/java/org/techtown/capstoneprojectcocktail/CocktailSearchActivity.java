@@ -329,6 +329,12 @@ public class CocktailSearchActivity extends AppCompatActivity{
                             //Recipe_Ingredient = (Map<String, Number>) document.get("Ingredient_content");
                             //Recipe_Base[count] = (String) document.get("Recipe_Base");
                             //map으로 받아온 정보를 string으로 치환한뒤 유저에게 보여줄 수 있도록 replaceall함({, }, = 삭제 ml 추가)
+                            //형변환 올바른 예시 왠진 모르지만 (float)로 명시적 형변환 하면 터지고 저리 하면 안터짐
+//                            Number abc;
+//                            float abcd;
+//                            abc  = (Number) document.get("sugar_rate");
+//                            abcd = abc.floatValue();
+
                             Ingredient_sugar[count] = (Number) document.get("sugar_rate"); //suger_rate(칵테일에선 재료와 용량)
                             Ingredient_Realsugar[count] = Ingredient_sugar[count] + "%";
 //                            Recipe_Base[count] = Recipe_Base[count].replaceAll("\\,", "ml ");

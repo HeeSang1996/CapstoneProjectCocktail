@@ -14,6 +14,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
@@ -53,6 +55,26 @@ public class HomeFragment extends Fragment {
     Map<String, Number> Recipe_Ingredient;
 
     public void setDocument() {
+        //새로운 테이블 생성하기
+//        for(int i = 6001; i < 6082; i++)
+//        {
+//            DocumentReference UpdateRef = db.collection("Recipe").document(String.valueOf(i));
+//            UpdateRef
+//                    .update("bad_number", "0")
+//                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+//                        @Override
+//                        public void onSuccess(Void aVoid) {
+//                            Log.d(TAG, "DocumentSnapshot successfully updated!");
+//                        }
+//                    })
+//                    .addOnFailureListener(new OnFailureListener() {
+//                        @Override
+//                        public void onFailure(@NonNull Exception e) {
+//                            Log.w(TAG, "Error updating document", e);
+//                        }
+//                    });
+//        }
+        //새로운 도큐먼트 생성하기
 //        Map<String, Object> Ingredient_info = new HashMap<>();
 //        Ingredient_info.put("Ingredient_name", "테스트");
 //        Ingredient_info.put("Ingredient_type", "베이스");
@@ -92,27 +114,27 @@ public class HomeFragment extends Fragment {
         //db.collection("Ingredient").document("5006").set(data);
         // [END set_with_id]
 
-        //가져오기
-        DocumentReference docRef = db.collection("Ingredient").document("5006");
-        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
-                        //해당 데이터 전부 읽어오기
-                        Log.d(TAG, "DocumentSnapshot data: " + document.getData());
-                        //일부만 읽어오기
-                        String name = (String) document.get("Ingredient_name");
-                        Log.d(TAG, "DocumentSnapshot data: " + name);
-                    } else {
-                        Log.d(TAG, "No such document");
-                    }
-                } else {
-                    Log.d(TAG, "get failed with ", task.getException());
-                }
-            }
-        });
+        //특정 도큐먼트 가져오기
+//        DocumentReference docRef = db.collection("Ingredient").document("5006");
+//        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+//            @Override
+//            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+//                if (task.isSuccessful()) {
+//                    DocumentSnapshot document = task.getResult();
+//                    if (document.exists()) {
+//                        //해당 데이터 전부 읽어오기
+//                        Log.d(TAG, "DocumentSnapshot data: " + document.getData());
+//                        //일부만 읽어오기
+//                        String name = (String) document.get("Ingredient_name");
+//                        Log.d(TAG, "DocumentSnapshot data: " + name);
+//                    } else {
+//                        Log.d(TAG, "No such document");
+//                    }
+//                } else {
+//                    Log.d(TAG, "get failed with ", task.getException());
+//                }
+//            }
+//        });
     }
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
