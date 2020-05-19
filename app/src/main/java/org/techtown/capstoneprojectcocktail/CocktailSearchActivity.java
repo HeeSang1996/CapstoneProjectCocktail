@@ -79,7 +79,8 @@ public class CocktailSearchActivity extends AppCompatActivity{
         textForSearch.setImeOptions(EditorInfo.IME_ACTION_DONE);
         textForSearch.setText(ingredientName);
 
-
+        //서치 액티비티를 실행할때 이미 입력되어 있는
+        //시작 스트링
         String initialText = textForSearch.getText().toString();
         setAdapterForCocktailSearchMethod(initialText);
 

@@ -32,8 +32,6 @@ public class CocktailAdapterForSearch extends RecyclerView.Adapter<CocktailAdapt
         ImageView imageForCocktail;
 
 
-        StorageReference storageReference = FirebaseStorage.getInstance().getReference();
-
         public ViewHolder (View itemView, final OnCocktailItemClickListenerForSearch listener){
             super(itemView);
 

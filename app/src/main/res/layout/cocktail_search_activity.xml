@@ -20,7 +20,7 @@
         android:paddingVertical="5dp"
         android:hint="검색"
         android:textColorHint="#99FFFFFF"
-        android:drawableLeft="@mipmap/outline_search_white_18dp"
+        android:drawableLeft="@mipmap/outline_search_white_36dp"
         android:textAllCaps="false"
         android:textColor="#FFFFFF"
         android:singleLine="true"
