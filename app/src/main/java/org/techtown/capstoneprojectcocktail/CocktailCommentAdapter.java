@@ -150,6 +150,10 @@ public class CocktailCommentAdapter extends RecyclerView.Adapter<CocktailComment
         items.add(item);
     }
 
+    public void removeItem(int position){
+        items.remove(items.get(position));
+    }
+
     public void setItems(ArrayList<Comment> items){
         this.items = items;
     }

@@ -175,11 +175,7 @@ public class CocktailSearchActivity extends AppCompatActivity{
 
             }
         });
-
-
-
         //수정필 테스트용
-
         /*
         for(int i=0; i < 81; i++)
         {
@@ -228,7 +224,6 @@ public class CocktailSearchActivity extends AppCompatActivity{
             });
         }
         */
-        //수정필 테스트용
 
         adapterForCocktailSearch.setOnItemClickListener(new OnCocktailItemClickListenerForSearch() {
             @Override

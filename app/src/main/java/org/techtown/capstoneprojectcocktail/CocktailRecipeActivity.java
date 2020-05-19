@@ -7,11 +7,13 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -140,12 +142,15 @@ public class CocktailRecipeActivity extends AppCompatActivity {
 
         recyclerViewForComment = findViewById(R.id.recyclerViewForComment_recipe);
         LinearLayoutManager layoutManagerForCocktailComment = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL,false);
+
+        //역순 출력
         layoutManagerForCocktailComment.setReverseLayout(true);
         layoutManagerForCocktailComment.setStackFromEnd(true);
+
         recyclerViewForComment.setLayoutManager(layoutManagerForCocktailComment);
         final CocktailIngredientButtonAdapter adapterForIngredientButton = new CocktailIngredientButtonAdapter();
         for(int i=0; i<20; i++) {
-            adapterForCocktailComment.addItem(new Comment("hi","hi","hi","hi","ho"));
+            adapterForCocktailComment.addItem(new Comment("hi"+i,"hi","hi","hi","ho"));
         }
         recyclerViewForComment.setAdapter(adapterForCocktailComment);
 
@@ -186,10 +191,55 @@ public class CocktailRecipeActivity extends AppCompatActivity {
                     String formatDate = sdfNow.format(date);
                     Toast.makeText(getApplicationContext(),stringForCocktailComment,Toast.LENGTH_LONG).show();
                     FirebaseUser user = mAuth.getCurrentUser();
-                    adapterForCocktailComment.addItem(new Comment(user.getDisplayName(),"날짜: " + formatDate,stringForCocktailComment,user.getPhotoUrl().toString(),"ho"));
+                    adapterForCocktailComment.addItem(new Comment(user.getDisplayName(),"날짜: " + formatDate,stringForCocktailComment,user.getPhotoUrl().toString(),user.getUid()));
                     recyclerViewForComment.setAdapter(adapterForCocktailComment);
                     editTextForCocktailComment.getText().clear();
                 }
+            }
+        });
+
+        adapterForCocktailComment.setOnItemClickListener(new OnCocktailCommentItemClickListener() {
+            @Override
+            public void onItemClick(CocktailCommentAdapter.ViewHolder holder, View view, int position) {
+                Comment item = adapterForCocktailComment.getItem(position);
+                FirebaseUser user = mAuth.getCurrentUser();
+                //자신이 올린 글을 선택했을 경우 삭제 가능
+                if(item.getUid()==user.getUid()){
+                    //Toast.makeText(getApplicationContext(),"삭제 가능한 칵테일 " + item.getName(),Toast.LENGTH_LONG).show();
+                    PopupMenu popup= new PopupMenu(getApplicationContext(), view);
+                    final int positionForDelete=position;
+                    getMenuInflater().inflate(R.menu.popup_menu_user_comment, popup.getMenu());
+                    popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                        @Override
+                        public boolean onMenuItemClick(MenuItem item) {
+                            switch (item.getItemId()){
+                                case R.id.popup_delete:
+                                    //댓글 삭제
+                                    adapterForCocktailComment.removeItem(positionForDelete);
+                                    recyclerViewForComment.setAdapter(adapterForCocktailComment);
+                                    Toast.makeText(getApplication(),"삭제",Toast.LENGTH_SHORT).show();
+                                    break;
+                                default:
+                                    Toast.makeText(getApplication(),"취소",Toast.LENGTH_SHORT).show();
+                                    break;
+                            }
+                            return false;
+                        }
+                    });
+                    popup.show();
+                }else{
+                    Toast.makeText(getApplicationContext(),"본인의 댓글만 삭제 가능합니다!",Toast.LENGTH_LONG).show();
+                }
+                /*
+                Intent intent = new Intent(view.getContext(), CocktailRecipeActivity.class);
+                intent.putExtra("cocktailName", item.getName());
+                intent.putExtra("cocktailID",item.getId());
+                intent.putExtra("cocktailDescription",item.getDescription());
+                intent.putExtra("cocktailIngredient",item.getIngredient());
+                intent.putExtra("cocktailABV",item.getAbvNum());
+                intent.putExtra("cocktailRef",item.getImageUrl());
+                startActivity(intent);
+                 */
             }
         });
 
