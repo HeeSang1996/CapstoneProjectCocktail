@@ -100,9 +100,7 @@ public class CocktailUploadActivity extends AppCompatActivity {
             public void afterTextChanged(Editable s) {
                 if(s.length()>20) {
                     editTextForCocktailName.setError("20자 이하로 입력해주세요!");
-                }
-                else
-                {
+                } else {
                     editTextForCocktailName.setError(null);
                 }
             }
@@ -128,9 +126,7 @@ public class CocktailUploadActivity extends AppCompatActivity {
             public void afterTextChanged(Editable s) {
                 if(s.length()>300) {
                     editTextForCocktailHowToMake.setError("300자 이하로 입력해주세요!");
-                }
-                else
-                {
+                } else {
                     editTextForCocktailHowToMake.setError(null);
                 }
             }
@@ -155,9 +151,7 @@ public class CocktailUploadActivity extends AppCompatActivity {
             public void afterTextChanged(Editable s) {
                 if(s.length()>300) {
                     editTextForCocktailDescription.setError("300자 이하로 입력해주세요!");
-                }
-                else
-                {
+                } else {
                     editTextForCocktailDescription.setError(null);
                 }
             }
@@ -213,9 +207,9 @@ public class CocktailUploadActivity extends AppCompatActivity {
                     uploadRecipe.put("칵테일 설명", stringForCocktailDescription);
                     uploadRecipe.put("ref", "gs://sbsimulator-96f70.appspot.com/Self/"+file.getLastPathSegment());
 
-                    Log.w(TAG, stringForCocktailName);
-                    Log.w(TAG, stringForCocktailHowToMake);
-                    Log.w(TAG, stringForCocktailDescription);
+                    //Log.w(TAG, stringForCocktailName);
+                    //Log.w(TAG, stringForCocktailHowToMake);
+                    //Log.w(TAG, stringForCocktailDescription);
                     db.collection("Self").document(user.getUid()+stringForCocktailName)
                             .set(uploadRecipe)
                             .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -223,14 +217,14 @@ public class CocktailUploadActivity extends AppCompatActivity {
                                 public void onSuccess(Void aVoid) {
                                     Toast.makeText(getApplicationContext(), "업로드 성공!", Toast.LENGTH_SHORT).show();
                                     finish();
-                                    Log.w(TAG, "DocumentSnapshot successfully written!");
+                                    //Log.w(TAG, "DocumentSnapshot successfully written!");
                                 }
                             })
                             .addOnFailureListener(new OnFailureListener() {
                                 @Override
                                 public void onFailure(@NonNull Exception e) {
                                     Toast.makeText(getApplicationContext(), "업로드 실패! 다시 확인해주세요!", Toast.LENGTH_SHORT).show();
-                                    Log.w(TAG, "Error writing document", e);
+                                    //Log.w(TAG, "Error writing document", e);
                                 }
                             });
                 }
