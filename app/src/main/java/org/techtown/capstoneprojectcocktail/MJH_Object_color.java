@@ -61,7 +61,7 @@ public class MJH_Object_color {
         String red_g = String.format("0x%08X", green_int);
         String red_b = String.format("0x%08X", blue_int);
 
-        StringBuilder android_color_builder = new StringBuilder("#");
+        StringBuilder android_color_builder = new StringBuilder("0xEF");
         android_color_builder.append(red_s.substring(8));
         android_color_builder.append(red_g.substring(8));
         android_color_builder.append(red_b.substring(8));
