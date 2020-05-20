@@ -205,8 +205,12 @@ public class CocktailRecipeActivity extends AppCompatActivity {
                 FirebaseUser user = mAuth.getCurrentUser();
 
                 //자신이 올린 글을 선택했을 경우 삭제 가능
-                if(item.getUid()==user.getUid()){
+                if(user==null) {
+                    Toast.makeText(getApplicationContext(), "본인의 댓글만 삭제 가능합니다! 로그인 필요", Toast.LENGTH_LONG).show();
                     //Toast.makeText(getApplicationContext(),"삭제 가능한 칵테일 " + item.getName(),Toast.LENGTH_LONG).show();
+                }
+                //자신이 올린 글을 선택했을 경우 삭제 가능
+                else if(item.getUid()==user.getUid()){
                     PopupMenu popup= new PopupMenu(getApplicationContext(), view);
                     final int positionForDelete=position;
                     getMenuInflater().inflate(R.menu.popup_menu_user_comment, popup.getMenu());
