@@ -248,6 +248,7 @@ public class CocktailRecipeActivity extends AppCompatActivity {
             }
         });
 
+
         floatingActionButtonForBookmark.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
