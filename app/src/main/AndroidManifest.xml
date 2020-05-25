@@ -60,5 +60,19 @@
             android:launchMode="singleTop"
             android:screenOrientation="portrait">
         </activity>
+
+        <activity
+            android:name=".MJH_SimulatorUiActivity"
+            android:label="aa"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity
+            android:name=".MJH_PopupActivity"
+            android:label="aa"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Dialog">
+        </activity>
     </application>
 </manifest>

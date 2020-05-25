@@ -1,28 +1,156 @@
 package org.techtown.capstoneprojectcocktail;
 
+import java.util.ArrayList;
+
 public class MJH_Object_cocktail implements Cloneable{
 
-    int ice_type = 0;
-    int glass_type = 0;
-    boolean is_in_glass = false;
+    boolean isInGlass = false; // 이 칵테일이 현재 잔에 들어가 있는 단계 인가?
 
-    int is_layering = 0; // n+1: 색의 갯수
-    float total_volume = 0;
-    float total_abv = 0; // 단위 %
+    int isLayering = 0; // 칵테일 층의 수
+    float totalVolume = 0; // 칵테일 총 부피
+    float totalAbv = 0; // 단위 %
+    float totalSpecificGravity = 0;
 
-    float[] each_volume = new float[15];
-    float[] each_abv = new float[15]; //단위 %
-    float[] specific_gravity = new float[15];
-    MJH_Object_color[] is_color = new MJH_Object_color[15];
-    int[] is_boundary_dirty = new int[15];
-    int is_gradient = 0;
+    //is_layering > 1일때 필요(레이어링 칵테일 일때)
+    ArrayList<Float> eachAbv = new ArrayList<Float>();
+    ArrayList<Float> eachVolume = new ArrayList<Float>();
+    ArrayList<Float> specificGravity  = new ArrayList<Float>();
+    ArrayList<MJH_Object_color> isColor  = new ArrayList<MJH_Object_color>();
 
-    float[] sugar = new float[15]; // 단위 g
-    float[] sour = new float[15];
-    float[] salty = new float[15];
-    float[] bitter = new float[15];
+    //플로팅이 깔끔하지 않은가?
+    ArrayList<Integer> isBoundaryDirty  = new ArrayList<Integer>();
+
+    //그라데이션이 있는가(그라데이션은 무조건 1개)
+    int isGradient = 0;
+
+    //맛에 대한 정보
+    ArrayList<Float> sugar  = new ArrayList<Float>();
+    ArrayList<Float> sour  = new ArrayList<Float>();
+    ArrayList<Float> salty  = new ArrayList<Float>();
+    ArrayList<Float> bitter  = new ArrayList<Float>();
 
     String[] flavour = new String[15];
+
+
+    public boolean isInGlass() {
+        return isInGlass;
+    }
+
+    public void setInGlass(boolean inGlass) {
+        isInGlass = inGlass;
+    }
+
+    public int getIsLayering() {
+        return isLayering;
+    }
+
+    public void setIsLayering(int isLayering) {
+        this.isLayering = isLayering;
+    }
+
+    public float getTotalVolume() {
+        return totalVolume;
+    }
+
+    public void setTotalVolume(float totalVolume) {
+        this.totalVolume = totalVolume;
+    }
+
+    public float getTotalAbv() {
+        return totalAbv;
+    }
+
+    public void setTotalAbv(float totalAbv) {
+        this.totalAbv = totalAbv;
+    }
+
+    public ArrayList<Float> getEachVolume() {
+        return eachVolume;
+    }
+
+    public void setEachVolume(ArrayList<Float> eachVolume) {
+        this.eachVolume = eachVolume;
+    }
+
+    public ArrayList<Float> getEachAbv() {
+        return eachAbv;
+    }
+
+    public void setEachAbv(ArrayList<Float> eachAbv) {
+        this.eachAbv = eachAbv;
+    }
+
+    public ArrayList<Float> getSpecificGravity() {
+        return specificGravity;
+    }
+
+    public void setSpecificGravity(ArrayList<Float> specificGravity) {
+        this.specificGravity = specificGravity;
+    }
+
+    public ArrayList<MJH_Object_color> getIs_color() {
+        return isColor;
+    }
+
+    public void setIs_colorlor(ArrayList<MJH_Object_color> is_colorlor) {
+        this.isColor = is_colorlor;
+    }
+
+    public ArrayList<Integer> getIsBoundaryDirty() {
+        return isBoundaryDirty;
+    }
+
+    public void setIsBoundaryDirty(ArrayList<Integer> isBoundaryDirty) {
+        this.isBoundaryDirty = isBoundaryDirty;
+    }
+
+    public int getIsGradient() {
+        return isGradient;
+    }
+
+    public void setIsGradient(int isGradient) {
+        this.isGradient = isGradient;
+    }
+
+    public ArrayList<Float> getSugar() {
+        return sugar;
+    }
+
+    public void setSugar(ArrayList<Float> sugar) {
+        this.sugar = sugar;
+    }
+
+    public ArrayList<Float> getSour() {
+        return sour;
+    }
+
+    public void setSour(ArrayList<Float> sour) {
+        this.sour = sour;
+    }
+
+    public ArrayList<Float> getSalty() {
+        return salty;
+    }
+
+    public void setSalty(ArrayList<Float> salty) {
+        this.salty = salty;
+    }
+
+    public ArrayList<Float> getBitter() {
+        return bitter;
+    }
+
+    public void setBitter(ArrayList<Float> bitter) {
+        this.bitter = bitter;
+    }
+
+    public String[] getFlavour() {
+        return flavour;
+    }
+
+    public void setFlavour(String[] flavour) {
+        this.flavour = flavour;
+    }
 
     public MJH_Object_cocktail(){
 
@@ -34,51 +162,15 @@ public class MJH_Object_cocktail implements Cloneable{
         return super.clone();
     }
 
-    public void add_step_result(int _is_layering, int now_layer, float now_volume, float now_abv, float now_gravity, MJH_Object_color now_color, float now_sugar, float now_sour, float now_salty, float now_bitter,
-                                String now_flavour){
-        this.is_layering = _is_layering;
-
-        if (this.is_layering == 0 || now_layer == 0){
-            this.total_volume = now_volume;
-            this.each_volume[now_layer] = now_volume;
-            this.total_abv = now_abv;
-            this.each_abv[now_layer] = now_abv;
-            this.specific_gravity[now_layer] = now_gravity;
-            this.is_color[now_layer] = now_color;
-            this.sugar[now_layer] = now_sugar;
-            this.sour[now_layer] = now_sour;
-            this.salty[now_layer] = now_salty;
-            this.bitter[now_layer] = now_bitter;
-            this.flavour[now_layer] = now_flavour;
-        }
-        else{
-            this.each_volume[now_layer-1] = now_volume;
-            this.each_abv[now_layer-1] = now_abv;
-            this.specific_gravity[now_layer-1] = now_gravity;
-            this.is_color[now_layer-1] = now_color;
-            this.sugar[now_layer-1] = now_sugar;
-            this.sour[now_layer-1] = now_sour;
-            this.salty[now_layer-1] = now_salty;
-            this.bitter[now_layer-1] = now_bitter;
-            this.flavour[now_layer-1] = now_flavour;
-
-            for(int i = 0; i < now_layer; i++){
-                this.total_volume = this.total_volume + this.each_volume[i];
-                this.total_abv = this.total_abv + this.each_abv[i];
-            }
-        }
-
-    }
-
+    //전체 부피와 알콜도수 값 구하기
     public void add_vol_abv_total(){
-        this.total_volume = 0;
-        this.total_abv = 0;
+        this.totalVolume = 0;
+        this.totalAbv = 0;
 
-        for(int i = 0; i < is_layering; i++){
-            this.total_volume = this.total_volume + this.each_volume[i];
-            this.total_abv = this.total_abv + this.each_volume[i] * this.each_abv[i] / 100;
+        for(int i = 0; i < this.eachVolume.size(); i++){
+            this.totalVolume = this.totalVolume + this.eachVolume.get(i);
+            this.totalAbv = this.totalAbv + this.eachVolume.get(i) * this.eachAbv.get(i) / 100;
         }
-        this.total_abv = this.total_abv / this.total_volume * 100;
+        this.totalAbv = this.totalAbv / this.totalVolume * 100;
     }
-
 }

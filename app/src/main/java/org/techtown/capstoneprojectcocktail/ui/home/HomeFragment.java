@@ -30,6 +30,7 @@ import org.techtown.capstoneprojectcocktail.CocktailIngredientButtonAdapter;
 import org.techtown.capstoneprojectcocktail.CocktailRecipeActivity;
 import org.techtown.capstoneprojectcocktail.CocktailSearchActivity;
 import org.techtown.capstoneprojectcocktail.MJH_SimulatorActivity;
+import org.techtown.capstoneprojectcocktail.MJH_SimulatorUiActivity;
 import org.techtown.capstoneprojectcocktail.OnCocktailIngredientButtonItemClickListener;
 import org.techtown.capstoneprojectcocktail.OnCocktailItemClickListenerForHome;
 import org.techtown.capstoneprojectcocktail.R;
@@ -158,7 +159,7 @@ public class HomeFragment extends Fragment {
                 Snackbar.make(view, "시뮬레이션 기능이 들어갈 예정입니다.", Snackbar.LENGTH_LONG).setAction("Action", null).show();
                 //////////////// By MJH
                 Intent intent = new Intent(view.getContext(), // 현재 화면의 제어권자
-                        MJH_SimulatorActivity.class); // 다음 넘어갈 클래스 지정
+                        MJH_SimulatorUiActivity.class); // 다음 넘어갈 클래스 지정
                 startActivity(intent); // 다음 화면으로 넘어간다
                 //////////////// By MJH
                 setDocument();

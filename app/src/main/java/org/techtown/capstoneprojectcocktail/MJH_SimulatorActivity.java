@@ -71,44 +71,7 @@ public class MJH_SimulatorActivity extends AppCompatActivity {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onClick(View v) {
-                int glassType;
-                int iceType;
-                int cocktailListNum;
-                MJH_Object_color resultColor;
-                glassType = 0;
-                iceType = 0;
-                simulateObject = new MJH_Object_simulator(glassType, iceType);
-                for(int i=0; i < 127; i++) {
-                    System.out.println(i + ":" + ingredientList[i].name);
-                }
 
-                inputIngredient = new MJH_Object_ingredient[3];
-                inputIngredient[0] = ingredientList[2];
-                inputIngredient[1] = ingredientList[2];
-                inputIngredient[2] = ingredientList[40];
-
-                inputIngredientAmount = new float[3];
-                inputIngredientAmount[0] = 25;
-                inputIngredientAmount[1] = 25;
-                inputIngredientAmount[2] = 50;
-                simulateObject.add_step_buildings(1, 0, null, 3, inputIngredient, inputIngredientAmount, true);
-                cocktailListNum = simulateObject.is_there_cocktail_in_glass();
-                resultColor = simulateObject.simulator_step[cocktailListNum].is_color[0];
-                System.out.println(inputIngredient[0].name);
-                System.out.println(inputIngredient[1].name);
-                System.out.println(inputIngredient[2].name);
-
-                Paint paint = new Paint();
-                Paint paint_gradient = new Paint();
-
-                Bitmap bitmap2 = BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.highball_glass_test_ice);
-                bitmap2 = resizeBitmapImg(bitmap2, 1480);
-                canvas.drawBitmap(bitmap2, 0, 0, null);
-
-                //빛반사
-                paint.setColor(0x56FFFFFF);
-
-                canvas.drawRect(150, 75, 300, 1370, paint);
 
             }
         });
@@ -116,134 +79,14 @@ public class MJH_SimulatorActivity extends AppCompatActivity {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onClick(View v) {
-                int glassType;
-                int iceType;
-                int cocktailListNum;
-                MJH_Object_color resultColor;
-                glassType = 0;
-                iceType = 0;
-                simulateObject = new MJH_Object_simulator(glassType, iceType);
-                for(int i=0; i < 127; i++) {
-                    System.out.println(i + ":" + ingredientList[i].name);
-                }
 
-                inputIngredient = new MJH_Object_ingredient[1];
-                inputIngredient[0] = ingredientList[2];
-                System.out.println("인풋1"+ingredientList[2].my_color.rgb_blue);
-
-                inputIngredientAmount = new float[1];
-                inputIngredientAmount[0] = 200;
-
-                simulateObject.add_step_buildings(1, 0, null, 1, inputIngredient, inputIngredientAmount, true);
-                cocktailListNum = simulateObject.is_there_cocktail_in_glass();
-                resultColor = simulateObject.simulator_step[cocktailListNum].is_color[0];
-                System.out.println("인풋r"+resultColor.rgb_red);
-                System.out.println("인풋g"+resultColor.rgb_green);
-                System.out.println("인풋b"+resultColor.rgb_blue);
-                System.out.println("인풋"+inputIngredient[0].name);
-
-                Paint paint = new Paint();
-                Paint paint_gradient = new Paint();
-
-                //바닥부
-                paint.setColor(Color.rgb((int)resultColor.rgb_red, (int)resultColor.rgb_green, (int)resultColor.rgb_blue));
-                RectF rect1 = new RectF();
-                rect1.set(110, 350, 650, 430);
-                canvas.drawArc(rect1, 180, 180, true, paint);
-                canvas.drawArc(rect1, 180, 180, true, paint);
-
-
-                //위 사각
-                paint.setColor(Color.rgb((int)resultColor.rgb_red, (int)resultColor.rgb_green, (int)resultColor.rgb_blue));
-                canvas.drawRect(110, 380, 650, 1320, paint);
-                canvas.drawRect(110, 380, 650, 1320, paint);
-
-
-                //바닥부
-                paint.setColor(Color.rgb((int)resultColor.rgb_red, (int)resultColor.rgb_green, (int)resultColor.rgb_blue));
-                RectF rect = new RectF();
-                rect.set(110, 1270, 650, 1370);
-                canvas.drawArc(rect, 0, 180, true, paint);
-                canvas.drawArc(rect, 0, 180, true, paint);
-
-
-
-
-                Bitmap bitmap2 = BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.highball_glass_test_ice);
-                bitmap2 = resizeBitmapImg(bitmap2, 1480);
-                canvas.drawBitmap(bitmap2, 0, 0, null);
-
-                //빛반사
-                paint.setColor(0x56FFFFFF);
-                canvas.drawRect(150, 75, 300, 1370, paint);
-
-                rect.set(150, 1350, 300, 1390);
-                canvas.drawArc(rect, 90, 90, true, paint);
             }
         });
         button3.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onClick(View v) {
-                int glassType;
-                int iceType;
-                int cocktailListNum;
-                MJH_Object_color resultColor;
-                glassType = 0;
-                iceType = 0;
-                simulateObject = new MJH_Object_simulator(glassType, iceType);
-                for(int i=0; i < 127; i++) {
-                    System.out.println(i + ":" + ingredientList[i].name);
-                }
 
-                inputIngredient = new MJH_Object_ingredient[3];
-                inputIngredient[0] = ingredientList[2];
-                inputIngredient[1] = ingredientList[2];
-                inputIngredient[2] = ingredientList[40];
-
-                inputIngredientAmount = new float[3];
-                inputIngredientAmount[0] = 25;
-                inputIngredientAmount[1] = 25;
-                inputIngredientAmount[2] = 50;
-                simulateObject.add_step_buildings(1, 0, null, 3, inputIngredient, inputIngredientAmount, true);
-                cocktailListNum = simulateObject.is_there_cocktail_in_glass();
-                resultColor = simulateObject.simulator_step[cocktailListNum].is_color[0];
-                System.out.println(inputIngredient[0].name);
-                System.out.println(inputIngredient[1].name);
-                System.out.println(inputIngredient[2].name);
-
-                Paint paint = new Paint();
-                Paint paint_gradient = new Paint();
-
-                //바닥부
-                paint.setColor(Color.rgb(resultColor.rgb_red, resultColor.rgb_green, resultColor.rgb_blue));
-                RectF rect1 = new RectF();
-                rect1.set(110, 350, 650, 430);
-                canvas.drawArc(rect1, 180, 180, true, paint);
-
-                //위 사각
-                paint.setColor(Color.rgb(resultColor.rgb_red, resultColor.rgb_green, resultColor.rgb_blue));
-                canvas.drawRect(110, 380, 650, 1320, paint);
-
-
-                //바닥부
-                paint.setColor(Color.rgb(resultColor.rgb_red, resultColor.rgb_green, resultColor.rgb_blue));
-                RectF rect = new RectF();
-                rect.set(110, 1270, 650, 1370);
-                canvas.drawArc(rect, 0, 180, true, paint);
-
-
-                Bitmap bitmap2 = BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.highball_glass_test_ice);
-                bitmap2 = resizeBitmapImg(bitmap2, 1480);
-                canvas.drawBitmap(bitmap2, 0, 0, null);
-
-                //빛반사
-                paint.setColor(0x56FFFFFF);
-
-                canvas.drawRect(150, 75, 300, 1370, paint);
-
-                rect.set(150, 1350, 300, 1390);
-                canvas.drawArc(rect, 90, 90, true, paint);
             }
         });
         //sample ingredient
