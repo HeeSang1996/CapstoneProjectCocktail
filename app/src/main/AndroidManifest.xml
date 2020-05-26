@@ -41,6 +41,22 @@
         </activity>
 
         <activity
+            android:name=".GradingPopupActivity"
+            android:label="  Grading"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Dialog">
+        </activity>
+
+        <activity
+            android:name=".ReportPopupActivity"
+            android:label="  Report"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Dialog">
+        </activity>
+
+        <activity
             android:name=".CocktailSearchActivity"
             android:label="  Search"
             android:windowSoftInputMode="adjustNothing"

@@ -50,6 +50,7 @@ public class CocktailRecipeActivity extends AppCompatActivity {
     private boolean bookmarkChecked=false;
     private boolean gradeChecked=false;
     private boolean reportChecked=false;
+    private String gradeScore="0";
 
     @SuppressLint("RestrictedApi")
     @Override
@@ -291,6 +292,10 @@ public class CocktailRecipeActivity extends AppCompatActivity {
                 //평가 수정을 원하는 경우
                 if(gradeChecked==true){
                     Toast.makeText(getApplicationContext(),"평가 수정",Toast.LENGTH_LONG).show();
+                    Intent intent = new Intent(v.getContext(), GradingPopupActivity.class);
+                    intent.putExtra("gradeCheck",gradeChecked);
+                    intent.putExtra("gradeScore",gradeScore);
+                    startActivityForResult(intent, 1);
                 }
                 //처음으로 평가를 하는 경우
                 else{
@@ -298,8 +303,12 @@ public class CocktailRecipeActivity extends AppCompatActivity {
                     //평가를 중간에 취소하면
                     //gradeChecked가 true로 변경되면 안됨
                     //수정 필
-                    floatingActionButtonForGrade.setImageResource(R.mipmap.outline_star_white_36dp);
-                    gradeChecked=true;
+                    Intent intent = new Intent(v.getContext(), GradingPopupActivity.class);
+                    intent.putExtra("gradeCheck",gradeChecked);
+                    intent.putExtra("gradeScore",gradeScore);
+                    startActivityForResult(intent, 1);
+                    //floatingActionButtonForGrade.setImageResource(R.mipmap.outline_star_white_36dp);
+                    //gradeChecked=true;
                 }
             }
         });
@@ -318,11 +327,32 @@ public class CocktailRecipeActivity extends AppCompatActivity {
                 }
                 //처음으로 신고를 하는 경우
                 else{
-                    Toast.makeText(getApplicationContext(),"신고 접수",Toast.LENGTH_LONG).show();
-                    floatingActionButtonForReport.setImageResource(R.mipmap.baseline_feedback_white_36dp);
-                    reportChecked=true;
+                    Intent intent = new Intent(v.getContext(), ReportPopupActivity.class);
+                    startActivityForResult(intent, 2);
+                    //Toast.makeText(getApplicationContext(),"신고 접수",Toast.LENGTH_LONG).show();
                 }
             }
         });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        //평가 팝업의 결과물
+        //requestCode == 1
+        if (requestCode == 1) {
+            if (resultCode == RESULT_OK) {
+                floatingActionButtonForGrade.setImageResource(R.mipmap.outline_star_white_36dp);
+                gradeChecked=true;
+            }
+        }
+        //신고 팝업의 결과물
+        //requestCode == 2
+        if (requestCode == 2) {
+            if (resultCode == RESULT_OK) {
+                floatingActionButtonForReport.setImageResource(R.mipmap.baseline_feedback_white_36dp);
+                reportChecked=true;
+            }
+        }
     }
 }

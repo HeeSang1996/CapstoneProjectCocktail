@@ -14,11 +14,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -29,7 +26,6 @@ import org.techtown.capstoneprojectcocktail.CocktailIngredientButton;
 import org.techtown.capstoneprojectcocktail.CocktailIngredientButtonAdapter;
 import org.techtown.capstoneprojectcocktail.CocktailRecipeActivity;
 import org.techtown.capstoneprojectcocktail.CocktailSearchActivity;
-import org.techtown.capstoneprojectcocktail.MJH_SimulatorActivity;
 import org.techtown.capstoneprojectcocktail.MJH_SimulatorUiActivity;
 import org.techtown.capstoneprojectcocktail.OnCocktailIngredientButtonItemClickListener;
 import org.techtown.capstoneprojectcocktail.OnCocktailItemClickListenerForHome;
@@ -156,7 +152,7 @@ public class HomeFragment extends Fragment {
         simulationFloatingButtonHome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "시뮬레이션 기능이 들어갈 예정입니다.", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                //Snackbar.make(view, "시뮬레이션 기능이 들어갈 예정입니다.", Snackbar.LENGTH_LONG).setAction("Action", null).show();
                 //////////////// By MJH
                 Intent intent = new Intent(view.getContext(), // 현재 화면의 제어권자
                         MJH_SimulatorUiActivity.class); // 다음 넘어갈 클래스 지정
