@@ -113,13 +113,14 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="500dp"
                 android:orientation="vertical"
                 android:paddingHorizontal="10dp">
+
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recyclerViewForComment_recipe"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="match_parent" />
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
@@ -131,29 +132,29 @@
         android:clickable="true"
         android:layout_margin="20dp"
         app:fabSize="normal"
-        app:srcCompat="@mipmap/outline_star_border_white_36dp"
+        app:srcCompat="@mipmap/outline_bookmark_border_white_36dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout_cocktail_recipe"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/floatingActionButton_thumbUp_recipe"
+        android:id="@+id/floatingActionButton_grade_recipe"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:clickable="true"
         android:layout_margin="20dp"
         app:fabSize="normal"
-        app:srcCompat="@mipmap/outline_thumb_up_white_36dp"
-        app:layout_constraintRight_toLeftOf="@id/floatingActionButton_thumbDown_recipe"
+        app:srcCompat="@mipmap/outline_star_half_white_36dp"
+        app:layout_constraintRight_toLeftOf="@id/floatingActionButton_report_recipe"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout_cocktail_recipe"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/floatingActionButton_thumbDown_recipe"
+        android:id="@+id/floatingActionButton_report_recipe"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:clickable="true"
         android:layout_margin="20dp"
-        app:fabSize="normal"
-        app:srcCompat="@mipmap/outline_thumb_down_white_36dp"
+        app:backgroundTint="#EE0000"
+        app:srcCompat="@mipmap/outline_feedback_white_36dp"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout_cocktail_recipe"/>
 

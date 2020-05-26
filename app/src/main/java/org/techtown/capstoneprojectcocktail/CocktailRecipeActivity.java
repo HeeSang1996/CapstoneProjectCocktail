@@ -6,7 +6,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
@@ -39,8 +38,8 @@ public class CocktailRecipeActivity extends AppCompatActivity {
     private static final String TAG = "CocktailRecipeActivity";
     CocktailCommentAdapter adapterForCocktailComment = new CocktailCommentAdapter();
     private FloatingActionButton floatingActionButtonForBookmark;
-    private FloatingActionButton floatingActionButtonForThumbUp;
-    private FloatingActionButton floatingActionButtonForThumbDown;
+    private FloatingActionButton floatingActionButtonForGrade;
+    private FloatingActionButton floatingActionButtonForReport;
     private TextInputLayout textInputLayoutForComment;
     private int cocktailID;
     private String stringForCocktailComment;
@@ -49,8 +48,8 @@ public class CocktailRecipeActivity extends AppCompatActivity {
     private RecyclerView recyclerViewForComment;
     //이전에 북마크,좋아요.싫어요를 체크 했는지 안했는지 판단
     private boolean bookmarkChecked=false;
-    private boolean thumbUpChecked=false;
-    private boolean thumbDownChecked=false;
+    private boolean gradeChecked=false;
+    private boolean reportChecked=false;
 
     @SuppressLint("RestrictedApi")
     @Override
@@ -66,8 +65,8 @@ public class CocktailRecipeActivity extends AppCompatActivity {
         TextView textForCocktailIngredient = (TextView) findViewById(R.id.textView_cocktailIngredient_recipe);
         TextView textForCocktailABV = (TextView) findViewById(R.id.textView_cocktailABV_recipe);
         floatingActionButtonForBookmark = (FloatingActionButton) findViewById(R.id.floatingActionButton_bookmark_recipe);
-        floatingActionButtonForThumbUp = (FloatingActionButton) findViewById(R.id.floatingActionButton_thumbUp_recipe);
-        floatingActionButtonForThumbDown = (FloatingActionButton) findViewById(R.id.floatingActionButton_thumbDown_recipe);
+        floatingActionButtonForGrade = (FloatingActionButton) findViewById(R.id.floatingActionButton_grade_recipe);
+        floatingActionButtonForReport = (FloatingActionButton) findViewById(R.id.floatingActionButton_report_recipe);
         textInputLayoutForComment = (TextInputLayout) findViewById(R.id.textInputLayout_comment_recipe);
         imageButtonForComment = (ImageButton) findViewById(R.id.imageButton_comment_recipe);
         LinearLayout linearLayoutForCommentTextInput = findViewById(R.id.linearLayout_cocktail_recipe);
@@ -111,28 +110,31 @@ public class CocktailRecipeActivity extends AppCompatActivity {
         textForCocktailIngredient.setText(cocktailIngredient);
         textForCocktailABV.setText(cocktailABV);
 
-        //로그인 하지 않으면
-        //북마크, 좋아요, 싫어요. 댓글입력 버튼 안보이게
+        //로그인 안한 경우
         if(currentUser == null){
+            //로그인 하지 않으면
+            //북마크, 평가, 신고, 댓글입력 버튼 안보이게
             floatingActionButtonForBookmark.setVisibility(View.GONE);
-            floatingActionButtonForThumbUp.setVisibility(View.GONE);
-            floatingActionButtonForThumbDown.setVisibility(View.GONE);
+            floatingActionButtonForGrade.setVisibility(View.GONE);
+            floatingActionButtonForReport.setVisibility(View.GONE);
             linearLayoutForCommentTextInput.setVisibility(View.GONE);
         }
-
-        //로그인한 유저의 북마크와
-        //좋아요 싫어요 정보를 가져와서
-        //북마크, 좋아요,싫어요 버튼의 초기값 세팅
-        //영진파트
-        //checked의 값이 true면 버튼의 초기모양 변경
-        if(bookmarkChecked==true){
-            floatingActionButtonForBookmark.setImageResource(R.mipmap.outline_star_white_36dp);
-        }
-        if(thumbUpChecked==true){
-            floatingActionButtonForThumbUp.setImageResource(R.mipmap.baseline_thumb_up_white_36dp);
-        }
-        if(thumbDownChecked==true){
-            floatingActionButtonForThumbDown.setImageResource(R.mipmap.baseline_thumb_down_white_36dp);
+        //로그인한 경우
+        else{
+            //로그인한 유저의 북마크와
+            //평가, 신고 정보를 가져와서
+            //북마크, 평가, 신고 버튼의 초기값 세팅
+            //영진파트
+            //checked의 값이 true면 버튼의 초기모양 변경
+            if(bookmarkChecked==true){
+                floatingActionButtonForBookmark.setImageResource(R.mipmap.baseline_bookmark_white_36dp);
+            }
+            if(gradeChecked==true){
+                floatingActionButtonForGrade.setImageResource(R.mipmap.outline_star_white_36dp);
+            }
+            if(reportChecked==true){
+                floatingActionButtonForReport.setImageResource(R.mipmap.baseline_feedback_white_36dp);
+            }
         }
     }
 
@@ -148,7 +150,6 @@ public class CocktailRecipeActivity extends AppCompatActivity {
         layoutManagerForCocktailComment.setStackFromEnd(true);
 
         recyclerViewForComment.setLayoutManager(layoutManagerForCocktailComment);
-        final CocktailIngredientButtonAdapter adapterForIngredientButton = new CocktailIngredientButtonAdapter();
         for(int i=0; i<20; i++) {
             adapterForCocktailComment.addItem(new Comment("hi"+i,"hi","hi","hi","ho"));
         }
@@ -184,6 +185,9 @@ public class CocktailRecipeActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(),"문자 길이를 준수해주세요!",Toast.LENGTH_LONG).show();
                 }
                 //정상 상태일 경우
+                //날짜 정보등과 함께
+                //댓글 등록
+                //영진파트
                 else{
                     long now = System.currentTimeMillis();
                     Date date = new Date(now);
@@ -205,11 +209,15 @@ public class CocktailRecipeActivity extends AppCompatActivity {
                 FirebaseUser user = mAuth.getCurrentUser();
 
                 //자신이 올린 글을 선택했을 경우 삭제 가능
+
+                //로그인을 하지 않은 경우
                 if(user==null) {
                     Toast.makeText(getApplicationContext(), "본인의 댓글만 삭제 가능합니다! 로그인 필요", Toast.LENGTH_LONG).show();
                     //Toast.makeText(getApplicationContext(),"삭제 가능한 칵테일 " + item.getName(),Toast.LENGTH_LONG).show();
                 }
-                //자신이 올린 글을 선택했을 경우 삭제 가능
+                //자신이 올린 글을 선택했을 경우
+                //삭제 가능
+                //영진 파트
                 else if(item.getUid()==user.getUid()){
                     PopupMenu popup= new PopupMenu(getApplicationContext(), view);
                     final int positionForDelete=position;
@@ -232,7 +240,10 @@ public class CocktailRecipeActivity extends AppCompatActivity {
                         }
                     });
                     popup.show();
-                }else{
+                }
+                //로그인을 했지만
+                //다른사람의 댓글을 선택했을 경우
+                else{
                     Toast.makeText(getApplicationContext(),"본인의 댓글만 삭제 가능합니다!",Toast.LENGTH_LONG).show();
                 }
                 /*
@@ -252,61 +263,64 @@ public class CocktailRecipeActivity extends AppCompatActivity {
         floatingActionButtonForBookmark.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //북마크 버튼은 계정당 한번만
-                //두번 누를시 북마크 취소
                 //영진 파트
+
+                //북마크가 이미 선택되었던 경우
                 if(bookmarkChecked==true){
                     Toast.makeText(getApplicationContext(),"북마크 취소",Toast.LENGTH_LONG).show();
-                    floatingActionButtonForBookmark.setImageResource(R.mipmap.outline_star_border_white_36dp);
+                    floatingActionButtonForBookmark.setImageResource(R.mipmap.outline_bookmark_border_white_36dp);
                     bookmarkChecked=false;
-                }else{
+                }
+                //북마크를 추가하는 경우
+                else{
                     Toast.makeText(getApplicationContext(),"북마크",Toast.LENGTH_LONG).show();
-                    floatingActionButtonForBookmark.setImageResource(R.mipmap.outline_star_white_36dp);
+                    floatingActionButtonForBookmark.setImageResource(R.mipmap.baseline_bookmark_white_36dp);
                     bookmarkChecked=true;
                 }
             }
         });
 
-        floatingActionButtonForThumbUp.setOnClickListener(new View.OnClickListener() {
+        floatingActionButtonForGrade.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //좋아요 버튼은 계정당 한번만
-                //두번 누를시 좋아요 취소
-                //싫어요 버튼이 눌린상태에서
-                //좋아요 버튼 누를시 싫어요 버튼 취소
+                //평가는 계정당 한번만
+                //평가는 취소 불가
+                //평가는 수정만 가능
                 //영진 파트
-                if(thumbUpChecked==true){
-                    Toast.makeText(getApplicationContext(),"좋아요 취소",Toast.LENGTH_LONG).show();
-                    floatingActionButtonForThumbUp.setImageResource(R.mipmap.outline_thumb_up_white_36dp);
-                    thumbUpChecked=false;
-                }else{
-                    Toast.makeText(getApplicationContext(),"좋아요",Toast.LENGTH_LONG).show();
-                    floatingActionButtonForThumbUp.setImageResource(R.mipmap.baseline_thumb_up_white_36dp);
-                    thumbUpChecked=true;
-                    floatingActionButtonForThumbDown.setImageResource(R.mipmap.outline_thumb_down_white_36dp);
-                    thumbDownChecked=false;
+
+                //평가 수정을 원하는 경우
+                if(gradeChecked==true){
+                    Toast.makeText(getApplicationContext(),"평가 수정",Toast.LENGTH_LONG).show();
+                }
+                //처음으로 평가를 하는 경우
+                else{
+                    Toast.makeText(getApplicationContext(),"평가 시작",Toast.LENGTH_LONG).show();
+                    //평가를 중간에 취소하면
+                    //gradeChecked가 true로 변경되면 안됨
+                    //수정 필
+                    floatingActionButtonForGrade.setImageResource(R.mipmap.outline_star_white_36dp);
+                    gradeChecked=true;
                 }
             }
         });
 
-        floatingActionButtonForThumbDown.setOnClickListener(new View.OnClickListener() {
+        floatingActionButtonForReport.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //싫어요 버튼은 계정당 한번만
-                //두번 누를시 싫어요 취소
-                //좋아요 버튼이 눌린상태에서
-                //싫어요 버튼 누를시 좋아요 버튼 취소
+                //신고는 계정당 한번만
+                //같은 게시물에 같은 계정이 여러번 신고 불가능
                 //영진 파트
-                if(thumbDownChecked==true){
-                    Toast.makeText(getApplicationContext(),"싫어요 취소",Toast.LENGTH_LONG).show();
-                    floatingActionButtonForThumbDown.setImageResource(R.mipmap.outline_thumb_down_white_36dp);
-                    thumbDownChecked=false;
-                }else{
-                    Toast.makeText(getApplicationContext(),"싫어요",Toast.LENGTH_LONG).show();
-                    floatingActionButtonForThumbDown.setImageResource(R.mipmap.baseline_thumb_down_white_36dp);
-                    thumbDownChecked=true;
-                    floatingActionButtonForThumbUp.setImageResource(R.mipmap.outline_thumb_up_white_36dp);
-                    thumbUpChecked=false;
+
+                //이미 신고를 한 경우
+                //신고 거부 안내
+                if(reportChecked==true){
+                    Toast.makeText(getApplicationContext(),"이미 신고하신 게시물입니다",Toast.LENGTH_LONG).show();
+                }
+                //처음으로 신고를 하는 경우
+                else{
+                    Toast.makeText(getApplicationContext(),"신고 접수",Toast.LENGTH_LONG).show();
+                    floatingActionButtonForReport.setImageResource(R.mipmap.baseline_feedback_white_36dp);
+                    reportChecked=true;
                 }
             }
         });
