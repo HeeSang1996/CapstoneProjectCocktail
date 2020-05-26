@@ -7,6 +7,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class MJH_PopupActivity extends Activity {
     TextView txtText;
@@ -29,13 +30,26 @@ public class MJH_PopupActivity extends Activity {
     }
 
     //확인 버튼 클릭
-    public void mOnClose(View v){
-        //데이터 전달하기
+    public void mBefore(View v){
         Intent intent = new Intent();
         intent.putExtra("result", "Close Popup");
         setResult(RESULT_OK, intent);
 
         //액티비티(팝업) 닫기
+        finish();
+    }
+
+    public void mNext(View v){
+        //데이터 전달하기
+        Intent intent = new Intent(this,MJH_PopupActivity.class);
+        intent.putExtra("data", "Test Popup");
+        startActivityForResult(intent, 1);
+    }
+
+    public void mExit(View v){
+        Intent intent = new Intent();
+        intent.putExtra("result", "-1");
+        setResult(RESULT_OK, intent);
         finish();
     }
 
@@ -52,6 +66,20 @@ public class MJH_PopupActivity extends Activity {
     public void onBackPressed() {
         //안드로이드 백버튼 막기
         return;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1) {
+            if (resultCode == RESULT_OK){
+                String result = data.getStringExtra("result");
+                if (result == "-1"){
+                    Toast.makeText(this,"call", Toast.LENGTH_SHORT).show();
+                    finish();
+                }
+            }
+        }
     }
 
 }
