@@ -13,6 +13,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,6 +42,7 @@ public class CocktailRecipeActivity extends AppCompatActivity {
     private FloatingActionButton floatingActionButtonForGrade;
     private FloatingActionButton floatingActionButtonForReport;
     private TextInputLayout textInputLayoutForComment;
+    private RatingBar ratingBar;
     private int cocktailID;
     private String stringForCocktailComment;
     private FirebaseAuth mAuth;
@@ -50,7 +52,7 @@ public class CocktailRecipeActivity extends AppCompatActivity {
     private boolean bookmarkChecked=false;
     private boolean gradeChecked=false;
     private boolean reportChecked=false;
-    private String gradeScore="0";
+    private String gradeScore;
 
     @SuppressLint("RestrictedApi")
     @Override
@@ -70,6 +72,9 @@ public class CocktailRecipeActivity extends AppCompatActivity {
         floatingActionButtonForReport = (FloatingActionButton) findViewById(R.id.floatingActionButton_report_recipe);
         textInputLayoutForComment = (TextInputLayout) findViewById(R.id.textInputLayout_comment_recipe);
         imageButtonForComment = (ImageButton) findViewById(R.id.imageButton_comment_recipe);
+        ratingBar = (RatingBar) findViewById(R.id.ratingBar_grading_recipe);
+        //수정필
+        gradeScore="0.0";
         LinearLayout linearLayoutForCommentTextInput = findViewById(R.id.linearLayout_cocktail_recipe);
         final ImageView imageForCocktail = (ImageView) findViewById(R.id.imageView_cocktail_recipe);
 
@@ -344,6 +349,13 @@ public class CocktailRecipeActivity extends AppCompatActivity {
             if (resultCode == RESULT_OK) {
                 floatingActionButtonForGrade.setImageResource(R.mipmap.outline_star_white_36dp);
                 gradeChecked=true;
+                //data.getFloatExtra("rating");
+                //ratingBar.setRating(data.getExtras().getFloat("rating"));
+                String ratingString = data.getStringExtra("rating");
+                float ratingFloat = Float.valueOf(ratingString);
+                ratingBar.setRating(ratingFloat);
+                gradeScore = ratingString;
+                Toast.makeText(getApplicationContext(), "Result: " + data.getStringExtra("rating"), Toast.LENGTH_SHORT).show();
             }
         }
         //신고 팝업의 결과물

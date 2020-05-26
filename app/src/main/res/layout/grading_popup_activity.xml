@@ -59,7 +59,7 @@
             android:layout_width="0dp"
             android:layout_height="50dp"
             android:layout_weight="1"
-            android:onClick="reportPopupConfirm"/>
+            android:onClick="gradingPopupConfirm"/>
 
         <View
             android:background="#66bdbdbd"
@@ -75,6 +75,6 @@
             android:layout_width="0dp"
             android:layout_height="50dp"
             android:layout_weight="1"
-            android:onClick="reportPopupCancel"/>
+            android:onClick="gradingPopupCancel"/>
     </LinearLayout>
 </LinearLayout>
