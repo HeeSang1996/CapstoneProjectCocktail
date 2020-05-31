@@ -85,7 +85,28 @@
         </activity>
         <activity
             android:name=".MJH_PopupActivity"
-            android:label="aa"
+            android:label="aa1"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Dialog">
+        </activity>
+        <activity
+            android:name=".MJH_Popup1Activity"
+            android:label="aa2"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Dialog">
+        </activity>
+        <activity
+            android:name=".MJH_Popup2Activity"
+            android:label="aa2"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Dialog">
+        </activity>
+        <activity
+            android:name=".MJH_Popup3Activity"
+            android:label="aa2"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Dialog">

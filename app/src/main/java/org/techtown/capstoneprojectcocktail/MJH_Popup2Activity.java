@@ -6,53 +6,65 @@ import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
-import android.widget.TextView;
+import android.widget.AdapterView;
+import android.widget.ListView;
 import android.widget.Toast;
 
-public class MJH_PopupActivity extends Activity {
-    TextView txtText;
+import java.util.ArrayList;
 
+public class MJH_Popup2Activity extends Activity {
+    ListView listview;
+    MJH_ListviewAdapter adapter;
+
+    MJH_SimulatorUiActivity simulatorUiAddress;
+    public ArrayList<Integer> bufferUpdateStep = new ArrayList<Integer>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //타이틀바 없애기
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        setContentView(R.layout.mjh_popup);
+        setContentView(R.layout.mjh_popup2);
+        simulatorUiAddress = ((MJH_SimulatorUiActivity)MJH_SimulatorUiActivity.uiMain);
 
-        //UI 객체생성
-        txtText = (TextView)findViewById(R.id.txtText);
+        // Adapter 불러오기
+        adapter = simulatorUiAddress.adapter;
+        adapter.callByPopup = 1;
 
-        //데이터 가져오기
-        Intent intent = getIntent();
-        String data = intent.getStringExtra("data");
-        txtText.setText(data);
+        // 리스트뷰 참조 및 Adapter달기
+        listview = (ListView) findViewById(R.id.listviewPopup2);
+        listview.setAdapter(adapter);
+
+        listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView parent, View v, int position, long id) {
+                // get item
+                MJH_ListviewItem item = (MJH_ListviewItem) parent.getItemAtPosition(position) ;
+                bufferUpdateStep.add(position+1);
+                //Snackbar.make(v, titleStep, Snackbar.LENGTH_LONG).setAction("Action", null).show();
+
+                // TODO : use item data.
+            }
+        }) ;
     }
 
     //확인 버튼 클릭
     public void mBefore(View v){
-        Intent intent = new Intent(this,MJH_Popup1Activity.class);
-        intent.putExtra("data", "");
-        startActivityForResult(intent, 1);
-
-        //액티비티(팝업) 닫기
-        finish();
-    }
-
-    public void mNext(View v){
         //데이터 전달하기
-        Intent intent = new Intent(this,MJH_PopupActivity.class);
+        Intent intent = new Intent(this,MJH_Popup1Activity.class);
         intent.putExtra("data", "Test Popup");
         startActivityForResult(intent, 1);
-    }
 
-    public void mExit(View v){
-        Intent intent = new Intent();
-        intent.putExtra("result", "-1");
-        setResult(RESULT_OK, intent);
         finish();
     }
+    public void mNext(View v){
+        //데이터 전달하기
+        Intent intent = new Intent(this,MJH_Popup3Activity.class);
+        startActivityForResult(intent, 1);
 
+        simulatorUiAddress.listUpdateStep = bufferUpdateStep;
+        finish();
+    }
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         //바깥레이어 클릭시 안닫히게

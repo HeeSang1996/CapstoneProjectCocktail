@@ -24,6 +24,8 @@ public class CocktailAdapterForSearch extends RecyclerView.Adapter<CocktailAdapt
     ArrayList<Cocktail> items_buffer = new ArrayList<Cocktail>();
     OnCocktailItemClickListenerForSearch listener;
 
+    public static int useByMinFlag = 0;
+
     public class ViewHolder extends RecyclerView.ViewHolder{
 
         TextView textForCocktailName;
@@ -59,9 +61,16 @@ public class CocktailAdapterForSearch extends RecyclerView.Adapter<CocktailAdapt
                 public void onComplete(@NonNull Task<Uri> task) {
                     if (task.isSuccessful()) {
                         // Glide 이용하여 이미지뷰에 로딩
-                        Glide.with(itemView)
-                                .load(task.getResult())
-                                .into(imageForCocktail);
+
+                        try{
+                            Glide.with(itemView)
+                                    .load(task.getResult())
+                                    .into(imageForCocktail);
+                        }
+                        catch(Exception e){
+                            e.printStackTrace();
+                        }
+
                     } else {
                         // URL을 가져오지 못하면 토스트 메세지
                     }
@@ -91,9 +100,15 @@ public class CocktailAdapterForSearch extends RecyclerView.Adapter<CocktailAdapt
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
-        View itemView = inflater.inflate(R.layout.cocktail_cardview_vertical, viewGroup, false);
+        View itemView;
 
+        //mjh
+        if( useByMinFlag == 1)
+            itemView = inflater.inflate(R.layout.mjh_popup3_cardview, viewGroup, false);
+        else
+            itemView = inflater.inflate(R.layout.cocktail_cardview_vertical, viewGroup, false);
         return new ViewHolder(itemView, this);
+        //mjh
     }
 
     @Override

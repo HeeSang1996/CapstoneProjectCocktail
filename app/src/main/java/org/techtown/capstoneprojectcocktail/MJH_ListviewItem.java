@@ -1,30 +1,42 @@
 package org.techtown.capstoneprojectcocktail;
 
+import java.util.ArrayList;
+
 public class MJH_ListviewItem {
 
-    String step;
-    String tech;
-    String desc ;
+    public String thisStep;
+    public String listUpdateTech;
+
+    public ArrayList<Integer> listUpdateAssociateStep;
+    public ArrayList<MJH_Object_ingredient> listUpdateIngredient;
 
 
-    public void setStep(String _step) {
-        this.step = _step ;
+    public void setThisStep(String _step) {
+        this.thisStep = _step ;
     }
     public void setTech(String _tech) {
-        this.tech = _tech;
+        this.listUpdateTech = _tech ;
     }
-    public void setDesc(String _desc) {
-        this.desc = _desc ;
+
+    public void setAssociateStep(ArrayList<Integer> _step) {
+        this.listUpdateAssociateStep = _step ;
+    }
+    public void setAssociateIngredient(ArrayList<MJH_Object_ingredient> _ingre) {
+        this.listUpdateIngredient = _ingre ;
     }
 
 
-    public String getStep() {
-        return this.step ;
+    public String getThisStep() {
+        return this.thisStep;
     }
     public String getTech() {
-        return this.tech  ;
+        return this.listUpdateTech;
     }
-    public String getDesc() {
-        return this.desc ;
+
+    public ArrayList<Integer> getAssociateStep() {
+        return this.listUpdateAssociateStep;
+    }
+    public ArrayList<MJH_Object_ingredient> getAssociateIngredient() {
+        return this.listUpdateIngredient;
     }
 }
