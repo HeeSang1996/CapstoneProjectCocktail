@@ -11,12 +11,10 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -27,18 +25,18 @@ import java.util.Map;
 import static androidx.constraintlayout.widget.Constraints.TAG;
 
 public class MJH_SimulatorUiActivity extends AppCompatActivity implements View.OnClickListener {
-    public FloatingActionButton floatingActionButtonForAddList;
-
     public static Context uiMain;
+
+    public FloatingActionButton floatingActionButtonForAddList;
     public MJH_ListviewAdapter adapter;
+    public ListView listview;
 
     public int listUpdateFlag = 0;
     public String listUpdateTech;
     public ArrayList<Integer> listUpdateStep = new ArrayList<Integer>();
     public ArrayList<MJH_Object_ingredient> listUpdateIngredient = new ArrayList<MJH_Object_ingredient>();
 
-
-    ListView listview;
+    public int stepNum = 0;
 
     public MJH_Object_ingredient[] ingredientList = new MJH_Object_ingredient[200];
     public int listCount = 0;
@@ -47,20 +45,13 @@ public class MJH_SimulatorUiActivity extends AppCompatActivity implements View.O
 
     @Override
     public void onCreate(Bundle saveInstanceState){
-        super.onCreate(saveInstanceState);
-        setContentView(R.layout.mjg_test);
-        uiMain = this;
         setAdapterForIngredientSearch();
-
-
-        Intent intent = getIntent();
+        super.onCreate(saveInstanceState);
+        setContentView(R.layout.mjh_test);
+        uiMain = this;
 
         floatingActionButtonForAddList = (FloatingActionButton) findViewById(R.id.floatingActionButtonForAddList);
         floatingActionButtonForAddList.setOnClickListener(this);
-
-
-
-
 
         // Adapter 생성
         adapter = new MJH_ListviewAdapter() ;
@@ -69,8 +60,6 @@ public class MJH_SimulatorUiActivity extends AppCompatActivity implements View.O
         // 리스트뷰 참조 및 Adapter달기
         listview = (ListView) findViewById(R.id.listview1);
         listview.setAdapter(adapter);
-
-
 
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -89,16 +78,13 @@ public class MJH_SimulatorUiActivity extends AppCompatActivity implements View.O
     @Override
     protected void onResume() {
         super.onResume();
-
-
         if (listUpdateFlag == 1) {
-            adapter.addItem("1", listUpdateTech, listUpdateStep, listUpdateIngredient);
-            listUpdateFlag = 0;
+            stepNum++;
+            adapter.addItem(Integer.toString(stepNum), listUpdateTech, listUpdateStep, listUpdateIngredient);
             listview.setAdapter(adapter);
+            listUpdateFlag = 0;
         }
     }
-
-
 
     @Override
     public void onClick(View v) {
@@ -106,15 +92,11 @@ public class MJH_SimulatorUiActivity extends AppCompatActivity implements View.O
         switch (id) {
             case R.id.floatingActionButtonForAddList:
                 //anim();
-                Toast.makeText(this, "Floating Action Button", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(this,MJH_Popup1Activity.class);
-                intent.putExtra("data", "Test Popup");
                 startActivityForResult(intent, 1);
                 break;
         }
     }
-
-
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -122,14 +104,11 @@ public class MJH_SimulatorUiActivity extends AppCompatActivity implements View.O
         if (requestCode == 1) {
             if (resultCode == RESULT_OK) {
                 //데이터 받기
-                String result = data.getStringExtra("result");
-                Toast.makeText(this, result, Toast.LENGTH_SHORT).show();
-
+                //String result = data.getStringExtra("result");
+                //Toast.makeText(this, result, Toast.LENGTH_SHORT).show();
             }
         }
     }
-
-
 
     public void setAdapterForIngredientSearch(){
         FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -171,7 +150,6 @@ public class MJH_SimulatorUiActivity extends AppCompatActivity implements View.O
                     } else {
                         Log.d(TAG, "get failed with ", task.getException());
                     }
-
                 }
             });
         }
