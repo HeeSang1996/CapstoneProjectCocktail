@@ -199,7 +199,7 @@ public class CocktailRecipeActivity extends AppCompatActivity {
                     Date date = new Date(now);
                     SimpleDateFormat sdfNow = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
                     String formatDate = sdfNow.format(date);
-                    Toast.makeText(getApplicationContext(),stringForCocktailComment,Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(),"댓글 내용: " + stringForCocktailComment,Toast.LENGTH_LONG).show();
                     FirebaseUser user = mAuth.getCurrentUser();
                     adapterForCocktailComment.addItem(new Comment(user.getDisplayName(),"날짜: " + formatDate,stringForCocktailComment,user.getPhotoUrl().toString(),user.getUid()));
                     recyclerViewForComment.setAdapter(adapterForCocktailComment);
