@@ -31,5 +31,4 @@ public class MJH_Object_ingredient { // 겟셋, 추상화 시간관계상 구현
 
         this.my_color = _my_color;
     }
-
 }

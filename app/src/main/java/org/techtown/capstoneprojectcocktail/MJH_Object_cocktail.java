@@ -3,7 +3,6 @@ package org.techtown.capstoneprojectcocktail;
 import java.util.ArrayList;
 
 public class MJH_Object_cocktail implements Cloneable{
-
     boolean isInGlass = false; // 이 칵테일이 현재 잔에 들어가 있는 단계 인가?
 
     int isLayering = 0; // 칵테일 층의 수
@@ -31,13 +30,28 @@ public class MJH_Object_cocktail implements Cloneable{
 
     String[] flavour = new String[15];
 
+    public MJH_Object_cocktail() {
+        eachAbv.add((float)0);
+        eachVolume.add((float)0);
+        specificGravity.add((float)0);
+
+        isColor.add(new MJH_Object_color(0,0,0));
+
+        sugar.add((float)0);
+        sour.add((float)0);
+        salty.add((float)0);
+        bitter.add((float)0);
+
+
+    }
+
 
     public boolean isInGlass() {
         return isInGlass;
     }
 
     public void setInGlass(boolean inGlass) {
-        isInGlass = inGlass;
+        this.isInGlass = inGlass;
     }
 
     public int getIsLayering() {
@@ -152,9 +166,6 @@ public class MJH_Object_cocktail implements Cloneable{
         this.flavour = flavour;
     }
 
-    public MJH_Object_cocktail(){
-
-    }
 
     @Override
     public Object clone() throws CloneNotSupportedException{ //깊은복사
