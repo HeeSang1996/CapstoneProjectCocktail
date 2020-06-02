@@ -164,7 +164,7 @@ public class MyPageFragment extends Fragment {
             }
         };
         timerForSignInCheck = new Timer();
-        timerForSignInCheck.schedule(taskForSignInCheck, 0,4000);
+        timerForSignInCheck.schedule(taskForSignInCheck, 1000,4000);
     }
 
     @Override

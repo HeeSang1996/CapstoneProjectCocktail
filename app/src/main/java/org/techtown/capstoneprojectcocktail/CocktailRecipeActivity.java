@@ -156,9 +156,9 @@ public class CocktailRecipeActivity extends AppCompatActivity {
         layoutManagerForCocktailComment.setStackFromEnd(true);
 
         recyclerViewForComment.setLayoutManager(layoutManagerForCocktailComment);
-        for(int i=0; i<20; i++) {
-            adapterForCocktailComment.addItem(new Comment("hi"+i,"hi","hi","hi","ho"));
-        }
+//        for(int i=0; i<20; i++) {
+//            adapterForCocktailComment.addItem(new Comment("hi"+i,"hi","hi","hi","ho"));
+//        }
         recyclerViewForComment.setAdapter(adapterForCocktailComment);
 
         textInputLayoutForComment.setCounterEnabled(true);
