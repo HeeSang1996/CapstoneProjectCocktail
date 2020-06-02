@@ -57,9 +57,14 @@ public class CocktailAdapterForHome extends RecyclerView.Adapter<CocktailAdapter
                 public void onComplete(@NonNull Task<Uri> task) {
                     if (task.isSuccessful()) {
                         // Glide 이용하여 이미지뷰에 로딩
-                        Glide.with(itemView)
-                                .load(task.getResult())
-                                .into(imageForCocktail);
+                        try{
+                            Glide.with(itemView)
+                                    .load(task.getResult())
+                                    .into(imageForCocktail);
+                        }
+                        catch(Exception e){
+                            e.printStackTrace();
+                        }
                     } else {
                         // URL을 가져오지 못하면 토스트 메세지
                     }

@@ -69,9 +69,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private MenuItem logInItem;
     private MenuItem logOutItem;
     private TextView navUserNameTextView;
-    private TextView myPageUserNameTextView;
     private ImageView navUserProfilePictureImageView;
-    private ImageView myPageUserProfilePictureImageView;
 
 
     @Override
@@ -112,9 +110,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navUserNameTextView = headerView.findViewById(R.id.userNameText_nav);
         navUserProfilePictureImageView = headerView.findViewById(R.id.profileImageView_nav);
 
+        /*
         View headerForMypage = getLayoutInflater().inflate(R.layout.fragment_mypage, null, false);
         myPageUserNameTextView = (TextView) headerForMypage.findViewById(R.id.userNameText_myPage);
         myPageUserProfilePictureImageView = (ImageView) headerForMypage.findViewById(R.id.profileImageView_myPage);
+         */
 
 
         /*
@@ -262,6 +262,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private void updateUI(final FirebaseUser currentUser) {
         //hideProgressDialog();
+        //유저가 로그인한 경우
+        //MyPageFragment myPageFragment = (MyPageFragment) getSupportFragmentManager().findFragmentById(R.id.nav_myPage);
+        //myPageFragment.updateUIForMyPage(currentUser);
         if (currentUser != null) {
             logInItem.setVisible(false);
             logOutItem.setVisible(true);
@@ -287,19 +290,22 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             try{
                 mThread.join();
                 navUserProfilePictureImageView.setImageBitmap(bitmap[0]);
-                myPageUserProfilePictureImageView.setImageBitmap(bitmap[0]);
             }catch (InterruptedException e){
                 e.printStackTrace();
             }
             navUserNameTextView.setText(currentUser.getDisplayName());
-            myPageUserNameTextView.setText(currentUser.getDisplayName());
-        } else {
+        }
+        //유저가 로그인 하지 않은 경우
+        else {
             logInItem.setVisible(true);
             logOutItem.setVisible(false);
             navUserProfilePictureImageView.setImageResource(R.mipmap.ic_launcher_round);
-            myPageUserProfilePictureImageView.setImageResource(R.mipmap.ic_launcher_round);
             navUserNameTextView.setText("Unknown");
-            myPageUserNameTextView.setText("Unknown");
         }
+    }
+
+    //테스트 용도 삭제 필수
+    public void buttonForTestCosine(View v){
+        Toast.makeText(getApplicationContext(),"테스트 버튼 클릭됨",Toast.LENGTH_LONG).show();
     }
 }

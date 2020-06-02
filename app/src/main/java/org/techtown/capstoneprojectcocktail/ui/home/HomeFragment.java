@@ -3,6 +3,7 @@ package org.techtown.capstoneprojectcocktail.ui.home;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.SparseIntArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +20,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import org.techtown.capstoneprojectcocktail.Cocktail;
 import org.techtown.capstoneprojectcocktail.CocktailAdapterForHome;
@@ -38,6 +41,8 @@ import java.util.List;
 import java.util.Map;
 
 import static androidx.constraintlayout.widget.Constraints.TAG;
+import static java.lang.Integer.parseInt;
+import static java.util.Date.parse;
 
 public class HomeFragment extends Fragment {
     public FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -50,8 +55,113 @@ public class HomeFragment extends Fragment {
     long[] Realabv = new long[20];
     int count;
     Map<String, Number> Recipe_Ingredient;
+    //레시피에 들어가는 재료들을 {}형식의 스트링 형태로 저장
+    String[] Recipe_list = new String[81];
+    //레시피에 들어가는 재료의 갯수 및 각 5미의 총합을 int형으로 저장(계산 편의를 위하여)
+    int[] Recipe_count = new int[81];
+    int[] Sum_sugar = new int[81];
+    int[] Sum_bitter = new int[81];
+    int[] Sum_sour = new int[81];
+    int[] Sum_salty = new int[81];
+    int[] Sum_hot = new int[81];
+    //레시피에 들어가는 재료 이름, 양을 스트링, 넘버 형태로 저장
+    String[][] Recipe_namelist = new String[81][10];
+    Number[][] Recipe_volumelist = new Number[81][10];
+    //레시피에 들어간 각 재료들의 5미를 스트링 형태로 저장, 한 레시피당 최대 재료갯수를 10으로 임의지정
+    String[][] Sugar_Value = new String[81][10];
+    String[][] Bitter_Value = new String[81][10];
+    String[][] Sour_Value = new String[81][10];
+    String[][] Salty_Value = new String[81][10];
+    String[][] Hot_Value = new String[81][10];
 
     public void setDocument() {
+        //기존 레시피들에 대한 재료, 양 가져오기 테스트용
+        for(int i=0; i < 81; i++)
+        {
+            count = i;
+            DocumentReference docRef = db.collection("Recipe").document(String.valueOf(i+6001));
+            final int finalI = i;
+            docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        //기존레시피의 재료 구성들을 Map형태로 저장한다.
+                        Map<String, Number> Recipe_Ingredient = (Map<String, Number>) document.get("Ingredient_content");
+                        Recipe_list[finalI] = Recipe_Ingredient.toString();
+                        //해당 레시피의 재료 갯수를 int배열형태에 저장한다.
+                        Recipe_count[finalI] = Recipe_Ingredient.size();
+                        //해당 레시피의 이름을 string 형태로 저장한다.
+                        String Name = document.get("Recipe_name").toString();
+                        //각각의 배열에 Map의 키값(재료이름), 밸류값(재료양)의 값들을 따로따로 얻는 방법
+                        String[] Ingredient_key = Recipe_Ingredient.keySet().toArray(new String[0]);
+                        Number[] Ingredient_Value = Recipe_Ingredient.values().toArray(new Number[0]);
+                        Recipe_namelist[finalI] = Recipe_Ingredient.keySet().toArray(new String[0]);
+                        Recipe_volumelist[finalI] = Recipe_Ingredient.values().toArray(new Number[0]);
+                        //Log.d(TAG, (finalI+6001)+ "번 레시피 이름: " + Name + " , " + "재료 이름: " +  Recipe_namelist[finalI][0]+", 재료 양: " + Recipe_volumelist[finalI][0].toString());
+                        //배열에 정상적으로 재료이름과 양의 값이 들어갔는지 재료갯수만큼 for구문을 돌려 로그로 확인
+                        for(int j=0; j < Recipe_Ingredient.size(); j++)
+                        {
+                            final int finalJ = j;
+                            //몇번 레시피의 재료이름, 양이 제대로 들어갔는지 로그 확인
+                            //Log.d(TAG, (finalI+6001)+ "번 레시피 이름: " + Name + " , " + "재료 이름: " + Ingredient_key[j]+", 재료 양: " + Ingredient_Value[j].toString());
+                            db.collection("Ingredient").whereEqualTo("Ingredient_name",Ingredient_key[j]).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                    if (task.isSuccessful()) {
+                                        for (QueryDocumentSnapshot document : task.getResult()) {
+                                            Sugar_Value[finalI][finalJ] = String.valueOf(document.getData().get("단맛"));
+                                            Bitter_Value[finalI][finalJ] = String.valueOf(document.getData().get("쓴맛"));
+                                            Sour_Value[finalI][finalJ] = String.valueOf(document.getData().get("신맛"));
+                                            Salty_Value[finalI][finalJ] = String.valueOf(document.getData().get("짠맛"));
+                                            Hot_Value[finalI][finalJ] = String.valueOf(document.getData().get("매운맛"));
+                                        }
+                                    } else {
+                                        Log.d(TAG, "Error getting documents: ", task.getException());
+                                    }
+                                }
+                            });
+                        }
+
+                    } else {
+                        Log.d(TAG, "No such document");
+                    }
+                } else {
+                    Log.d(TAG, "get failed with ", task.getException());
+                }
+            }
+        });
+        }
+        //기존 레시피별 오미 총 합 계산하기
+        for(int i = 0; i < 81; i++)
+        {
+            Sum_sugar[i] = 0;
+            Sum_bitter[i] = 0;
+            Sum_sour[i] = 0;
+            Sum_salty[i] = 0;
+            Sum_hot[i] = 0;
+            for(int j=0; j < Recipe_count[i]; j++)
+             {
+                 //null 값 들어갔을대의 에러 핸들링
+                if(Sugar_Value[i][j] == null) Sugar_Value[i][j] = "0";
+                if(Bitter_Value[i][j] == null) Bitter_Value[i][j] = "0";
+                if(Sour_Value[i][j] == null) Sour_Value[i][j] = "0";
+                if(Salty_Value[i][j] == null) Salty_Value[i][j] = "0";
+                if(Hot_Value[i][j] == null) Hot_Value[i][j] = "0";
+
+                Sum_sugar[i] += (parseInt(Sugar_Value[i][j]) * Recipe_volumelist[i][j].intValue());
+                Sum_bitter[i] += (parseInt(Bitter_Value[i][j]) * Recipe_volumelist[i][j].intValue());
+                Sum_sour[i] += (parseInt(Sour_Value[i][j]) * Recipe_volumelist[i][j].intValue());
+                Sum_salty[i] += (parseInt(Salty_Value[i][j]) * Recipe_volumelist[i][j].intValue());
+                Sum_hot[i] += (parseInt(Hot_Value[i][j]) * Recipe_volumelist[i][j].intValue());
+             }
+            Log.d(TAG, "로그확인: "+(6001+i)+"번째 레시피의 단맛 총합: "+Sum_sugar[i]);
+            Log.d(TAG, "로그확인: "+(6001+i)+"번째 레시피의 쓴맛 총합: "+Sum_bitter[i]);
+            Log.d(TAG, "로그확인: "+(6001+i)+"번째 레시피의 신맛 총합: "+Sum_sour[i]);
+            Log.d(TAG, "로그확인: "+(6001+i)+"번째 레시피의 짠맛 총합: "+Sum_salty[i]);
+            Log.d(TAG, "로그확인: "+(6001+i)+"번째 레시피의 매운맛 총합: "+Sum_hot[i]);
+        }
         //새로운 테이블 생성하기
 //        for(int i = 6001; i < 6082; i++)
 //        {
@@ -112,18 +222,62 @@ public class HomeFragment extends Fragment {
         // [END set_with_id]
 
         //특정 도큐먼트 가져오기
-//        DocumentReference docRef = db.collection("Ingredient").document("5006");
+        //여기의 .doument()안의 숫자를 조정함으로써 어떤 레시피를 가져올 것인가 특정 가능
+//        DocumentReference docRef = db.collection("Recipe").document("6001");
 //        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
 //            @Override
 //            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
 //                if (task.isSuccessful()) {
 //                    DocumentSnapshot document = task.getResult();
 //                    if (document.exists()) {
-//                        //해당 데이터 전부 읽어오기
-//                        Log.d(TAG, "DocumentSnapshot data: " + document.getData());
+//                        //해당 데이터 전부 읽어오기, 및 로그를 통해 읽어왔는지 확인
+//                        //Log.d(TAG, "DocumentSnapshot data: " + document.getData());
 //                        //일부만 읽어오기
-//                        String name = (String) document.get("Ingredient_name");
-//                        Log.d(TAG, "DocumentSnapshot data: " + name);
+//                        //기존레시피의 재료 구성들을 Map형태로 저장한다.
+//                        Map<String, Number> Recipe_Ingredient = (Map<String, Number>) document.get("Ingredient_content");
+//
+//                        //재료, 양들이 정상적으로 읽어졌는지 확인
+//                        //Log.d(TAG, "Recipe_Ingredient Key data: " + Recipe_Ingredient.keySet());
+//                        //Log.d(TAG, "Recipe_Ingredient Value data: " + Recipe_Ingredient.values());\
+//
+//                        //각각의 배열에 Map의 키값(재료이름), 밸류값(재료양)을 순서대로 저장한다.
+//                        String[] Ingredient_key = Recipe_Ingredient.keySet().toArray(new String[0]);
+//                        Number[] Ingredient_Value = Recipe_Ingredient.values().toArray(new Number[0]);
+//
+//                        //for구문을 통해 재료 갯수만큼 돌린다.
+//                        for(int i=0; i < Recipe_Ingredient.size(); i++)
+//                        {
+//                            //재료, 양들이 배열형태로 정상적으로 값이 들어왔는지 확인)
+//                            //Log.d(TAG, "Recipe_Ingredient Key data: " + Ingredient_key[i]);
+//                            //Log.d(TAG, "Recipe_Ingredient Value data: " + Ingredient_Value[i]);
+//                            final int finalI = i;
+//                            //위를통해 읽어온 레시피들의 이름을 토대로 재료 테이블에 있는 DB와 이름이 일치하는 재료들의 5미 값을 저장한다.
+//                            db.collection("Ingredient").whereEqualTo("Ingredient_name",Ingredient_key[i]).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//                                @Override
+//                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+//                                    if (task.isSuccessful()) {
+//                                        for (QueryDocumentSnapshot document : task.getResult()) {
+//                                            Sugar_Value[finalI] = String.valueOf(document.getData().get("단맛"));
+//                                            Log.d(TAG, document.getId() + "의 쓴맛 => " + document.getData().get("단맛"));
+//                                            Bitter_Value[finalI] = String.valueOf(document.getData().get("쓴맛"));
+//                                            Log.d(TAG, document.getId() + "의 신맛 => " + document.getData().get("쓴맛"));
+//                                            Sour_Value[finalI] = String.valueOf(document.getData().get("신맛"));
+//                                            Log.d(TAG, document.getId() + "의 짠맛 => " + document.getData().get("신맛"));
+//                                            Salty_Value[finalI] = String.valueOf(document.getData().get("짠맛"));
+//                                            Log.d(TAG, document.getId() + "의 매운맛 => " + document.getData().get("짠맛"));
+//                                            Hot_Value[finalI] = String.valueOf(document.getData().get("매운맛"));
+//                                            Log.d(TAG, document.getId() + "의 단맛 => " + document.getData().get("매운맛"));
+//                                        }
+//                                    } else {
+//                                        Log.d(TAG, "Error getting documents: ", task.getException());
+//                                    }
+//                                }
+//                            });
+//                            //Log.d(TAG, "Recipe_Ingredient Sugar Value data: " + Sugar_Value[i]);
+//
+//                        }
+//                        //Log.d(TAG, "Recipe_Ingredient Value data: " + Recipe_Ingredient.);
+//
 //                    } else {
 //                        Log.d(TAG, "No such document");
 //                    }
@@ -132,6 +286,7 @@ public class HomeFragment extends Fragment {
 //                }
 //            }
 //        });
+
     }
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
