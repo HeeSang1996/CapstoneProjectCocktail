@@ -54,6 +54,12 @@ public class HomeFragment extends Fragment {
     int count;
     Map<String, Number> Recipe_Ingredient;
     String[] Recipe_list = new String[81];
+    String[][] Sugar_Value = new String[81][10];
+    String[][] Bitter_Value = new String[81][10];
+    String[][] Sour_Value = new String[81][10];
+    String[][] Salty_Value = new String[81][10];
+    String[][] Hot_Value = new String[81][10];
+
 
     public void setDocument() {
         //기존 레시피들에 대한 재료, 양 가져오기 테스트용
@@ -61,8 +67,14 @@ public class HomeFragment extends Fragment {
         {
             count = i;
             DocumentReference docRef = db.collection("Recipe").document(String.valueOf(i+6001));
-
             final int finalI = i;
+            //레시피가 바뀌면 초기화
+            Sugar_Value = new String[81][10];
+            Bitter_Value = new String[81][10];
+            Sour_Value = new String[81][10];
+            Salty_Value = new String[81][10];
+            Hot_Value = new String[81][10];
+
             docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -71,19 +83,41 @@ public class HomeFragment extends Fragment {
                     if (document.exists()) {
                         //기존레시피의 재료 구성들을 Map형태로 저장한다.
                         Map<String, Number> Recipe_Ingredient = (Map<String, Number>) document.get("Ingredient_content");
+                        Recipe_list[finalI] = Recipe_Ingredient.toString();
+                        Log.d(TAG, Recipe_list[finalI]);
                         //해당 레시피의 이름을 string 형태로 저장한다.
                         String Name = document.get("Recipe_name").toString();
-                        //Log.d(TAG, "Recipe_table data: " + Recipe_Ingredient);
-                        Recipe_list[finalI] = Recipe_Ingredient.toString();
-
                         //각각의 배열에 Map의 키값(재료이름), 밸류값(재료양)의 값들을 따로따로 얻는 방법
                         String[] Ingredient_key = Recipe_Ingredient.keySet().toArray(new String[0]);
                         Number[] Ingredient_Value = Recipe_Ingredient.values().toArray(new Number[0]);
                         //배열에 정상적으로 재료이름과 양의 값이 들어갔는지 재료갯수만큼 for구문을 돌려 로그로 확인
                         for(int j=0; j < Recipe_Ingredient.size(); j++)
                         {
+                            final int finalJ = j;
                             Log.d(TAG, (finalI+6001)+ "번 레시피 이름: " + Name + " , " + "재료 이름: " + Ingredient_key[j]+", 재료 양: " + Ingredient_Value[j].toString());
+                            db.collection("Ingredient").whereEqualTo("Ingredient_name",Ingredient_key[j]).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                    if (task.isSuccessful()) {
+                                        for (QueryDocumentSnapshot document : task.getResult()) {
+                                            Sugar_Value[finalI][finalJ] = String.valueOf(document.getData().get("단맛"));
+                                            Log.d(TAG, (finalI+6001)+ "번 레시피 재료: " +document.get("Ingredient_name") + "의 단맛 => " + Sugar_Value[finalI][finalJ]);
+                                            Bitter_Value[finalI][finalJ] = String.valueOf(document.getData().get("쓴맛"));
+                                            Log.d(TAG, (finalI+6001)+ "번 레시피 재료: " +document.get("Ingredient_name") + "의 쓴맛 => " + Bitter_Value[finalI][finalJ]);
+                                            Sour_Value[finalI][finalJ] = String.valueOf(document.getData().get("신맛"));
+                                            Log.d(TAG, (finalI+6001)+ "번 레시피 재료: " +document.get("Ingredient_name") + "의 신맛 => " + Sour_Value[finalI][finalJ]);
+                                            Salty_Value[finalI][finalJ] = String.valueOf(document.getData().get("짠맛"));
+                                            Log.d(TAG, (finalI+6001)+ "번 레시피 재료: " +document.get("Ingredient_name") + "의 짠맛 => " + Salty_Value[finalI][finalJ]);
+                                            Hot_Value[finalI][finalJ] = String.valueOf(document.getData().get("매운맛"));
+                                            Log.d(TAG, (finalI+6001)+ "번 레시피 재료: " +document.get("Ingredient_name") + "의 매운맛 => " + Hot_Value[finalI][finalJ]);
+                                        }
+                                    } else {
+                                        Log.d(TAG, "Error getting documents: ", task.getException());
+                                    }
+                                }
+                            });
                         }
+
                     } else {
                         Log.d(TAG, "No such document");
                     }
@@ -188,16 +222,16 @@ public class HomeFragment extends Fragment {
 //                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
 //                                    if (task.isSuccessful()) {
 //                                        for (QueryDocumentSnapshot document : task.getResult()) {
-//                                            Log.d(TAG, document.getId() + "의 단맛 => " + document.getData().get("단맛"));
 //                                            Sugar_Value[finalI] = String.valueOf(document.getData().get("단맛"));
-//                                            Log.d(TAG, document.getId() + "의 쓴맛 => " + document.getData().get("쓴맛"));
+//                                            Log.d(TAG, document.getId() + "의 쓴맛 => " + document.getData().get("단맛"));
 //                                            Bitter_Value[finalI] = String.valueOf(document.getData().get("쓴맛"));
-//                                            Log.d(TAG, document.getId() + "의 신맛 => " + document.getData().get("신맛"));
+//                                            Log.d(TAG, document.getId() + "의 신맛 => " + document.getData().get("쓴맛"));
 //                                            Sour_Value[finalI] = String.valueOf(document.getData().get("신맛"));
-//                                            Log.d(TAG, document.getId() + "의 짠맛 => " + document.getData().get("짠맛"));
+//                                            Log.d(TAG, document.getId() + "의 짠맛 => " + document.getData().get("신맛"));
 //                                            Salty_Value[finalI] = String.valueOf(document.getData().get("짠맛"));
-//                                            Log.d(TAG, document.getId() + "의 매운맛 => " + document.getData().get("매운맛"));
+//                                            Log.d(TAG, document.getId() + "의 매운맛 => " + document.getData().get("짠맛"));
 //                                            Hot_Value[finalI] = String.valueOf(document.getData().get("매운맛"));
+//                                            Log.d(TAG, document.getId() + "의 단맛 => " + document.getData().get("매운맛"));
 //                                        }
 //                                    } else {
 //                                        Log.d(TAG, "Error getting documents: ", task.getException());
