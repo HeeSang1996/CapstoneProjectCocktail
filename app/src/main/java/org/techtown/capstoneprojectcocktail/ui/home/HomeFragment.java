@@ -56,7 +56,7 @@ public class HomeFragment extends Fragment {
     String[] Recipe_list = new String[81];
 
     public void setDocument() {
-        //기존 레시피들에 대한 재료, 양 가져오기
+        //기존 레시피들에 대한 재료, 양 가져오기 테스트용
         for(int i=0; i < 81; i++)
         {
             count = i;
