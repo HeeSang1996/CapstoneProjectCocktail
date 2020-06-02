@@ -167,6 +167,7 @@ public class MyPageFragment extends Fragment {
         timerForSignInCheck.schedule(taskForSignInCheck, 0,4000);
     }
 
+
     @Override
     public void onStop() {
         timerForSignInCheck.cancel();
