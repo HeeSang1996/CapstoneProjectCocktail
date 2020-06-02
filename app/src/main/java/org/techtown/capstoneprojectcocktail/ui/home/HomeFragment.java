@@ -112,26 +112,36 @@ public class HomeFragment extends Fragment {
         // [END set_with_id]
 
         //특정 도큐먼트 가져오기
-//        DocumentReference docRef = db.collection("Ingredient").document("5006");
-//        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-//            @Override
-//            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-//                if (task.isSuccessful()) {
-//                    DocumentSnapshot document = task.getResult();
-//                    if (document.exists()) {
-//                        //해당 데이터 전부 읽어오기
-//                        Log.d(TAG, "DocumentSnapshot data: " + document.getData());
-//                        //일부만 읽어오기
-//                        String name = (String) document.get("Ingredient_name");
-//                        Log.d(TAG, "DocumentSnapshot data: " + name);
-//                    } else {
-//                        Log.d(TAG, "No such document");
-//                    }
-//                } else {
-//                    Log.d(TAG, "get failed with ", task.getException());
-//                }
-//            }
-//        });
+        DocumentReference docRef = db.collection("Recipe").document("6001");
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        //해당 데이터 전부 읽어오기
+                        //Log.d(TAG, "DocumentSnapshot data: " + document.getData());
+                        //일부만 읽어오기
+                        Map<String, Number> Recipe_Ingredient = (Map<String, Number>) document.get("Ingredient_content");
+                        //Log.d(TAG, "Recipe_Ingredient Key data: " + Recipe_Ingredient.keySet());
+                        //Log.d(TAG, "Recipe_Ingredient Value data: " + Recipe_Ingredient.values());
+                        String[] Ingredient_key = Recipe_Ingredient.keySet().toArray(new String[0]);
+                        Number[] Ingredient_Value = Recipe_Ingredient.values().toArray(new Number[0]);
+                        for(int i=0; i < Recipe_Ingredient.size(); i++)
+                        {
+                            Log.d(TAG, "Recipe_Ingredient Key data: " + Ingredient_key[i]);
+                            Log.d(TAG, "Recipe_Ingredient Value data: " + Ingredient_Value[i]);
+                        }
+                        //Log.d(TAG, "Recipe_Ingredient Value data: " + Recipe_Ingredient.);
+
+                    } else {
+                        Log.d(TAG, "No such document");
+                    }
+                } else {
+                    Log.d(TAG, "get failed with ", task.getException());
+                }
+            }
+        });
     }
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
