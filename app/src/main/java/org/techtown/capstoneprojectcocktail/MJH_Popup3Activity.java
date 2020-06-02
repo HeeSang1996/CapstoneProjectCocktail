@@ -65,10 +65,14 @@ public class MJH_Popup3Activity extends Activity {
 
     RecyclerView recyclerViewForCocktailSearch;
     ArrayList<MJH_Object_ingredient> bufferUpdateIngredient;
+    ArrayList<Float> bufferUpdateIngredientAmount;
 
     /////////////////////////////////////////////
     MJH_SimulatorUiActivity simulatorUiAddress;
     public static Context uiThis;
+
+    public static int ingreAmountFlag = 0;
+    public static float ingreAmount = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +81,7 @@ public class MJH_Popup3Activity extends Activity {
         useByMinFlag = 1;
 
         bufferUpdateIngredient = new ArrayList<MJH_Object_ingredient>() ;
+        bufferUpdateIngredientAmount = new ArrayList<Float>();
 
         //타이틀바 없애기
         requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -85,11 +90,7 @@ public class MJH_Popup3Activity extends Activity {
 
 
         ListView listview ;
-        MJH_ListviewAdapter adapter;
 
-        // Adapter 생성
-        adapter = simulatorUiAddress.adapter;
-        adapter.callByPopup = 1;
 
         ////////////////////////////
         setAdapterForIngredientSearch();
@@ -119,8 +120,15 @@ public class MJH_Popup3Activity extends Activity {
                         bufferUpdateIngredient.add(simulatorUiAddress.ingredientList[i]);
                     }
                 }
+
+                Intent intent2 = new Intent(uiThis, MJH_Popup4Activity.class);
+                startActivityForResult(intent2, 1);
             }
         });
+    }
+
+    public void mClose(View v){
+        finish();
     }
 
     @Override
@@ -139,6 +147,7 @@ public class MJH_Popup3Activity extends Activity {
 
         simulatorUiAddress.listUpdateFlag = 1;
         simulatorUiAddress.listUpdateIngredient = bufferUpdateIngredient;
+        simulatorUiAddress.listUpdateIngredientAmount =  bufferUpdateIngredientAmount;
         useByMinFlag = 0;
         finish();
     }
@@ -158,16 +167,12 @@ public class MJH_Popup3Activity extends Activity {
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 1) {
-            if (resultCode == RESULT_OK){
-                String result = data.getStringExtra("result");
-                if (result == "-1"){
-                    Toast.makeText(this,"call", Toast.LENGTH_SHORT).show();
-                    finish();
-                }
-            }
+    protected void onResume() {
+        super.onResume();
+        if(ingreAmountFlag == 1){
+            Toast.makeText(this,"call", Toast.LENGTH_SHORT).show();
+            bufferUpdateIngredientAmount.add(ingreAmount);
+            ingreAmountFlag = 0;
         }
     }
 

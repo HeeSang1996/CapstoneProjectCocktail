@@ -10,7 +10,11 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.google.android.material.snackbar.Snackbar;
+
 import java.util.ArrayList;
+
+import static org.techtown.capstoneprojectcocktail.MJH_SimulatorUiActivity.adapterMIN;
 
 public class MJH_Popup2Activity extends Activity {
     ListView listview;
@@ -27,13 +31,14 @@ public class MJH_Popup2Activity extends Activity {
         setContentView(R.layout.mjh_popup2);
         simulatorUiAddress = ((MJH_SimulatorUiActivity)MJH_SimulatorUiActivity.uiMain);
 
-        // Adapter 불러오기
-        adapter = simulatorUiAddress.adapter;
-        adapter.callByPopup = 1;
 
         // 리스트뷰 참조 및 Adapter달기
         listview = (ListView) findViewById(R.id.listviewPopup2);
-        listview.setAdapter(adapter);
+
+        adapterMIN.callByPopup = 1;
+
+
+        listview.setAdapter(adapterMIN);
 
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -41,27 +46,26 @@ public class MJH_Popup2Activity extends Activity {
                 // get item
                 MJH_ListviewItem item = (MJH_ListviewItem) parent.getItemAtPosition(position) ;
                 bufferUpdateStep.add(position+1);
-                //Snackbar.make(v, titleStep, Snackbar.LENGTH_LONG).setAction("Action", null).show();
 
                 // TODO : use item data.
             }
         }) ;
     }
 
+    public void mClose(View v){
+        finish();
+    }
+
     //확인 버튼 클릭
     public void mBefore(View v){
-        //데이터 전달하기
         Intent intent = new Intent(this,MJH_Popup1Activity.class);
-        intent.putExtra("data", "Test Popup");
         startActivityForResult(intent, 1);
-
         finish();
     }
     public void mNext(View v){
         //데이터 전달하기
         Intent intent = new Intent(this,MJH_Popup3Activity.class);
         startActivityForResult(intent, 1);
-
         simulatorUiAddress.listUpdateStep = bufferUpdateStep;
         finish();
     }

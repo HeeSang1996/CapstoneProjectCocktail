@@ -34,22 +34,26 @@ public class MJH_Popup1Activity extends Activity {
     }
 
     public void mClose(View v){
-        Intent intent = new Intent();
-        intent.putExtra("result", "-1");
-        setResult(RESULT_OK, intent);
         finish();
     }
 
     public void selectButton(View v){
 
-        if (buttonFlag == 0){
-            bt = (Button) findViewById(v.getId());
+        bt = (Button) findViewById(v.getId());
+        selectButtonText = (String) bt.getText();
+
+        if(simulatorUiAddress.lastStepTechFlag == 1 && !selectButtonText.equals("Layering")){
+            Toast myToast = Toast.makeText(this.getApplicationContext(),"Layering이나 Gradient 다음에는 \'" + selectButtonText + "\'룰 선택할 수 없습니다!", Toast.LENGTH_SHORT);
+            myToast.show();
+            selectButtonText = "";
+        }
+        else if (buttonFlag == 0){
             bt.setBackgroundColor(Color.parseColor("#ffffff"));
             bt.setTextColor(Color.parseColor("#00B0FF"));
             selectButtonId = v.getId();
             buttonFlag = 1;
 
-            selectButtonText = (String) bt.getText();
+            simulatorUiAddress.listUpdateTech = selectButtonText;
             Toast myToast = Toast.makeText(this.getApplicationContext(),selectButtonText + " 선택", Toast.LENGTH_SHORT);
             myToast.show();
         }
@@ -59,16 +63,16 @@ public class MJH_Popup1Activity extends Activity {
             bt.setTextColor(Color.parseColor("#ffffff"));
             buttonFlag = 0;
 
+            selectButtonText = "";
+            simulatorUiAddress.listUpdateTech = selectButtonText;
             Toast myToast = Toast.makeText(this.getApplicationContext(),selectButtonText + " 취소", Toast.LENGTH_SHORT);
             myToast.show();
-            selectButtonText = "";
         }
         else{
-            Toast myToast = Toast.makeText(this.getApplicationContext(),"이미 \'" + selectButtonText + "\'이 선택되어있습니다.", Toast.LENGTH_SHORT);
+            Toast myToast = Toast.makeText(this.getApplicationContext(),"이미 \'" + simulatorUiAddress.listUpdateTech + "\'이 선택되어있습니다.", Toast.LENGTH_SHORT);
             myToast.show();
         }
 
-        simulatorUiAddress.listUpdateTech = selectButtonText;
     }
     public void mBuild(View v){
         Toast myToast = Toast.makeText(this.getApplicationContext(),"mBuild", Toast.LENGTH_SHORT);
@@ -123,20 +127,19 @@ public class MJH_Popup1Activity extends Activity {
 
     //확인 버튼 클릭
     public void mBefore(View v){
-        Intent intent = new Intent();
-        intent.putExtra("result", "Close Popup");
-        setResult(RESULT_OK, intent);
-
         //액티비티(팝업) 닫기
         finish();
     }
     public void mNext(View v){
-        //데이터 전달하기
-        Intent intent = new Intent(this,MJH_Popup2Activity.class);
-        intent.putExtra("data", "Test Popup");
-        startActivityForResult(intent, 1);
-
-        finish();
+        if(buttonFlag == 1){
+            //데이터 전달하기
+            Intent intent = new Intent(this,MJH_Popup2Activity.class);
+            startActivityForResult(intent, 1);
+            finish();
+        }
+        else{
+            Toast.makeText(this,"테크닉을 선택하여 주세요!", Toast.LENGTH_SHORT).show();
+        }
     }
 
 

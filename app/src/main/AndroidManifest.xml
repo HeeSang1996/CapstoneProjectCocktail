@@ -111,5 +111,18 @@
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Dialog">
         </activity>
+        <activity
+            android:name=".MJH_Popup4Activity"
+            android:label="aa2"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Dialog">
+        </activity>
+        <activity
+            android:name=".MJH_SimulatorGraphicActivity"
+            android:label="aa2"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait">
+        </activity>
     </application>
 </manifest>

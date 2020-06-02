@@ -1,6 +1,7 @@
 package org.techtown.capstoneprojectcocktail;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,17 +14,27 @@ import java.util.ArrayList;
 
 public class MJH_ListviewAdapter extends BaseAdapter {
 
+    public ArrayList<Integer> checkPositionInPopup = new ArrayList<Integer>() ;
+
     TextView titleTextView;
     TextView techTextView;
     public TextView descTextView;
     public int callByPopup = 0;
 
     // Adapter에 추가된 데이터를 저장하기 위한 ArrayList
-    private ArrayList<MJH_ListviewItem> listViewItemList = new ArrayList<MJH_ListviewItem>() ;
+    public ArrayList<MJH_ListviewItem> listViewItemList = new ArrayList<MJH_ListviewItem>() ;
 
     // ListViewAdapter의 생성자
     public MJH_ListviewAdapter() {
 
+    }
+
+    public void setCallByPopup(int input){
+        this.callByPopup = input;
+    }
+
+    public int getA(){
+        return callByPopup;
     }
 
     // Adapter에 사용되는 데이터의 개수를 리턴. : 필수 구현
@@ -49,19 +60,27 @@ public class MJH_ListviewAdapter extends BaseAdapter {
         techTextView = (TextView) convertView.findViewById(R.id.textView2) ;
         descTextView = (TextView) convertView.findViewById(R.id.textView3) ;
 
-        descTextView.setTextSize(10);        // Data Set(listViewItemList)에서 position에 위치한 데이터 참조 획득
+        techTextView.setTextSize(20);
+        descTextView.setTextSize(15);        // Data Set(listViewItemList)에서 position에 위치한 데이터 참조 획득
         MJH_ListviewItem listViewItem = listViewItemList.get(position);
 
         // 아이템 내 각 위젯에 데이터 반영
         ArrayList<Integer> getStepBuffer = listViewItem.getAssociateStep();
         ArrayList<MJH_Object_ingredient> getIngredientBuffer =  listViewItem.getAssociateIngredient();
+        ArrayList<Float> getAmountBuffer = listViewItem.amount;
 
         String getBufferStr = "";
+        int stepExistFlag = 0;
         for (int index = 0; index < getStepBuffer.size(); index++) {
-            getBufferStr = getBufferStr + getStepBuffer.get(index).toString();
+            if (index != 0)
+                getBufferStr = getBufferStr + " / ";
+            getBufferStr = getBufferStr + "step(" + getStepBuffer.get(index).toString() + ")";
+            stepExistFlag = 1;
         }
         for (int index = 0; index < getIngredientBuffer.size(); index++) {
-            getBufferStr = getBufferStr + getIngredientBuffer.get(index).name;
+            if (index != 0 || stepExistFlag == 1)
+                getBufferStr = getBufferStr + " / ";
+            getBufferStr = getBufferStr + getIngredientBuffer.get(index).name + "(" + getAmountBuffer.get(index).toString() + ")" ;
         }
 
         titleTextView.setText(listViewItem.getThisStep());
@@ -83,18 +102,28 @@ public class MJH_ListviewAdapter extends BaseAdapter {
     // 지정한 위치(position)에 있는 데이터 리턴 : 필수 구현
     @Override
     public Object getItem(int position) {
+
+        if(callByPopup == 1 && !checkPositionInPopup.contains(position)){
+            titleTextView.setBackgroundColor(Color.GREEN);
+            checkPositionInPopup.add(position);
+        }
+        else if(callByPopup == 1){
+            titleTextView.setBackgroundColor(Color.rgb(0, 102, 255));
+            checkPositionInPopup.remove(position);
+        }
+
         return listViewItemList.get(position) ;
     }
 
     // 아이템 데이터 추가를 위한 함수. 개발자가 원하는대로 작성 가능.
-    public void addItem(String title, String tech, ArrayList<Integer> setStep, ArrayList<MJH_Object_ingredient> setIngredient) {
+    public void addItem(String title, String tech, ArrayList<Integer> setStep, ArrayList<MJH_Object_ingredient> setIngredient, ArrayList<Float> amount) {
         MJH_ListviewItem item = new MJH_ListviewItem();
 
         item.setThisStep(title);
         item.setTech(tech);
         item.setAssociateStep(setStep);
         item.setAssociateIngredient(setIngredient);
-
+        item.amount = amount;
         listViewItemList.add(item);
     }
 }

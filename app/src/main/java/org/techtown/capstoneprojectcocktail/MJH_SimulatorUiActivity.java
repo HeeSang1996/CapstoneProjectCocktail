@@ -27,16 +27,20 @@ import static androidx.constraintlayout.widget.Constraints.TAG;
 public class MJH_SimulatorUiActivity extends AppCompatActivity implements View.OnClickListener {
     public static Context uiMain;
 
-    public FloatingActionButton floatingActionButtonForAddList;
-    public MJH_ListviewAdapter adapter;
+    public FloatingActionButton floatingActionButtonForAddList, floatingActionButtonForAddList2, button_simulation_action;
+    public static MJH_ListviewAdapter adapterMIN;
     public ListView listview;
 
     public int listUpdateFlag = 0;
-    public String listUpdateTech;
-    public ArrayList<Integer> listUpdateStep = new ArrayList<Integer>();
-    public ArrayList<MJH_Object_ingredient> listUpdateIngredient = new ArrayList<MJH_Object_ingredient>();
+    public int lastStepTechFlag = 0;
+    public static String listUpdateTech;
+    public static ArrayList<Integer> listUpdateStep = new ArrayList<Integer>();
+    public static ArrayList<MJH_Object_ingredient> listUpdateIngredient = new ArrayList<MJH_Object_ingredient>();
+    public static ArrayList<Float> listUpdateIngredientAmount = new ArrayList<Float>();
 
-    public int stepNum = 0;
+    public static int stepNum = 0;
+
+    public static MJH_Object_simulator test = new MJH_Object_simulator(1, 1);
 
     public MJH_Object_ingredient[] ingredientList = new MJH_Object_ingredient[200];
     public int listCount = 0;
@@ -52,14 +56,19 @@ public class MJH_SimulatorUiActivity extends AppCompatActivity implements View.O
 
         floatingActionButtonForAddList = (FloatingActionButton) findViewById(R.id.floatingActionButtonForAddList);
         floatingActionButtonForAddList.setOnClickListener(this);
+        floatingActionButtonForAddList2 = (FloatingActionButton) findViewById(R.id.floatingActionButtonForAddList2);
+        floatingActionButtonForAddList2.setOnClickListener(this);
+
+        button_simulation_action = (FloatingActionButton) findViewById(R.id.button_simulation_action);
+        button_simulation_action.setOnClickListener(this);
 
         // Adapter 생성
-        adapter = new MJH_ListviewAdapter() ;
-        adapter.callByPopup = 0;
+        adapterMIN = new MJH_ListviewAdapter() ;
+        adapterMIN.callByPopup = 0;
 
         // 리스트뷰 참조 및 Adapter달기
         listview = (ListView) findViewById(R.id.listview1);
-        listview.setAdapter(adapter);
+        listview.setAdapter(adapterMIN);
 
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -80,10 +89,20 @@ public class MJH_SimulatorUiActivity extends AppCompatActivity implements View.O
         super.onResume();
         if (listUpdateFlag == 1) {
             stepNum++;
-            adapter.addItem(Integer.toString(stepNum), listUpdateTech, listUpdateStep, listUpdateIngredient);
-            listview.setAdapter(adapter);
+            adapterMIN.addItem(Integer.toString(stepNum), listUpdateTech, listUpdateStep, listUpdateIngredient, listUpdateIngredientAmount);
+            listview.setAdapter(adapterMIN);
             listUpdateFlag = 0;
+
+            try{
+                test.addStepBuildings(stepNum, listUpdateStep, listUpdateIngredient, listUpdateIngredientAmount, true);
+            }catch(Exception e){
+                Log.w(TAG, "App error!", e);
+            }
+            if(listUpdateTech.equals("Layering") || listUpdateTech.equals("Gradient") ){
+                lastStepTechFlag = 1;
+            }
         }
+        adapterMIN.callByPopup = 0;
     }
 
     @Override
@@ -94,6 +113,28 @@ public class MJH_SimulatorUiActivity extends AppCompatActivity implements View.O
                 //anim();
                 Intent intent = new Intent(this,MJH_Popup1Activity.class);
                 startActivityForResult(intent, 1);
+                adapterMIN.callByPopup = 1;
+                break;
+            case R.id.floatingActionButtonForAddList2:
+                //anim();
+                if(stepNum != 0)
+                    stepNum--;
+                adapterMIN.listViewItemList.remove(adapterMIN.listViewItemList.size()-1);
+                listview.setAdapter(adapterMIN);
+
+                if(stepNum == 0){
+                    lastStepTechFlag = 0;
+                }
+                else if(adapterMIN.listViewItemList.get(adapterMIN.listViewItemList.size()-1).getTech().equals("Layering") || adapterMIN.listViewItemList.get(adapterMIN.listViewItemList.size()-1).getTech().equals("Gradient") ){
+                    lastStepTechFlag = 1;
+                }
+                else{
+                    lastStepTechFlag = 0;
+                }
+                break;
+            case R.id.button_simulation_action:
+                Intent intent2 = new Intent(this, MJH_SimulatorGraphicActivity.class);
+                startActivityForResult(intent2, 1);
                 break;
         }
     }

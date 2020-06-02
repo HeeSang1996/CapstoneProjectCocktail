@@ -27,7 +27,7 @@ public class MJH_Object_simulator {
                 if(i.isInGlass == true)
                     i.setInGlass(false);
             }
-            this.simulatorStep.get(stepNum).setInGlass(true);
+            this.simulatorStep.get(stepNum - 1).setInGlass(true);
             inGlassStep = stepNum; //stepNum은 1부터 시작
         }
         totalStep++;
@@ -98,7 +98,7 @@ public class MJH_Object_simulator {
 
         }catch (Exception e){ }
 
-        cocktailBuffer.totalSpecificGravity = cocktailBuffer.specificGravity.get(0);
+        //cocktailBuffer.totalSpecificGravity = cocktailBuffer.specificGravity.get(0);
         cocktailBuffer.isLayering = 1;
         return cocktailBuffer;
     }

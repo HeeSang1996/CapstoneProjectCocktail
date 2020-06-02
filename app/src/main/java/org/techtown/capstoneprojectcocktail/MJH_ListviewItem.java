@@ -9,6 +9,7 @@ public class MJH_ListviewItem {
 
     public ArrayList<Integer> listUpdateAssociateStep;
     public ArrayList<MJH_Object_ingredient> listUpdateIngredient;
+    public ArrayList<Float> amount;
 
 
     public void setThisStep(String _step) {
