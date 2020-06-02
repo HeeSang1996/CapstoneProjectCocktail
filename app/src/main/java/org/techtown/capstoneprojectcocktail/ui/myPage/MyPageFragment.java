@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +28,7 @@ import com.google.firebase.auth.FirebaseUser;
 
 import org.techtown.capstoneprojectcocktail.CocktailSearchActivity;
 import org.techtown.capstoneprojectcocktail.CocktailUploadActivity;
+import org.techtown.capstoneprojectcocktail.MainActivity;
 import org.techtown.capstoneprojectcocktail.R;
 
 import java.io.IOException;
@@ -33,24 +36,26 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class MyPageFragment extends Fragment {
     private FirebaseAuth mAuth;
     private ImageView profileImageView;
     private TextView profileTextView;
+    private TimerTask taskForSignInCheck;
+    private Timer timerForSignInCheck;
+    private boolean beforeSignInStatus = false;
+    private boolean currentSignInStatus = false;
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        //Snackbar.make(get, "북마크 기능이 들어갈 예정입니다 로그인상태", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        //Toast.makeText(getActivity().getApplicationContext(),"attach",Toast.LENGTH_LONG).show();
     }
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_mypage, container, false);
-
-        profileImageView=root.findViewById(R.id.profileImageView_myPage);
-        profileTextView=root.findViewById(R.id.userNameText_myPage);
 
         Button bookmarkButtonMyPage = root.findViewById(R.id.button_bookmark_myPage);
         bookmarkButtonMyPage.setOnClickListener(new View.OnClickListener() {
@@ -80,16 +85,16 @@ public class MyPageFragment extends Fragment {
             }
         });
 
-        Button favoriteButtonMyPage = root.findViewById(R.id.button_favorite_myPage);
+        Button favoriteButtonMyPage = root.findViewById(R.id.button_grading_myPage);
         favoriteButtonMyPage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 mAuth = FirebaseAuth.getInstance();
                 FirebaseUser currentUser = mAuth.getCurrentUser();
                 if (currentUser != null) {
-                    Snackbar.make(view, "마이 페이버릿 기능이 들어갈 예정입니다 로그인상태", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                    Snackbar.make(view, "마이 그레이딩 기능이 들어갈 예정입니다 로그인상태", Snackbar.LENGTH_LONG).setAction("Action", null).show();
                 } else {
-                    Snackbar.make(view, "My Favorite 기능은 로그인한 유저만 이용할 수 있습니다.", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                    Snackbar.make(view, "My Grading 기능은 로그인한 유저만 이용할 수 있습니다.", Snackbar.LENGTH_LONG).setAction("Action", null).show();
                 }
             }
         });
@@ -130,14 +135,60 @@ public class MyPageFragment extends Fragment {
     public void onStart() {
         super.onStart();
 
-        mAuth = FirebaseAuth.getInstance();
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        updateUIForMyPage(currentUser);
+        Toast.makeText(getActivity().getApplicationContext(),"my page on start 호출",Toast.LENGTH_LONG).show();
+
+        updateUIForMyPage();
+
+        final Handler handler = new Handler(){
+            public void handleMessage(Message msg){
+                updateUIForMyPage();
+                //System.out.println("my page 핸들러 콜");
+            }
+        };
+
+        taskForSignInCheck = new TimerTask() {
+            @Override
+            public void run() {
+                //메인 액티비티에서 현재 로그인 상태를 가져와서 저장함
+                currentSignInStatus = ((MainActivity)getActivity()).isSignInCheckForMyPage();
+                //현재 로그인 상태와 이전 로그인 상태가 다르면 update
+                if(beforeSignInStatus!=currentSignInStatus){
+                    //System.out.println("my page 변화 발견");
+                    beforeSignInStatus = currentSignInStatus;
+                    Message msg = handler.obtainMessage();
+                    handler.sendMessage(msg);
+                }
+                else{
+                    //System.out.println("my page 변화 없음");
+                }
+            }
+        };
+        timerForSignInCheck = new Timer();
+        timerForSignInCheck.schedule(taskForSignInCheck, 0,4000);
     }
 
-    public void updateUIForMyPage(final FirebaseUser currentUser) {
+    @Override
+    public void onStop() {
+        timerForSignInCheck.cancel();
+        Toast.makeText(getActivity().getApplicationContext(),"my page on stop 호출",Toast.LENGTH_LONG).show();
+        super.onStop();
+    }
+
+    @Override
+    public void onDestroy() {
+        //Toast.makeText(getActivity().getApplicationContext(),"on destroy 호출",Toast.LENGTH_LONG).show();
+        super.onDestroy();
+    }
+
+    public void updateUIForMyPage() {
         //hideProgressDialog();
         //유저가 로그인한 경우
+        profileImageView = getView().findViewById(R.id.profileImageView_myPage);
+        profileTextView = getView().findViewById(R.id.userNameText_myPage);
+
+        mAuth = FirebaseAuth.getInstance();
+        final FirebaseUser currentUser = mAuth.getCurrentUser();
+
         if (currentUser != null) {
             final Bitmap[] bitmap = new Bitmap[1];
             Thread mThread= new Thread(){

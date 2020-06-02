@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -70,6 +71,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private MenuItem logOutItem;
     private TextView navUserNameTextView;
     private ImageView navUserProfilePictureImageView;
+    private boolean signInCheckForMyPage = false;
 
 
     @Override
@@ -115,8 +117,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         myPageUserNameTextView = (TextView) headerForMypage.findViewById(R.id.userNameText_myPage);
         myPageUserProfilePictureImageView = (ImageView) headerForMypage.findViewById(R.id.profileImageView_myPage);
          */
-
-
         /*
         Fragment frg = null;
         frg = getSupportFragmentManager().findFragmentById(R.id.nav_myPage);
@@ -263,8 +263,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void updateUI(final FirebaseUser currentUser) {
         //hideProgressDialog();
         //유저가 로그인한 경우
-        //MyPageFragment myPageFragment = (MyPageFragment) getSupportFragmentManager().findFragmentById(R.id.nav_myPage);
-        //myPageFragment.updateUIForMyPage(currentUser);
+        /*
+        MyPageFragment myPageFragment = (MyPageFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
+        try{
+            myPageFragment.updateUIForMyPage(currentUser);
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
+        */
         if (currentUser != null) {
             logInItem.setVisible(false);
             logOutItem.setVisible(true);
@@ -294,6 +301,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 e.printStackTrace();
             }
             navUserNameTextView.setText(currentUser.getDisplayName());
+            signInCheckForMyPage = true;
         }
         //유저가 로그인 하지 않은 경우
         else {
@@ -301,11 +309,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             logOutItem.setVisible(false);
             navUserProfilePictureImageView.setImageResource(R.mipmap.ic_launcher_round);
             navUserNameTextView.setText("Unknown");
+            signInCheckForMyPage = false;
         }
     }
 
-    //테스트 용도 삭제 필수
-    public void buttonForTestCosine(View v){
-        Toast.makeText(getApplicationContext(),"테스트 버튼 클릭됨",Toast.LENGTH_LONG).show();
-    }
+    public boolean isSignInCheckForMyPage() { return signInCheckForMyPage; }
 }
