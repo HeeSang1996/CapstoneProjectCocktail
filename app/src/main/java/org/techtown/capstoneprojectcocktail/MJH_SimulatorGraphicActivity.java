@@ -27,59 +27,101 @@ public class MJH_SimulatorGraphicActivity extends AppCompatActivity {
     public void onCreate(Bundle saveInstanceState){
         super.onCreate(saveInstanceState);
         setContentView(R.layout.mjh_graphic);
+
+
+
         try{
-            float i;
 
-            int red = (int) MJH_SimulatorUiActivity.test.simulatorStep.get(MJH_SimulatorUiActivity.test.simulatorStep.size()-1 ).isColor.get(0).rgb_red;
-            int green = (int) MJH_SimulatorUiActivity.test.simulatorStep.get(MJH_SimulatorUiActivity.test.simulatorStep.size()-1 ).isColor.get(0).rgb_green;
-            int blue = (int) MJH_SimulatorUiActivity.test.simulatorStep.get(MJH_SimulatorUiActivity.test.simulatorStep.size()-1 ).isColor.get(0).rgb_blue;
+            if( MJH_SimulatorUiActivity.test.simulatorStep.get(MJH_SimulatorUiActivity.test.simulatorStep.size()-1 ).isLayering > 1){
+                Canvas canvas;
+                Bitmap bitmap = Bitmap.createBitmap(720,1480, Bitmap.Config.ARGB_8888);
+                canvas = new Canvas(bitmap);
+                ImageView View = (ImageView) findViewById(R.id.highballGlass);
+                View.setImageBitmap(bitmap);
 
-            i = MJH_SimulatorUiActivity.test.simulatorStep.get(MJH_SimulatorUiActivity.test.simulatorStep.size()-1 ).totalVolume;
-            TextView text;
-            text = (TextView) findViewById(R.id.textView) ;
-            text.setText(Float.toString(red) + "/" + Float.toString(green) + "/" + Float.toString(blue));
-
-
-            Canvas canvas;
-            Bitmap bitmap = Bitmap.createBitmap(720,1480, Bitmap.Config.ARGB_8888);
-            canvas = new Canvas(bitmap);
-            ImageView View = (ImageView) findViewById(R.id.highballGlass);
-            View.setImageBitmap(bitmap);
-
-            Paint paint = new Paint();
-            Paint paint_gradient = new Paint();
+                float volume;
+                int red, green, blue;
+                int height = 1320;
 
 
-            //바닥부
-            paint.setColor(Color.rgb(red ,green ,blue));
-            RectF rect1 = new RectF();
-            rect1.set(110, 350, 650, 430);
-            canvas.drawArc(rect1, 180, 180, true, paint);
+                Paint paint = new Paint();
+                Paint paint_gradient = new Paint();
+                RectF rect = new RectF();
 
-            //위 사각
-            paint.setColor(Color.rgb(red ,green ,blue));
-            canvas.drawRect(110, 380, 650, 1320, paint);
+                for(int index = 0; index < MJH_SimulatorUiActivity.test.simulatorStep.get(MJH_SimulatorUiActivity.test.simulatorStep.size()-1 ).isLayering; index++){
+                    red = (int) MJH_SimulatorUiActivity.test.simulatorStep.get(MJH_SimulatorUiActivity.test.simulatorStep.size()-1 ).isColor.get(index).rgb_red;
+                    green = (int) MJH_SimulatorUiActivity.test.simulatorStep.get(MJH_SimulatorUiActivity.test.simulatorStep.size()-1 ).isColor.get(index).rgb_green;
+                    blue = (int) MJH_SimulatorUiActivity.test.simulatorStep.get(MJH_SimulatorUiActivity.test.simulatorStep.size()-1 ).isColor.get(index).rgb_blue;
+
+                    volume = MJH_SimulatorUiActivity.test.simulatorStep.get(MJH_SimulatorUiActivity.test.inGlassStep-1 ).eachVolume.get(index);
+
+                    if(index == 0){
+                        //바닥부
+                        paint.setColor(Color.rgb(red ,green ,blue));
+                        rect.set(110, 1270, 650, 1370);
+                        canvas.drawArc(rect, 0, 360, true, paint);
+                    }
+                    //전체사각
+                    height = (int)((float)height - ((float)4.0 * volume));
+                    paint.setColor(Color.rgb(red ,green ,blue));
+                    canvas.drawRect(110, height, 650, 1320, paint);
+                }
 
 
+                //얼음
+                Bitmap bitmap2 = BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.highball_glass_test_ice);
+                bitmap2 = resizeBitmapImg(bitmap2, 1480);
+                canvas.drawBitmap(bitmap2, 0, 0, null);
 
-            //바닥부
-            paint.setColor(Color.rgb(red ,green ,blue));
-            RectF rect = new RectF();
-            rect.set(110, 1270, 650, 1370);
-            canvas.drawArc(rect, 0, 360, true, paint);
+                //빛반사
+                paint.setColor(0x56FFFFFF);
+                canvas.drawRect(150, 75, 300, 1370, paint);
+                rect.set(150, 1350, 300, 1390);
+                canvas.drawArc(rect, 90, 90, true, paint);
+            }
+            else{
+                Canvas canvas;
+                Bitmap bitmap = Bitmap.createBitmap(720,1480, Bitmap.Config.ARGB_8888);
+                canvas = new Canvas(bitmap);
+                ImageView View = (ImageView) findViewById(R.id.highballGlass);
+                View.setImageBitmap(bitmap);
 
+                float volume;
+                int height = 0;
 
-            Bitmap bitmap2 = BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.highball_glass_test_ice);
-            bitmap2 = resizeBitmapImg(bitmap2, 1480);
-            canvas.drawBitmap(bitmap2, 0, 0, null);
+                int red = (int) MJH_SimulatorUiActivity.test.simulatorStep.get(MJH_SimulatorUiActivity.test.simulatorStep.size()-1 ).isColor.get(0).rgb_red;
+                int green = (int) MJH_SimulatorUiActivity.test.simulatorStep.get(MJH_SimulatorUiActivity.test.simulatorStep.size()-1 ).isColor.get(0).rgb_green;
+                int blue = (int) MJH_SimulatorUiActivity.test.simulatorStep.get(MJH_SimulatorUiActivity.test.simulatorStep.size()-1 ).isColor.get(0).rgb_blue;
 
-            //빛반사
-            paint.setColor(0x56FFFFFF);
+                volume = MJH_SimulatorUiActivity.test.simulatorStep.get(MJH_SimulatorUiActivity.test.inGlassStep-1 ).totalVolume;
 
-            canvas.drawRect(150, 75, 300, 1370, paint);
+                Paint paint = new Paint();
+                Paint paint_gradient = new Paint();
 
-            rect.set(150, 1350, 300, 1390);
-            canvas.drawArc(rect, 90, 90, true, paint);
+                height = (int)((float)1320 - ((float)4.0 * volume));
+
+                //전체사각
+                paint.setColor(Color.rgb(red ,green ,blue));
+                canvas.drawRect(110, height, 650, 1320, paint);
+
+                //바닥부
+                paint.setColor(Color.rgb(red ,green ,blue));
+                RectF rect = new RectF();
+                rect.set(110, 1270, 650, 1370);
+                canvas.drawArc(rect, 0, 360, true, paint);
+
+                //얼음
+                Bitmap bitmap2 = BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.highball_glass_test_ice);
+                bitmap2 = resizeBitmapImg(bitmap2, 1480);
+                canvas.drawBitmap(bitmap2, 0, 0, null);
+
+                //빛반사
+                paint.setColor(0x56FFFFFF);
+                canvas.drawRect(150, 75, 300, 1370, paint);
+                rect.set(150, 1350, 300, 1390);
+                canvas.drawArc(rect, 90, 90, true, paint);
+            }
+
         }catch (Exception e){e.printStackTrace(); }
     }
 
