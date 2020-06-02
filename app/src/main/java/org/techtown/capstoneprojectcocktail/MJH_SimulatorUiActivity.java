@@ -133,9 +133,15 @@ public class MJH_SimulatorUiActivity extends AppCompatActivity implements View.O
                 }
                 break;
             case R.id.button_simulation_action:
-                Intent intent2 = new Intent(this, MJH_SimulatorGraphicActivity.class);
-                startActivityForResult(intent2, 1);
-                break;
+                if(test.simulatorStep.size() == 0) {
+                    Toast myToast = Toast.makeText(this.getApplicationContext(),"칵테일 시뮬레이션 스템을 추가해 주세요!", Toast.LENGTH_SHORT);
+                    myToast.show();
+                }
+                else{
+                    Intent intent2 = new Intent(this, MJH_SimulatorGraphicActivity.class);
+                    startActivityForResult(intent2, 1);
+                    break;
+                }
         }
     }
 

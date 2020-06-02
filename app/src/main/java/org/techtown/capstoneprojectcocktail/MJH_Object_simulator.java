@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 public class MJH_Object_simulator {
 
+
     int iceType = 0;
     int glassType = 0;
     int totalStep = 0; // 전체 스텝 갯수
@@ -39,7 +40,7 @@ public class MJH_Object_simulator {
 
         try { // 기존 스탭을 이용해 칵테일을 만들때
             if(associateStep.size() > 0)
-                cocktailBuffer = (MJH_Object_cocktail) this.simulatorStep.get(associateStep.get(0)).clone();
+                cocktailBuffer = (MJH_Object_cocktail) this.simulatorStep.get(associateStep.get(0) - 1).clone();
             if(associateStep.size() > 1){ // 여러 단계를 사용할때
                 for(int i = 1; i < associateStep.size(); i++){
                     //도수계산
@@ -68,6 +69,7 @@ public class MJH_Object_simulator {
 
             //재료들 이용하여 혼합
             for(int i = 0; i < inputIngredient.size(); i++){
+
                 //도수계산
                 cocktailBuffer.totalAbv = calcAbv(cocktailBuffer.totalVolume, cocktailBuffer.totalAbv,
                         inputAmount.get(i), inputIngredient.get(i).abv);
@@ -94,11 +96,13 @@ public class MJH_Object_simulator {
                 cocktailBuffer.salty.set(0, cocktailBuffer.salty.get(0) + inputIngredient.get(i).salty);
                 cocktailBuffer.bitter.set(0, cocktailBuffer.bitter.get(0) + inputIngredient.get(i).bitter);
                 //(this.simulator_step[step_num].flavour[0] = @@@
+
             }
 
-        }catch (Exception e){ }
+        }catch (Exception e){e.printStackTrace();}
 
-        //cocktailBuffer.totalSpecificGravity = cocktailBuffer.specificGravity.get(0);
+        cocktailBuffer.totalSpecificGravity = cocktailBuffer.specificGravity.get(0);
+        cocktailBuffer.eachAbv.set(0, cocktailBuffer.totalAbv);
         cocktailBuffer.isLayering = 1;
         return cocktailBuffer;
     }
@@ -125,106 +129,97 @@ public class MJH_Object_simulator {
 
 
 
-    public int addStepLayering(int stepNum, int associateStep, MJH_Object_ingredient inputIngredient, float inputAmount, int layeringType){
+    public void addStepLayering(int stepNum, int associateStep, MJH_Object_ingredient inputIngredient, float inputAmount, int layeringType){
         int returnValue = 0;
         MJH_Object_cocktail cocktailBufferLayering = new MJH_Object_cocktail();
         int beforeInGlassStep = inGlassStep; // 이번 스텝을 하기전에 글래스에 있던 스텝
-        inGlassStep = stepNum; // 이번 스텝이 이제 글래스에 있음 (레이어링은 글래스에 해야함으로)
+
         if(beforeInGlassStep != 0){ // 현재 글래스에 담긴 스텝이 있을 경우
             try{
-                returnValue = calcKindLayering(associateStep, inputIngredient, inputAmount, layeringType); // 레이어링 작업
-
+                calcKindLayering(associateStep, inputIngredient, inputAmount, layeringType); // 레이어링 작업
+                inGlassStep = stepNum; // 이번 스텝이 이제 글래스에 있음 (레이어링은 글래스에 해야함으로)
                 // 현재 글래스에 담긴 음료를 이번 스텝으로 설정
                 for(MJH_Object_cocktail i : simulatorStep){
                     if(i.isInGlass == true)
                         i.setInGlass(false);
                 }
-                this.simulatorStep.get(stepNum).setInGlass(true);
+                this.simulatorStep.get(stepNum - 1).setInGlass(true);
                 inGlassStep = stepNum; //stepNum은 1부터 시작
-            }catch (Exception e){ }
+            }catch (Exception e){e.printStackTrace(); }
         }
         else{ // 현재 글래에 담긴 스텝이 없을 경우
             //예외처리 해주기
         }
         totalStep++;
-        return returnValue; //1:정상, -1: 오류
+
     }
     //+
-    public int calcKindLayering(int associateStep, MJH_Object_ingredient inputIngredient, float inputAmount, int layeringType){
+    public void calcKindLayering(int associateStep, MJH_Object_ingredient inputIngredient, float inputAmount, int layeringType){
         //int layeringType: 1->완벽한 플로팅, 2->어설픈 플로팅
 
         try{
             this.simulatorStep.add((MJH_Object_cocktail)this.simulatorStep.get(inGlassStep - 1).clone());// 현재 글래스에 담겨있는 칵테일을 복사
-        }catch (Exception e){ }
+        }catch (Exception e){e.printStackTrace(); }
         int layerNumBuffer = simulatorStep.get(inGlassStep - 1).isLayering; // 현재 글래스에 들어 있는 층 계산
-
+        simulatorStep.get(inGlassStep).isLayering++;
+        inGlassStep++;
 
         if(associateStep == 0){ // 재료로 레이어링 할 때
-            if(inputIngredient.specific_gravity > simulatorStep.get(inGlassStep - 1).specificGravity.get(layerNumBuffer - 1))
-                return -1; // 인풋이 글래스에 있는것 보다 비중이 크면 오류
-            else{
-                //토탈 abv, 토탈 비중, 토탈 부피 갱신
-                simulatorStep.get(inGlassStep - 1).totalAbv = calcAbv(simulatorStep.get(inGlassStep - 1).totalVolume, simulatorStep.get(inGlassStep - 1).totalAbv,
-                        inputAmount, inputIngredient.abv);
-                simulatorStep.get(inGlassStep - 1).totalSpecificGravity = calcSpecificGravity(simulatorStep.get(inGlassStep - 1).totalVolume , inputAmount,
-                        simulatorStep.get(inGlassStep - 1).totalSpecificGravity , inputIngredient.specific_gravity);
-                simulatorStep.get(inGlassStep - 1).totalVolume = simulatorStep.get(inGlassStep - 1).totalVolume + inputAmount;
+            //토탈 abv, 토탈 비중, 토탈 부피 갱신
+            simulatorStep.get(inGlassStep - 1).totalAbv = calcAbv(simulatorStep.get(inGlassStep - 1).totalVolume, simulatorStep.get(inGlassStep - 1).totalAbv,
+                    inputAmount, inputIngredient.abv);
+            simulatorStep.get(inGlassStep - 1).totalSpecificGravity = calcSpecificGravity(simulatorStep.get(inGlassStep - 1).totalVolume , inputAmount,
+                    simulatorStep.get(inGlassStep - 1).totalSpecificGravity , inputIngredient.specific_gravity);
+            simulatorStep.get(inGlassStep - 1).totalVolume = simulatorStep.get(inGlassStep - 1).totalVolume + inputAmount;
 
-                // 재료 부피, 알콜도수, 비중, 색 추가
-                simulatorStep.get(inGlassStep - 1).getEachVolume().add(inputAmount);
-                simulatorStep.get(inGlassStep - 1).getEachAbv().add(inputIngredient.abv);
-                simulatorStep.get(inGlassStep - 1).getSpecificGravity().add(inputIngredient.specific_gravity);
-                simulatorStep.get(inGlassStep - 1).getIs_color().add(inputIngredient.my_color);
+            // 재료 부피, 알콜도수, 비중, 색 추가
+            simulatorStep.get(inGlassStep - 1).getEachVolume().add(inputAmount);
+            simulatorStep.get(inGlassStep - 1).getEachAbv().add(inputIngredient.abv);
+            simulatorStep.get(inGlassStep - 1).getSpecificGravity().add(inputIngredient.specific_gravity);
+            simulatorStep.get(inGlassStep - 1).getIs_color().add(inputIngredient.my_color);
 
-                //맛에 대한 정보 (기타 피쳐)
-                simulatorStep.get(inGlassStep - 1).getSugar().add(inputIngredient.sugar);
-                simulatorStep.get(inGlassStep - 1).getSour().add(inputIngredient.sour);
-                simulatorStep.get(inGlassStep - 1).getSalty().add(inputIngredient.salty);
-                simulatorStep.get(inGlassStep - 1).getBitter().add(inputIngredient.bitter);
-                //(this.simulator_step[step_num].flavour[0] = @@@
+            //맛에 대한 정보 (기타 피쳐)
+            simulatorStep.get(inGlassStep - 1).getSugar().add(inputIngredient.sugar);
+            simulatorStep.get(inGlassStep - 1).getSour().add(inputIngredient.sour);
+            simulatorStep.get(inGlassStep - 1).getSalty().add(inputIngredient.salty);
+            simulatorStep.get(inGlassStep - 1).getBitter().add(inputIngredient.bitter);
+            //(this.simulator_step[step_num].flavour[0] = @@@
 
-                if(layeringType == 1 ){
-                    simulatorStep.get(inGlassStep - 1).isBoundaryDirty.add(1);
-                }
-                else
-                    simulatorStep.get(inGlassStep - 1).isBoundaryDirty.add(0);
+            if(layeringType == 1 ){
+                simulatorStep.get(inGlassStep - 1).isBoundaryDirty.add(1);
             }
-            return 1;
+            else
+                simulatorStep.get(inGlassStep - 1).isBoundaryDirty.add(0);
         }
 
         if(associateStep != 0){ // 재료로 레이어링 할 때
-            if(simulatorStep.get(associateStep  - 1).specificGravity.get(0) > simulatorStep.get(inGlassStep - 1).specificGravity.get(layerNumBuffer - 1))
-                return -1; // 인풋이 글래스에 있는것 보다 비중이 크면 오류
-            else{
-                //토탈 abv, 토탈 비중, 토탈 부피 갱신
-                simulatorStep.get(inGlassStep - 1).totalAbv = calcAbv(simulatorStep.get(inGlassStep - 1).totalVolume, simulatorStep.get(inGlassStep - 1).totalAbv,
-                        simulatorStep.get(associateStep  - 1).totalVolume, simulatorStep.get(associateStep  - 1).totalAbv);
-                simulatorStep.get(inGlassStep - 1).totalSpecificGravity = calcSpecificGravity(simulatorStep.get(inGlassStep - 1).totalVolume ,  simulatorStep.get(associateStep  - 1).totalVolume,
-                        simulatorStep.get(inGlassStep - 1).totalSpecificGravity , simulatorStep.get(associateStep  - 1).getSpecificGravity().get(0));
-                simulatorStep.get(inGlassStep - 1).totalVolume = simulatorStep.get(inGlassStep - 1).totalVolume + simulatorStep.get(associateStep  - 1).totalVolume;
 
-                // 재료 부피, 알콜도수, 비중, 색 추가
-                simulatorStep.get(inGlassStep - 1).getEachVolume().add(simulatorStep.get(associateStep  - 1).totalVolume);
-                simulatorStep.get(inGlassStep - 1).getEachAbv().add(simulatorStep.get(associateStep  - 1).totalAbv);
-                simulatorStep.get(inGlassStep - 1).getSpecificGravity().add(simulatorStep.get(associateStep  - 1).getSpecificGravity().get(0));
-                simulatorStep.get(inGlassStep - 1).getIs_color().add(simulatorStep.get(associateStep  - 1).getIs_color().get(0));
+            //토탈 abv, 토탈 비중, 토탈 부피 갱신
+            simulatorStep.get(inGlassStep - 1).totalAbv = calcAbv(simulatorStep.get(inGlassStep - 1).totalVolume, simulatorStep.get(inGlassStep - 1).totalAbv,
+                    simulatorStep.get(associateStep  - 1).totalVolume, simulatorStep.get(associateStep  - 1).totalAbv);
+            simulatorStep.get(inGlassStep - 1).totalSpecificGravity = calcSpecificGravity(simulatorStep.get(inGlassStep - 1).totalVolume ,  simulatorStep.get(associateStep  - 1).totalVolume,
+                    simulatorStep.get(inGlassStep - 1).totalSpecificGravity , simulatorStep.get(associateStep  - 1).getSpecificGravity().get(0));
+            simulatorStep.get(inGlassStep - 1).totalVolume = simulatorStep.get(inGlassStep - 1).totalVolume + simulatorStep.get(associateStep  - 1).totalVolume;
 
-                //맛에 대한 정보 (기타 피쳐)
-                simulatorStep.get(inGlassStep - 1).getSugar().add(simulatorStep.get(associateStep  - 1).getSugar().get(0));
-                simulatorStep.get(inGlassStep - 1).getSour().add(simulatorStep.get(associateStep  - 1).getSour().get(0));
-                simulatorStep.get(inGlassStep - 1).getSalty().add(simulatorStep.get(associateStep  - 1).getSalty().get(0));
-                simulatorStep.get(inGlassStep - 1).getBitter().add(simulatorStep.get(associateStep  - 1).getBitter().get(0));
-                //(this.simulator_step[step_num].flavour[0] = @@@
+            // 재료 부피, 알콜도수, 비중, 색 추가
+            simulatorStep.get(inGlassStep - 1).getEachVolume().add(simulatorStep.get(associateStep  - 1).totalVolume);
+            simulatorStep.get(inGlassStep - 1).getEachAbv().add(simulatorStep.get(associateStep  - 1).totalAbv);
+            simulatorStep.get(inGlassStep - 1).getSpecificGravity().add(simulatorStep.get(associateStep  - 1).getSpecificGravity().get(0));
+            simulatorStep.get(inGlassStep - 1).getIs_color().add(simulatorStep.get(associateStep  - 1).getIs_color().get(0));
 
-                if(layeringType == 1 ){
-                    simulatorStep.get(inGlassStep - 1).isBoundaryDirty.add(1);
-                }
-                else
-                    simulatorStep.get(inGlassStep - 1).isBoundaryDirty.add(0);
+            //맛에 대한 정보 (기타 피쳐)
+            simulatorStep.get(inGlassStep - 1).getSugar().add(simulatorStep.get(associateStep  - 1).getSugar().get(0));
+            simulatorStep.get(inGlassStep - 1).getSour().add(simulatorStep.get(associateStep  - 1).getSour().get(0));
+            simulatorStep.get(inGlassStep - 1).getSalty().add(simulatorStep.get(associateStep  - 1).getSalty().get(0));
+            simulatorStep.get(inGlassStep - 1).getBitter().add(simulatorStep.get(associateStep  - 1).getBitter().get(0));
+            //(this.simulator_step[step_num].flavour[0] = @@@
+
+            if(layeringType == 1 ){
+                simulatorStep.get(inGlassStep - 1).isBoundaryDirty.add(1);
             }
-            return 1;
+            else
+                simulatorStep.get(inGlassStep - 1).isBoundaryDirty.add(0);
         }
-        return 0;
     }
 
 

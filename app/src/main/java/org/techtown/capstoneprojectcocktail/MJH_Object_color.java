@@ -51,7 +51,7 @@ public class MJH_Object_color {
         this.rgb_blue = (int)(255 * (1 - this.cmyk_yellow) * (1 - this.cmyk_black_key));
     }
 
-    public String get_android_color_type(){
+    public long get_android_color_type(){
 
         int red_int = (int)rgb_red;
         int green_int = (int)rgb_green;
@@ -68,7 +68,6 @@ public class MJH_Object_color {
 
         String android_color = android_color_builder.toString();
 
-        return android_color;
+        return Long.parseLong(android_color);
     }
-
 }
