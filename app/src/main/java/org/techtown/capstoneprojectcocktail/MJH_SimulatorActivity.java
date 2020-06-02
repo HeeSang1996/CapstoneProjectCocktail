@@ -103,7 +103,7 @@ public class MJH_SimulatorActivity extends AppCompatActivity {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         DocumentReference docRef;
 
-        for(int i=0; i < 127; i++) {
+        for(int i=0; i < 140; i++) {
             ingredientList[i] = new MJH_Object_ingredient();
             docRef = db.collection("Ingredient").document(String.valueOf(5001 + i));
 

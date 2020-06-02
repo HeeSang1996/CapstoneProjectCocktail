@@ -52,15 +52,15 @@ public class MJH_Popup3Activity extends Activity {
     int count;
 
     //재료 정보를 받기 위한 변수들
-    String[] Ingredient_name = new String[127];
-    int[] Ingredient_ID = new int[127];
-    long[] Ingredient_Realabv = new long[127];
-    String[] Ingredient_abv = new String[127];
-    String[] Ingredient_ref = new String[127];
-    Number[] Ingredient_sugar = new Number[127];
-    String[] Ingredient_Realsugar = new String[127];
-    String[] Ingredient_flavour = new String[127];
-    String[] Ingredient_specific_gravity = new String[127];
+    String[] Ingredient_name = new String[140];
+    int[] Ingredient_ID = new int[140];
+    long[] Ingredient_Realabv = new long[140];
+    String[] Ingredient_abv = new String[140];
+    String[] Ingredient_ref = new String[140];
+    Number[] Ingredient_sugar = new Number[140];
+    String[] Ingredient_Realsugar = new String[140];
+    String[] Ingredient_flavour = new String[140];
+    String[] Ingredient_specific_gravity = new String[140];
     int Ingredient_count;
 
     RecyclerView recyclerViewForCocktailSearch;
@@ -114,7 +114,7 @@ public class MJH_Popup3Activity extends Activity {
             public void onItemClick(CocktailAdapterForSearch.ViewHolder holder, View view, int position) {
                 Cocktail item = adapterForCocktailSearch.getItem(position);
                 //Toast.makeText(getActivity().getApplicationContext(),"선택된 칵테일: " + item.getName(),Toast.LENGTH_LONG).show();
-                for(int i = 0; i < 127; i++){
+                for(int i = 0; i < 140; i++){
                     if(simulatorUiAddress.ingredientList[i].name.equals(item.getName())){
                         Toast.makeText(uiThis,"선택된 재료: " + item.getName(),Toast.LENGTH_LONG).show();
                         bufferUpdateIngredient.add(simulatorUiAddress.ingredientList[i]);
@@ -178,7 +178,7 @@ public class MJH_Popup3Activity extends Activity {
 
 
     private void setAdapterForIngredientSearch(){
-        for(int i=0; i < 127; i++)
+        for(int i=0; i < 140; i++)
         {
             List<String> list;
 
@@ -226,7 +226,7 @@ public class MJH_Popup3Activity extends Activity {
                             recyclerViewForCocktailSearch.setAdapter(adapterForCocktailSearch);
 
                             //배열에 잘드갔는지 테스트한 for 구문
-                            for(int k=0; k < 127; k++)
+                            for(int k=0; k < 140; k++)
                             {
                                 System.out.println("array_count : "+ k + "   Ingredient_name data: " +Ingredient_name[k]);
                             }
