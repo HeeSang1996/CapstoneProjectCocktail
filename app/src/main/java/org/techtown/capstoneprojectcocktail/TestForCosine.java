@@ -2,26 +2,63 @@ package org.techtown.capstoneprojectcocktail;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+
 import java.util.ArrayList;
+import java.util.Map;
+
+import static androidx.constraintlayout.widget.Constraints.TAG;
 
 public class TestForCosine extends AppCompatActivity {
 
     CocktailTasteInfo cocktailTasteInfo = new CocktailTasteInfo();
+    //파이어베이스에서 이름을 따와 저장할 곳들 생성
+    String[] Name = new String[3];
+    public FirebaseFirestore db = FirebaseFirestore.getInstance();
+    String[] Cocktail_name = new String[81];
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.test_cosine_activity);
-
-
         Button testButton1 = findViewById(R.id.buttonForTest1_test);
+        //인덱스 값이 정해지고 불러오면 컴플릿리스너때문에 가장 늦게 들어오므로
+        //온 크리에이트에서 레시피 전체 이름을 불러와 Cocktail_name에 순서대로 미리 넣어둠
+        for(int i = 0; i< 81; i++)
+        {
+            DocumentReference docRef = db.collection("Recipe").document(String.valueOf(i+6001));
+            final int finalI = i;
+            docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot document = task.getResult();
+                        if (document.exists()) {
+                            Cocktail_name[finalI]= document.get("Recipe_name").toString();
+                        } else {
+                            Log.d(TAG, "No such document");
+                        }
+                    } else {
+                        Log.d(TAG, "get failed with ", task.getException());
+                    }
+                }
+            });
+        }
         testButton1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -66,19 +103,22 @@ public class TestForCosine extends AppCompatActivity {
                 System.out.println("1위 유사도");
                 System.out.println(max);
                 System.out.println("1위 칵테일 인덱스");
-                System.out.println(maxIndex+1);
+                System.out.println(maxIndex+6001);
                 System.out.println("2위 유사도");
                 System.out.println(secondMax);
                 System.out.println("2위 칵테일 인덱스");
-                System.out.println(secondMaxIndex+1);
+                System.out.println(secondMaxIndex+6001);
                 System.out.println("3위 유사도");
                 System.out.println(thirdMax);
                 System.out.println("3위 칵테일 인덱스");
-                System.out.println(thirdMaxIndex+1);
-                Toast.makeText(getApplicationContext(),"1위 칵테일 인덱스: "+(maxIndex+1) + "\n2위 칵테일 인덱스: "+(secondMaxIndex+1) + "\n3위 칵테일 인덱스: "+(thirdMaxIndex+1),Toast.LENGTH_LONG).show();
+                System.out.println(thirdMaxIndex+6001);
+                Name[0] = Cocktail_name[maxIndex];
+                Name[1] = Cocktail_name[secondMaxIndex];
+                Name[2] = Cocktail_name[thirdMaxIndex];
+                //Toast.makeText(getApplicationContext(),"1위 칵테일 인덱스: "+ (maxIndex+6001) + "\n2위 칵테일 인덱스: "+ (secondMaxIndex+6001) + "\n3위 칵테일 인덱스: "+ (thirdMaxIndex+6001),Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(),"1위 칵테일 이름: "+ Name[0] + "\n2위 칵테일 이름: "+ Name[1] + "\n3위 칵테일 이름: "+ Name[2],Toast.LENGTH_LONG).show();
             }
         });
-
         Button testButton2 = findViewById(R.id.buttonForTest2_test);
         testButton2.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -124,16 +164,21 @@ public class TestForCosine extends AppCompatActivity {
                 System.out.println("1위 유사도");
                 System.out.println(max);
                 System.out.println("1위 칵테일 인덱스");
-                System.out.println(maxIndex+1);
+                System.out.println(maxIndex+6001);
                 System.out.println("2위 유사도");
                 System.out.println(secondMax);
                 System.out.println("2위 칵테일 인덱스");
-                System.out.println(secondMaxIndex+1);
+                System.out.println(secondMaxIndex+6001);
                 System.out.println("3위 유사도");
                 System.out.println(thirdMax);
                 System.out.println("3위 칵테일 인덱스");
-                System.out.println(thirdMaxIndex+1);
-                Toast.makeText(getApplicationContext(),"1위 칵테일 인덱스: "+(maxIndex+1) + "\n2위 칵테일 인덱스: "+(secondMaxIndex+1) + "\n3위 칵테일 인덱스: "+(thirdMaxIndex+1),Toast.LENGTH_LONG).show();
+                System.out.println(thirdMaxIndex+6001);
+                //Toast.makeText(getApplicationContext(),"1위 칵테일 인덱스: "+ (maxIndex+6001) + "\n2위 칵테일 인덱스: "+ (secondMaxIndex+6001) + "\n3위 칵테일 인덱스: "+ (thirdMaxIndex+6001),Toast.LENGTH_LONG).show();
+                Name[0] = Cocktail_name[maxIndex];
+                Name[1] = Cocktail_name[secondMaxIndex];
+                Name[2] = Cocktail_name[thirdMaxIndex];
+                //Toast.makeText(getApplicationContext(),"1위 칵테일 인덱스: "+ (maxIndex+6001) + "\n2위 칵테일 인덱스: "+ (secondMaxIndex+6001) + "\n3위 칵테일 인덱스: "+ (thirdMaxIndex+6001),Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(),"1위 칵테일 이름: "+ Name[0] + "\n2위 칵테일 이름: "+ Name[1] + "\n3위 칵테일 이름: "+ Name[2],Toast.LENGTH_LONG).show();
             }
         });
 
@@ -182,16 +227,21 @@ public class TestForCosine extends AppCompatActivity {
                 System.out.println("1위 유사도");
                 System.out.println(max);
                 System.out.println("1위 칵테일 인덱스");
-                System.out.println(maxIndex+1);
+                System.out.println(maxIndex+6001);
                 System.out.println("2위 유사도");
                 System.out.println(secondMax);
                 System.out.println("2위 칵테일 인덱스");
-                System.out.println(secondMaxIndex+1);
+                System.out.println(secondMaxIndex+6001);
                 System.out.println("3위 유사도");
                 System.out.println(thirdMax);
                 System.out.println("3위 칵테일 인덱스");
-                System.out.println(thirdMaxIndex+1);
-                Toast.makeText(getApplicationContext(),"1위 칵테일 인덱스: "+(maxIndex+1) + "\n2위 칵테일 인덱스: "+(secondMaxIndex+1) + "\n3위 칵테일 인덱스: "+(thirdMaxIndex+1),Toast.LENGTH_LONG).show();
+                System.out.println(thirdMaxIndex+6001);
+                //Toast.makeText(getApplicationContext(),"1위 칵테일 인덱스: "+ (maxIndex+6001) + "\n2위 칵테일 인덱스: "+ (secondMaxIndex+6001) + "\n3위 칵테일 인덱스: "+ (thirdMaxIndex+6001),Toast.LENGTH_LONG).show();
+                Name[0] = Cocktail_name[maxIndex];
+                Name[1] = Cocktail_name[secondMaxIndex];
+                Name[2] = Cocktail_name[thirdMaxIndex];
+                //Toast.makeText(getApplicationContext(),"1위 칵테일 인덱스: "+ (maxIndex+6001) + "\n2위 칵테일 인덱스: "+ (secondMaxIndex+6001) + "\n3위 칵테일 인덱스: "+ (thirdMaxIndex+6001),Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(),"1위 칵테일 이름: "+ Name[0] + "\n2위 칵테일 이름: "+ Name[1] + "\n3위 칵테일 이름: "+ Name[2],Toast.LENGTH_LONG).show();
             }
         });
     }
