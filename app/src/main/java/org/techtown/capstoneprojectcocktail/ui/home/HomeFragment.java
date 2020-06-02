@@ -33,6 +33,7 @@ import org.techtown.capstoneprojectcocktail.MJH_SimulatorUiActivity;
 import org.techtown.capstoneprojectcocktail.OnCocktailIngredientButtonItemClickListener;
 import org.techtown.capstoneprojectcocktail.OnCocktailItemClickListenerForHome;
 import org.techtown.capstoneprojectcocktail.R;
+import org.techtown.capstoneprojectcocktail.TestForCosine;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -313,7 +314,7 @@ public class HomeFragment extends Fragment {
                         MJH_SimulatorUiActivity.class); // 다음 넘어갈 클래스 지정
                 startActivity(intent); // 다음 화면으로 넘어간다
                 //////////////// By MJH
-                setDocument();
+                //setDocument();
             }
         });
 
@@ -408,6 +409,16 @@ public class HomeFragment extends Fragment {
             }
         });
 
+        //테스트용 삭제필
+        Button testButton = root.findViewById(R.id.buttonForTestCosine_home);
+        testButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(view.getContext(), TestForCosine.class);
+                startActivity(intent);
+            }
+        });
+        //테스트용 삭제필
 //        for(int i=0; i<20; i++) {
 //                adapterForCocktailHome.addItem(new Cocktail(Recipe_name[i], i, "맛있는 칵테일 " + i + "의 설명 정말 맛있다 맛있는 칵테일" + i +
 //                        "의 설명 정말 맛있다 ", "Whisky0",i*10 + " %","gs://sbsimulator-96f70.appspot.com/Recipe/BETWEEN THE SHEETS.jpg"));
