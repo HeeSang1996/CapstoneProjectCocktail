@@ -71,6 +71,8 @@ public class HomeFragment extends Fragment {
                     if (document.exists()) {
                         //기존레시피의 재료 구성들을 Map형태로 저장한다.
                         Map<String, Number> Recipe_Ingredient = (Map<String, Number>) document.get("Ingredient_content");
+                        //해당 레시피의 이름을 string 형태로 저장한다.
+                        String Name = document.get("Recipe_name").toString();
                         //Log.d(TAG, "Recipe_table data: " + Recipe_Ingredient);
                         Recipe_list[finalI] = Recipe_Ingredient.toString();
 
@@ -78,10 +80,9 @@ public class HomeFragment extends Fragment {
                         String[] Ingredient_key = Recipe_Ingredient.keySet().toArray(new String[0]);
                         Number[] Ingredient_Value = Recipe_Ingredient.values().toArray(new Number[0]);
                         //배열에 정상적으로 재료이름과 양의 값이 들어갔는지 재료갯수만큼 for구문을 돌려 로그로 확인
-                        for(int i=0; i < Recipe_Ingredient.size(); i++)
+                        for(int j=0; j < Recipe_Ingredient.size(); j++)
                         {
-                            Log.d(TAG, "Recipe_Ingredient Key data: " + Ingredient_key[i]);
-                            Log.d(TAG, "Recipe_Ingredient Value data: " + Ingredient_Value[i].toString());
+                            Log.d(TAG, (finalI+6001)+ "번 레시피 이름: " + Name + " , " + "재료 이름: " + Ingredient_key[j]+", 재료 양: " + Ingredient_Value[j].toString());
                         }
                     } else {
                         Log.d(TAG, "No such document");
