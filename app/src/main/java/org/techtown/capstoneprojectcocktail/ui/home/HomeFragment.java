@@ -19,6 +19,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import org.techtown.capstoneprojectcocktail.Cocktail;
 import org.techtown.capstoneprojectcocktail.CocktailAdapterForHome;
@@ -50,6 +52,13 @@ public class HomeFragment extends Fragment {
     long[] Realabv = new long[20];
     int count;
     Map<String, Number> Recipe_Ingredient;
+
+    //읽어온 5미 저장(읽어오는 재료 갯수를 최대 10개로 임의 지정하였음)
+    String[] Sugar_Value = new String[10];
+    String[] Bitter_Value = new String[10];
+    String[] Sour_Value = new String[10];
+    String[] Salty_Value = new String[10];
+    String[] Hot_Value = new String[10];
 
     public void setDocument() {
         //새로운 테이블 생성하기
@@ -112,6 +121,7 @@ public class HomeFragment extends Fragment {
         // [END set_with_id]
 
         //특정 도큐먼트 가져오기
+        //여기의 .doument()안의 숫자를 조정함으로써 어떤 레시피를 가져올 것인가 특정 가능
         DocumentReference docRef = db.collection("Recipe").document("6001");
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
@@ -119,18 +129,51 @@ public class HomeFragment extends Fragment {
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
-                        //해당 데이터 전부 읽어오기
+                        //해당 데이터 전부 읽어오기, 및 로그를 통해 읽어왔는지 확인
                         //Log.d(TAG, "DocumentSnapshot data: " + document.getData());
                         //일부만 읽어오기
+                        //기존레시피의 재료 구성들을 Map형태로 저장한다.
                         Map<String, Number> Recipe_Ingredient = (Map<String, Number>) document.get("Ingredient_content");
+
+                        //재료, 양들이 정상적으로 읽어졌는지 확인
                         //Log.d(TAG, "Recipe_Ingredient Key data: " + Recipe_Ingredient.keySet());
-                        //Log.d(TAG, "Recipe_Ingredient Value data: " + Recipe_Ingredient.values());
+                        //Log.d(TAG, "Recipe_Ingredient Value data: " + Recipe_Ingredient.values());\
+
+                        //각각의 배열에 Map의 키값(재료이름), 밸류값(재료양)을 순서대로 저장한다.
                         String[] Ingredient_key = Recipe_Ingredient.keySet().toArray(new String[0]);
                         Number[] Ingredient_Value = Recipe_Ingredient.values().toArray(new Number[0]);
+
+                        //for구문을 통해 재료 갯수만큼 돌린다.
                         for(int i=0; i < Recipe_Ingredient.size(); i++)
                         {
-                            Log.d(TAG, "Recipe_Ingredient Key data: " + Ingredient_key[i]);
-                            Log.d(TAG, "Recipe_Ingredient Value data: " + Ingredient_Value[i]);
+                            //재료, 양들이 배열형태로 정상적으로 값이 들어왔는지 확인)
+                            //Log.d(TAG, "Recipe_Ingredient Key data: " + Ingredient_key[i]);
+                            //Log.d(TAG, "Recipe_Ingredient Value data: " + Ingredient_Value[i]);
+                            final int finalI = i;
+                            //위를통해 읽어온 레시피들의 이름을 토대로 재료 테이블에 있는 DB와 이름이 일치하는 재료들의 5미 값을 저장한다.
+                            db.collection("Ingredient").whereEqualTo("Ingredient_name",Ingredient_key[i]).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                    if (task.isSuccessful()) {
+                                        for (QueryDocumentSnapshot document : task.getResult()) {
+                                            Log.d(TAG, document.getId() + "의 단맛 => " + document.getData().get("단맛"));
+                                            Sugar_Value[finalI] = String.valueOf(document.getData().get("단맛"));
+                                            Log.d(TAG, document.getId() + "의 쓴맛 => " + document.getData().get("쓴맛"));
+                                            Bitter_Value[finalI] = String.valueOf(document.getData().get("쓴맛"));
+                                            Log.d(TAG, document.getId() + "의 신맛 => " + document.getData().get("신맛"));
+                                            Sour_Value[finalI] = String.valueOf(document.getData().get("신맛"));
+                                            Log.d(TAG, document.getId() + "의 짠맛 => " + document.getData().get("짠맛"));
+                                            Salty_Value[finalI] = String.valueOf(document.getData().get("짠맛"));
+                                            Log.d(TAG, document.getId() + "의 매운맛 => " + document.getData().get("매운맛"));
+                                            Hot_Value[finalI] = String.valueOf(document.getData().get("매운맛"));
+                                        }
+                                    } else {
+                                        Log.d(TAG, "Error getting documents: ", task.getException());
+                                    }
+                                }
+                            });
+                            //Log.d(TAG, "Recipe_Ingredient Sugar Value data: " + Sugar_Value[i]);
+
                         }
                         //Log.d(TAG, "Recipe_Ingredient Value data: " + Recipe_Ingredient.);
 
