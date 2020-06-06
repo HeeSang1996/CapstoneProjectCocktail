@@ -41,7 +41,8 @@
                 android:text=" 내용과 관련없는 이미지"
                 android:textSize="15sp"
                 android:textColor="#000000"
-                android:buttonTint="#EE0000"/>
+                android:buttonTint="#EE0000"
+                android:checked="true"/>
 
             <RadioButton
                 android:id="@+id/radioButton2_report"
