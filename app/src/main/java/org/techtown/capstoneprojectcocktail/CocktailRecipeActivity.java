@@ -8,6 +8,8 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -41,6 +43,7 @@ public class CocktailRecipeActivity extends AppCompatActivity {
     private FloatingActionButton floatingActionButtonForBookmark;
     private FloatingActionButton floatingActionButtonForGrade;
     private FloatingActionButton floatingActionButtonForReport;
+    private FloatingActionButton floatingActionButtonForAnimation;
     private TextInputLayout textInputLayoutForComment;
     private RatingBar ratingBar;
     private int cocktailID;
@@ -48,11 +51,15 @@ public class CocktailRecipeActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private ImageButton imageButtonForComment;
     private RecyclerView recyclerViewForComment;
-    //이전에 북마크,좋아요.싫어요를 체크 했는지 안했는지 판단
+    //이전에 북마크,평가,신고를 체크 했는지 안했는지 판단
     private boolean bookmarkChecked=false;
     private boolean gradeChecked=false;
     private boolean reportChecked=false;
     private String gradeScore;
+    //플로팅 버튼 애니메이션
+    private Animation fab_open, fab_close;
+    private Boolean isFabOpen = false;
+
 
     @SuppressLint("RestrictedApi")
     @Override
@@ -70,6 +77,7 @@ public class CocktailRecipeActivity extends AppCompatActivity {
         floatingActionButtonForBookmark = (FloatingActionButton) findViewById(R.id.floatingActionButton_bookmark_recipe);
         floatingActionButtonForGrade = (FloatingActionButton) findViewById(R.id.floatingActionButton_grade_recipe);
         floatingActionButtonForReport = (FloatingActionButton) findViewById(R.id.floatingActionButton_report_recipe);
+        floatingActionButtonForAnimation = (FloatingActionButton) findViewById(R.id.floatingActionButton_animation_recipe);
         textInputLayoutForComment = (TextInputLayout) findViewById(R.id.textInputLayout_comment_recipe);
         imageButtonForComment = (ImageButton) findViewById(R.id.imageButton_comment_recipe);
         ratingBar = (RatingBar) findViewById(R.id.ratingBar_grading_recipe);
@@ -116,13 +124,20 @@ public class CocktailRecipeActivity extends AppCompatActivity {
         textForCocktailIngredient.setText(cocktailIngredient);
         textForCocktailABV.setText(cocktailABV);
 
+        //플로팅 버튼 애니메이션
+        fab_open = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_open);
+        fab_close = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_close);
+
         //로그인 안한 경우
         if(currentUser == null){
             //로그인 하지 않으면
             //북마크, 평가, 신고, 댓글입력 버튼 안보이게
-            floatingActionButtonForBookmark.setVisibility(View.GONE);
-            floatingActionButtonForGrade.setVisibility(View.GONE);
-            floatingActionButtonForReport.setVisibility(View.GONE);
+            //floatingActionButtonForBookmark.setVisibility(View.GONE);
+            //floatingActionButtonForGrade.setVisibility(View.GONE);
+            //floatingActionButtonForReport.setVisibility(View.GONE);
+
+            //애니메이션 버튼만 안보이면 나머지는 안보이겠지 아마
+            floatingActionButtonForAnimation.setVisibility(View.GONE);
             linearLayoutForCommentTextInput.setVisibility(View.GONE);
         }
         //로그인한 경우
@@ -252,16 +267,6 @@ public class CocktailRecipeActivity extends AppCompatActivity {
                 else{
                     Toast.makeText(getApplicationContext(),"본인의 댓글만 삭제 가능합니다!",Toast.LENGTH_LONG).show();
                 }
-                /*
-                Intent intent = new Intent(view.getContext(), CocktailRecipeActivity.class);
-                intent.putExtra("cocktailName", item.getName());
-                intent.putExtra("cocktailID",item.getId());
-                intent.putExtra("cocktailDescription",item.getDescription());
-                intent.putExtra("cocktailIngredient",item.getIngredient());
-                intent.putExtra("cocktailABV",item.getAbvNum());
-                intent.putExtra("cocktailRef",item.getImageUrl());
-                startActivity(intent);
-                 */
             }
         });
 
@@ -338,6 +343,14 @@ public class CocktailRecipeActivity extends AppCompatActivity {
                 }
             }
         });
+
+        floatingActionButtonForAnimation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //애니메이션 시작
+                anim();
+            }
+        });
     }
 
     @Override
@@ -365,6 +378,27 @@ public class CocktailRecipeActivity extends AppCompatActivity {
                 floatingActionButtonForReport.setImageResource(R.mipmap.baseline_feedback_white_36dp);
                 reportChecked=true;
             }
+        }
+    }
+
+    //플로팅 버튼 애니메이션을 위한 버튼
+    public void anim() {
+        if (isFabOpen) {
+            floatingActionButtonForBookmark.startAnimation(fab_close);
+            floatingActionButtonForGrade.startAnimation(fab_close);
+            floatingActionButtonForReport.startAnimation(fab_close);
+            floatingActionButtonForBookmark.setClickable(false);
+            floatingActionButtonForGrade.setClickable(false);
+            floatingActionButtonForReport.setClickable(false);
+            isFabOpen = false;
+        } else {
+            floatingActionButtonForBookmark.startAnimation(fab_open);
+            floatingActionButtonForGrade.startAnimation(fab_open);
+            floatingActionButtonForReport.startAnimation(fab_open);
+            floatingActionButtonForBookmark.setClickable(true);
+            floatingActionButtonForGrade.setClickable(true);
+            floatingActionButtonForReport.setClickable(true);
+            isFabOpen = true;
         }
     }
 }

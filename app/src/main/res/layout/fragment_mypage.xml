@@ -113,13 +113,13 @@
             android:singleLine="true"/>
 
         <Button
-            android:id="@+id/button_simulation_myPage"
+            android:id="@+id/button_uploaded_recipe_myPage"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="30dp"
             android:layout_marginVertical="10dp"
             android:background="@drawable/button_shape"
-            android:text="My Cocktail"
+            android:text="My Recipe"
             android:textAllCaps="false"
             android:textColor="#DDEFEF"
             android:padding="15dp"

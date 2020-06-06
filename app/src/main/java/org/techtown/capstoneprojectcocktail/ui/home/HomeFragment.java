@@ -325,7 +325,10 @@ public class HomeFragment extends Fragment {
 
         //영진 여기 확인
         //String[] main_keyword = {"가니쉬", "데킬라", "럼", "리큐르", "맥주", "베르무트", "보드카", "브랜디", "와인", "위스키", "주스", "진"};
-        List<String> main_keyword = new ArrayList<>(Arrays.asList("가니쉬", "데킬라", "럼", "리큐르", "맥주", "베르무트", "보드카", "브랜디", "와인", "위스키", "주스", "진"));
+        //맥주로 검색되는거 없음 맥주 키워드 삭제
+        //가니쉬로 검색되는거 없음 가니쉬 키워드 삭제
+        //영진아 이거 검색 안되는거 확인좀 하고 주자
+        List<String> main_keyword = new ArrayList<>(Arrays.asList("데킬라", "럼", "리큐르", "베르무트", "보드카", "브랜디", "와인", "위스키", "주스", "진"));
         Collections.shuffle(main_keyword);
         for(int i = 0; i < main_keyword.size() ; i ++) {
             adapterForIngredientButton.addItem(new CocktailIngredientButton(main_keyword.get(i)));

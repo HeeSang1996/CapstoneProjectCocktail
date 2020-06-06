@@ -29,6 +29,10 @@ import com.google.firebase.auth.FirebaseUser;
 import org.techtown.capstoneprojectcocktail.CocktailSearchActivity;
 import org.techtown.capstoneprojectcocktail.CocktailUploadActivity;
 import org.techtown.capstoneprojectcocktail.MainActivity;
+import org.techtown.capstoneprojectcocktail.MyPageBookmarkActivity;
+import org.techtown.capstoneprojectcocktail.MyPageCommentActivity;
+import org.techtown.capstoneprojectcocktail.MyPageGradingActivity;
+import org.techtown.capstoneprojectcocktail.MyPageMyRecipeActivity;
 import org.techtown.capstoneprojectcocktail.R;
 
 import java.io.IOException;
@@ -64,7 +68,9 @@ public class MyPageFragment extends Fragment {
                 mAuth = FirebaseAuth.getInstance();
                 FirebaseUser currentUser = mAuth.getCurrentUser();
                 if (currentUser != null) {
-                    Snackbar.make(view, "북마크 기능이 들어갈 예정입니다 로그인상태", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                    //Snackbar.make(view, "북마크 기능이 들어갈 예정입니다 로그인상태", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                    Intent intent = new Intent(view.getContext(), MyPageBookmarkActivity.class);
+                    startActivity(intent);
                 } else {
                     Snackbar.make(view, "Bookmark 기능은 로그인한 유저만 이용할 수 있습니다.", Snackbar.LENGTH_LONG).setAction("Action", null).show();
                 }
@@ -78,7 +84,9 @@ public class MyPageFragment extends Fragment {
                 mAuth = FirebaseAuth.getInstance();
                 FirebaseUser currentUser = mAuth.getCurrentUser();
                 if (currentUser != null) {
-                    Snackbar.make(view, "마이 코멘트 기능이 들어갈 예정입니다 로그인상태", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                    //Snackbar.make(view, "마이 코멘트 기능이 들어갈 예정입니다 로그인상태", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                    Intent intent = new Intent(view.getContext(), MyPageCommentActivity.class);
+                    startActivity(intent);
                 } else {
                     Snackbar.make(view, "My Comment 기능은 로그인한 유저만 이용할 수 있습니다.", Snackbar.LENGTH_LONG).setAction("Action", null).show();
                 }
@@ -92,23 +100,27 @@ public class MyPageFragment extends Fragment {
                 mAuth = FirebaseAuth.getInstance();
                 FirebaseUser currentUser = mAuth.getCurrentUser();
                 if (currentUser != null) {
-                    Snackbar.make(view, "마이 그레이딩 기능이 들어갈 예정입니다 로그인상태", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                    //Snackbar.make(view, "마이 그레이딩 기능이 들어갈 예정입니다 로그인상태", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                    Intent intent = new Intent(view.getContext(), MyPageGradingActivity.class);
+                    startActivity(intent);
                 } else {
                     Snackbar.make(view, "My Grading 기능은 로그인한 유저만 이용할 수 있습니다.", Snackbar.LENGTH_LONG).setAction("Action", null).show();
                 }
             }
         });
 
-        Button simulationButtonMyPage = root.findViewById(R.id.button_simulation_myPage);
+        Button simulationButtonMyPage = root.findViewById(R.id.button_uploaded_recipe_myPage);
         simulationButtonMyPage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 mAuth = FirebaseAuth.getInstance();
                 FirebaseUser currentUser = mAuth.getCurrentUser();
                 if (currentUser != null) {
-                    Snackbar.make(view, "마이 칵테일 기능이 들어갈 예정입니다 로그인상태", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                    //Snackbar.make(view, "마이 레시피 기능이 들어갈 예정입니다 로그인상태", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                    Intent intent = new Intent(view.getContext(), MyPageMyRecipeActivity.class);
+                    startActivity(intent);
                 } else {
-                    Snackbar.make(view, "My Cocktail 기능은 로그인한 유저만 이용할 수 있습니다.", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                    Snackbar.make(view, "My Recipe 기능은 로그인한 유저만 이용할 수 있습니다.", Snackbar.LENGTH_LONG).setAction("Action", null).show();
                 }
             }
         });
@@ -135,7 +147,7 @@ public class MyPageFragment extends Fragment {
     public void onStart() {
         super.onStart();
 
-        Toast.makeText(getActivity().getApplicationContext(),"my page on start 호출",Toast.LENGTH_LONG).show();
+        //Toast.makeText(getActivity().getApplicationContext(),"my page on start 호출",Toast.LENGTH_LONG).show();
 
         updateUIForMyPage();
 
@@ -170,7 +182,7 @@ public class MyPageFragment extends Fragment {
     @Override
     public void onStop() {
         timerForSignInCheck.cancel();
-        Toast.makeText(getActivity().getApplicationContext(),"my page on stop 호출",Toast.LENGTH_LONG).show();
+        //Toast.makeText(getActivity().getApplicationContext(),"my page on stop 호출",Toast.LENGTH_LONG).show();
         super.onStop();
     }
 

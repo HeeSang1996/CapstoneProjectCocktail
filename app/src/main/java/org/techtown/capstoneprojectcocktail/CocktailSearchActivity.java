@@ -94,16 +94,20 @@ public class CocktailSearchActivity extends AppCompatActivity{
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked){
-                    //Toast.makeText(getApplicationContext(),"사용자 레시피 검색 ON",Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(),"사용자 레시피 검색 ON",Toast.LENGTH_LONG).show();
+                    //Toast.makeText(getApplicationContext(),"사용자 레시피 검색 ON" + spinner.getSelectedItemPosition(),Toast.LENGTH_LONG).show();
                     adapterForCocktailSearch.clearAllForAdapter();
                 }else{
-                    //Toast.makeText(getApplicationContext(),"사용자 레시피 검색 OFF",Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(),"사용자 레시피 검색 OFF",Toast.LENGTH_LONG).show();
                     adapterForCocktailSearch.clearAllForAdapter();
                     setAdapterForCocktailSearchMethod("");
                 }
             }
         });
 
+
+        //레시피 검색모드와
+        //재료 검색모드 변환
         toggleForCocktailOrIngredient.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -111,11 +115,12 @@ public class CocktailSearchActivity extends AppCompatActivity{
                     Toast.makeText(getApplicationContext(),"재료 검색 모드",Toast.LENGTH_LONG).show();
                     //switchForUserMade.setChecked(false);
                     adapterForCocktailSearch.clearAllForAdapter();
-                    switchForUserMade.setVisibility(View.INVISIBLE);
-                    spinner.setVisibility(View.INVISIBLE);
+                    switchForUserMade.setVisibility(View.GONE);
+                    spinner.setVisibility(View.GONE);
                     setAdapterForIngredientSearch();
                 }
                 else{
+                    Toast.makeText(getApplicationContext(),"칵테일 검색 모드",Toast.LENGTH_LONG).show();
                     adapterForCocktailSearch.clearAllForAdapter();
                     switchForUserMade.setVisibility(View.VISIBLE);
                     spinner.setVisibility(View.VISIBLE);
@@ -167,7 +172,8 @@ public class CocktailSearchActivity extends AppCompatActivity{
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                //Toast.makeText(getApplicationContext(),"선택된 정렬순서: " + parent.getItemAtPosition(position),Toast.LENGTH_LONG).show();
+                //수정필
+                Toast.makeText(getApplicationContext(),"선택된 정렬순서: " + parent.getItemAtPosition(position),Toast.LENGTH_LONG).show();
             }
 
             @Override
