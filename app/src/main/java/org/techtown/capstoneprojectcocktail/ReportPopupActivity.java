@@ -6,11 +6,18 @@ import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
 public class ReportPopupActivity extends Activity {
     private EditText textForReport;
+    private RadioButton r_btn1,r_btn2, r_btn3,r_btn4;
+    private RadioGroup radioGroup;
+    private InputMethodManager inputKeyboardHide;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -19,23 +26,70 @@ public class ReportPopupActivity extends Activity {
         setContentView(R.layout.report_popup_activity);
 
         textForReport = (EditText) findViewById(R.id.editText_report_popup);
+        radioGroup = (RadioGroup) findViewById(R.id.radioGroup_report);
+        r_btn1 = (RadioButton) findViewById(R.id.radioButton1_report);
+        r_btn2 = (RadioButton) findViewById(R.id.radioButton2_report);
+        r_btn3 = (RadioButton) findViewById(R.id.radioButton3_report);
+        r_btn4 = (RadioButton) findViewById(R.id.radioButton4_report);
+
+        //키보드 숨기기
+        inputKeyboardHide = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
         //데이터 가져오기
         //Intent intent = getIntent();
+
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                switch (radioGroup.getCheckedRadioButtonId()) {
+                    case R.id.radioButton1_report:
+                    case R.id.radioButton2_report:
+                    case R.id.radioButton3_report:
+                        textForReport.getText().clear();
+                        inputKeyboardHide.hideSoftInputFromWindow(textForReport.getWindowToken(), 0);
+                        textForReport.setVisibility(View.GONE);
+                        break;
+                    case R.id.radioButton4_report:
+                        Toast.makeText(getApplicationContext(), "신고내용을 적어주세요", Toast.LENGTH_LONG).show();
+                        textForReport.setVisibility(View.VISIBLE);
+                        break;
+                }
+            }
+        });
     }
 
     //확인 버튼 클릭
     public void reportPopupConfirm(View v){
         //데이터 전달하기
-        String inputText = textForReport.getText().toString();
-        //신고내용이 빈칸인 경우
-        if(inputText.getBytes().length==0){
-            Toast.makeText(getApplicationContext(),"신고내용을 적어주세요",Toast.LENGTH_LONG).show();
-        }
-        else{
-            Toast.makeText(getApplicationContext(),"신고 접수 완료\n신고내용: "+inputText,Toast.LENGTH_LONG).show();
-            Intent intent = new Intent();
-            setResult(RESULT_OK, intent);
-            finish();
+        Intent intent = new Intent();
+        switch (radioGroup.getCheckedRadioButtonId()) {
+            case R.id.radioButton1_report:
+                Toast.makeText(getApplicationContext(),"신고 접수 완료\n신고내용: "+ r_btn1.getText().toString(),Toast.LENGTH_LONG).show();
+                setResult(RESULT_OK, intent);
+                finish();
+                break;
+            case R.id.radioButton2_report:
+                Toast.makeText(getApplicationContext(),"신고 접수 완료\n신고내용: "+ r_btn2.getText().toString(),Toast.LENGTH_LONG).show();
+                setResult(RESULT_OK, intent);
+                finish();
+                break;
+            case R.id.radioButton3_report:
+                Toast.makeText(getApplicationContext(),"신고 접수 완료\n신고내용: "+ r_btn3.getText().toString(),Toast.LENGTH_LONG).show();
+                setResult(RESULT_OK, intent);
+                finish();
+                break;
+            // 신고 내용이 기타일 경우
+            // 신고 내용을 적어야함
+            case R.id.radioButton4_report:
+                String inputText = textForReport.getText().toString();
+                if(inputText.getBytes().length==0){
+                    Toast.makeText(getApplicationContext(),"신고내용을 적어주세요",Toast.LENGTH_LONG).show();
+                }
+                else{
+                    Toast.makeText(getApplicationContext(),"신고 접수 완료\n신고내용: "+inputText,Toast.LENGTH_LONG).show();
+                    setResult(RESULT_OK, intent);
+                    finish();
+                }
+                break;
         }
     }
 

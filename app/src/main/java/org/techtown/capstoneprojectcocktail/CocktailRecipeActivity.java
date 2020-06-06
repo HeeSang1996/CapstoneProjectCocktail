@@ -74,6 +74,7 @@ public class CocktailRecipeActivity extends AppCompatActivity {
         TextView textForCocktailDescription = (TextView) findViewById(R.id.textView_cocktailDescription_recipe);
         TextView textForCocktailIngredient = (TextView) findViewById(R.id.textView_cocktailIngredient_recipe);
         TextView textForCocktailABV = (TextView) findViewById(R.id.textView_cocktailABV_recipe);
+        TextView textForNonLoginUser = (TextView) findViewById(R.id.textView_info_for_nonLoginUser_recipe);
         floatingActionButtonForBookmark = (FloatingActionButton) findViewById(R.id.floatingActionButton_bookmark_recipe);
         floatingActionButtonForGrade = (FloatingActionButton) findViewById(R.id.floatingActionButton_grade_recipe);
         floatingActionButtonForReport = (FloatingActionButton) findViewById(R.id.floatingActionButton_report_recipe);
@@ -147,6 +148,9 @@ public class CocktailRecipeActivity extends AppCompatActivity {
             //북마크, 평가, 신고 버튼의 초기값 세팅
             //영진파트
             //checked의 값이 true면 버튼의 초기모양 변경
+
+            //로그인한 유저에게는 로그인 하지 않았다는 메시지 출력 삭제
+            textForNonLoginUser.setVisibility(View.GONE);
             if(bookmarkChecked==true){
                 floatingActionButtonForBookmark.setImageResource(R.mipmap.baseline_bookmark_white_36dp);
             }
@@ -384,6 +388,7 @@ public class CocktailRecipeActivity extends AppCompatActivity {
     //플로팅 버튼 애니메이션을 위한 버튼
     public void anim() {
         if (isFabOpen) {
+            floatingActionButtonForAnimation.setImageResource(R.mipmap.outline_more_vert_white_36dp);
             floatingActionButtonForBookmark.startAnimation(fab_close);
             floatingActionButtonForGrade.startAnimation(fab_close);
             floatingActionButtonForReport.startAnimation(fab_close);
@@ -392,6 +397,7 @@ public class CocktailRecipeActivity extends AppCompatActivity {
             floatingActionButtonForReport.setClickable(false);
             isFabOpen = false;
         } else {
+            floatingActionButtonForAnimation.setImageResource(R.mipmap.outline_close_white_36dp);
             floatingActionButtonForBookmark.startAnimation(fab_open);
             floatingActionButtonForGrade.startAnimation(fab_open);
             floatingActionButtonForReport.startAnimation(fab_open);
