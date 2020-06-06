@@ -98,7 +98,7 @@
 
         <activity
             android:name=".CocktailUploadActivity"
-            android:label="  Upload"
+            android:label="  Recipe Upload"
             android:launchMode="singleTop"
             android:screenOrientation="portrait">
         </activity>
