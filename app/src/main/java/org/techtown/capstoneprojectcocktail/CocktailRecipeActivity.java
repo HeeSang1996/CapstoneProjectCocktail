@@ -35,6 +35,8 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -236,7 +238,6 @@ public class CocktailRecipeActivity extends AppCompatActivity {
 
                     Map<String, Object> putComment = new HashMap<>();
                     putComment.put("레시피 번호", Integer.toString(cocktailID));
-                    Log.d(TAG, Integer.toString(cocktailID));
                     putComment.put("레시피 이름", cocktailName);
                     putComment.put("레시피 ref", cocktailRef);
                     putComment.put("사용자 이름", currentUser.getDisplayName());
@@ -245,7 +246,7 @@ public class CocktailRecipeActivity extends AppCompatActivity {
                     putComment.put("내용", stringForCocktailComment);
                     putComment.put("댓글 날짜", formatDate);
                     putComment.put("문서 날짜", date.toString());
-                    String DocumentName = date.toString()+currentUser.getUid();
+                    String DocumentName = "날짜: "+formatDate+currentUser.getUid();
                     db.collection("Comment").document(DocumentName)
                             .set(putComment)
                             .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -286,6 +287,7 @@ public class CocktailRecipeActivity extends AppCompatActivity {
                 else if(item.getUid()==user.getUid()){
                     PopupMenu popup= new PopupMenu(getApplicationContext(), view);
                     final int positionForDelete=position;
+                    final String DocumentName = item.getDate()+item.getUid();
                     getMenuInflater().inflate(R.menu.popup_menu_user_comment, popup.getMenu());
                     popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                         @Override
@@ -294,7 +296,7 @@ public class CocktailRecipeActivity extends AppCompatActivity {
                                 case R.id.popup_delete:
                                     //댓글 삭제
                                     FirebaseFirestore db = FirebaseFirestore.getInstance();
-                                    db.collection("cities").document("DC")
+                                    db.collection("Comment").document(DocumentName)
                                             .delete()
                                             .addOnSuccessListener(new OnSuccessListener<Void>() {
                                                 @Override
