@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
@@ -26,16 +27,21 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 public class CocktailRecipeActivity extends AppCompatActivity {
     private static final String TAG = "CocktailRecipeActivity";
@@ -47,6 +53,8 @@ public class CocktailRecipeActivity extends AppCompatActivity {
     private TextInputLayout textInputLayoutForComment;
     private RatingBar ratingBar;
     private int cocktailID;
+    private String cocktailName;
+    private String cocktailRef;
     private String stringForCocktailComment;
     private FirebaseAuth mAuth;
     private ImageButton imageButtonForComment;
@@ -87,12 +95,12 @@ public class CocktailRecipeActivity extends AppCompatActivity {
         LinearLayout linearLayoutForCommentTextInput = findViewById(R.id.linearLayout_cocktail_recipe);
         final ImageView imageForCocktail = (ImageView) findViewById(R.id.imageView_cocktail_recipe);
 
-        String cocktailName = intent.getExtras().getString("cocktailName");
+        cocktailName = intent.getExtras().getString("cocktailName");
         cocktailID = intent.getExtras().getInt("cocktailID");
         String cocktailDescription = intent.getExtras().getString("cocktailDescription");
         String cocktailIngredient = intent.getExtras().getString("cocktailIngredient");
         String cocktailABV = intent.getExtras().getString("cocktailABV");
-        String cocktailRef = intent.getExtras().getString("cocktailRef");
+        cocktailRef = intent.getExtras().getString("cocktailRef");
 
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = mAuth.getCurrentUser();
@@ -203,6 +211,7 @@ public class CocktailRecipeActivity extends AppCompatActivity {
         imageButtonForComment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                FirebaseUser user = mAuth.getCurrentUser();
                 stringForCocktailComment = editTextForCocktailComment.getText().toString();
                 if(stringForCocktailComment.getBytes().length==0){
                     Toast.makeText(getApplicationContext(),"빈칸을 남기지 말아주세요!",Toast.LENGTH_LONG).show();
@@ -219,8 +228,39 @@ public class CocktailRecipeActivity extends AppCompatActivity {
                     SimpleDateFormat sdfNow = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
                     String formatDate = sdfNow.format(date);
                     Toast.makeText(getApplicationContext(),"댓글 내용: " + stringForCocktailComment,Toast.LENGTH_LONG).show();
-                    FirebaseUser user = mAuth.getCurrentUser();
                     adapterForCocktailComment.addItem(new Comment(user.getDisplayName(),"날짜: " + formatDate,stringForCocktailComment,user.getPhotoUrl().toString(),user.getUid()));
+                    //레시피번호, 레시피이름, 레시피ref, 사용자이름, 사용자url, 사용자uid, 내용, 날짜를 Comment 컬렉션에 저장
+                    //도큐먼트 이름 형식은 날짜+uid
+                    FirebaseUser currentUser = mAuth.getCurrentUser();
+                    FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+                    Map<String, Object> putComment = new HashMap<>();
+                    putComment.put("레시피 번호", Integer.toString(cocktailID));
+                    Log.d(TAG, Integer.toString(cocktailID));
+                    putComment.put("레시피 이름", cocktailName);
+                    putComment.put("레시피 ref", cocktailRef);
+                    putComment.put("사용자 이름", currentUser.getEmail());
+                    putComment.put("사용자 url", currentUser.getPhotoUrl().toString());
+                    putComment.put("사용자 uid", currentUser.getUid());
+                    putComment.put("내용", stringForCocktailComment);
+                    putComment.put("댓글 날짜", formatDate);
+                    putComment.put("문서 날짜", date.toString());
+                    String DocumentName = date.toString()+currentUser.getUid();
+                    db.collection("Comment").document(DocumentName)
+                            .set(putComment)
+                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    Log.d(TAG, "DocumentSnapshot successfully written!");
+                                }
+                            })
+                            .addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Log.w(TAG, "Error writing document", e);
+                                }
+                            });
+
                     recyclerViewForComment.setAdapter(adapterForCocktailComment);
                     editTextForCocktailComment.getText().clear();
                 }
