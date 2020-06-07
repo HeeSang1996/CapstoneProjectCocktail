@@ -338,9 +338,7 @@ public class CocktailRecipeActivity extends AppCompatActivity {
                                     }
                                 }
                             });
-
                 }
-
             }
         });
 
@@ -349,9 +347,6 @@ public class CocktailRecipeActivity extends AppCompatActivity {
             public void onItemClick(CocktailCommentAdapter.ViewHolder holder, View view, int position) {
                 Comment item = adapterForCocktailComment.getItem(position);
                 FirebaseUser user = mAuth.getCurrentUser();
-                System.out.println(item.getUid());
-                System.out.println(user.getUid());
-                System.out.println(item.getUid()==user.getUid());
 
                 //자신이 올린 글을 선택했을 경우 삭제 가능
                 //로그인을 하지 않은 경우
@@ -362,7 +357,7 @@ public class CocktailRecipeActivity extends AppCompatActivity {
                 //자신이 올린 글을 선택했을 경우
                 //삭제 가능
                 //영진 파트
-                else if(item.getUid()==user.getUid()){
+                else if(item.getUid().equals(user.getUid())){
                     PopupMenu popup= new PopupMenu(getApplicationContext(), view);
                     final int positionForDelete=position;
                     final String DocumentName = item.getDate()+item.getUid();
