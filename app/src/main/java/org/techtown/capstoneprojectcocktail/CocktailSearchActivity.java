@@ -66,7 +66,6 @@ public class CocktailSearchActivity extends AppCompatActivity{
         super.onCreate(saveInstanceState);
         setContentView(R.layout.cocktail_search_activity);
 
-
         final ToggleButton toggleForCocktailOrIngredient = findViewById(R.id.switch_ingredient_check);
         final Switch switchForUserMade = findViewById(R.id.switch_userRecipe_search);
         final Spinner spinner = (Spinner) findViewById(R.id.spinner_orderBy_search);
@@ -81,14 +80,11 @@ public class CocktailSearchActivity extends AppCompatActivity{
 
         //서치 액티비티를 실행할때 이미 입력되어 있는
         //시작 스트링
-        String initialText = textForSearch.getText().toString();
-        setAdapterForCocktailSearchMethod(initialText);
-
+        //String initialText = textForSearch.getText().toString();
+        //setAdapterForCocktailSearchMethod(textForSearch.getText().toString());
 
         LinearLayoutManager layoutManagerForCocktailSearch = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL,false);
         recyclerViewForCocktailSearch.setLayoutManager(layoutManagerForCocktailSearch);
-
-
 
         switchForUserMade.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -104,7 +100,6 @@ public class CocktailSearchActivity extends AppCompatActivity{
                 }
             }
         });
-
 
         //레시피 검색모드와
         //재료 검색모드 변환
@@ -173,7 +168,26 @@ public class CocktailSearchActivity extends AppCompatActivity{
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 //수정필
-                Toast.makeText(getApplicationContext(),"선택된 정렬순서: " + parent.getItemAtPosition(position),Toast.LENGTH_LONG).show();
+                //Toast.makeText(getApplicationContext(),"선택된 하이: " + parent.getItemAtPosition(position),Toast.LENGTH_LONG).show();
+                switch (position){
+                    case 0:
+                        //북마크 내림차순
+                        Toast.makeText(getApplicationContext(),"선택된 정렬순서:" + parent.getItemAtPosition(position),Toast.LENGTH_LONG).show();
+                        setAdapterForCocktailSearchMethod(textForSearch.getText().toString());
+                        break;
+                    case 1:
+                        //북마크 오름차순
+                        Toast.makeText(getApplicationContext(),"선택된 정렬순서:" + parent.getItemAtPosition(position),Toast.LENGTH_LONG).show();
+                        break;
+                    case 2:
+                        //평점 내림차순
+                        Toast.makeText(getApplicationContext(),"선택된 정렬순서:" + parent.getItemAtPosition(position),Toast.LENGTH_LONG).show();
+                        break;
+                    case 3:
+                        //평점 오름차순
+                        Toast.makeText(getApplicationContext(),"선택된 정렬순서:" + parent.getItemAtPosition(position),Toast.LENGTH_LONG).show();
+                        break;
+                }
             }
 
             @Override
