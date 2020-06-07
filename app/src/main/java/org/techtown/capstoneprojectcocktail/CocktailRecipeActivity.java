@@ -187,10 +187,14 @@ public class CocktailRecipeActivity extends AppCompatActivity {
             //북마크, 평가, 신고 버튼의 초기값 세팅
             //영진파트
             //checked의 값이 true면 버튼의 초기모양 변경
+
             FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+            //유저의 uid + 레시피 ID를 사용하여 리포트 이름 선정
             final String DocumentName = currentUser.getUid()+cocktailID;
             DocumentReference Report_check = db.collection("Report").document(DocumentName);
 
+            //해당 이름으로 문서가 비어있는지 아닌지 map크기를 확인하여 체크
             Report_check.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -199,10 +203,10 @@ public class CocktailRecipeActivity extends AppCompatActivity {
                         if (document.exists()) {
                             Map<String, Object> map = document.getData();
                             if (map.size() == 0) {
-                                reportChecked = true;
+                                reportChecked = false;
                                 Log.d(TAG, "Document is empty!");
                             } else {
-                                reportChecked = false;
+                                reportChecked = true;
                                 Log.d(TAG, "Document is not empty!");
                             }
                         }

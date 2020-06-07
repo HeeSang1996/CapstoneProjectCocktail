@@ -79,12 +79,31 @@ public class ReportPopupActivity extends Activity {
     public void reportPopupConfirm(View v){
         //데이터 전달하기
         Intent intent = new Intent();
+        //시간을 받아와 format date 생성
+        long now = System.currentTimeMillis();
+        Date date = new Date(now);
+        SimpleDateFormat sdfNow = new SimpleDateFormat("yyyy년 MM월 dd일 HH:mm:ss");
+        String formatDate = sdfNow.format(date);
+
+        mAuth = FirebaseAuth.getInstance();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        //report에 넣기위한 데이터 선언 및 생성
+        Map<String, Object> putComment = new HashMap<>();
+        putComment.put("사용자 uid", currentUser.getUid());
+        putComment.put("칵테일 번호", Integer.toString(cocktailID));
+        putComment.put("신고 날짜", formatDate);
+        String DocumentName = currentUser.getUid()+cocktailID;
+
+        //각 선택한 것에 따라 내용에 값을 넣어줌
         switch (radioGroup.getCheckedRadioButtonId()) {
             case R.id.radioButton1_report:
                 //내용과 관련없는 이미지
                 //영진파트
                 Toast.makeText(getApplicationContext(),"신고 접수 완료\n신고내용: "+ r_btn1.getText().toString(),Toast.LENGTH_LONG).show();
                 setResult(RESULT_OK, intent);
+                putComment.put("내용", r_btn1.getText().toString());
                 finish();
                 break;
             case R.id.radioButton2_report:
@@ -92,6 +111,7 @@ public class ReportPopupActivity extends Activity {
                 //영진파트
                 Toast.makeText(getApplicationContext(),"신고 접수 완료\n신고내용: "+ r_btn2.getText().toString(),Toast.LENGTH_LONG).show();
                 setResult(RESULT_OK, intent);
+                putComment.put("내용", r_btn2.getText().toString());
                 finish();
                 break;
             case R.id.radioButton3_report:
@@ -99,6 +119,7 @@ public class ReportPopupActivity extends Activity {
                 //영진파트
                 Toast.makeText(getApplicationContext(),"신고 접수 완료\n신고내용: "+ r_btn3.getText().toString(),Toast.LENGTH_LONG).show();
                 setResult(RESULT_OK, intent);
+                putComment.put("내용", r_btn3.getText().toString());
                 finish();
                 break;
             case R.id.radioButton4_report:
@@ -112,41 +133,24 @@ public class ReportPopupActivity extends Activity {
                     //영진파트
                     Toast.makeText(getApplicationContext(),"신고 접수 완료\n신고내용: "+inputText,Toast.LENGTH_LONG).show();
                     setResult(RESULT_OK, intent);
-                    FirebaseUser currentUser = mAuth.getCurrentUser();
-                    FirebaseFirestore db = FirebaseFirestore.getInstance();
-
-                    //시간을 받아와 format date 생성
-                    long now = System.currentTimeMillis();
-                    Date date = new Date(now);
-                    SimpleDateFormat sdfNow = new SimpleDateFormat("yyyy년 MM월 dd일 HH:mm:ss");
-                    String formatDate = sdfNow.format(date);
-
-                    //report에 넣기위한 데이터 선언 및 생성
-                    Map<String, Object> putComment = new HashMap<>();
-                    putComment.put("사용자 이름", currentUser.getDisplayName());
-                    putComment.put("사용자 uid", currentUser.getUid());
-                    //putComment.put("칵테일 번호", cocktailId);
-                    //putComment.put("칵테일 이름", cocktailName);
                     putComment.put("내용", inputText);
-                    putComment.put("신고 날짜", formatDate);
-                    String DocumentName = "날짜: "+formatDate+currentUser.getUid();
-                    db.collection("Comment").document(DocumentName)
-                            .set(putComment)
-                            .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                @Override
-                                public void onSuccess(Void aVoid) {
-                                }
-                            })
-                            .addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                }
-                            });
-
                     finish();
                 }
                 break;
         }
+        //위에서 Map에 넣은 데이터를 바탕으로 db에 문서 생성
+        db.collection("Report").document(DocumentName)
+                .set(putComment)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                    }
+                });
     }
 
     //취소 버튼 클릭
