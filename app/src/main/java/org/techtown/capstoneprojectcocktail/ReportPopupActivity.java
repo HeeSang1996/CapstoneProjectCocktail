@@ -122,7 +122,8 @@ public class ReportPopupActivity extends Activity {
                     Map<String, Object> putComment = new HashMap<>();
                     putComment.put("사용자 이름", currentUser.getDisplayName());
                     putComment.put("사용자 uid", currentUser.getUid());
-                    //putComment.put("칵테일 번호", cocktailName);
+                    //putComment.put("칵테일 번호", cocktailId);
+                    //putComment.put("칵테일 이름", cocktailName);
                     putComment.put("내용", inputText);
                     putComment.put("신고 날짜", formatDate);
                     String DocumentName = "날짜: "+formatDate+currentUser.getUid();
