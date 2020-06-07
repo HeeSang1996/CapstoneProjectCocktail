@@ -41,6 +41,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -70,6 +71,13 @@ public class CocktailRecipeActivity extends AppCompatActivity {
     //플로팅 버튼 애니메이션
     private Animation fab_open, fab_close;
     private Boolean isFabOpen = false;
+    //db댓글을 불러와 저장하기 위한 선언
+    private ArrayList Comment_name;
+    private ArrayList Comment_date;
+    private ArrayList Comment_content;
+    private ArrayList Comment_url;
+    private ArrayList Comment_uid;
+
 
 
     @SuppressLint("RestrictedApi")
@@ -188,7 +196,34 @@ public class CocktailRecipeActivity extends AppCompatActivity {
         super.onResume();
 
         //영진 이부분에서 db 에 있는 댓글내용 불러와
-
+        //adapterForCocktailComment.addItem(new Comment(user.getDisplayName(),"날짜: " + formatDate,stringForCocktailComment,user.getPhotoUrl().toString(),user.getUid()));
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        //받아오기위해 변수들 초기화
+        Comment_name = new ArrayList();
+        Comment_date = new ArrayList();
+        Comment_content = new ArrayList();
+        Comment_url = new ArrayList();
+        Comment_uid = new ArrayList();
+        //Comment컬렉션의 문서들중 레시피 번호 필드가 현재 보고있는 레시피 번호와 일치하는 것들 검색
+        db.collection("Comment")
+                .whereEqualTo("레시피 번호", cocktailID)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Comment_name.add(document.get("사용자 이름"));
+                                Comment_date.add("날짜: "+document.get("댓글 날짜"));
+                                Comment_content.add(document.get("내용"));
+                                Comment_url.add(document.get("사용자 url"));
+                                Comment_uid.add(document.get("사용자 uid"));
+                            }
+                        } else {
+                            Log.d(TAG, "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
         textInputLayoutForComment.setCounterEnabled(true);
         textInputLayoutForComment.setCounterMaxLength(150);
         final EditText editTextForCocktailComment = textInputLayoutForComment.getEditText();
@@ -228,6 +263,7 @@ public class CocktailRecipeActivity extends AppCompatActivity {
                     Date date = new Date(now);
                     SimpleDateFormat sdfNow = new SimpleDateFormat("yyyy년 MM월 dd일 HH:mm:ss");
                     String formatDate = sdfNow.format(date);
+
                     //adapterForCocktailComment.addItem(new Comment(user.getDisplayName(),"날짜: " + formatDate,stringForCocktailComment,user.getPhotoUrl().toString(),user.getUid()));
                     //레시피번호, 레시피이름, 레시피ref, 사용자이름, 사용자url, 사용자uid, 내용, 날짜를 Comment 컬렉션에 저장
                     //도큐먼트 이름 형식은 날짜+uid
@@ -265,6 +301,32 @@ public class CocktailRecipeActivity extends AppCompatActivity {
                     //recyclerViewForComment.setAdapter(adapterForCocktailComment);
                     editTextForCocktailComment.getText().clear();
                     //영진 이부분에서 db 에 있는 댓글내용 불러와
+                    //받아오기위해 변수들 초기화
+                    Comment_name = new ArrayList();
+                    Comment_date = new ArrayList();
+                    Comment_content = new ArrayList();
+                    Comment_url = new ArrayList();
+                    Comment_uid = new ArrayList();
+                    //Comment컬렉션의 문서들중 레시피 번호 필드가 현재 보고있는 레시피 번호와 일치하는 것들 검색
+                    db.collection("Comment")
+                            .whereEqualTo("레시피 번호", Integer.toString(cocktailID))
+                            .get()
+                            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                    if (task.isSuccessful()) {
+                                        for (QueryDocumentSnapshot document : task.getResult()) {
+                                            Comment_name.add(document.get("사용자 이름"));
+                                            Comment_date.add("날짜: "+document.get("댓글 날짜"));
+                                            Comment_content.add(document.get("내용"));
+                                            Comment_url.add(document.get("사용자 url"));
+                                            Comment_uid.add(document.get("사용자 uid"));
+                                        }
+                                    } else {
+                                        Log.d(TAG, "Error getting documents: ", task.getException());
+                                    }
+                                }
+                            });
                 }
             }
         });
@@ -296,6 +358,7 @@ public class CocktailRecipeActivity extends AppCompatActivity {
                             switch (item.getItemId()){
                                 case R.id.popup_delete:
                                     //댓글 삭제
+                                    //누른 댓글의 item정보를 확인하여 getDate + getUid형태의 이름을 가진 문서를 DB에서 삭제한다.
                                     FirebaseFirestore db = FirebaseFirestore.getInstance();
                                     db.collection("Comment").document(DocumentName)
                                             .delete()
@@ -316,6 +379,32 @@ public class CocktailRecipeActivity extends AppCompatActivity {
                                     //adapterForCocktailComment.removeItem(positionForDelete);
                                     //recyclerViewForComment.setAdapter(adapterForCocktailComment);
                                     //영진 이부분에서 db 에 있는 댓글내용 불러와
+                                    //받아오기위해 변수들 초기화
+                                    Comment_name = new ArrayList();
+                                    Comment_date = new ArrayList();
+                                    Comment_content = new ArrayList();
+                                    Comment_url = new ArrayList();
+                                    Comment_uid = new ArrayList();
+                                    //Comment컬렉션의 문서들중 레시피 번호 필드가 현재 보고있는 레시피 번호와 일치하는 것들 검색
+                                    db.collection("Comment")
+                                            .whereEqualTo("레시피 번호", cocktailID)
+                                            .get()
+                                            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                    if (task.isSuccessful()) {
+                                                        for (QueryDocumentSnapshot document : task.getResult()) {
+                                                            Comment_name.add(document.get("사용자 이름"));
+                                                            Comment_date.add("날짜: "+document.get("댓글 날짜"));
+                                                            Comment_content.add(document.get("내용"));
+                                                            Comment_url.add(document.get("사용자 url"));
+                                                            Comment_uid.add(document.get("사용자 uid"));
+                                                        }
+                                                    } else {
+                                                        Log.d(TAG, "Error getting documents: ", task.getException());
+                                                    }
+                                                }
+                                            });
                                     break;
                                 default:
                                     Toast.makeText(getApplication(),"취소",Toast.LENGTH_SHORT).show();
@@ -393,6 +482,9 @@ public class CocktailRecipeActivity extends AppCompatActivity {
                 //신고는 계정당 한번만
                 //같은 게시물에 같은 계정이 여러번 신고 불가능
                 //영진 파트
+                FirebaseFirestore db = FirebaseFirestore.getInstance();
+                FirebaseUser currentUser = mAuth.getCurrentUser();
+
 
                 //이미 신고를 한 경우
                 //신고 거부 안내
