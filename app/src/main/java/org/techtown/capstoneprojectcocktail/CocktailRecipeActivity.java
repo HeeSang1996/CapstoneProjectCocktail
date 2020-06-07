@@ -191,8 +191,8 @@ public class CocktailRecipeActivity extends AppCompatActivity {
             FirebaseFirestore db = FirebaseFirestore.getInstance();
 
             //유저의 uid + 레시피 ID를 사용하여 리포트 이름 선정
-            final String DocumentName = currentUser.getUid()+cocktailID;
-            DocumentReference Report_check = db.collection("Report").document(DocumentName);
+            final String ReportName = currentUser.getUid()+cocktailID;
+            DocumentReference Report_check = db.collection("Report").document(ReportName);
 
             //해당 이름으로 문서가 비어있는지 아닌지 map크기를 확인하여 체크
             Report_check.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -204,10 +204,34 @@ public class CocktailRecipeActivity extends AppCompatActivity {
                             Map<String, Object> map = document.getData();
                             if (map.size() == 0) {
                                 reportChecked = false;
-                                Log.d(TAG, "Document is empty!");
+                                Log.d(TAG, "Report Document is empty!");
                             } else {
                                 reportChecked = true;
-                                Log.d(TAG, "Document is not empty!");
+                                Log.d(TAG, "Report Document is not empty!");
+                            }
+                        }
+                    }
+                }
+            });
+
+            //유저의 uid + 레시피 ID를 사용하여 리포트 이름 선정
+            final String BookmarkName = currentUser.getUid()+cocktailID;
+            DocumentReference Bookmark_check = db.collection("Bookmark").document(BookmarkName);
+
+            //해당 이름으로 문서가 비어있는지 아닌지 map크기를 확인하여 체크
+            Report_check.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot document = task.getResult();
+                        if (document.exists()) {
+                            Map<String, Object> map = document.getData();
+                            if (map.size() == 0) {
+                                reportChecked = false;
+                                Log.d(TAG, "Bookmark Document is empty!");
+                            } else {
+                                reportChecked = true;
+                                Log.d(TAG, "Bookmark Document is not empty!");
                             }
                         }
                     }
@@ -482,15 +506,64 @@ public class CocktailRecipeActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //영진 파트
+                FirebaseUser currentUser = mAuth.getCurrentUser();
+                FirebaseFirestore db = FirebaseFirestore.getInstance();
+                String BookmarkName = currentUser.getUid()+cocktailID;
 
                 //북마크가 이미 선택되었던 경우
                 if(bookmarkChecked==true){
                     Toast.makeText(getApplicationContext(),"북마크 취소",Toast.LENGTH_LONG).show();
                     floatingActionButtonForBookmark.setImageResource(R.mipmap.outline_bookmark_border_white_36dp);
                     bookmarkChecked=false;
+
+                    db.collection("Bookmark").document(BookmarkName)
+                            .delete()
+                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    Log.d(TAG, "DocumentSnapshot successfully deleted!");
+                                    Toast.makeText(getApplication(),"삭제",Toast.LENGTH_SHORT).show();
+                                }
+                            })
+                            .addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Log.w(TAG, "Error deleting document", e);
+                                    Toast.makeText(getApplication(),"삭제 실패! 다시 시도해주세요",Toast.LENGTH_SHORT).show();
+                                }
+                            });
                 }
                 //북마크를 추가하는 경우
                 else{
+                    //formatdate를 위한 선언 및 변환
+                    long now = System.currentTimeMillis();
+                    Date date = new Date(now);
+                    SimpleDateFormat sdfNow = new SimpleDateFormat("yyyy년 MM월 dd일 HH:mm:ss");
+                    String formatDate = sdfNow.format(date);
+
+                    //카드뷰 어케 만들지 몰라서 일단 많이 넣음
+                    Map<String, Object> putBookmark = new HashMap<>();
+                    putBookmark.put("레시피 번호", Integer.toString(cocktailID));
+                    putBookmark.put("레시피 이름", cocktailName);
+                    putBookmark.put("레시피 ref", cocktailRef);
+                    putBookmark.put("사용자 이름", currentUser.getDisplayName());
+                    putBookmark.put("사용자 url", currentUser.getPhotoUrl().toString());
+                    putBookmark.put("사용자 uid", currentUser.getUid());
+                    putBookmark.put("북마크 날짜", formatDate);
+                    db.collection("Bookmark").document(BookmarkName)
+                            .set(putBookmark)
+                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    Log.d(TAG, "DocumentSnapshot successfully written!");
+                                }
+                            })
+                            .addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Log.w(TAG, "Error writing document", e);
+                                }
+                            });
                     Toast.makeText(getApplicationContext(),"북마크",Toast.LENGTH_LONG).show();
                     floatingActionButtonForBookmark.setImageResource(R.mipmap.baseline_bookmark_white_36dp);
                     bookmarkChecked=true;
