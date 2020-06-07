@@ -61,6 +61,7 @@ public class CocktailRecipeActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private ImageButton imageButtonForComment;
     private RecyclerView recyclerViewForComment;
+    private LinearLayoutManager layoutManagerForCocktailComment;
     //이전에 북마크,평가,신고를 체크 했는지 안했는지 판단
     private boolean bookmarkChecked=false;
     private boolean gradeChecked=false;
@@ -94,6 +95,7 @@ public class CocktailRecipeActivity extends AppCompatActivity {
         ratingBar = (RatingBar) findViewById(R.id.ratingBar_grading_recipe);
         //수정필
         gradeScore="0.0";
+        recyclerViewForComment = findViewById(R.id.recyclerViewForComment_recipe);
         LinearLayout linearLayoutForCommentTextInput = findViewById(R.id.linearLayout_cocktail_recipe);
         final ImageView imageForCocktail = (ImageView) findViewById(R.id.imageView_cocktail_recipe);
 
@@ -103,6 +105,14 @@ public class CocktailRecipeActivity extends AppCompatActivity {
         String cocktailIngredient = intent.getExtras().getString("cocktailIngredient");
         String cocktailABV = intent.getExtras().getString("cocktailABV");
         cocktailRef = intent.getExtras().getString("cocktailRef");
+
+        layoutManagerForCocktailComment = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL,false);
+        //역순 출력
+        layoutManagerForCocktailComment.setReverseLayout(true);
+        layoutManagerForCocktailComment.setStackFromEnd(true);
+
+        recyclerViewForComment.setLayoutManager(layoutManagerForCocktailComment);
+        recyclerViewForComment.setAdapter(adapterForCocktailComment);
 
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = mAuth.getCurrentUser();
@@ -177,18 +187,7 @@ public class CocktailRecipeActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-        recyclerViewForComment = findViewById(R.id.recyclerViewForComment_recipe);
-        LinearLayoutManager layoutManagerForCocktailComment = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL,false);
-
-        //역순 출력
-        layoutManagerForCocktailComment.setReverseLayout(true);
-        layoutManagerForCocktailComment.setStackFromEnd(true);
-
-        recyclerViewForComment.setLayoutManager(layoutManagerForCocktailComment);
-//        for(int i=0; i<20; i++) {
-//            adapterForCocktailComment.addItem(new Comment("hi"+i,"hi","hi","hi","ho"));
-//        }
-        recyclerViewForComment.setAdapter(adapterForCocktailComment);
+        //영진 이부분에서 db 에 있는 댓글내용 불러와
 
         textInputLayoutForComment.setCounterEnabled(true);
         textInputLayoutForComment.setCounterMaxLength(150);
@@ -229,8 +228,7 @@ public class CocktailRecipeActivity extends AppCompatActivity {
                     Date date = new Date(now);
                     SimpleDateFormat sdfNow = new SimpleDateFormat("yyyy년 MM월 dd일 HH:mm:ss");
                     String formatDate = sdfNow.format(date);
-                    Toast.makeText(getApplicationContext(),"댓글 내용: " + stringForCocktailComment,Toast.LENGTH_LONG).show();
-                    adapterForCocktailComment.addItem(new Comment(user.getDisplayName(),"날짜: " + formatDate,stringForCocktailComment,user.getPhotoUrl().toString(),user.getUid()));
+                    //adapterForCocktailComment.addItem(new Comment(user.getDisplayName(),"날짜: " + formatDate,stringForCocktailComment,user.getPhotoUrl().toString(),user.getUid()));
                     //레시피번호, 레시피이름, 레시피ref, 사용자이름, 사용자url, 사용자uid, 내용, 날짜를 Comment 컬렉션에 저장
                     //도큐먼트 이름 형식은 날짜+uid
                     FirebaseUser currentUser = mAuth.getCurrentUser();
@@ -253,17 +251,20 @@ public class CocktailRecipeActivity extends AppCompatActivity {
                                 @Override
                                 public void onSuccess(Void aVoid) {
                                     Log.d(TAG, "DocumentSnapshot successfully written!");
+                                    Toast.makeText(getApplicationContext(),"댓글 내용: " + stringForCocktailComment,Toast.LENGTH_LONG).show();
                                 }
                             })
                             .addOnFailureListener(new OnFailureListener() {
                                 @Override
                                 public void onFailure(@NonNull Exception e) {
                                     Log.w(TAG, "Error writing document", e);
+                                    Toast.makeText(getApplicationContext(),"댓글 달기 실패! 다시 시도해주세요",Toast.LENGTH_LONG).show();
                                 }
                             });
 
-                    recyclerViewForComment.setAdapter(adapterForCocktailComment);
+                    //recyclerViewForComment.setAdapter(adapterForCocktailComment);
                     editTextForCocktailComment.getText().clear();
+                    //영진 이부분에서 db 에 있는 댓글내용 불러와
                 }
             }
         });
@@ -302,17 +303,19 @@ public class CocktailRecipeActivity extends AppCompatActivity {
                                                 @Override
                                                 public void onSuccess(Void aVoid) {
                                                     Log.d(TAG, "DocumentSnapshot successfully deleted!");
+                                                    Toast.makeText(getApplication(),"삭제",Toast.LENGTH_SHORT).show();
                                                 }
                                             })
                                             .addOnFailureListener(new OnFailureListener() {
                                                 @Override
                                                 public void onFailure(@NonNull Exception e) {
                                                     Log.w(TAG, "Error deleting document", e);
+                                                    Toast.makeText(getApplication(),"삭제 실패! 다시 시도해주세요",Toast.LENGTH_SHORT).show();
                                                 }
                                             });
-                                    adapterForCocktailComment.removeItem(positionForDelete);
-                                    recyclerViewForComment.setAdapter(adapterForCocktailComment);
-                                    Toast.makeText(getApplication(),"삭제",Toast.LENGTH_SHORT).show();
+                                    //adapterForCocktailComment.removeItem(positionForDelete);
+                                    //recyclerViewForComment.setAdapter(adapterForCocktailComment);
+                                    //영진 이부분에서 db 에 있는 댓글내용 불러와
                                     break;
                                 default:
                                     Toast.makeText(getApplication(),"취소",Toast.LENGTH_SHORT).show();
