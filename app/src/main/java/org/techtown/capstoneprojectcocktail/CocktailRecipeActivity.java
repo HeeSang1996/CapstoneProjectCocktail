@@ -83,6 +83,10 @@ public class CocktailRecipeActivity extends AppCompatActivity {
     //db북마크 카운트용
     private int Bookmark_count;
 
+    //dbGrading 카운트 및 총합세기위한 변수 선언
+    private float Score_count = 0;
+    private float Score_total = 0;
+
 
     @SuppressLint("RestrictedApi")
     @Override
@@ -240,6 +244,30 @@ public class CocktailRecipeActivity extends AppCompatActivity {
                 }
             });
 
+            //유저의 uid + 레시피 ID를 사용하여 리포트 이름 선정
+            final String GradingName = currentUser.getUid()+cocktailID;
+            DocumentReference Grading_check = db.collection("Grading").document(GradingName);
+
+            //해당 이름으로 문서가 비어있는지 아닌지 map크기를 확인하여 체크
+            Grading_check.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot document = task.getResult();
+                        if (document.exists()) {
+                            Map<String, Object> map = document.getData();
+                            if (map.size() == 0) {
+                                gradeChecked = false;
+                                Log.d(TAG, "Grading Document is empty!");
+                            } else {
+                                gradeChecked = true;
+                                Log.d(TAG, "Grading Document is not empty!");
+                            }
+                        }
+                    }
+                }
+            });
+
             //로그인한 유저에게는 로그인 하지 않았다는 메시지 출력 삭제
             textForNonLoginUser.setVisibility(View.GONE);
         }
@@ -251,7 +279,7 @@ public class CocktailRecipeActivity extends AppCompatActivity {
 
         //영진 이부분에서 db 에 있는 댓글내용 불러와
         //adapterForCocktailComment.addItem(new Comment(user.getDisplayName(),"날짜: " + formatDate,stringForCocktailComment,user.getPhotoUrl().toString(),user.getUid()));
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        final FirebaseFirestore db = FirebaseFirestore.getInstance();
         //받아오기위해 변수들 초기화
         Comment_name = new ArrayList();
         Comment_date = new ArrayList();
@@ -594,7 +622,6 @@ public class CocktailRecipeActivity extends AppCompatActivity {
                         });
             }
         });
-        //그냥 엔터하니 바뀐거 없다고 안되네
         floatingActionButtonForGrade.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -602,7 +629,6 @@ public class CocktailRecipeActivity extends AppCompatActivity {
                 //평가는 취소 불가
                 //평가는 수정만 가능
                 //영진 파트
-
                 //평가 수정을 원하는 경우
                 if(gradeChecked==true){
                     Toast.makeText(getApplicationContext(),"평가 수정",Toast.LENGTH_LONG).show();
@@ -611,6 +637,24 @@ public class CocktailRecipeActivity extends AppCompatActivity {
                     intent.putExtra("gradeCheck",gradeChecked);
                     intent.putExtra("gradeScore",gradeScore);
                     startActivityForResult(intent, 1);
+                    FirebaseUser currentUser = mAuth.getCurrentUser();
+                    FirebaseFirestore db = FirebaseFirestore.getInstance();
+                    String GradingName = currentUser.getUid()+cocktailID;
+                    db.collection("Grading").document(GradingName)
+                            .delete()
+                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    Log.d(TAG, "DocumentSnapshot successfully deleted!");
+                                    bookmarkChecked=false;
+                                }
+                            })
+                            .addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Log.w(TAG, "Error deleting document", e);
+                                }
+                            });
                 }
                 //처음으로 평가를 하는 경우
                 else{
@@ -676,6 +720,81 @@ public class CocktailRecipeActivity extends AppCompatActivity {
                 ratingBar.setRating(ratingFloat);
                 gradeScore = ratingString;
                 Toast.makeText(getApplicationContext(), "Result: " + data.getStringExtra("rating"), Toast.LENGTH_SHORT).show();
+                //평가 날짜를 위한 format date생성
+                long now = System.currentTimeMillis();
+                Date date = new Date(now);
+                SimpleDateFormat sdfNow = new SimpleDateFormat("yyyy년 MM월 dd일 HH:mm:ss");
+                String formatDate = sdfNow.format(date);
+
+                //레시피번호, 레시피이름, 레시피ref, 사용자이름, 사용자url, 사용자uid, 내용, 날짜를 Comment 컬렉션에 저장
+                //도큐먼트 이름 형식은 유저의 uid + 레시피 ID
+                FirebaseUser currentUser = mAuth.getCurrentUser();
+                final FirebaseFirestore db = FirebaseFirestore.getInstance();
+                String GradingName = currentUser.getUid()+cocktailID;
+                Score_count = 0;
+                Score_total = 0;
+
+                Map<String, Object> putGrading = new HashMap<>();
+                putGrading.put("레시피 번호", Integer.toString(cocktailID));
+                putGrading.put("레시피 이름", cocktailName);
+                putGrading.put("레시피 ref", cocktailRef);
+                putGrading.put("사용자 이름", currentUser.getDisplayName());
+                putGrading.put("사용자 url", currentUser.getPhotoUrl().toString());
+                putGrading.put("사용자 uid", currentUser.getUid());
+                putGrading.put("점수", gradeScore);
+                putGrading.put("평가 날짜", formatDate);
+                db.collection("Grading").document(GradingName)
+                        .set(putGrading)
+                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                Log.d(TAG, "DocumentSnapshot successfully written!");
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Log.w(TAG, "Error writing document", e);
+                            }
+                        });
+
+
+                //db의 Grading 컬렉션의 레시피 번호 같은 갯수만큼 Score_count갯수 세어서 넣어줌.
+                db.collection("Grading")
+                        .whereEqualTo("레시피 번호", Integer.toString(cocktailID))
+                        .get()
+                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                if (task.isSuccessful()) {
+                                    adapterForCocktailComment.clearAllForAdapter();
+                                    for (QueryDocumentSnapshot document : task.getResult()) {
+                                        //나누어줄 총 갯수 세기
+                                        Score_count++;
+                                        //점수들의 총합 계산
+                                        Score_total += Float.parseFloat((String) document.get("점수"));
+                                    }
+                                    //해당 레시피번호와 동일한 레시피의 mark_number를 Bookmark_count와 동일하게 해서 업데이트함
+                                    DocumentReference Gradingmark_ref = db.collection("Recipe").document(Integer.toString(cocktailID));
+                                    Gradingmark_ref
+                                            .update("good_number", Integer.toString((int) (Score_total/Score_count)))
+                                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                @Override
+                                                public void onSuccess(Void aVoid) {
+                                                    Log.d(TAG, "DocumentSnapshot successfully updated!");
+                                                }
+                                            })
+                                            .addOnFailureListener(new OnFailureListener() {
+                                                @Override
+                                                public void onFailure(@NonNull Exception e) {
+                                                    Log.w(TAG, "Error updating document", e);
+                                                }
+                                            });
+                                } else {
+                                    Log.d(TAG, "Error getting documents: ", task.getException());
+                                }
+                            }
+                        });
             }
         }
         //신고 팝업의 결과물
