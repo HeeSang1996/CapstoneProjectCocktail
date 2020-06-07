@@ -94,6 +94,7 @@ public class CocktailRecipeActivity extends AppCompatActivity {
         TextView textForCocktailIngredient = (TextView) findViewById(R.id.textView_cocktailIngredient_recipe);
         TextView textForCocktailABV = (TextView) findViewById(R.id.textView_cocktailABV_recipe);
         TextView textForNonLoginUser = (TextView) findViewById(R.id.textView_info_for_nonLoginUser_recipe);
+        TextView textForGrading = (TextView) findViewById(R.id.textView_simpleRating_recipe);
         floatingActionButtonForBookmark = (FloatingActionButton) findViewById(R.id.floatingActionButton_bookmark_recipe);
         floatingActionButtonForGrade = (FloatingActionButton) findViewById(R.id.floatingActionButton_grade_recipe);
         floatingActionButtonForReport = (FloatingActionButton) findViewById(R.id.floatingActionButton_report_recipe);
@@ -145,8 +146,16 @@ public class CocktailRecipeActivity extends AppCompatActivity {
         //인텐트로 받은 값이
         //재료일 경우
         //재료대신 설탕 함유량 문구 출력
-        if((cocktailID/1000)==5)
+        //그리고 평가 부분 삭제
+        //북마크 삭제
+        //별점 버튼도 삭제
+        if((cocktailID/1000)==5){
             textForCocktailID.setText("설탕 함유량");
+            textForGrading.setVisibility(View.GONE);
+            ratingBar.setVisibility(View.GONE);
+            floatingActionButtonForBookmark.setVisibility(View.GONE);
+            floatingActionButtonForGrade.setVisibility(View.GONE);
+        }
         else
             textForCocktailID.setText("재료");
         textForCocktailDescription.setText(cocktailDescription);
