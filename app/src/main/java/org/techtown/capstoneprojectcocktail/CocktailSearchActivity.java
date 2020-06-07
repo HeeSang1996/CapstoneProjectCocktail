@@ -278,8 +278,10 @@ public class CocktailSearchActivity extends AppCompatActivity{
                         DocumentSnapshot document = task.getResult();
                         if (document.exists()) {
                             //Log.d(TAG, "DocumentSnapshot data: " + document.getData());
+                            count = finalI;
                             Recipe_name[count] = (String) document.get("Recipe_name");
                             ID[count] = 6001+ count;
+                            Log.d(TAG, String.valueOf(ID[count]));
                             method[count] = (String) document.get("method");
                             //abv[0] = (String) document.get("abv");
 
