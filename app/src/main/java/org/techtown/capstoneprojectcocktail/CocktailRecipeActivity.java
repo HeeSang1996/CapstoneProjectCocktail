@@ -80,6 +80,7 @@ public class CocktailRecipeActivity extends AppCompatActivity {
     private ArrayList Comment_url;
     private ArrayList Comment_uid;
 
+    private String totalGradeScore;
     //db북마크 카운트용
     private int Bookmark_count;
 
@@ -112,6 +113,7 @@ public class CocktailRecipeActivity extends AppCompatActivity {
         ratingBar = (RatingBar) findViewById(R.id.ratingBar_grading_recipe);
         //수정필
         gradeScore="0.0";
+        totalGradeScore="0.0";
         recyclerViewForComment = findViewById(R.id.recyclerViewForComment_recipe);
         LinearLayout linearLayoutForCommentTextInput = findViewById(R.id.linearLayout_cocktail_recipe);
         final ImageView imageForCocktail = (ImageView) findViewById(R.id.imageView_cocktail_recipe);
@@ -164,8 +166,10 @@ public class CocktailRecipeActivity extends AppCompatActivity {
             floatingActionButtonForBookmark.setVisibility(View.GONE);
             floatingActionButtonForGrade.setVisibility(View.GONE);
         }
-        else
+        else {
             textForCocktailID.setText("재료");
+            //영진 여기다가 별점 불러다 박아주셈 totalGradeScore=
+        }
         textForCocktailDescription.setText(cocktailDescription);
         textForCocktailIngredient.setText(cocktailIngredient);
         textForCocktailABV.setText(cocktailABV);
@@ -277,6 +281,9 @@ public class CocktailRecipeActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
+
+        //Toast.makeText(getApplicationContext(),"on resume",Toast.LENGTH_LONG).show();
+        ratingBar.setRating(Float.valueOf(totalGradeScore));
         //영진 이부분에서 db 에 있는 댓글내용 불러와
         //adapterForCocktailComment.addItem(new Comment(user.getDisplayName(),"날짜: " + formatDate,stringForCocktailComment,user.getPhotoUrl().toString(),user.getUid()));
         final FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -714,9 +721,7 @@ public class CocktailRecipeActivity extends AppCompatActivity {
                 //ratingBar.setRating(data.getExtras().getFloat("rating"));
                 String ratingString = data.getStringExtra("rating");
                 float ratingFloat = Float.valueOf(ratingString);
-                ratingBar.setRating(ratingFloat);
                 gradeScore = ratingString;
-                Toast.makeText(getApplicationContext(), "Result: " + data.getStringExtra("rating"), Toast.LENGTH_SHORT).show();
                 //평가 날짜를 위한 format date생성
                 long now = System.currentTimeMillis();
                 Date date = new Date(now);
@@ -746,8 +751,6 @@ public class CocktailRecipeActivity extends AppCompatActivity {
                             @Override
                             public void onSuccess(Void aVoid) {
                                 Log.d(TAG, "DocumentSnapshot successfully written!");
-                                floatingActionButtonForGrade.setImageResource(R.mipmap.outline_star_white_36dp);
-                                gradeChecked=true;
                             }
                         })
                         .addOnFailureListener(new OnFailureListener() {
@@ -766,7 +769,6 @@ public class CocktailRecipeActivity extends AppCompatActivity {
                             @Override
                             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                                 if (task.isSuccessful()) {
-                                    adapterForCocktailComment.clearAllForAdapter();
                                     for (QueryDocumentSnapshot document : task.getResult()) {
                                         //나누어줄 총 갯수 세기
                                         Score_count++;
@@ -782,6 +784,8 @@ public class CocktailRecipeActivity extends AppCompatActivity {
                                                 @Override
                                                 public void onSuccess(Void aVoid) {
                                                     Log.d(TAG, "DocumentSnapshot successfully updated!");
+                                                    Toast.makeText(getApplicationContext(), "Result: " + gradeScore, Toast.LENGTH_SHORT).show();
+                                                    totalGradeScore = Float.toString((Score_total/Score_count));
                                                     floatingActionButtonForGrade.setImageResource(R.mipmap.outline_star_white_36dp);
                                                     gradeChecked=true;
                                                 }
