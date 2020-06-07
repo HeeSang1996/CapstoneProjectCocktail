@@ -42,7 +42,6 @@ public class MJH_Object_cocktail implements Cloneable{
         salty.add((float)0);
         bitter.add((float)0);
 
-
     }
 
 

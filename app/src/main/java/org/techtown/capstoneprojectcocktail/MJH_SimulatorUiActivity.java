@@ -6,7 +6,10 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -31,28 +34,68 @@ public class MJH_SimulatorUiActivity extends AppCompatActivity implements View.O
     public static MJH_ListviewAdapter adapterMIN;
     public ListView listview;
 
+    public int isFirst = 0;
+
     public int listUpdateFlag = 0;
     public int lastStepTechFlag = 0;
-    public static String listUpdateTech;
+
+    public static ArrayList<Integer> usingStep = new ArrayList<Integer>();
+
+    public static String listUpdateTech; // 팝업1에서 선택된 기술
     public static ArrayList<Integer> listUpdateStep = new ArrayList<Integer>();
     public static ArrayList<MJH_Object_ingredient> listUpdateIngredient = new ArrayList<MJH_Object_ingredient>();
     public static ArrayList<Float> listUpdateIngredientAmount = new ArrayList<Float>();
 
     public static int stepNum = 0;
 
-    public static MJH_Object_simulator test = new MJH_Object_simulator(1, 1);
+    public static MJH_Object_simulator test;
 
     public MJH_Object_ingredient[] ingredientList = new MJH_Object_ingredient[200];
     public int listCount = 0;
     public MJH_Object_color colorBuffer;
     public Map<String, Number> ingredientRGB;
 
+    public CheckBox cb1;
+    public CheckBox cb2;
+
+    Button button1;
     @Override
     public void onCreate(Bundle saveInstanceState){
         setAdapterForIngredientSearch();
         super.onCreate(saveInstanceState);
         setContentView(R.layout.mjh_test);
         uiMain = this;
+        button1=(Button) findViewById(R.id.button);
+
+        final TextView txt = (TextView)findViewById(R.id.textView);
+
+        button1.setOnClickListener(new View.OnClickListener() {
+            String resultTest = "";
+            @Override
+            public void onClick(View v){
+                try{
+                    resultTest = "현재 시뮬 스텝 사이즈" + Integer.toString(test.simulatorStep.size()) + "," + Integer.toString(test.totalStep)+ ": ";
+                    for(int i = 0 ; i < test.simulatorStep.get(test.totalStep-2).eachVolume.size(); i++){
+                        resultTest = resultTest + "/" + Float.toString(test.simulatorStep.get(test.totalStep-2).eachVolume.get(i));
+                    /*
+                    resultTest = resultTest + "/" + Float.toString(test.simulatorStep.get(2).isColor.get(i).rgb_red)
+                            + "," + Float.toString(test.simulatorStep.get(2).isColor.get(i).rgb_green)
+                            + "," + Float.toString(test.simulatorStep.get(2).isColor.get(i).rgb_blue);
+
+                     */
+                    }
+                    txt.setText(resultTest);
+                }catch(Exception e){
+                    Toast myToast = Toast.makeText(uiMain, e.toString(), Toast.LENGTH_LONG);
+                    myToast.show();
+                }
+            }
+        });
+
+
+
+        cb1 = (CheckBox)findViewById(R.id.checkBox1);
+        cb2 = (CheckBox)findViewById(R.id.checkBox2);
 
         floatingActionButtonForAddList = (FloatingActionButton) findViewById(R.id.floatingActionButtonForAddList);
         floatingActionButtonForAddList.setOnClickListener(this);
@@ -88,15 +131,27 @@ public class MJH_SimulatorUiActivity extends AppCompatActivity implements View.O
     protected void onResume() {
         super.onResume();
         if (listUpdateFlag == 1) {
-            stepNum++;
-            adapterMIN.addItem(Integer.toString(stepNum), listUpdateTech, listUpdateStep, listUpdateIngredient, listUpdateIngredientAmount);
-            listview.setAdapter(adapterMIN);
-            listUpdateFlag = 0;
-
             try{
-                test.addStepBuildings(stepNum, listUpdateStep, listUpdateIngredient, listUpdateIngredientAmount, true);
+                stepNum++;
+                adapterMIN.addItem(Integer.toString(stepNum), listUpdateTech, listUpdateStep, listUpdateIngredient, listUpdateIngredientAmount);
+                listview.setAdapter(adapterMIN);
+                listUpdateFlag = 0;
+                if(listUpdateTech.equals("Layering")){
+                    Toast myToast = Toast.makeText(this.getApplicationContext(),"레이어링 작동", Toast.LENGTH_SHORT);
+                    myToast.show();
+                    if(listUpdateStep.size() == 0){
+                        test.addStepLayering(stepNum, 0, listUpdateIngredient.get(0), listUpdateIngredientAmount.get(0), 0);
+                    }
+                    else{
+                        test.addStepLayering(stepNum, listUpdateStep.get(0), null, 0, 0);
+                    }
+                }
+                else{
+                    test.addStepBuildings(stepNum, listUpdateStep, listUpdateIngredient, listUpdateIngredientAmount, true);
+                }
             }catch(Exception e){
-                Log.w(TAG, "App error!", e);
+                Toast myToast = Toast.makeText(uiMain, e.toString(), Toast.LENGTH_LONG);
+                myToast.show();
             }
             if(listUpdateTech.equals("Layering") || listUpdateTech.equals("Gradient") ){
                 lastStepTechFlag = 1;
@@ -109,18 +164,50 @@ public class MJH_SimulatorUiActivity extends AppCompatActivity implements View.O
     public void onClick(View v) {
         int id = v.getId();
         switch (id) {
-            case R.id.floatingActionButtonForAddList:
-                //anim();
+            case R.id.floatingActionButtonForAddList: // 시뮬 스텝 추가 팝업으로 넘어감
+                if(cb1.isChecked() == true){ // 체크 버튼 점검
+                    if(isFirst == 0){
+                        isFirst = 1;
+                        test = new MJH_Object_simulator(0, 1); // 글래스타입 0 -> 하이볼 잔
+                    }
+                    Toast myToast = Toast.makeText(this.getApplicationContext(),"하이볼잔", Toast.LENGTH_SHORT);
+                    myToast.show();
+                }
+                else if(cb2.isChecked() == true){
+                    if(isFirst == 0){
+                        isFirst = 1;
+                        test = new MJH_Object_simulator(1, 1); // 글래스타입 0 -> 하이볼 잔
+                    }
+                    Toast myToast = Toast.makeText(this.getApplicationContext(),"칵테일잔", Toast.LENGTH_SHORT);
+                    myToast.show();
+                }
                 Intent intent = new Intent(this,MJH_Popup1Activity.class);
                 startActivityForResult(intent, 1);
                 adapterMIN.callByPopup = 1;
                 break;
-            case R.id.floatingActionButtonForAddList2:
-                //anim();
-                if(stepNum != 0)
-                    stepNum--;
-                adapterMIN.listViewItemList.remove(adapterMIN.listViewItemList.size()-1);
-                listview.setAdapter(adapterMIN);
+            case R.id.floatingActionButtonForAddList2: // 시뮬스텝 지우기
+                if(stepNum != 0){
+                    try{
+                        int deleteBuff;
+                        deleteBuff = adapterMIN.listViewItemList.size();
+                        stepNum--;
+                        adapterMIN.listViewItemList.remove(deleteBuff-1);
+                        listview.setAdapter(adapterMIN);
+
+                        //step 하나 지우기
+                        test.simulatorStep.remove(deleteBuff-1);
+                        test.totalStep--; // 전체 스텝 갯수
+                        test.inGlassStep--;
+
+                        listUpdateTech =""; // 팝업1에서 선택된 기술
+                        listUpdateStep = new ArrayList<Integer>();
+                        listUpdateIngredient = new ArrayList<MJH_Object_ingredient>();
+                        listUpdateIngredientAmount = new ArrayList<Float>();
+                    }catch(Exception e){
+                        Toast myToast = Toast.makeText(this.getApplicationContext(), e.toString(), Toast.LENGTH_LONG);
+                        myToast.show();
+                    }
+                }
 
                 if(stepNum == 0){
                     lastStepTechFlag = 0;
@@ -132,9 +219,9 @@ public class MJH_SimulatorUiActivity extends AppCompatActivity implements View.O
                     lastStepTechFlag = 0;
                 }
                 break;
-            case R.id.button_simulation_action:
+            case R.id.button_simulation_action: // 시뮬레이션 작동시키기
                 if(test.simulatorStep.size() == 0) {
-                    Toast myToast = Toast.makeText(this.getApplicationContext(),"칵테일 시뮬레이션 스템을 추가해 주세요!", Toast.LENGTH_SHORT);
+                    Toast myToast = Toast.makeText(this.getApplicationContext(),"칵테일 시뮬레이션 스텝을 추가해 주세요!", Toast.LENGTH_SHORT);
                     myToast.show();
                 }
                 else{

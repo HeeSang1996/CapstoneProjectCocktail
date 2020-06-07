@@ -15,6 +15,7 @@ import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,17 +23,21 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class MJH_SimulatorGraphicActivity extends AppCompatActivity {
 
+    int setNumber = 0;
     @RequiresApi(api = Build.VERSION_CODES.Q)
     @Override
     public void onCreate(Bundle saveInstanceState){
         super.onCreate(saveInstanceState);
         setContentView(R.layout.mjh_graphic);
 
-
-
         try{
 
             if( MJH_SimulatorUiActivity.test.simulatorStep.get(MJH_SimulatorUiActivity.test.simulatorStep.size()-1 ).isLayering > 1){
+
+                setNumber++;
+                Toast myToast = Toast.makeText(this.getApplicationContext(),Integer.toString(setNumber), Toast.LENGTH_SHORT);
+                myToast.show();
+
                 Canvas canvas;
                 Bitmap bitmap = Bitmap.createBitmap(720,1480, Bitmap.Config.ARGB_8888);
                 canvas = new Canvas(bitmap);
@@ -42,6 +47,7 @@ public class MJH_SimulatorGraphicActivity extends AppCompatActivity {
                 float volume;
                 int red, green, blue;
                 int height = 1320;
+                int prev_h = 1320;
 
 
                 Paint paint = new Paint();
@@ -61,10 +67,12 @@ public class MJH_SimulatorGraphicActivity extends AppCompatActivity {
                         rect.set(110, 1270, 650, 1370);
                         canvas.drawArc(rect, 0, 360, true, paint);
                     }
+
                     //전체사각
                     height = (int)((float)height - ((float)4.0 * volume));
                     paint.setColor(Color.rgb(red ,green ,blue));
-                    canvas.drawRect(110, height, 650, 1320, paint);
+                    canvas.drawRect(110, height, 650, prev_h, paint);
+                    prev_h = height;
                 }
 
 

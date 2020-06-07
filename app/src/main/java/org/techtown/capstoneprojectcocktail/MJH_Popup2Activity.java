@@ -1,6 +1,7 @@
 package org.techtown.capstoneprojectcocktail;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MotionEvent;
@@ -14,11 +15,13 @@ import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 
+import static org.techtown.capstoneprojectcocktail.CocktailAdapterForSearch.useByMinFlag;
 import static org.techtown.capstoneprojectcocktail.MJH_SimulatorUiActivity.adapterMIN;
 
 public class MJH_Popup2Activity extends Activity {
+    public Context uiMe;
+
     ListView listview;
-    MJH_ListviewAdapter adapter;
 
     MJH_SimulatorUiActivity simulatorUiAddress;
     public ArrayList<Integer> bufferUpdateStep = new ArrayList<Integer>();
@@ -26,28 +29,44 @@ public class MJH_Popup2Activity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        uiMe = this;
         //타이틀바 없애기
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.mjh_popup2);
         simulatorUiAddress = ((MJH_SimulatorUiActivity)MJH_SimulatorUiActivity.uiMain);
 
-
         // 리스트뷰 참조 및 Adapter달기
         listview = (ListView) findViewById(R.id.listviewPopup2);
-
-        adapterMIN.callByPopup = 1;
-
-
-        listview.setAdapter(adapterMIN);
+        adapterMIN.callByPopup = 1; // 어댑터 변수에서 팝업에서 콜했다고 셋팅
+        listview.setAdapter(adapterMIN); //
 
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView parent, View v, int position, long id) {
                 // get item
-                MJH_ListviewItem item = (MJH_ListviewItem) parent.getItemAtPosition(position) ;
-                bufferUpdateStep.add(position+1);
+                if(simulatorUiAddress.listUpdateTech.equals("Layering") && bufferUpdateStep.size() > 0){
+                    Toast myToast = Toast.makeText(uiMe,"Layering의 인풋은 한 스텝당 하나 입니다!", Toast.LENGTH_SHORT);
+                    myToast.show();
+                }
+                else{
 
-                // TODO : use item data.
+                    try{
+                        MJH_ListviewItem item = (MJH_ListviewItem) parent.getItemAtPosition(position) ;
+                        if(!simulatorUiAddress.usingStep.contains(position+1)){
+                            simulatorUiAddress.usingStep.add(position+1);
+                            bufferUpdateStep.add(position+1);
+                            Toast myToast = Toast.makeText(uiMe,"스텝 " + Integer.toString(position+1) + " 추가", Toast.LENGTH_SHORT);
+                            myToast.show();
+                        }
+                        else{
+                            Toast myToast = Toast.makeText(uiMe,"이미 사용된 스텝입니다.", Toast.LENGTH_SHORT);
+                            myToast.show();
+                        }
+                    }catch(Exception e){
+                        Toast myToast = Toast.makeText(uiMe, e.toString(), Toast.LENGTH_LONG);
+                        myToast.show();
+                    }
+                }
             }
         }) ;
     }
@@ -56,19 +75,31 @@ public class MJH_Popup2Activity extends Activity {
         finish();
     }
 
-    //확인 버튼 클릭
+    //이전 버튼 클릭
     public void mBefore(View v){
         Intent intent = new Intent(this,MJH_Popup1Activity.class);
         startActivityForResult(intent, 1);
         finish();
     }
+    //다음 버튼 클릭
     public void mNext(View v){
         //데이터 전달하기
-        Intent intent = new Intent(this,MJH_Popup3Activity.class);
-        startActivityForResult(intent, 1);
-        simulatorUiAddress.listUpdateStep = bufferUpdateStep;
-        finish();
+        if(simulatorUiAddress.listUpdateTech.equals("Layering") && bufferUpdateStep.size() > 0){
+            simulatorUiAddress.listUpdateStep = bufferUpdateStep;
+            simulatorUiAddress.listUpdateIngredient = new ArrayList<MJH_Object_ingredient>();
+            simulatorUiAddress.listUpdateFlag = 1;
+            useByMinFlag = 0;
+            finish();
+        }
+        else{
+            Intent intent = new Intent(this,MJH_Popup3Activity.class);
+            startActivityForResult(intent, 1);
+            simulatorUiAddress.listUpdateStep = bufferUpdateStep;
+            finish();
+        }
     }
+
+
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         //바깥레이어 클릭시 안닫히게

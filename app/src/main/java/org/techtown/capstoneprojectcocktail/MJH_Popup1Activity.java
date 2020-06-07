@@ -30,7 +30,6 @@ public class MJH_Popup1Activity extends Activity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.mjh_popup1);
         simulatorUiAddress = ((MJH_SimulatorUiActivity)MJH_SimulatorUiActivity.uiMain);
-
     }
 
     public void mClose(View v){
@@ -72,7 +71,6 @@ public class MJH_Popup1Activity extends Activity {
             Toast myToast = Toast.makeText(this.getApplicationContext(),"이미 \'" + simulatorUiAddress.listUpdateTech + "\'이 선택되어있습니다.", Toast.LENGTH_SHORT);
             myToast.show();
         }
-
     }
     public void mBuild(View v){
         Toast myToast = Toast.makeText(this.getApplicationContext(),"mBuild", Toast.LENGTH_SHORT);
@@ -133,9 +131,21 @@ public class MJH_Popup1Activity extends Activity {
     public void mNext(View v){
         if(buttonFlag == 1){
             //데이터 전달하기
-            Intent intent = new Intent(this,MJH_Popup2Activity.class);
-            startActivityForResult(intent, 1);
-            finish();
+            if(simulatorUiAddress.listUpdateTech.equals("Gradient")){ // 그래디언트면 바로 시럽 선택하게
+                Intent intent = new Intent(this,MJH_Popup3Activity.class);
+                startActivityForResult(intent, 1);
+                finish();
+            }
+            else if( simulatorUiAddress.stepNum == 0){ // 이전 스텝이 없으면
+                Intent intent = new Intent(this,MJH_Popup3Activity.class);
+                startActivityForResult(intent, 1);
+                finish();
+            }
+            else{
+                Intent intent = new Intent(this,MJH_Popup2Activity.class);
+                startActivityForResult(intent, 1);
+                finish();
+            }
         }
         else{
             Toast.makeText(this,"테크닉을 선택하여 주세요!", Toast.LENGTH_SHORT).show();

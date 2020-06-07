@@ -40,28 +40,28 @@ public class MJH_Object_simulator {
 
         try { // 기존 스탭을 이용해 칵테일을 만들때
             if(associateStep.size() > 0)
-                cocktailBuffer = (MJH_Object_cocktail) this.simulatorStep.get(associateStep.get(0) - 1).clone();
+                cocktailBuffer = stepClone(this.simulatorStep.get(associateStep.get(0) - 1));
             if(associateStep.size() > 1){ // 여러 단계를 사용할때
                 for(int i = 1; i < associateStep.size(); i++){
                     //도수계산
                     cocktailBuffer.totalAbv = calcAbv(cocktailBuffer.totalVolume, cocktailBuffer.totalAbv,
-                            this.simulatorStep.get(associateStep.get(i)).totalVolume, this.simulatorStep.get(associateStep.get(i)).totalAbv);
+                            this.simulatorStep.get(associateStep.get(i) - 1).totalVolume, this.simulatorStep.get(associateStep.get(i) - 1).totalAbv);
 
                     //비중계산
-                    cocktailBuffer.specificGravity.set(0, calcSpecificGravity(cocktailBuffer.totalVolume, this.simulatorStep.get(associateStep.get(i)).totalVolume,
-                            cocktailBuffer.specificGravity.get(0), this.simulatorStep.get(associateStep.get(i)).specificGravity.get(0)));
+                    cocktailBuffer.specificGravity.set(0, calcSpecificGravity(cocktailBuffer.totalVolume, this.simulatorStep.get(associateStep.get(i) - 1).totalVolume,
+                            cocktailBuffer.specificGravity.get(0), this.simulatorStep.get(associateStep.get(i) - 1).specificGravity.get(0)));
                     //색 변경
-                    cocktailBuffer.isColor.set(0, changeColor(cocktailBuffer.isColor.get(0), this.simulatorStep.get(associateStep.get(i)).isColor.get(0) , cocktailBuffer.totalVolume,
-                            this.simulatorStep.get(associateStep.get(i)).totalVolume));
+                    cocktailBuffer.isColor.set(0, changeColor(cocktailBuffer.isColor.get(0), this.simulatorStep.get(associateStep.get(i) - 1).isColor.get(0) , cocktailBuffer.totalVolume,
+                            this.simulatorStep.get(associateStep.get(i) - 1).totalVolume));
 
                     //량 추가
-                    cocktailBuffer.totalVolume = cocktailBuffer.totalVolume + this.simulatorStep.get(associateStep.get(i)).totalVolume;
+                    cocktailBuffer.totalVolume = cocktailBuffer.totalVolume + this.simulatorStep.get(associateStep.get(i) - 1).totalVolume;
 
                     //기타 피쳐 추가
-                    cocktailBuffer.sugar.set(0, cocktailBuffer.sugar.get(0) + this.simulatorStep.get(associateStep.get(i)).sugar.get(0));
-                    cocktailBuffer.sour.set(0, cocktailBuffer.sour.get(0) + this.simulatorStep.get(associateStep.get(i)).sour.get(0));
-                    cocktailBuffer.salty.set(0, cocktailBuffer.salty.get(0) + this.simulatorStep.get(associateStep.get(i)).salty.get(0));
-                    cocktailBuffer.bitter.set(0, cocktailBuffer.bitter.get(0) + this.simulatorStep.get(associateStep.get(i)).bitter.get(0));
+                    cocktailBuffer.sugar.set(0, cocktailBuffer.sugar.get(0) + this.simulatorStep.get(associateStep.get(i) - 1).sugar.get(0));
+                    cocktailBuffer.sour.set(0, cocktailBuffer.sour.get(0) + this.simulatorStep.get(associateStep.get(i) - 1).sour.get(0));
+                    cocktailBuffer.salty.set(0, cocktailBuffer.salty.get(0) + this.simulatorStep.get(associateStep.get(i) - 1).salty.get(0));
+                    cocktailBuffer.bitter.set(0, cocktailBuffer.bitter.get(0) + this.simulatorStep.get(associateStep.get(i) - 1).bitter.get(0));
                     //cocktail_buffer.sour[0] = cocktail_buffer.sour[0] + simulator_step[associate_step[i]].sour[0];
                     //(this.simulator_step[step_num].flavour[0] = @@@
                 }
@@ -158,7 +158,8 @@ public class MJH_Object_simulator {
         //int layeringType: 1->완벽한 플로팅, 2->어설픈 플로팅
 
         try{
-            this.simulatorStep.add((MJH_Object_cocktail)this.simulatorStep.get(inGlassStep - 1).clone());// 현재 글래스에 담겨있는 칵테일을 복사
+            MJH_Object_cocktail buf = stepClone(this.simulatorStep.get(inGlassStep - 1));
+            this.simulatorStep.add(buf);// 현재 글래스에 담겨있는 칵테일을 복사
         }catch (Exception e){e.printStackTrace(); }
         int layerNumBuffer = simulatorStep.get(inGlassStep - 1).isLayering; // 현재 글래스에 들어 있는 층 계산
         simulatorStep.get(inGlassStep).isLayering++;
@@ -185,14 +186,9 @@ public class MJH_Object_simulator {
             simulatorStep.get(inGlassStep - 1).getBitter().add(inputIngredient.bitter);
             //(this.simulator_step[step_num].flavour[0] = @@@
 
-            if(layeringType == 1 ){
-                simulatorStep.get(inGlassStep - 1).isBoundaryDirty.add(1);
-            }
-            else
-                simulatorStep.get(inGlassStep - 1).isBoundaryDirty.add(0);
         }
 
-        if(associateStep != 0){ // 재료로 레이어링 할 때
+        if(associateStep != 0){ // 연관스탭로 레이어링 할 때
 
             //토탈 abv, 토탈 비중, 토탈 부피 갱신
             simulatorStep.get(inGlassStep - 1).totalAbv = calcAbv(simulatorStep.get(inGlassStep - 1).totalVolume, simulatorStep.get(inGlassStep - 1).totalAbv,
@@ -214,11 +210,6 @@ public class MJH_Object_simulator {
             simulatorStep.get(inGlassStep - 1).getBitter().add(simulatorStep.get(associateStep  - 1).getBitter().get(0));
             //(this.simulator_step[step_num].flavour[0] = @@@
 
-            if(layeringType == 1 ){
-                simulatorStep.get(inGlassStep - 1).isBoundaryDirty.add(1);
-            }
-            else
-                simulatorStep.get(inGlassStep - 1).isBoundaryDirty.add(0);
         }
     }
 
@@ -234,6 +225,41 @@ public class MJH_Object_simulator {
         float weight_origin = volume_origin * specific_gravity_origin;
         float weight_add = volume_add * specific_gravity_add;
         return (weight_origin + weight_add) / (volume_origin + volume_add);
+    }
+
+    public MJH_Object_cocktail stepClone(MJH_Object_cocktail input){
+        MJH_Object_cocktail n = new MJH_Object_cocktail();
+
+        n.isInGlass = input.isInGlass;
+
+        n.isLayering = input.isLayering;
+        n.totalVolume = input.totalVolume;
+        n.totalAbv = input.totalAbv;
+        n.totalSpecificGravity = input.totalSpecificGravity;
+
+        for(int i = 0; i <input.eachAbv.size(); i++){
+            n.eachAbv.add(input.eachAbv.get(i));
+            n.eachVolume.add(input.eachVolume.get(i));
+            n.specificGravity.add(input.specificGravity.get(i));
+            n.isColor.add(new MJH_Object_color(input.isColor.get(i).rgb_red, input.isColor.get(i).rgb_green, input.isColor.get(i).rgb_blue));
+
+            n.sugar.add(input.sugar.get(i));
+            n.sour.add(input.sour.get(i));
+            n.salty.add(input.salty.get(i));
+            n.bitter.add(input.bitter.get(i));
+        }
+
+        n.eachAbv.remove(0);
+        n.eachVolume.remove(0);
+        n.specificGravity.remove(0);
+        n.isColor.remove(0);
+
+        n.sugar.remove(0);
+        n.sour.remove(0);
+        n.salty.remove(0);
+        n.bitter.remove(0);
+
+        return n;
     }
 }
 
