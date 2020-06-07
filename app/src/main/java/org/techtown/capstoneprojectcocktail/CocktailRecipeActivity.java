@@ -217,7 +217,7 @@ public class CocktailRecipeActivity extends AppCompatActivity {
             DocumentReference Bookmark_check = db.collection("Bookmark").document(BookmarkName);
 
             //해당 이름으로 문서가 비어있는지 아닌지 map크기를 확인하여 체크
-            Report_check.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            Bookmark_check.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                     if (task.isSuccessful()) {
