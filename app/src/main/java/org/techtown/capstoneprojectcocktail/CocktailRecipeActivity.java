@@ -594,7 +594,7 @@ public class CocktailRecipeActivity extends AppCompatActivity {
                         });
             }
         });
-
+        //그냥 엔터하니 바뀐거 없다고 안되네
         floatingActionButtonForGrade.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
