@@ -488,14 +488,14 @@ public class CocktailRecipeActivity extends AppCompatActivity {
                                                 @Override
                                                 public void onSuccess(Void aVoid) {
                                                     Log.d(TAG, "DocumentSnapshot successfully deleted!");
-                                                    Toast.makeText(getApplication(),"삭제",Toast.LENGTH_SHORT).show();
+                                                    Toast.makeText(getApplication(),"댓글 삭제",Toast.LENGTH_SHORT).show();
                                                 }
                                             })
                                             .addOnFailureListener(new OnFailureListener() {
                                                 @Override
                                                 public void onFailure(@NonNull Exception e) {
                                                     Log.w(TAG, "Error deleting document", e);
-                                                    Toast.makeText(getApplication(),"삭제 실패! 다시 시도해주세요",Toast.LENGTH_SHORT).show();
+                                                    Toast.makeText(getApplication(),"댓글 삭제 실패! 다시 시도해주세요",Toast.LENGTH_SHORT).show();
                                                 }
                                             });
                                     //adapterForCocktailComment.removeItem(positionForDelete);
