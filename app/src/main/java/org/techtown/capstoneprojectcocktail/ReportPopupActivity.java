@@ -63,28 +63,35 @@ public class ReportPopupActivity extends Activity {
         Intent intent = new Intent();
         switch (radioGroup.getCheckedRadioButtonId()) {
             case R.id.radioButton1_report:
+                //내용과 관련없는 이미지
+                //영진파트
                 Toast.makeText(getApplicationContext(),"신고 접수 완료\n신고내용: "+ r_btn1.getText().toString(),Toast.LENGTH_LONG).show();
                 setResult(RESULT_OK, intent);
                 finish();
                 break;
             case R.id.radioButton2_report:
+                //잘못된 내용
+                //영진파트
                 Toast.makeText(getApplicationContext(),"신고 접수 완료\n신고내용: "+ r_btn2.getText().toString(),Toast.LENGTH_LONG).show();
                 setResult(RESULT_OK, intent);
                 finish();
                 break;
             case R.id.radioButton3_report:
+                //칵테일과 관련없는 게시물
+                //영진파트
                 Toast.makeText(getApplicationContext(),"신고 접수 완료\n신고내용: "+ r_btn3.getText().toString(),Toast.LENGTH_LONG).show();
                 setResult(RESULT_OK, intent);
                 finish();
                 break;
-            // 신고 내용이 기타일 경우
-            // 신고 내용을 적어야함
             case R.id.radioButton4_report:
+                // 신고 내용이 기타일 경우
+                // 신고 내용을 적어야함
                 String inputText = textForReport.getText().toString();
                 if(inputText.getBytes().length==0){
                     Toast.makeText(getApplicationContext(),"신고내용을 적어주세요",Toast.LENGTH_LONG).show();
                 }
                 else{
+                    //영진파트
                     Toast.makeText(getApplicationContext(),"신고 접수 완료\n신고내용: "+inputText,Toast.LENGTH_LONG).show();
                     setResult(RESULT_OK, intent);
                     finish();
