@@ -342,7 +342,6 @@ public class CocktailRecipeActivity extends AppCompatActivity {
             }
         });
 
-
         adapterForCocktailComment.setOnItemClickListener(new OnCocktailCommentItemClickListener() {
             @Override
             public void onItemClick(CocktailCommentAdapter.ViewHolder holder, View view, int position) {
