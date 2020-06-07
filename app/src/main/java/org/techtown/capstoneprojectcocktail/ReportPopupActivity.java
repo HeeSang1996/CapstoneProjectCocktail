@@ -32,6 +32,7 @@ public class ReportPopupActivity extends Activity {
     private RadioGroup radioGroup;
     private InputMethodManager inputKeyboardHide;
     private FirebaseAuth mAuth;
+    private int cocktailID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +51,9 @@ public class ReportPopupActivity extends Activity {
         //키보드 숨기기
         inputKeyboardHide = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
         //데이터 가져오기
-        //Intent intent = getIntent();
+        Intent intent = getIntent();
+        //넘겨받은 칵테일 아아디
+        cocktailID = intent.getIntExtra("cocktailID",0);
 
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override

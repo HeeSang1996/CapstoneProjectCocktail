@@ -506,6 +506,7 @@ public class CocktailRecipeActivity extends AppCompatActivity {
                 if(gradeChecked==true){
                     Toast.makeText(getApplicationContext(),"평가 수정",Toast.LENGTH_LONG).show();
                     Intent intent = new Intent(v.getContext(), GradingPopupActivity.class);
+                    intent.putExtra("cocktailID",cocktailID);
                     intent.putExtra("gradeCheck",gradeChecked);
                     intent.putExtra("gradeScore",gradeScore);
                     startActivityForResult(intent, 1);
@@ -517,6 +518,7 @@ public class CocktailRecipeActivity extends AppCompatActivity {
                     //gradeChecked가 true로 변경되면 안됨
                     //수정 필
                     Intent intent = new Intent(v.getContext(), GradingPopupActivity.class);
+                    intent.putExtra("cocktailID",cocktailID);
                     intent.putExtra("gradeCheck",gradeChecked);
                     intent.putExtra("gradeScore",gradeScore);
                     startActivityForResult(intent, 1);
@@ -533,7 +535,6 @@ public class CocktailRecipeActivity extends AppCompatActivity {
                 //같은 게시물에 같은 계정이 여러번 신고 불가능
                 //영진 파트
 
-
                 //이미 신고를 한 경우
                 //신고 거부 안내
                 if(reportChecked==true){
@@ -542,6 +543,7 @@ public class CocktailRecipeActivity extends AppCompatActivity {
                 //처음으로 신고를 하는 경우
                 else{
                     Intent intent = new Intent(v.getContext(), ReportPopupActivity.class);
+                    intent.putExtra("cocktailID",cocktailID);
                     startActivityForResult(intent, 2);
                     //Toast.makeText(getApplicationContext(),"신고 접수",Toast.LENGTH_LONG).show();
                 }

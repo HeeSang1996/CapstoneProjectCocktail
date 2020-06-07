@@ -14,6 +14,8 @@ public class GradingPopupActivity extends Activity {
     //수정필
     //수정필
     private RatingBar ratingbar;
+    private int cocktailID;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,6 +26,8 @@ public class GradingPopupActivity extends Activity {
         //데이터 가져오기
         Intent intent = getIntent();
         String ratingString = intent.getStringExtra("gradeScore");
+        //넘겨받은 칵테일 id
+        cocktailID = intent.getIntExtra("cocktailID",0);
         float ratingFloat = Float.valueOf(ratingString);
         ratingbar = findViewById(R.id.ratingBar_grading_popup);
         ratingbar.setRating(ratingFloat);
