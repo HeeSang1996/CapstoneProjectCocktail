@@ -244,7 +244,6 @@ public class CocktailRecipeActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-        System.out.println(reportChecked);
         //영진 이부분에서 db 에 있는 댓글내용 불러와
         //adapterForCocktailComment.addItem(new Comment(user.getDisplayName(),"날짜: " + formatDate,stringForCocktailComment,user.getPhotoUrl().toString(),user.getUid()));
         FirebaseFirestore db = FirebaseFirestore.getInstance();
