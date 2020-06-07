@@ -183,6 +183,7 @@ public class CocktailRecipeActivity extends AppCompatActivity {
                             //Log.d(TAG, "DocumentSnapshot data: " + document.getData());
                             Log.d(TAG, "들어가야하는 점수 : " + document.get("good_number").toString());
                             totalGradeScore = document.get("good_number").toString();
+                            ratingBar.setRating(Float.valueOf(totalGradeScore));
                             Log.d(TAG, "들어온 점수 : " + totalGradeScore);
                         } else {
                             Log.d(TAG, "No such document");
@@ -306,7 +307,6 @@ public class CocktailRecipeActivity extends AppCompatActivity {
 
 
         //Toast.makeText(getApplicationContext(),"on resume",Toast.LENGTH_LONG).show();
-        ratingBar.setRating(Float.valueOf(totalGradeScore));
         //영진 이부분에서 db 에 있는 댓글내용 불러와
         //adapterForCocktailComment.addItem(new Comment(user.getDisplayName(),"날짜: " + formatDate,stringForCocktailComment,user.getPhotoUrl().toString(),user.getUid()));
         final FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -807,8 +807,9 @@ public class CocktailRecipeActivity extends AppCompatActivity {
                                                 @Override
                                                 public void onSuccess(Void aVoid) {
                                                     Log.d(TAG, "DocumentSnapshot successfully updated!");
-                                                    Toast.makeText(getApplicationContext(), "Result: " + gradeScore, Toast.LENGTH_SHORT).show();
+                                                    Toast.makeText(getApplicationContext(), "나의 평가: " + gradeScore, Toast.LENGTH_SHORT).show();
                                                     totalGradeScore = Float.toString((Score_total/Score_count));
+                                                    ratingBar.setRating(Float.valueOf(totalGradeScore));
                                                     floatingActionButtonForGrade.setImageResource(R.mipmap.outline_star_white_36dp);
                                                     gradeChecked=true;
                                                 }
