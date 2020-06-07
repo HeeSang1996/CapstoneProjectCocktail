@@ -76,93 +76,7 @@ public class HomeFragment extends Fragment {
     String[][] Hot_Value = new String[81][10];
 
     public void setDocument() {
-        //기존 레시피들에 대한 재료, 양 가져오기 테스트용
-//        for(int i=0; i < 81; i++)
-//        {
-//            count = i;
-//            DocumentReference docRef = db.collection("Recipe").document(String.valueOf(i+6001));
-//            final int finalI = i;
-//            docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-//            @Override
-//            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-//                if (task.isSuccessful()) {
-//                    DocumentSnapshot document = task.getResult();
-//                    if (document.exists()) {
-//                        //기존레시피의 재료 구성들을 Map형태로 저장한다.
-//                        Map<String, Number> Recipe_Ingredient = (Map<String, Number>) document.get("Ingredient_content");
-//                        Recipe_list[finalI] = Recipe_Ingredient.toString();
-//                        //해당 레시피의 재료 갯수를 int배열형태에 저장한다.
-//                        Recipe_count[finalI] = Recipe_Ingredient.size();
-//                        //해당 레시피의 이름을 string 형태로 저장한다.
-//                        String Name = document.get("Recipe_name").toString();
-//                        //각각의 배열에 Map의 키값(재료이름), 밸류값(재료양)의 값들을 따로따로 얻는 방법
-//                        String[] Ingredient_key = Recipe_Ingredient.keySet().toArray(new String[0]);
-//                        Number[] Ingredient_Value = Recipe_Ingredient.values().toArray(new Number[0]);
-//                        Recipe_namelist[finalI] = Recipe_Ingredient.keySet().toArray(new String[0]);
-//                        Recipe_volumelist[finalI] = Recipe_Ingredient.values().toArray(new Number[0]);
-//                        //Log.d(TAG, (finalI+6001)+ "번 레시피 이름: " + Name + " , " + "재료 이름: " +  Recipe_namelist[finalI][0]+", 재료 양: " + Recipe_volumelist[finalI][0].toString());
-//                        //배열에 정상적으로 재료이름과 양의 값이 들어갔는지 재료갯수만큼 for구문을 돌려 로그로 확인
-//                        for(int j=0; j < Recipe_Ingredient.size(); j++)
-//                        {
-//                            final int finalJ = j;
-//                            //몇번 레시피의 재료이름, 양이 제대로 들어갔는지 로그 확인
-//                            //Log.d(TAG, (finalI+6001)+ "번 레시피 이름: " + Name + " , " + "재료 이름: " + Ingredient_key[j]+", 재료 양: " + Ingredient_Value[j].toString());
-//                            db.collection("Ingredient").whereEqualTo("Ingredient_name",Ingredient_key[j]).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-//                                @Override
-//                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
-//                                    if (task.isSuccessful()) {
-//                                        for (QueryDocumentSnapshot document : task.getResult()) {
-//                                            Sugar_Value[finalI][finalJ] = String.valueOf(document.getData().get("단맛"));
-//                                            Bitter_Value[finalI][finalJ] = String.valueOf(document.getData().get("쓴맛"));
-//                                            Sour_Value[finalI][finalJ] = String.valueOf(document.getData().get("신맛"));
-//                                            Salty_Value[finalI][finalJ] = String.valueOf(document.getData().get("짠맛"));
-//                                            Hot_Value[finalI][finalJ] = String.valueOf(document.getData().get("매운맛"));
-//                                        }
-//                                    } else {
-//                                        Log.d(TAG, "Error getting documents: ", task.getException());
-//                                    }
-//                                }
-//                            });
-//                        }
-//
-//                    } else {
-//                        Log.d(TAG, "No such document");
-//                    }
-//                } else {
-//                    Log.d(TAG, "get failed with ", task.getException());
-//                }
-//            }
-//        });
-//        }
-//        //기존 레시피별 오미 총 합 계산하기
-//        for(int i = 0; i < 81; i++)
-//        {
-//            Sum_sugar[i] = 0;
-//            Sum_bitter[i] = 0;
-//            Sum_sour[i] = 0;
-//            Sum_salty[i] = 0;
-//            Sum_hot[i] = 0;
-//            for(int j=0; j < Recipe_count[i]; j++)
-//             {
-//                 //null 값 들어갔을대의 에러 핸들링
-//                if(Sugar_Value[i][j] == null) Sugar_Value[i][j] = "0";
-//                if(Bitter_Value[i][j] == null) Bitter_Value[i][j] = "0";
-//                if(Sour_Value[i][j] == null) Sour_Value[i][j] = "0";
-//                if(Salty_Value[i][j] == null) Salty_Value[i][j] = "0";
-//                if(Hot_Value[i][j] == null) Hot_Value[i][j] = "0";
-//
-//                Sum_sugar[i] += (parseInt(Sugar_Value[i][j]) * Recipe_volumelist[i][j].intValue());
-//                Sum_bitter[i] += (parseInt(Bitter_Value[i][j]) * Recipe_volumelist[i][j].intValue());
-//                Sum_sour[i] += (parseInt(Sour_Value[i][j]) * Recipe_volumelist[i][j].intValue());
-//                Sum_salty[i] += (parseInt(Salty_Value[i][j]) * Recipe_volumelist[i][j].intValue());
-//                Sum_hot[i] += (parseInt(Hot_Value[i][j]) * Recipe_volumelist[i][j].intValue());
-//             }
-//            Log.d(TAG, "로그확인: "+(6001+i)+"번째 레시피의 단맛 총합: "+Sum_sugar[i]);
-//            Log.d(TAG, "로그확인: "+(6001+i)+"번째 레시피의 쓴맛 총합: "+Sum_bitter[i]);
-//            Log.d(TAG, "로그확인: "+(6001+i)+"번째 레시피의 신맛 총합: "+Sum_sour[i]);
-//            Log.d(TAG, "로그확인: "+(6001+i)+"번째 레시피의 짠맛 총합: "+Sum_salty[i]);
-//            Log.d(TAG, "로그확인: "+(6001+i)+"번째 레시피의 매운맛 총합: "+Sum_hot[i]);
-//        }
+
     }
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -199,7 +113,6 @@ public class HomeFragment extends Fragment {
         final CocktailIngredientButtonAdapter adapterForIngredientButton = new CocktailIngredientButtonAdapter();
 
         //영진 여기 확인
-        //String[] main_keyword = {"가니쉬", "데킬라", "럼", "리큐르", "맥주", "베르무트", "보드카", "브랜디", "와인", "위스키", "주스", "진"};
         List<String> main_keyword = new ArrayList<>(Arrays.asList("데킬라", "럼", "리큐르", "베르무트", "보드카", "브랜디", "와인", "위스키", "주스", "진"));
         Collections.shuffle(main_keyword);
         for(int i = 0; i < main_keyword.size() ; i ++) {
@@ -300,35 +213,6 @@ public class HomeFragment extends Fragment {
 //                        "의 설명 정말 맛있다 ", "Whisky0",i*10 + " %","gs://sbsimulator-96f70.appspot.com/Recipe/BETWEEN THE SHEETS.jpg"));
 //        }
 
-//        for(int i=0; i < 20; i++)
-//        {
-//            final int finalI = i;
-//            DocumentReference docRef = db.collection("Recipe").document(String.valueOf(i+6001));
-//            docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-//                @Override
-//                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-//                    if (task.isSuccessful()) {
-//                        DocumentSnapshot document = task.getResult();
-//                        if (document.exists()) {
-//                            //Log.d(TAG, "DocumentSnapshot data: " + document.getData());
-//                            Recipe_name[0] = (String) document.get("Recipe_name");
-//                            ID[0] = 6001+ finalI;
-//                            method[0] = (String) document.get("method");
-//                            Recipe_Base[0] = (String) document.get("Recipe_Base");
-//                            //abv[0] = (String) document.get("abv");
-//                            abv[0] = "시발";
-//                            ref[0] = (String) document.get("ref");
-//                            Log.d(TAG, "DocumentSnapshot data: " + Recipe_name[0] + ID[0]+ method[0]+ Recipe_Base[0]+ abv[0]+ref[0]);
-//                            adapterForCocktailHome.addItem(new Cocktail(Recipe_name[0], ID[0], method[0], Recipe_Base[0], abv[0],ref[0]));
-//                        } else {
-//                            Log.d(TAG, "No such document");
-//                        }
-//                    } else {
-//                        Log.d(TAG, "get failed with ", task.getException());
-//                    }
-//                }
-//            });
-//        }
         return root;
     }
 }

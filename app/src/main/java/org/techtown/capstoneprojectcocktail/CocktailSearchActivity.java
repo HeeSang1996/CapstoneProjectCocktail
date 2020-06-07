@@ -195,55 +195,7 @@ public class CocktailSearchActivity extends AppCompatActivity{
 
             }
         });
-        //수정필 테스트용
-        /*
-        for(int i=0; i < 81; i++)
-        {
-            List<String> list;
-            count = i;
-            DocumentReference docRef = db.collection("Recipe").document(String.valueOf(i+6001));
 
-            final int finalI = i;
-            docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                    if (task.isSuccessful()) {
-                        DocumentSnapshot document = task.getResult();
-                        if (document.exists()) {
-                            //Log.d(TAG, "DocumentSnapshot data: " + document.getData());
-                            Recipe_name[count] = (String) document.get("Recipe_name");
-                            ID[count] = 6001+ count;
-                            method[count] = (String) document.get("method");
-                            //abv[0] = (String) document.get("abv");
-
-                            Recipe_Ingredient = (Map<String, Number>) document.get("Ingredient_content");
-                            //Recipe_Base[count] = (String) document.get("Recipe_Base");
-
-                            //map으로 받아온 정보를 string으로 치환한뒤 유저에게 보여줄 수 있도록 replaceall함({, }, = 삭제 ml 추가)
-                            Recipe_Base[count] = String.valueOf(Recipe_Ingredient);
-                            Recipe_Base[count] = Recipe_Base[count].replaceAll("\\,", "ml ");
-                            Recipe_Base[count] = Recipe_Base[count].replaceAll("\\{", " ");
-                            Recipe_Base[count] = Recipe_Base[count].replaceAll("\\}", "ml ");
-                            Recipe_Base[count] = Recipe_Base[count].replaceAll("\\=", " ");
-                            //long형태로 받은 abv를 유저에게 보여줄 수 있도록 %를 붙여 재저장
-                            Realabv[count] = (long) document.get("abv");
-                            abv[count] = Realabv[count] + "%";
-                            ref[count] = (String) document.get("ref");
-                            adapterForCocktailSearch.addItem(new Cocktail(Recipe_name[count], ID[count], method[count], Recipe_Base[count], abv[count],ref[count]));
-                            //Log.d(TAG, "DocumentSnapshot data: " + Recipe_name[count] + ID[count]+ method[count]+ Recipe_Base[count]+ abv[count]+ref[count]);
-                            //refresh 해주는 함수(아마)
-                            recyclerViewForCocktailSearch.setAdapter(adapterForCocktailSearch);
-
-                        } else {
-                            //Log.d(TAG, "No such document");
-                        }
-                    } else {
-                        //Log.d(TAG, "get failed with ", task.getException());
-                    }
-                }
-            });
-        }
-        */
 
         adapterForCocktailSearch.setOnItemClickListener(new OnCocktailItemClickListenerForSearch() {
             @Override
@@ -277,16 +229,13 @@ public class CocktailSearchActivity extends AppCompatActivity{
                     if (task.isSuccessful()) {
                         DocumentSnapshot document = task.getResult();
                         if (document.exists()) {
-                            //Log.d(TAG, "DocumentSnapshot data: " + document.getData());
                             count = finalI;
                             Recipe_name[count] = (String) document.get("Recipe_name");
                             ID[count] = 6001+ count;
                             Log.d(TAG, String.valueOf(ID[count]));
                             method[count] = (String) document.get("method");
-                            //abv[0] = (String) document.get("abv");
 
                             Recipe_Ingredient = (Map<String, Number>) document.get("Ingredient_content");
-                            //Recipe_Base[count] = (String) document.get("Recipe_Base");
 
                             //map으로 받아온 정보를 string으로 치환한뒤 유저에게 보여줄 수 있도록 replaceall함({, }, = 삭제 ml 추가)
                             Recipe_Base[count] = String.valueOf(Recipe_Ingredient);
@@ -299,7 +248,6 @@ public class CocktailSearchActivity extends AppCompatActivity{
                             abv[count] = Realabv[count] + "%";
                             ref[count] = (String) document.get("ref");
                             adapterForCocktailSearch.addItem(new Cocktail(Recipe_name[count], ID[count], method[count], Recipe_Base[count], abv[count],ref[count]));
-                            //Log.d(TAG, "DocumentSnapshot data: " + Recipe_name[count] + ID[count]+ method[count]+ Recipe_Base[count]+ abv[count]+ref[count]);
                             //refresh 해주는 함수(아마)
                             if (_str.length()==0){
                                 recyclerViewForCocktailSearch.setAdapter(adapterForCocktailSearch);
@@ -310,10 +258,10 @@ public class CocktailSearchActivity extends AppCompatActivity{
                             }
 
                         } else {
-                            //Log.d(TAG, "No such document");
+                            Log.d(TAG, "No such document");
                         }
                     } else {
-                        //Log.d(TAG, "get failed with ", task.getException());
+                        Log.d(TAG, "get failed with ", task.getException());
                     }
                 }
             });
@@ -334,31 +282,15 @@ public class CocktailSearchActivity extends AppCompatActivity{
                     if (task.isSuccessful()) {
                         DocumentSnapshot document = task.getResult();
                         if (document.exists()) {
-                            //System.out.println("DocumentSnapshot data: " + document.getData());
-                            //Log.d(TAG, "DocumentSnapshot data: " + document.getData());
                             count = finalI;
                             Ingredient_name[count] = (String) document.get("Ingredient_name"); //재료 이름
-                            //Log.d(TAG, "count"+ count + "Ingredient_name data: " +Ingredient_name[count]);
                             System.out.println("array_count : "+ count + "   Ingredient_name data: " +Ingredient_name[count]);
                             Ingredient_ID[count] = 5001+ count;
                             Ingredient_flavour[count] = (String) document.get("flavour"); //향(칵테일에선 설명 method)
-                            //abv[0] = (String) document.get("abv");
-
-                            //Recipe_Ingredient = (Map<String, Number>) document.get("Ingredient_content");
-                            //Recipe_Base[count] = (String) document.get("Recipe_Base");
-                            //map으로 받아온 정보를 string으로 치환한뒤 유저에게 보여줄 수 있도록 replaceall함({, }, = 삭제 ml 추가)
-                            //형변환 올바른 예시 왠진 모르지만 (float)로 명시적 형변환 하면 터지고 저리 하면 안터짐
-//                            Number abc;
-//                            float abcd;
-//                            abc  = (Number) document.get("sugar_rate");
-//                            abcd = abc.floatValue();
 
                             Ingredient_sugar[count] = (Number) document.get("sugar_rate"); //suger_rate(칵테일에선 재료와 용량)
                             Ingredient_Realsugar[count] = Ingredient_sugar[count] + "%";
-//                            Recipe_Base[count] = Recipe_Base[count].replaceAll("\\,", "ml ");
-//                            Recipe_Base[count] = Recipe_Base[count].replaceAll("\\{", " ");
-//                            Recipe_Base[count] = Recipe_Base[count].replaceAll("\\}", "ml ");
-//                            Recipe_Base[count] = Recipe_Base[count].replaceAll("\\=", " ");
+
                             //long형태로 받은 abv를 유저에게 보여줄 수 있도록 %를 붙여 재저장
                             Ingredient_Realabv[count] = (long) document.get("abv");
                             Ingredient_abv[count] = Ingredient_Realabv[count] + "%";
@@ -374,10 +306,10 @@ public class CocktailSearchActivity extends AppCompatActivity{
                                 System.out.println("array_count : "+ k + "   Ingredient_name data: " +Ingredient_name[k]);
                             }
                         } else {
-                            //Log.d(TAG, "No such document");
+                            Log.d(TAG, "No such document");
                         }
                     } else {
-                        //Log.d(TAG, "get failed with ", task.getException());
+                        Log.d(TAG, "get failed with ", task.getException());
                     }
                 }
             });
