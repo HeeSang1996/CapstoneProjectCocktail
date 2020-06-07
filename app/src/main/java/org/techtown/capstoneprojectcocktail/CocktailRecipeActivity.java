@@ -499,24 +499,22 @@ public class CocktailRecipeActivity extends AppCompatActivity {
 
                 //북마크가 이미 선택되었던 경우
                 if(bookmarkChecked==true){
-                    Toast.makeText(getApplicationContext(),"북마크 취소",Toast.LENGTH_LONG).show();
-                    floatingActionButtonForBookmark.setImageResource(R.mipmap.outline_bookmark_border_white_36dp);
-                    bookmarkChecked=false;
-
                     db.collection("Bookmark").document(BookmarkName)
                             .delete()
                             .addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void aVoid) {
                                     Log.d(TAG, "DocumentSnapshot successfully deleted!");
-                                    Toast.makeText(getApplication(),"삭제",Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getApplicationContext(),"북마크 취소",Toast.LENGTH_LONG).show();
+                                    floatingActionButtonForBookmark.setImageResource(R.mipmap.outline_bookmark_border_white_36dp);
+                                    bookmarkChecked=false;
                                 }
                             })
                             .addOnFailureListener(new OnFailureListener() {
                                 @Override
                                 public void onFailure(@NonNull Exception e) {
                                     Log.w(TAG, "Error deleting document", e);
-                                    Toast.makeText(getApplication(),"삭제 실패! 다시 시도해주세요",Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getApplication(),"북마크 취소 실패! 다시 시도해주세요",Toast.LENGTH_SHORT).show();
                                 }
                             });
                 }
@@ -543,17 +541,18 @@ public class CocktailRecipeActivity extends AppCompatActivity {
                                 @Override
                                 public void onSuccess(Void aVoid) {
                                     Log.d(TAG, "DocumentSnapshot successfully written!");
+                                    Toast.makeText(getApplicationContext(),"북마크",Toast.LENGTH_LONG).show();
+                                    floatingActionButtonForBookmark.setImageResource(R.mipmap.baseline_bookmark_white_36dp);
+                                    bookmarkChecked=true;
                                 }
                             })
                             .addOnFailureListener(new OnFailureListener() {
                                 @Override
                                 public void onFailure(@NonNull Exception e) {
+                                    Toast.makeText(getApplication(),"북마크 실패! 다시 시도해주세요",Toast.LENGTH_SHORT).show();
                                     Log.w(TAG, "Error writing document", e);
                                 }
                             });
-                    Toast.makeText(getApplicationContext(),"북마크",Toast.LENGTH_LONG).show();
-                    floatingActionButtonForBookmark.setImageResource(R.mipmap.baseline_bookmark_white_36dp);
-                    bookmarkChecked=true;
                 }
             }
         });
