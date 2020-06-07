@@ -212,7 +212,6 @@ public class CocktailRecipeActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
-                            adapterForCocktailComment.clearAllForAdapter();
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Comment_name.add(document.get("사용자 이름").toString());
                                 Comment_date.add("날짜: "+document.get("댓글 날짜").toString());
@@ -320,7 +319,6 @@ public class CocktailRecipeActivity extends AppCompatActivity {
                                 @Override
                                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
                                     if (task.isSuccessful()) {
-                                        adapterForCocktailComment.clearAllForAdapter();
                                         for (QueryDocumentSnapshot document : task.getResult()) {
                                             Comment_name.add(document.get("사용자 이름").toString());
                                             Comment_date.add("날짜: "+document.get("댓글 날짜").toString());
@@ -349,9 +347,6 @@ public class CocktailRecipeActivity extends AppCompatActivity {
             public void onItemClick(CocktailCommentAdapter.ViewHolder holder, View view, int position) {
                 Comment item = adapterForCocktailComment.getItem(position);
                 FirebaseUser user = mAuth.getCurrentUser();
-                System.out.println(item.getUid());
-                System.out.println(user.getUid());
-                System.out.println(item.getUid()==user.getUid());
 
                 //자신이 올린 글을 선택했을 경우 삭제 가능
                 //로그인을 하지 않은 경우
@@ -408,7 +403,6 @@ public class CocktailRecipeActivity extends AppCompatActivity {
                                                 @Override
                                                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
                                                     if (task.isSuccessful()) {
-                                                        adapterForCocktailComment.clearAllForAdapter();
                                                         for (QueryDocumentSnapshot document : task.getResult()) {
                                                             Comment_name.add(document.get("사용자 이름").toString());
                                                             Comment_date.add("날짜: "+document.get("댓글 날짜").toString());
