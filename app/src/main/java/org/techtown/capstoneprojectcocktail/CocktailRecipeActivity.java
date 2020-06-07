@@ -206,24 +206,34 @@ public class CocktailRecipeActivity extends AppCompatActivity {
         Comment_uid = new ArrayList();
         //Comment컬렉션의 문서들중 레시피 번호 필드가 현재 보고있는 레시피 번호와 일치하는 것들 검색
         db.collection("Comment")
-                .whereEqualTo("레시피 번호", cocktailID)
+                .whereEqualTo("레시피 번호", Integer.toString(cocktailID))
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
-                                Comment_name.add(document.get("사용자 이름"));
-                                Comment_date.add("날짜: "+document.get("댓글 날짜"));
-                                Comment_content.add(document.get("내용"));
-                                Comment_url.add(document.get("사용자 url"));
-                                Comment_uid.add(document.get("사용자 uid"));
+                                Comment_name.add(document.get("사용자 이름").toString());
+                                Comment_date.add("날짜: "+document.get("댓글 날짜").toString());
+                                Comment_content.add(document.get("내용").toString());
+                                Comment_url.add(document.get("사용자 url").toString());
+                                Comment_uid.add(document.get("사용자 uid").toString());
+                            }
+                            for(int i = 0; i< Comment_name.size(); i++)
+                            {
+                                adapterForCocktailComment.addItem(new Comment(Comment_name.get(i).toString(),Comment_date.get(i).toString(),Comment_content.get(i).toString(),Comment_url.get(i).toString(),Comment_uid.get(i).toString()));
                             }
                         } else {
                             Log.d(TAG, "Error getting documents: ", task.getException());
                         }
                     }
                 });
+
+        for(int i = 0; i< Comment_name.size(); i++)
+        {
+            adapterForCocktailComment.addItem(new Comment(Comment_name.get(i).toString(),Comment_date.get(i).toString(),Comment_content.get(i).toString(),Comment_url.get(i).toString(),Comment_uid.get(i).toString()));
+        }
+
         textInputLayoutForComment.setCounterEnabled(true);
         textInputLayoutForComment.setCounterMaxLength(150);
         final EditText editTextForCocktailComment = textInputLayoutForComment.getEditText();
@@ -316,18 +326,29 @@ public class CocktailRecipeActivity extends AppCompatActivity {
                                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
                                     if (task.isSuccessful()) {
                                         for (QueryDocumentSnapshot document : task.getResult()) {
-                                            Comment_name.add(document.get("사용자 이름"));
-                                            Comment_date.add("날짜: "+document.get("댓글 날짜"));
-                                            Comment_content.add(document.get("내용"));
-                                            Comment_url.add(document.get("사용자 url"));
-                                            Comment_uid.add(document.get("사용자 uid"));
+                                            Comment_name.add(document.get("사용자 이름").toString());
+                                            //Log.d(TAG, "들어가야하는 이름 : " + Comment_name.toString());
+                                            Comment_date.add("날짜: "+document.get("댓글 날짜").toString());
+                                            //Log.d(TAG, "들어가야하는 날짜 : " + Comment_date.toString());
+                                            Comment_content.add(document.get("내용").toString());
+                                            //Log.d(TAG, "들어가야하는 내용 : " + Comment_content.toString());
+                                            Comment_url.add(document.get("사용자 url").toString());
+                                            //Log.d(TAG, "들어가야하는 url : " + Comment_url.toString());
+                                            Comment_uid.add(document.get("사용자 uid").toString());
+                                            //Log.d(TAG, "들어가야하는 uid : " + Comment_uid.toString());
+                                        }
+                                        for(int i = 0; i< Comment_name.size(); i++)
+                                        {
+                                            adapterForCocktailComment.addItem(new Comment(Comment_name.get(i).toString(),Comment_date.get(i).toString(),Comment_content.get(i).toString(),Comment_url.get(i).toString(),Comment_uid.get(i).toString()));
                                         }
                                     } else {
                                         Log.d(TAG, "Error getting documents: ", task.getException());
                                     }
                                 }
                             });
+
                 }
+
             }
         });
 
@@ -338,7 +359,6 @@ public class CocktailRecipeActivity extends AppCompatActivity {
                 FirebaseUser user = mAuth.getCurrentUser();
 
                 //자신이 올린 글을 선택했을 경우 삭제 가능
-
                 //로그인을 하지 않은 경우
                 if(user==null) {
                     Toast.makeText(getApplicationContext(), "본인의 댓글만 삭제 가능합니다! 로그인 필요", Toast.LENGTH_LONG).show();
@@ -387,24 +407,32 @@ public class CocktailRecipeActivity extends AppCompatActivity {
                                     Comment_uid = new ArrayList();
                                     //Comment컬렉션의 문서들중 레시피 번호 필드가 현재 보고있는 레시피 번호와 일치하는 것들 검색
                                     db.collection("Comment")
-                                            .whereEqualTo("레시피 번호", cocktailID)
+                                            .whereEqualTo("레시피 번호", Integer.toString(cocktailID))
                                             .get()
                                             .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                                 @Override
                                                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
                                                     if (task.isSuccessful()) {
                                                         for (QueryDocumentSnapshot document : task.getResult()) {
-                                                            Comment_name.add(document.get("사용자 이름"));
-                                                            Comment_date.add("날짜: "+document.get("댓글 날짜"));
-                                                            Comment_content.add(document.get("내용"));
-                                                            Comment_url.add(document.get("사용자 url"));
-                                                            Comment_uid.add(document.get("사용자 uid"));
+                                                            Comment_name.add(document.get("사용자 이름").toString());
+                                                            Comment_date.add("날짜: "+document.get("댓글 날짜").toString());
+                                                            Comment_content.add(document.get("내용").toString());
+                                                            Comment_url.add(document.get("사용자 url").toString());
+                                                            Comment_uid.add(document.get("사용자 uid").toString());
+                                                        }
+                                                        for(int i = 0; i< Comment_name.size(); i++)
+                                                        {
+                                                            adapterForCocktailComment.addItem(new Comment(Comment_name.get(i).toString(),Comment_date.get(i).toString(),Comment_content.get(i).toString(),Comment_url.get(i).toString(),Comment_uid.get(i).toString()));
                                                         }
                                                     } else {
                                                         Log.d(TAG, "Error getting documents: ", task.getException());
                                                     }
                                                 }
                                             });
+                                    for(int i = 0; i< Comment_name.size(); i++)
+                                    {
+                                        adapterForCocktailComment.addItem(new Comment(Comment_name.get(i).toString(),Comment_date.get(i).toString(),Comment_content.get(i).toString(),Comment_url.get(i).toString(),Comment_uid.get(i).toString()));
+                                    }
                                     break;
                                 default:
                                     Toast.makeText(getApplication(),"취소",Toast.LENGTH_SHORT).show();
