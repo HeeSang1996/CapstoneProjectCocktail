@@ -80,10 +80,6 @@ public class CocktailRecipeActivity extends AppCompatActivity {
     private ArrayList Comment_url;
     private ArrayList Comment_uid;
 
-    //db북마크 카운트용
-    private int Bookmark_count;
-
-
     @SuppressLint("RestrictedApi")
     @Override
     public void onCreate(Bundle saveInstanceState){
@@ -196,7 +192,7 @@ public class CocktailRecipeActivity extends AppCompatActivity {
             final String ReportName = currentUser.getUid()+cocktailID;
             DocumentReference Report_check = db.collection("Report").document(ReportName);
 
-            //해당 이름으로 문서가 비어있는지 아닌지 map크기를 확인하여 체크하여 false/ true로 바꿔줌.
+            //해당 이름으로 문서가 비어있는지 아닌지 map크기를 확인하여 체크
             Report_check.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -229,30 +225,18 @@ public class CocktailRecipeActivity extends AppCompatActivity {
                         if (document.exists()) {
                             Map<String, Object> map = document.getData();
                             if (map.size() == 0) {
-                                bookmarkChecked = false;
+                                reportChecked = false;
                                 Log.d(TAG, "Bookmark Document is empty!");
                             } else {
-                                bookmarkChecked = true;
+                                reportChecked = true;
                                 Log.d(TAG, "Bookmark Document is not empty!");
                             }
                         }
                     }
                 }
             });
-
-
-
             //로그인한 유저에게는 로그인 하지 않았다는 메시지 출력 삭제
             textForNonLoginUser.setVisibility(View.GONE);
-            if(bookmarkChecked==true){
-                floatingActionButtonForBookmark.setImageResource(R.mipmap.baseline_bookmark_white_36dp);
-            }
-            if(gradeChecked==true){
-                floatingActionButtonForGrade.setImageResource(R.mipmap.outline_star_white_36dp);
-            }
-            if(reportChecked==true){
-                floatingActionButtonForReport.setImageResource(R.mipmap.baseline_feedback_white_36dp);
-            }
         }
     }
 
@@ -260,6 +244,7 @@ public class CocktailRecipeActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
+        System.out.println(reportChecked);
         //영진 이부분에서 db 에 있는 댓글내용 불러와
         //adapterForCocktailComment.addItem(new Comment(user.getDisplayName(),"날짜: " + formatDate,stringForCocktailComment,user.getPhotoUrl().toString(),user.getUid()));
         FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -509,30 +494,26 @@ public class CocktailRecipeActivity extends AppCompatActivity {
             public void onClick(View v) {
                 //영진 파트
                 FirebaseUser currentUser = mAuth.getCurrentUser();
-                final FirebaseFirestore db = FirebaseFirestore.getInstance();
+                FirebaseFirestore db = FirebaseFirestore.getInstance();
                 String BookmarkName = currentUser.getUid()+cocktailID;
-                Bookmark_count = 0;
-
                 //북마크가 이미 선택되었던 경우
                 if(bookmarkChecked==true){
-                    Toast.makeText(getApplicationContext(),"북마크 취소",Toast.LENGTH_LONG).show();
-                    floatingActionButtonForBookmark.setImageResource(R.mipmap.outline_bookmark_border_white_36dp);
-                    bookmarkChecked=false;
-
                     db.collection("Bookmark").document(BookmarkName)
                             .delete()
                             .addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void aVoid) {
                                     Log.d(TAG, "DocumentSnapshot successfully deleted!");
-                                    Toast.makeText(getApplication(),"삭제",Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getApplicationContext(),"북마크 취소",Toast.LENGTH_LONG).show();
+                                    floatingActionButtonForBookmark.setImageResource(R.mipmap.outline_bookmark_border_white_36dp);
+                                    bookmarkChecked=false;
                                 }
                             })
                             .addOnFailureListener(new OnFailureListener() {
                                 @Override
                                 public void onFailure(@NonNull Exception e) {
                                     Log.w(TAG, "Error deleting document", e);
-                                    Toast.makeText(getApplication(),"삭제 실패! 다시 시도해주세요",Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getApplication(),"북마크 취소 실패! 다시 시도해주세요",Toast.LENGTH_SHORT).show();
                                 }
                             });
                 }
@@ -559,51 +540,19 @@ public class CocktailRecipeActivity extends AppCompatActivity {
                                 @Override
                                 public void onSuccess(Void aVoid) {
                                     Log.d(TAG, "DocumentSnapshot successfully written!");
+                                    Toast.makeText(getApplicationContext(),"북마크",Toast.LENGTH_LONG).show();
+                                    floatingActionButtonForBookmark.setImageResource(R.mipmap.baseline_bookmark_white_36dp);
+                                    bookmarkChecked=true;
                                 }
                             })
                             .addOnFailureListener(new OnFailureListener() {
                                 @Override
                                 public void onFailure(@NonNull Exception e) {
+                                    Toast.makeText(getApplication(),"북마크 실패! 다시 시도해주세요",Toast.LENGTH_SHORT).show();
                                     Log.w(TAG, "Error writing document", e);
                                 }
                             });
-                    Toast.makeText(getApplicationContext(),"북마크",Toast.LENGTH_LONG).show();
-                    floatingActionButtonForBookmark.setImageResource(R.mipmap.baseline_bookmark_white_36dp);
-                    bookmarkChecked=true;
                 }
-                //db북마크 컬렉션의 레시피 번호 같은 갯수만큼 bookmark_count갯수 세어서 넣어줌.
-                db.collection("Bookmark")
-                        .whereEqualTo("레시피 번호", Integer.toString(cocktailID))
-                        .get()
-                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                if (task.isSuccessful()) {
-                                    adapterForCocktailComment.clearAllForAdapter();
-                                    for (QueryDocumentSnapshot document : task.getResult()) {
-                                        Bookmark_count++;
-                                    }
-                                    //해당 레시피번호와 동일한 레시피의 mark_number를 Bookmark_count와 동일하게 해서 업데이트함
-                                    DocumentReference Bookmark_ref = db.collection("Recipe").document(Integer.toString(cocktailID));
-                                    Bookmark_ref
-                                            .update("mark_number", Bookmark_count)
-                                            .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                @Override
-                                                public void onSuccess(Void aVoid) {
-                                                    Log.d(TAG, "DocumentSnapshot successfully updated!");
-                                                }
-                                            })
-                                            .addOnFailureListener(new OnFailureListener() {
-                                                @Override
-                                                public void onFailure(@NonNull Exception e) {
-                                                    Log.w(TAG, "Error updating document", e);
-                                                }
-                                            });
-                                } else {
-                                    Log.d(TAG, "Error getting documents: ", task.getException());
-                                }
-                            }
-                        });
             }
         });
 
@@ -702,6 +651,15 @@ public class CocktailRecipeActivity extends AppCompatActivity {
 
     //플로팅 버튼 애니메이션을 위한 버튼
     public void anim() {
+        if(bookmarkChecked==true){
+            floatingActionButtonForBookmark.setImageResource(R.mipmap.baseline_bookmark_white_36dp);
+        }
+        if(gradeChecked==true){
+            floatingActionButtonForGrade.setImageResource(R.mipmap.outline_star_white_36dp);
+        }
+        if(reportChecked==true){
+            floatingActionButtonForReport.setImageResource(R.mipmap.baseline_feedback_white_36dp);
+        }
         if (isFabOpen) {
             floatingActionButtonForAnimation.setImageResource(R.mipmap.outline_more_vert_white_36dp);
             floatingActionButtonForBookmark.startAnimation(fab_close);
