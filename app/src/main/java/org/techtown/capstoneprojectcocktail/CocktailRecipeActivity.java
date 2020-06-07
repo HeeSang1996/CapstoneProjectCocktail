@@ -196,7 +196,7 @@ public class CocktailRecipeActivity extends AppCompatActivity {
             final String ReportName = currentUser.getUid()+cocktailID;
             DocumentReference Report_check = db.collection("Report").document(ReportName);
 
-            //해당 이름으로 문서가 비어있는지 아닌지 map크기를 확인하여 체크
+            //해당 이름으로 문서가 비어있는지 아닌지 map크기를 확인하여 체크하여 false/ true로 바꿔줌.
             Report_check.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
