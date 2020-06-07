@@ -631,7 +631,6 @@ public class CocktailRecipeActivity extends AppCompatActivity {
                 //영진 파트
                 //평가 수정을 원하는 경우
                 if(gradeChecked==true){
-                    Toast.makeText(getApplicationContext(),"평가 수정",Toast.LENGTH_LONG).show();
                     Intent intent = new Intent(v.getContext(), GradingPopupActivity.class);
                     intent.putExtra("cocktailID",cocktailID);
                     intent.putExtra("gradeCheck",gradeChecked);
@@ -710,8 +709,6 @@ public class CocktailRecipeActivity extends AppCompatActivity {
         //requestCode == 1
         if (requestCode == 1) {
             if (resultCode == RESULT_OK) {
-                floatingActionButtonForGrade.setImageResource(R.mipmap.outline_star_white_36dp);
-                gradeChecked=true;
                 //data.getFloatExtra("rating");
                 //ratingBar.setRating(data.getExtras().getFloat("rating"));
                 String ratingString = data.getStringExtra("rating");
@@ -748,6 +745,8 @@ public class CocktailRecipeActivity extends AppCompatActivity {
                             @Override
                             public void onSuccess(Void aVoid) {
                                 Log.d(TAG, "DocumentSnapshot successfully written!");
+                                floatingActionButtonForGrade.setImageResource(R.mipmap.outline_star_white_36dp);
+                                gradeChecked=true;
                             }
                         })
                         .addOnFailureListener(new OnFailureListener() {
@@ -782,6 +781,8 @@ public class CocktailRecipeActivity extends AppCompatActivity {
                                                 @Override
                                                 public void onSuccess(Void aVoid) {
                                                     Log.d(TAG, "DocumentSnapshot successfully updated!");
+                                                    floatingActionButtonForGrade.setImageResource(R.mipmap.outline_star_white_36dp);
+                                                    gradeChecked=true;
                                                 }
                                             })
                                             .addOnFailureListener(new OnFailureListener() {
