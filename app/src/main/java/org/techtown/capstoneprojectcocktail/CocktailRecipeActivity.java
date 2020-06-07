@@ -239,7 +239,7 @@ public class CocktailRecipeActivity extends AppCompatActivity {
                     Log.d(TAG, Integer.toString(cocktailID));
                     putComment.put("레시피 이름", cocktailName);
                     putComment.put("레시피 ref", cocktailRef);
-                    putComment.put("사용자 이름", currentUser.getEmail());
+                    putComment.put("사용자 이름", currentUser.getDisplayName());
                     putComment.put("사용자 url", currentUser.getPhotoUrl().toString());
                     putComment.put("사용자 uid", currentUser.getUid());
                     putComment.put("내용", stringForCocktailComment);
@@ -293,6 +293,21 @@ public class CocktailRecipeActivity extends AppCompatActivity {
                             switch (item.getItemId()){
                                 case R.id.popup_delete:
                                     //댓글 삭제
+                                    FirebaseFirestore db = FirebaseFirestore.getInstance();
+                                    db.collection("cities").document("DC")
+                                            .delete()
+                                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                @Override
+                                                public void onSuccess(Void aVoid) {
+                                                    Log.d(TAG, "DocumentSnapshot successfully deleted!");
+                                                }
+                                            })
+                                            .addOnFailureListener(new OnFailureListener() {
+                                                @Override
+                                                public void onFailure(@NonNull Exception e) {
+                                                    Log.w(TAG, "Error deleting document", e);
+                                                }
+                                            });
                                     adapterForCocktailComment.removeItem(positionForDelete);
                                     recyclerViewForComment.setAdapter(adapterForCocktailComment);
                                     Toast.makeText(getApplication(),"삭제",Toast.LENGTH_SHORT).show();
