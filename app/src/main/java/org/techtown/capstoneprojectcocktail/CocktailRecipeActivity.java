@@ -169,6 +169,29 @@ public class CocktailRecipeActivity extends AppCompatActivity {
         else {
             textForCocktailID.setText("재료");
             //영진 여기다가 별점 불러다 박아주셈 totalGradeScore=
+            currentUser = mAuth.getCurrentUser();
+            FirebaseFirestore db = FirebaseFirestore.getInstance();
+            String GradingName = currentUser.getUid()+cocktailID;
+
+            DocumentReference docRef = db.collection("Recipe").document(Integer.toString(cocktailID));
+            docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot document = task.getResult();
+                        if (document.exists()) {
+                            //Log.d(TAG, "DocumentSnapshot data: " + document.getData());
+                            Log.d(TAG, "들어가야하는 점수 : " + document.get("good_number").toString());
+                            totalGradeScore = document.get("good_number").toString();
+                            Log.d(TAG, "들어온 점수 : " + totalGradeScore);
+                        } else {
+                            Log.d(TAG, "No such document");
+                        }
+                    } else {
+                        Log.d(TAG, "get failed with ", task.getException());
+                    }
+                }
+            });
         }
         textForCocktailDescription.setText(cocktailDescription);
         textForCocktailIngredient.setText(cocktailIngredient);
