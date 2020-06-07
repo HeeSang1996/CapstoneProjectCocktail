@@ -3,6 +3,7 @@ package org.techtown.capstoneprojectcocktail;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
@@ -12,11 +13,25 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
 public class ReportPopupActivity extends Activity {
     private EditText textForReport;
     private RadioButton r_btn1,r_btn2, r_btn3,r_btn4;
     private RadioGroup radioGroup;
     private InputMethodManager inputKeyboardHide;
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,6 +109,36 @@ public class ReportPopupActivity extends Activity {
                     //영진파트
                     Toast.makeText(getApplicationContext(),"신고 접수 완료\n신고내용: "+inputText,Toast.LENGTH_LONG).show();
                     setResult(RESULT_OK, intent);
+                    FirebaseUser currentUser = mAuth.getCurrentUser();
+                    FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+                    //시간을 받아와 format date 생성
+                    long now = System.currentTimeMillis();
+                    Date date = new Date(now);
+                    SimpleDateFormat sdfNow = new SimpleDateFormat("yyyy년 MM월 dd일 HH:mm:ss");
+                    String formatDate = sdfNow.format(date);
+
+                    //report에 넣기위한 데이터 선언 및 생성
+                    Map<String, Object> putComment = new HashMap<>();
+                    putComment.put("사용자 이름", currentUser.getDisplayName());
+                    putComment.put("사용자 uid", currentUser.getUid());
+                    //putComment.put("칵테일 번호", cocktailName);
+                    putComment.put("내용", inputText);
+                    putComment.put("신고 날짜", formatDate);
+                    String DocumentName = "날짜: "+formatDate+currentUser.getUid();
+                    db.collection("Comment").document(DocumentName)
+                            .set(putComment)
+                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                }
+                            })
+                            .addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                }
+                            });
+
                     finish();
                 }
                 break;

@@ -34,6 +34,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -185,6 +187,30 @@ public class CocktailRecipeActivity extends AppCompatActivity {
             //북마크, 평가, 신고 버튼의 초기값 세팅
             //영진파트
             //checked의 값이 true면 버튼의 초기모양 변경
+            FirebaseFirestore db = FirebaseFirestore.getInstance();
+            final String DocumentName = currentUser.getUid()+cocktailID;
+            DocumentReference Report_check = db.collection("Report").document(DocumentName);
+
+            Report_check.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot document = task.getResult();
+                        if (document.exists()) {
+                            Map<String, Object> map = document.getData();
+                            if (map.size() == 0) {
+                                reportChecked = true;
+                                Log.d(TAG, "Document is empty!");
+                            } else {
+                                reportChecked = false;
+                                Log.d(TAG, "Document is not empty!");
+                            }
+                        }
+                    }
+                }
+            });
+
+
 
             //로그인한 유저에게는 로그인 하지 않았다는 메시지 출력 삭제
             textForNonLoginUser.setVisibility(View.GONE);
@@ -506,8 +532,6 @@ public class CocktailRecipeActivity extends AppCompatActivity {
                 //신고는 계정당 한번만
                 //같은 게시물에 같은 계정이 여러번 신고 불가능
                 //영진 파트
-                FirebaseFirestore db = FirebaseFirestore.getInstance();
-                FirebaseUser currentUser = mAuth.getCurrentUser();
 
 
                 //이미 신고를 한 경우
