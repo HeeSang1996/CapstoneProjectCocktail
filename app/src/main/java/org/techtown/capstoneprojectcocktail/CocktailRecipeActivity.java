@@ -80,6 +80,8 @@ public class CocktailRecipeActivity extends AppCompatActivity {
     private ArrayList Comment_url;
     private ArrayList Comment_uid;
 
+    //db북마크 카운트용
+    private int Bookmark_count;
 
 
     @SuppressLint("RestrictedApi")
@@ -227,10 +229,10 @@ public class CocktailRecipeActivity extends AppCompatActivity {
                         if (document.exists()) {
                             Map<String, Object> map = document.getData();
                             if (map.size() == 0) {
-                                reportChecked = false;
+                                bookmarkChecked = false;
                                 Log.d(TAG, "Bookmark Document is empty!");
                             } else {
-                                reportChecked = true;
+                                bookmarkChecked = true;
                                 Log.d(TAG, "Bookmark Document is not empty!");
                             }
                         }
@@ -507,8 +509,9 @@ public class CocktailRecipeActivity extends AppCompatActivity {
             public void onClick(View v) {
                 //영진 파트
                 FirebaseUser currentUser = mAuth.getCurrentUser();
-                FirebaseFirestore db = FirebaseFirestore.getInstance();
+                final FirebaseFirestore db = FirebaseFirestore.getInstance();
                 String BookmarkName = currentUser.getUid()+cocktailID;
+                Bookmark_count = 0;
 
                 //북마크가 이미 선택되었던 경우
                 if(bookmarkChecked==true){
@@ -568,6 +571,39 @@ public class CocktailRecipeActivity extends AppCompatActivity {
                     floatingActionButtonForBookmark.setImageResource(R.mipmap.baseline_bookmark_white_36dp);
                     bookmarkChecked=true;
                 }
+                //db북마크 컬렉션의 레시피 번호 같은 갯수만큼 bookmark_count갯수 세어서 넣어줌.
+                db.collection("Bookmark")
+                        .whereEqualTo("레시피 번호", Integer.toString(cocktailID))
+                        .get()
+                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                if (task.isSuccessful()) {
+                                    adapterForCocktailComment.clearAllForAdapter();
+                                    for (QueryDocumentSnapshot document : task.getResult()) {
+                                        Bookmark_count++;
+                                    }
+                                    //해당 레시피번호와 동일한 레시피의 mark_number를 Bookmark_count와 동일하게 해서 업데이트함
+                                    DocumentReference Bookmark_ref = db.collection("Recipe").document(Integer.toString(cocktailID));
+                                    Bookmark_ref
+                                            .update("mark_number", Bookmark_count)
+                                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                @Override
+                                                public void onSuccess(Void aVoid) {
+                                                    Log.d(TAG, "DocumentSnapshot successfully updated!");
+                                                }
+                                            })
+                                            .addOnFailureListener(new OnFailureListener() {
+                                                @Override
+                                                public void onFailure(@NonNull Exception e) {
+                                                    Log.w(TAG, "Error updating document", e);
+                                                }
+                                            });
+                                } else {
+                                    Log.d(TAG, "Error getting documents: ", task.getException());
+                                }
+                            }
+                        });
             }
         });
 
