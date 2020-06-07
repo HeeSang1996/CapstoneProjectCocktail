@@ -279,6 +279,7 @@ public class HomeFragment extends Fragment {
                 //Toast.makeText(getActivity().getApplicationContext(),"선택된 칵테일: " + item.getName(),Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(view.getContext(), CocktailRecipeActivity.class);
                 intent.putExtra("cocktailName", item.getName());
+                intent.putExtra("cocktailID",item.getId());
                 intent.putExtra("cocktailDescription",item.getDescription());
                 intent.putExtra("cocktailIngredient",item.getIngredient());
                 intent.putExtra("cocktailABV",item.getAbvNum());
