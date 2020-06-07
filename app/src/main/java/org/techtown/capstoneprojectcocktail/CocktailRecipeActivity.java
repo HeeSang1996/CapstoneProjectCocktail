@@ -228,12 +228,6 @@ public class CocktailRecipeActivity extends AppCompatActivity {
                         }
                     }
                 });
-
-        for(int i = 0; i< Comment_name.size(); i++)
-        {
-            adapterForCocktailComment.addItem(new Comment(Comment_name.get(i).toString(),Comment_date.get(i).toString(),Comment_content.get(i).toString(),Comment_url.get(i).toString(),Comment_uid.get(i).toString()));
-        }
-
         textInputLayoutForComment.setCounterEnabled(true);
         textInputLayoutForComment.setCounterMaxLength(150);
         final EditText editTextForCocktailComment = textInputLayoutForComment.getEditText();
@@ -327,18 +321,14 @@ public class CocktailRecipeActivity extends AppCompatActivity {
                                     if (task.isSuccessful()) {
                                         for (QueryDocumentSnapshot document : task.getResult()) {
                                             Comment_name.add(document.get("사용자 이름").toString());
-                                            //Log.d(TAG, "들어가야하는 이름 : " + Comment_name.toString());
                                             Comment_date.add("날짜: "+document.get("댓글 날짜").toString());
-                                            //Log.d(TAG, "들어가야하는 날짜 : " + Comment_date.toString());
                                             Comment_content.add(document.get("내용").toString());
-                                            //Log.d(TAG, "들어가야하는 내용 : " + Comment_content.toString());
                                             Comment_url.add(document.get("사용자 url").toString());
-                                            //Log.d(TAG, "들어가야하는 url : " + Comment_url.toString());
                                             Comment_uid.add(document.get("사용자 uid").toString());
-                                            //Log.d(TAG, "들어가야하는 uid : " + Comment_uid.toString());
                                         }
                                         for(int i = 0; i< Comment_name.size(); i++)
                                         {
+                                            Log.d(TAG, "들어가야하는 uid : " + Comment_uid.get(i).toString());
                                             adapterForCocktailComment.addItem(new Comment(Comment_name.get(i).toString(),Comment_date.get(i).toString(),Comment_content.get(i).toString(),Comment_url.get(i).toString(),Comment_uid.get(i).toString()));
                                         }
                                     } else {
@@ -429,10 +419,6 @@ public class CocktailRecipeActivity extends AppCompatActivity {
                                                     }
                                                 }
                                             });
-                                    for(int i = 0; i< Comment_name.size(); i++)
-                                    {
-                                        adapterForCocktailComment.addItem(new Comment(Comment_name.get(i).toString(),Comment_date.get(i).toString(),Comment_content.get(i).toString(),Comment_url.get(i).toString(),Comment_uid.get(i).toString()));
-                                    }
                                     break;
                                 default:
                                     Toast.makeText(getApplication(),"취소",Toast.LENGTH_SHORT).show();
