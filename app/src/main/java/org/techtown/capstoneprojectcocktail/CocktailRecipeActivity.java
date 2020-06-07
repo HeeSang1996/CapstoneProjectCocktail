@@ -639,18 +639,19 @@ public class CocktailRecipeActivity extends AppCompatActivity {
                     FirebaseUser currentUser = mAuth.getCurrentUser();
                     FirebaseFirestore db = FirebaseFirestore.getInstance();
                     String GradingName = currentUser.getUid()+cocktailID;
-                    db.collection("Grading").document(GradingName)
-                            .delete()
+                    DocumentReference Grading_ref = db.collection("Grading").document(GradingName);
+                    Grading_ref
+                            .update("점수", gradeScore)
                             .addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void aVoid) {
-                                    Log.d(TAG, "DocumentSnapshot successfully deleted!");
+                                    Log.d(TAG, "DocumentSnapshot successfully updated!");
                                 }
                             })
                             .addOnFailureListener(new OnFailureListener() {
                                 @Override
                                 public void onFailure(@NonNull Exception e) {
-                                    Log.w(TAG, "Error deleting document", e);
+                                    Log.w(TAG, "Error updating document", e);
                                 }
                             });
                 }
