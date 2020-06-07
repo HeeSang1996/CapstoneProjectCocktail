@@ -196,7 +196,6 @@ public class CocktailCommentAdapter extends RecyclerView.Adapter<CocktailComment
 
     public void clearAllForAdapter(){
         items.clear();
-        items_buffer.clear();
         notifyDataSetChanged();
     }
 }
