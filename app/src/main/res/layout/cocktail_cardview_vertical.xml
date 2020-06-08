@@ -32,7 +32,7 @@
 
             <androidx.cardview.widget.CardView
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_margin="10dp"
                 android:layout_weight="3"
                 android:layout_gravity="center"
@@ -41,8 +41,9 @@
                 <ImageView
                     android:id="@+id/imageView_cocktail_search"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_gravity="center"
+                    android:adjustViewBounds="true"
                     app:srcCompat="@drawable/cocktail_sample_image" />
             </androidx.cardview.widget.CardView>
 
