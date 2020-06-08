@@ -14,6 +14,8 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import static org.techtown.capstoneprojectcocktail.MJH_SimulatorUiActivity.usingStepNum;
+
 public class MJH_Popup1Activity extends Activity {
     FrameLayout layout;
     Button bt;
@@ -33,6 +35,7 @@ public class MJH_Popup1Activity extends Activity {
     }
 
     public void mClose(View v){
+        usingStepNum.remove(usingStepNum.size() - 1);
         finish();
     }
 
@@ -126,6 +129,7 @@ public class MJH_Popup1Activity extends Activity {
     //확인 버튼 클릭
     public void mBefore(View v){
         //액티비티(팝업) 닫기
+        usingStepNum.remove(usingStepNum.size() - 1);
         finish();
     }
     public void mNext(View v){

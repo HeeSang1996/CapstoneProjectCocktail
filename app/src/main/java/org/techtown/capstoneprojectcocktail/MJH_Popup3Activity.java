@@ -32,6 +32,7 @@ import java.util.List;
 import java.util.Map;
 
 import static org.techtown.capstoneprojectcocktail.CocktailAdapterForSearch.useByMinFlag;
+import static org.techtown.capstoneprojectcocktail.MJH_SimulatorUiActivity.usingStepNum;
 
 public class MJH_Popup3Activity extends Activity {
 
@@ -142,6 +143,7 @@ public class MJH_Popup3Activity extends Activity {
     }
 
     public void mClose(View v){
+        usingStepNum.remove(usingStepNum.size() - 1);
         finish();
     }
 
