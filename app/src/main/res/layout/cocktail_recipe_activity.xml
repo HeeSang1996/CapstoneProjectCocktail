@@ -61,6 +61,12 @@
                 android:textSize="20sp"
                 android:textColor="#DDEFEF"/>
 
+            <View
+                android:layout_width="350dp"
+                android:layout_height="1dp"
+                android:layout_gravity="center"
+                android:background="#404040"/>
+
             <TextView
                 android:id="@+id/textView_ingredientText_recipe"
                 android:layout_width="match_parent"
@@ -72,7 +78,6 @@
                 android:textSize="25sp"
                 android:textStyle="bold"
                 android:textColor="#DDEFEF"/>
-
             <TextView
                 android:id="@+id/textView_cocktailIngredient_recipe"
                 android:layout_width="match_parent"
@@ -83,7 +88,11 @@
                 android:text="Whisky0"
                 android:textSize="20sp"
                 android:textColor="#DDEFEF"/>
-
+            <View
+                android:layout_width="350dp"
+                android:layout_height="1dp"
+                android:layout_gravity="center"
+                android:background="#404040"/>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -112,7 +121,11 @@
                     android:textSize="30sp"
                     android:textStyle="bold" />
             </LinearLayout>
-
+            <View
+                android:layout_width="350dp"
+                android:layout_height="1dp"
+                android:layout_gravity="center"
+                android:background="#404040"/>
             <TextView
                 android:id="@+id/textView_simpleRating_recipe"
                 android:layout_width="match_parent"
@@ -135,7 +148,11 @@
                 android:stepSize="0.5"
                 android:layout_gravity="center_horizontal"
                 style="@style/Widget.AppCompat.RatingBar"/>
-
+            <View
+                android:layout_width="350dp"
+                android:layout_height="1dp"
+                android:layout_gravity="center"
+                android:background="#404040"/>
             <TextView
                 android:id="@+id/textView_simpleCommentText_recipe"
                 android:layout_width="match_parent"
