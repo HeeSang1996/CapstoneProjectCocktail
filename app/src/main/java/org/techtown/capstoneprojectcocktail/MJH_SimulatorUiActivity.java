@@ -40,6 +40,7 @@ public class MJH_SimulatorUiActivity extends AppCompatActivity implements View.O
     public int lastStepTechFlag = 0;
 
     public static ArrayList<Integer> usingStep = new ArrayList<Integer>();
+    public static ArrayList<Integer> usingStepNum = new ArrayList<Integer>();
 
     public static String listUpdateTech; // 팝업1에서 선택된 기술
     public static ArrayList<Integer> listUpdateStep = new ArrayList<Integer>();
@@ -184,6 +185,7 @@ public class MJH_SimulatorUiActivity extends AppCompatActivity implements View.O
                 Intent intent = new Intent(this,MJH_Popup1Activity.class);
                 startActivityForResult(intent, 1);
                 adapterMIN.callByPopup = 1;
+                usingStepNum.add(0);
                 break;
             case R.id.floatingActionButtonForAddList2: // 시뮬스텝 지우기
                 if(stepNum != 0){
@@ -203,6 +205,10 @@ public class MJH_SimulatorUiActivity extends AppCompatActivity implements View.O
                         listUpdateStep = new ArrayList<Integer>();
                         listUpdateIngredient = new ArrayList<MJH_Object_ingredient>();
                         listUpdateIngredientAmount = new ArrayList<Float>();
+
+                        for(int i = 0; i <usingStepNum.get(usingStepNum.size() - 1); i++){
+                            usingStep.remove(usingStep.size() - 1);
+                        }
                     }catch(Exception e){
                         Toast myToast = Toast.makeText(this.getApplicationContext(), e.toString(), Toast.LENGTH_LONG);
                         myToast.show();

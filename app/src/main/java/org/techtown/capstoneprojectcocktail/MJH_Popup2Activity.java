@@ -17,6 +17,7 @@ import java.util.ArrayList;
 
 import static org.techtown.capstoneprojectcocktail.CocktailAdapterForSearch.useByMinFlag;
 import static org.techtown.capstoneprojectcocktail.MJH_SimulatorUiActivity.adapterMIN;
+import static org.techtown.capstoneprojectcocktail.MJH_SimulatorUiActivity.usingStepNum;
 
 public class MJH_Popup2Activity extends Activity {
     public Context uiMe;
@@ -55,6 +56,7 @@ public class MJH_Popup2Activity extends Activity {
                         if(!simulatorUiAddress.usingStep.contains(position+1)){
                             simulatorUiAddress.usingStep.add(position+1);
                             bufferUpdateStep.add(position+1);
+                            usingStepNum.set(usingStepNum.size() - 1, usingStepNum.get(usingStepNum.size() - 1) + 1);
                             Toast myToast = Toast.makeText(uiMe,"스텝 " + Integer.toString(position+1) + " 추가", Toast.LENGTH_SHORT);
                             myToast.show();
                         }
@@ -72,6 +74,7 @@ public class MJH_Popup2Activity extends Activity {
     }
 
     public void mClose(View v){
+        usingStepNum.remove(usingStepNum.size() - 1);
         finish();
     }
 
@@ -79,6 +82,7 @@ public class MJH_Popup2Activity extends Activity {
     public void mBefore(View v){
         Intent intent = new Intent(this,MJH_Popup1Activity.class);
         startActivityForResult(intent, 1);
+        usingStepNum.set(usingStepNum.size() - 1, 0);
         finish();
     }
     //다음 버튼 클릭
