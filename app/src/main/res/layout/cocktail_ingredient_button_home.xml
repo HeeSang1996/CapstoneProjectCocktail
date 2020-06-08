@@ -10,13 +10,13 @@
         android:layout_height="match_parent"
         android:layout_marginLeft="5dp"
         app:cardBackgroundColor="#333333"
-        app:cardCornerRadius="30dp">
+        app:cardCornerRadius="15dp">
 
         <TextView
             android:id="@+id/text_ingredient_home"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:textSize="20sp"
+            android:textSize="10sp"
             android:gravity="center"
             android:textAllCaps="false"
             android:textColor="#DDEFEF"
