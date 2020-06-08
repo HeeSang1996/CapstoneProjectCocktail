@@ -41,6 +41,12 @@ public class MJH_Popup4Activity  extends Activity {
         super.onStop();
     }
 
+    public void mClose(View v){
+        ingreAmountFlag = 1;
+        ingreAmount = -1;
+        finish();
+    }
+
     public void mNext(View v){
         //데이터 전달하기
         ingreAmountFlag = 1;

@@ -100,7 +100,21 @@ public class MJH_Popup3Activity extends Activity {
 
         textForSearch.setImeOptions(EditorInfo.IME_ACTION_DONE);
         textForSearch.setText("");
-
+        textForSearch.setOnEditorActionListener(new TextView.OnEditorActionListener()
+        {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    String inputText = textForSearch.getText().toString();
+                    //재료 검색 모드에서 검색
+                    Toast.makeText(getApplicationContext(), inputText + " 재료 검색", Toast.LENGTH_SHORT).show();
+                    adapterForCocktailSearch.filterForIngredient(inputText);
+                    recyclerViewForCocktailSearch.setAdapter(adapterForCocktailSearch);
+                    return false;
+                }
+                return false;
+            }
+        });
 
         recyclerViewForCocktailSearch = findViewById(R.id.recyclerViewForCocktail_search);
         LinearLayoutManager layoutManagerForCocktailSearch = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL,false);
@@ -170,9 +184,21 @@ public class MJH_Popup3Activity extends Activity {
     protected void onResume() {
         super.onResume();
         if(ingreAmountFlag == 1){
-            Toast.makeText(this,"call", Toast.LENGTH_SHORT).show();
-            bufferUpdateIngredientAmount.add(ingreAmount);
-            ingreAmountFlag = 0;
+            try{
+                if(ingreAmount == -1){
+                    Toast.makeText(this,"취소", Toast.LENGTH_SHORT).show();
+                    bufferUpdateIngredient.remove(bufferUpdateIngredient.size()-1);
+                    ingreAmountFlag = 0;
+                }
+                else{
+                    Toast.makeText(this,"량 입력 완료", Toast.LENGTH_SHORT).show();
+                    bufferUpdateIngredientAmount.add(ingreAmount);
+                    ingreAmountFlag = 0;
+                }
+            }catch(Exception e){
+                Toast myToast = Toast.makeText(uiThis, e.toString(), Toast.LENGTH_LONG);
+                myToast.show();
+            }
         }
     }
 
