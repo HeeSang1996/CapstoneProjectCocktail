@@ -30,6 +30,7 @@ public class CocktailAdapterForSearch extends RecyclerView.Adapter<CocktailAdapt
 
         TextView textForCocktailName;
         TextView textForCocktailDescription;
+        TextView textForSimpleABV;
         TextView textForCocktailABV;
         ImageView imageForCocktail;
 
@@ -39,6 +40,7 @@ public class CocktailAdapterForSearch extends RecyclerView.Adapter<CocktailAdapt
 
             textForCocktailName = itemView.findViewById(R.id.textView_cocktailName_search);
             textForCocktailDescription = itemView.findViewById(R.id.textView_cocktailDescription_search);
+            textForSimpleABV = itemView.findViewById(R.id.textView_simpleABV_search);
             textForCocktailABV = itemView.findViewById(R.id.textView_cocktailABV_search);
             imageForCocktail = itemView.findViewById(R.id.imageView_cocktail_search);
 
@@ -78,6 +80,18 @@ public class CocktailAdapterForSearch extends RecyclerView.Adapter<CocktailAdapt
             });
             textForCocktailName.setText(item.getName());
             textForCocktailDescription.setText(item.getDescription());
+            //칵테일 아이디가 10000이 넘어갈 경우
+            //즉, 유저가 올린 칵테일일 경우
+            if ((item.getId()/1000)>=10){
+                textForSimpleABV.setText("작성자: ");
+                textForCocktailABV.setTextSize(16);
+            }
+            //칵테일 아이디가 10000이 넘어가지 않을 경우
+            //즉, 유저가 올린 칵테일이 아닐경우
+            else{
+                textForSimpleABV.setText("ABV");
+                textForCocktailABV.setTextSize(18);
+            }
             textForCocktailABV.setText(item.getAbvNum());
             //Glide.with(itemView).load(imageUrl).into(imageForCocktail);
         }

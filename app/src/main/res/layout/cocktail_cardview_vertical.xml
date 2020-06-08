@@ -105,7 +105,8 @@
                         android:textStyle="bold"
                         android:ellipsize="end"
                         android:maxLines="1"
-                        android:textColor="#ffc800"/>
+                        android:textColor="#ffc800"
+                        android:paddingRight="10dp"/>
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>

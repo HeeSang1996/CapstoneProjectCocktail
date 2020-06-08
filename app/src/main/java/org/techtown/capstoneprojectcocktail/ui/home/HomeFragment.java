@@ -135,6 +135,10 @@ public class HomeFragment extends Fragment {
         recyclerViewForCocktailHome.setLayoutManager(layoutManagerForCocktailHome);
         final CocktailAdapterForHome adapterForCocktailHome = new CocktailAdapterForHome();
 
+        //2020 06 08 10:04 수정
+        //오류나면 아래 라인 수정
+        recyclerViewForCocktailHome.setAdapter(adapterForCocktailHome);
+
         //수정필 테스트용
         //영진 여기 확인
         for(int i=0; i < 20; i++)
@@ -168,7 +172,6 @@ public class HomeFragment extends Fragment {
                     adapterForCocktailHome.addItem(new Cocktail(Recipe_name[count], ID[count], method[count], Recipe_Base[count], abv[count],ref[count]));
                     //refresh 해주는 함수(아마)
                     recyclerViewForCocktailHome.setAdapter(adapterForCocktailHome);
-
                 } else {
                     Log.d(TAG, "No such document");
                 }
