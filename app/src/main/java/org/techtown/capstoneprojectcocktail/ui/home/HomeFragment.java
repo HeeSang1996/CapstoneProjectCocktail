@@ -103,7 +103,6 @@ public class HomeFragment extends Fragment {
                         MJH_SimulatorUiActivity.class); // 다음 넘어갈 클래스 지정
                 startActivity(intent); // 다음 화면으로 넘어간다
                 //////////////// By MJH
-                //setDocument();
             }
         });
 
@@ -151,12 +150,11 @@ public class HomeFragment extends Fragment {
             if (task.isSuccessful()) {
                 DocumentSnapshot document = task.getResult();
                 if (document.exists()) {
-                    //Log.d(TAG, "DocumentSnapshot data: " + document.getData());
+                    count = finalI;
                     Recipe_name[count] = (String) document.get("Recipe_name");
                     ID[count] = Integer.parseInt(document.getId());
                     method[count] = (String) document.get("method");
                     Recipe_Ingredient = (Map<String, Number>) document.get("Ingredient_content");
-                    //Recipe_Base[count] = (String) document.get("Recipe_Base");
 
                     //map으로 받아온 정보를 string으로 치환한뒤 유저에게 보여줄 수 있도록 replaceall함({, }, = 삭제 ml 추가)
                     Recipe_Base[count] = String.valueOf(Recipe_Ingredient);
@@ -164,12 +162,10 @@ public class HomeFragment extends Fragment {
                     Recipe_Base[count] = Recipe_Base[count].replaceAll("\\{", " ");
                     Recipe_Base[count] = Recipe_Base[count].replaceAll("\\}", "ml ");
                     Recipe_Base[count] = Recipe_Base[count].replaceAll("\\=", " ");
-                    //abv[0] = (String) document.get("abv");
                     Realabv[count] = (long) document.get("abv");
                     abv[count] = Realabv[count] + "%";
                     ref[count] = (String) document.get("ref");
                     adapterForCocktailHome.addItem(new Cocktail(Recipe_name[count], ID[count], method[count], Recipe_Base[count], abv[count],ref[count]));
-                    //Log.d(TAG, "DocumentSnapshot data: " + Recipe_name[count] + ID[count]+ method[count]+ Recipe_Base[count]+ abv[count]+ref[count]);
                     //refresh 해주는 함수(아마)
                     recyclerViewForCocktailHome.setAdapter(adapterForCocktailHome);
 
@@ -186,7 +182,6 @@ public class HomeFragment extends Fragment {
             @Override
             public void onItemClick(CocktailAdapterForHome.ViewHolder holder, View view, int position) {
                 Cocktail item = adapterForCocktailHome.getItem(position);
-                //Toast.makeText(getActivity().getApplicationContext(),"선택된 칵테일: " + item.getName(),Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(view.getContext(), CocktailRecipeActivity.class);
                 intent.putExtra("cocktailName", item.getName());
                 intent.putExtra("cocktailID",item.getId());
@@ -207,11 +202,6 @@ public class HomeFragment extends Fragment {
                 startActivity(intent);
             }
         });
-        //테스트용 삭제필
-//        for(int i=0; i<20; i++) {
-//                adapterForCocktailHome.addItem(new Cocktail(Recipe_name[i], i, "맛있는 칵테일 " + i + "의 설명 정말 맛있다 맛있는 칵테일" + i +
-//                        "의 설명 정말 맛있다 ", "Whisky0",i*10 + " %","gs://sbsimulator-96f70.appspot.com/Recipe/BETWEEN THE SHEETS.jpg"));
-//        }
 
         return root;
     }

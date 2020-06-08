@@ -180,11 +180,8 @@ public class CocktailRecipeActivity extends AppCompatActivity {
                     if (task.isSuccessful()) {
                         DocumentSnapshot document = task.getResult();
                         if (document.exists()) {
-                            //Log.d(TAG, "DocumentSnapshot data: " + document.getData());
-                            Log.d(TAG, "들어가야하는 점수 : " + document.get("good_number").toString());
                             totalGradeScore = document.get("good_number").toString();
                             ratingBar.setRating(Float.valueOf(totalGradeScore));
-                            Log.d(TAG, "들어온 점수 : " + totalGradeScore);
                         } else {
                             Log.d(TAG, "No such document");
                         }
