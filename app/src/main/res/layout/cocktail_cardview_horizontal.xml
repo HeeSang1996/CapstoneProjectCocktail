@@ -34,6 +34,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
+                    android:adjustViewBounds="true"
                     app:srcCompat="@drawable/cocktail_sample_image" />
             </androidx.cardview.widget.CardView>
 
