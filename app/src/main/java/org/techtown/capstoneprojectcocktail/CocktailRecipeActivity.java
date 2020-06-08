@@ -171,7 +171,6 @@ public class CocktailRecipeActivity extends AppCompatActivity {
             //영진 여기다가 별점 불러다 박아주셈 totalGradeScore=
             currentUser = mAuth.getCurrentUser();
             FirebaseFirestore db = FirebaseFirestore.getInstance();
-            String GradingName = currentUser.getUid()+cocktailID;
 
             DocumentReference docRef = db.collection("Recipe").document(Integer.toString(cocktailID));
             docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {

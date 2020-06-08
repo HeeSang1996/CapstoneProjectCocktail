@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/home_background"
+    android:background="#171717"
     tools:context=".ui.home.HomeFragment">
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -15,7 +15,7 @@
         app:maxImageSize = "45dp"
         app:srcCompat="@mipmap/fab_cocktail"
         app:fabCustomSize="80dp"
-        app:backgroundTint="#03C3DA"
+        app:backgroundTint="#c20000"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent" />
@@ -28,7 +28,7 @@
         android:text="Choose"
         android:paddingHorizontal="30dp"
         android:textStyle="bold"
-        android:textColor="#3366D6"
+        android:textColor="#DDEFEF"
         android:autoSizeTextType="uniform"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -42,7 +42,7 @@
         android:text=" your cocktail!"
         android:paddingHorizontal="30dp"
         android:textStyle="bold"
-        android:textColor="#3366D6"
+        android:textColor="#DDEFEF"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -111,7 +111,7 @@
         android:id="@+id/constraintLayout_bottom_background_home"
         android:layout_width="match_parent"
         android:layout_height="70dp"
-        android:background="#00B0FF"
+        android:background="#000000"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent">
