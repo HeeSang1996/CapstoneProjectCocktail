@@ -8,7 +8,7 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:background="#220070FF"
+        android:background="#333333"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout_cocktail_recipe">
 
@@ -27,7 +27,7 @@
                 android:text="로그인을 하시면\n북마크, 평가, 신고, 댓글기능을\n이용하실수 있습니다!"
                 android:textSize="15sp"
                 android:textStyle="bold|italic"
-                android:textColor="#000000"/>
+                android:textColor="#c90000"/>
 
             <ImageView
                 android:id="@+id/imageView_cocktail_recipe"
@@ -48,7 +48,7 @@
                 android:text="맛있는 칵테일의 이름"
                 android:textSize="30sp"
                 android:textStyle="bold"
-                android:textColor="#cc000000"/>
+                android:textColor="#DDEFEF"/>
 
             <TextView
                 android:id="@+id/textView_cocktailDescription_recipe"
@@ -59,7 +59,7 @@
                 android:gravity="left|center_vertical"
                 android:text="맛있는 칵테일의 설명"
                 android:textSize="20sp"
-                android:textColor="#cc000000"/>
+                android:textColor="#DDEFEF"/>
 
             <TextView
                 android:id="@+id/textView_ingredientText_recipe"
@@ -71,7 +71,7 @@
                 android:text="재료"
                 android:textSize="25sp"
                 android:textStyle="bold"
-                android:textColor="#cc000000"/>
+                android:textColor="#DDEFEF"/>
 
             <TextView
                 android:id="@+id/textView_cocktailIngredient_recipe"
@@ -82,7 +82,7 @@
                 android:gravity="left"
                 android:text="Whisky0"
                 android:textSize="20sp"
-                android:textColor="#cc000000"/>
+                android:textColor="#DDEFEF"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -96,7 +96,7 @@
                     android:layout_weight="1"
                     android:gravity="right|center_vertical"
                     android:text="ABV"
-                    android:textColor="#00B0FF"
+                    android:textColor="#ffc800"
                     android:textSize="25sp" />
 
                 <TextView
@@ -108,7 +108,7 @@
                     android:gravity="center"
                     android:maxLines="1"
                     android:text="10%"
-                    android:textColor="#00B0FF"
+                    android:textColor="#ffc800"
                     android:textSize="30sp"
                     android:textStyle="bold" />
             </LinearLayout>
@@ -123,7 +123,7 @@
                 android:text="평가"
                 android:textSize="25sp"
                 android:textStyle="bold"
-                android:textColor="#cc000000"/>
+                android:textColor="#DDEFEF"/>
 
             <RatingBar
                 android:id="@+id/ratingBar_grading_recipe"
@@ -146,7 +146,7 @@
                 android:text="댓글"
                 android:textSize="25sp"
                 android:textStyle="bold"
-                android:textColor="#cc000000"/>
+                android:textColor="#DDEFEF"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
