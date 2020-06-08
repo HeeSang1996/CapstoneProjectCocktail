@@ -35,7 +35,6 @@ public class MyPageCommentActivity extends AppCompatActivity {
         });
     }
 
-
     @Override
     protected void onResume() {
         super.onResume();
