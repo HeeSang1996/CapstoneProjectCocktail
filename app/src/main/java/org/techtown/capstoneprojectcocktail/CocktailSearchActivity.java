@@ -135,7 +135,7 @@ public class CocktailSearchActivity extends AppCompatActivity{
                     spinner.setVisibility(View.VISIBLE);
                     //유저가 올린 칵테일 검색 모드가 켜져 있을 경우
                     if(switchForUserMade.isChecked()){
-
+                        setAdapterForSelfCocktailSearchMethod("");
                     }
                     //유저가 올린 칵테일 검색 모드가 꺼져 있을 경우
                     else{
