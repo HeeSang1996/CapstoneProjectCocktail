@@ -298,7 +298,6 @@ public class MJH_Popup3Activity extends Activity {
                                 I_ref.add(document.get("ref"));
                                 I_gravity.add(document.get("specific_gravity"));
 
-
                                 adapterForCocktailSearch.addItem(new Cocktail((String) I_name.get(I_name.size()-1),
                                         Integer.parseInt((String) I_ID.get(I_ID.size()-1)),
                                         (String) I_flavour.get(I_flavour.size()-1),
