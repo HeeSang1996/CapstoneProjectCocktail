@@ -252,4 +252,35 @@ public class MJH_Popup3Activity extends Activity {
                 });
 
     }
+
+    private void setAdapterForIngredientSearchByType(String _type){
+        //Ingredient_type이 시럽인것만 나오도록
+        db.collection("Ingredient").whereEqualTo("Ingredient_type", "시럽")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                I_name.add(document.get("Ingredient_name"));
+                                I_ID.add(document.getId());
+                                I_flavour.add(document.get("flavour"));
+                                I_sugar.add(document.get("sugar_rate"));
+                                I_abv.add(document.get("abv"));
+                                I_ref.add(document.get("ref"));
+                                adapterForCocktailSearch.addItem(new Cocktail((String) I_name.get(I_name.size()-1),
+                                        Integer.parseInt((String) I_ID.get(I_ID.size()-1)),
+                                        (String) I_flavour.get(I_flavour.size()-1),
+                                        String.valueOf(I_sugar.get(I_sugar.size()-1)) ,
+                                        String.valueOf(I_sugar.get(I_abv.size()-1)) ,
+                                        (String) I_ref.get(I_ref.size()-1)));
+                            }
+                            recyclerViewForCocktailSearch.setAdapter(adapterForCocktailSearch);
+                        } else {
+                            System.out.println("해당하는 문서가 없습니다.");
+                        }
+                    }
+                });
+
+    }
 }
