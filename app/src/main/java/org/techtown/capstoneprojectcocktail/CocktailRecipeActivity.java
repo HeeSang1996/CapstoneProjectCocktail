@@ -353,7 +353,7 @@ public class CocktailRecipeActivity extends AppCompatActivity {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 if(document.get("사용자 uid").equals("0") )
                                 {
-                                    ;
+                                    System.out.println("얘는 거른다");
                                 }
                                 else
                                 {
