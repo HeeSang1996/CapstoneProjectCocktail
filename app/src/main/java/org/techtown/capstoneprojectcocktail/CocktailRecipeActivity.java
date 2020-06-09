@@ -167,12 +167,14 @@ public class CocktailRecipeActivity extends AppCompatActivity {
             floatingActionButtonForBookmark.setVisibility(View.GONE);
             floatingActionButtonForGrade.setVisibility(View.GONE);
         }
-        //유저가 올린 레시피이면, abv대신 작성자 텍스트 출력
-        else if ((cocktailID/1000)>=10) {
-            textForSimpleABV.setText("작성자: ");
-        }
         else{
-            textForCocktailID.setText("재료");
+            if ((cocktailID/1000)>=10) {
+                //유저가 올린 레시피이면, abv대신 작성자 텍스트 출력
+                textForSimpleABV.setText("작성자: ");
+            }
+            else{
+                textForCocktailID.setText("재료");
+            }
             //영진 여기다가 별점 불러다 박아주셈 totalGradeScore=
             currentUser = mAuth.getCurrentUser();
             FirebaseFirestore db = FirebaseFirestore.getInstance();
