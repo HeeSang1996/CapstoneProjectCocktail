@@ -77,7 +77,6 @@ public class MyPageBookmarkActivity extends AppCompatActivity {
                         } else {
                             System.out.println("오류 발생 북마크 컬렉션에서 정상적으로 불러와지지 않음.");
                         }
-
                     }
                 });
 
@@ -106,12 +105,11 @@ public class MyPageBookmarkActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         adapterForCocktailBookmark.clearAllForAdapter();
-        //adapterForCocktailBookmark.addItem(new Cocktail("안녕", 9998, "대충 스까", "대충 스까", "작성자" ,"gs://sbsimulator-96f70.appspot.com/Recipe/AMERICANO.jpg"));
         //해당 북마크 갯수만큼 for구문을 돌려 아이템 add
         for(int i = 0; i < Bookmark_name.size(); i++)
         {
-            adapterForCocktailBookmark.addItem(new Cocktail(Bookmark_name.get(count).toString(), Integer.parseInt((String) Bookmark_id.get(count)),
-                    method[count], Recipe_Base[count], abv[count],Bookmark_ref.get(count).toString()));
+            adapterForCocktailBookmark.addItem(new Cocktail(Bookmark_name.get(i).toString(), Integer.parseInt((String) Bookmark_id.get(i)),
+                    method[i], Recipe_Base[i], abv[i],Bookmark_ref.get(i).toString()));
         }
     }
 

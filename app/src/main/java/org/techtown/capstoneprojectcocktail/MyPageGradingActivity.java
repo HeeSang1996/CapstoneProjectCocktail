@@ -112,8 +112,8 @@ public class MyPageGradingActivity extends AppCompatActivity {
 
         adapterForCocktailGrading.clearAllForAdapter();
         for(int i = 0; i < Grading_name.size(); i++){
-            adapterForCocktailGrading.addItem(new Cocktail(Grading_name.get(count).toString(), Integer.parseInt((String) Grading_id.get(count)),
-                    method[count], Recipe_Base[count], abv[count],Grading_ref.get(count).toString()));
+            adapterForCocktailGrading.addItem(new Cocktail(Grading_name.get(i).toString(), Integer.parseInt((String) Grading_id.get(i)),
+                    method[i], Recipe_Base[i], abv[i],Grading_ref.get(i).toString()));
         }
     }
 
