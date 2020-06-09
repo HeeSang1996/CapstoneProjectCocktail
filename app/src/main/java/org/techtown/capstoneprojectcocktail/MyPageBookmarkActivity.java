@@ -35,9 +35,9 @@ public class MyPageBookmarkActivity extends AppCompatActivity {
     private ArrayList Bookmark_uid;        //사용자 uid
 
     //db 레시피들 컬렉션의 데이터를 읽어와 저장할 리스트 선언
-    String[] method = new String[200];
-    String[] Recipe_Base = new String[200];
-    String[] abv = new String[200];
+    String[] method = new String[200];      //self이면 설명
+    String[] Recipe_Base = new String[200]; //self이면 만드는 방법
+    String[] abv = new String[200];         //self이면 칵테일 만든이
     int count = 0;
 
     FirebaseAuth mAuth  = FirebaseAuth.getInstance();
