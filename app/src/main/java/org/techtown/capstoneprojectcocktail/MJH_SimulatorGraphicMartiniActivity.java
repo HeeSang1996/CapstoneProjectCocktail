@@ -1,5 +1,6 @@
 package org.techtown.capstoneprojectcocktail;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -19,12 +20,14 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class MJH_SimulatorGraphicMartiniActivity extends AppCompatActivity {
     int setNumber = 0;
+    public Context me;
     @RequiresApi(api = Build.VERSION_CODES.Q)
     @Override
+
     public void onCreate(Bundle saveInstanceState){
         super.onCreate(saveInstanceState);
         setContentView(R.layout.mjh_graphic_martini);
-
+        me = this;
         try{
             //그라데이션
             if(MJH_SimulatorUiActivity.test.isGradient == 1){
@@ -184,55 +187,66 @@ public class MJH_SimulatorGraphicMartiniActivity extends AppCompatActivity {
                 ImageView View = (ImageView) findViewById(R.id.martiniGlass);
                 View.setImageBitmap(bitmap);
 
-                float volume;
-                int height = 0;
+                float realVolume;
+                float graphicVolumeWeight = (float)82687;
+                double graphicVol = 0;
+                float height = 0;
+                float firstConeHeight = 0;
+                float firstConeX = 0;
+
+                float cosineCone = (float) (225 /307.77426793);
 
                 int red = (int) MJH_SimulatorUiActivity.test.simulatorStep.get(MJH_SimulatorUiActivity.test.simulatorStep.size()-1 ).isColor.get(0).rgb_red;
                 int green = (int) MJH_SimulatorUiActivity.test.simulatorStep.get(MJH_SimulatorUiActivity.test.simulatorStep.size()-1 ).isColor.get(0).rgb_green;
                 int blue = (int) MJH_SimulatorUiActivity.test.simulatorStep.get(MJH_SimulatorUiActivity.test.simulatorStep.size()-1 ).isColor.get(0).rgb_blue;
 
-                volume = MJH_SimulatorUiActivity.test.simulatorStep.get(MJH_SimulatorUiActivity.test.inGlassStep-1 ).totalVolume;
+                realVolume = MJH_SimulatorUiActivity.test.simulatorStep.get(MJH_SimulatorUiActivity.test.inGlassStep-1 ).totalVolume;
+                graphicVol = (double) (realVolume * graphicVolumeWeight);
 
                 Paint paint = new Paint();
                 Paint paint_gradient = new Paint();
 
-                height = (int)((float)1320 - ((float)4.0 * volume));
 
-                //전체사각
+                firstConeHeight =(float) (Math.pow(graphicVol/3.14*3/Math.pow(225, 2)*Math.pow(210, 2) ,1d/3d));
+                firstConeX = firstConeHeight * 210 /225;
+
+                Toast myToast = Toast.makeText(me, Double.toString(Math.pow(graphicVol/3.14*3/Math.pow(225, 2)*Math.pow(210, 2) ,1d/3d)), Toast.LENGTH_LONG);
+                myToast.show();
                 paint.setColor(Color.rgb(red ,green ,blue));
-                canvas.drawRect(110,0, 650, 285, paint);
 
-                paint.setColor(Color.BLUE);
                 Path path = new Path();
 
-                private final float Width = 350;     // 길이 기준
-
-                private float Height;                // 전체 길이
-
-                private float centerX , centerY;     // 기준점
-
-                private float WidthTriangle = 1.5F;  // 삼각형의 가중치가 1.5
-
-                private float WidthRect = 2;         // 사각형의 가중치가 2 (2 : 1) 비율
-
-                private float HeightTriangle;        // Triangle 높이
-
-
-
-                출처: https://dudwk04.tistory.com/entry/Android-삼각형-사각형-타원-선긋기 [로리롱's]
-                path.moveTo(centerX + Width / 2, centerY);
-                path.lineTo(centerX + Width, centerY + HeightTriangle);
-                path.lineTo(centerX, centerY + HeightTriangle);
-                path.lineTo(centerX + Width / 2, centerY);
+                //좌측삼각
+                path.moveTo(215, 285-firstConeHeight);
+                path.lineTo(250 - firstConeX, 285-firstConeHeight);
+                path.lineTo(215, 285);
                 path.close();
                 canvas.drawPath(path, paint);
 
+                //우측삼각각
+               Path path1 = new Path();
+                path1.moveTo(285, 285-firstConeHeight);
+                path1.lineTo(250 + firstConeX, 285-firstConeHeight);
+                path1.lineTo(285, 285);
+                path1.close();
+                canvas.drawPath(path1, paint);
+
+                //윗원
+                RectF rect = new RectF();
+                rect.set(250 - firstConeX, 275-firstConeHeight, 250 + firstConeX, 295-firstConeHeight);
+                canvas.drawArc(rect, 0, 360, true, paint);
+
+
+                //전체사각
+                canvas.drawRect(215,287-firstConeHeight, 285, 285, paint);
 
                 //바닥부
-                paint.setColor(Color.rgb(red ,green ,blue));
-                RectF rect = new RectF();
-                rect.set(110, 1270, 650, 1370);
-                canvas.drawArc(rect, 0, 360, true, paint);
+                RectF rect1 = new RectF();
+                rect1.set(215, 270, 285, 300);
+                canvas.drawArc(rect1, 0, 360, true, paint);
+
+
+                //////////////////////
 
                 //잔
                 Bitmap bitmap2 = BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.martini_glass_re);
@@ -240,10 +254,10 @@ public class MJH_SimulatorGraphicMartiniActivity extends AppCompatActivity {
                 canvas.drawBitmap(bitmap2, 0, 0, null);
 
                 //빛반사
-                paint.setColor(0x56FFFFFF);
-                canvas.drawRect(150, 75, 300, 1370, paint);
-                rect.set(150, 1350, 300, 1390);
-                canvas.drawArc(rect, 90, 90, true, paint);
+                //paint.setColor(0x56FFFFFF);
+                //canvas.drawRect(150, 75, 300, 1370, paint);
+                //rect.set(150, 1350, 300, 1390);
+                //canvas.drawArc(rect, 90, 90, true, paint);
             }
 
         }catch (Exception e){e.printStackTrace(); }
