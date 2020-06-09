@@ -171,24 +171,47 @@ public class CocktailRecipeActivity extends AppCompatActivity {
             //영진 여기다가 별점 불러다 박아주셈 totalGradeScore=
             currentUser = mAuth.getCurrentUser();
             FirebaseFirestore db = FirebaseFirestore.getInstance();
-
-            DocumentReference docRef = db.collection("Recipe").document(Integer.toString(cocktailID));
-            docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                    if (task.isSuccessful()) {
-                        DocumentSnapshot document = task.getResult();
-                        if (document.exists()) {
-                            totalGradeScore = document.get("good_number").toString();
-                            ratingBar.setRating(Float.valueOf(totalGradeScore));
+            if((cocktailID/1000)==6)
+            {
+                DocumentReference docRef = db.collection("Recipe").document(Integer.toString(cocktailID));
+                docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            if (document.exists()) {
+                                totalGradeScore = document.get("good_number").toString();
+                                ratingBar.setRating(Float.valueOf(totalGradeScore));
+                            } else {
+                                Log.d(TAG, "No such document");
+                            }
                         } else {
-                            Log.d(TAG, "No such document");
+                            Log.d(TAG, "get failed with ", task.getException());
                         }
-                    } else {
-                        Log.d(TAG, "get failed with ", task.getException());
                     }
-                }
-            });
+                });
+            }
+            else
+            {
+                DocumentReference docRef = db.collection("Self").document(Integer.toString(cocktailID));
+                docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            if (document.exists()) {
+                                totalGradeScore = document.get("good_number").toString();
+                                ratingBar.setRating(Float.valueOf(totalGradeScore));
+                            } else {
+                                Log.d(TAG, "No such document");
+                            }
+                        } else {
+                            Log.d(TAG, "get failed with ", task.getException());
+                        }
+                    }
+                });
+            }
+
         }
         textForCocktailDescription.setText(cocktailDescription);
         textForCocktailIngredient.setText(cocktailIngredient);
@@ -627,21 +650,43 @@ public class CocktailRecipeActivity extends AppCompatActivity {
                                         Bookmark_count++;
                                     }
                                     //해당 레시피번호와 동일한 레시피의 mark_number를 Bookmark_count와 동일하게 해서 업데이트함
-                                    DocumentReference Bookmark_ref = db.collection("Recipe").document(Integer.toString(cocktailID));
-                                    Bookmark_ref
-                                            .update("mark_number", Bookmark_count)
-                                            .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                @Override
-                                                public void onSuccess(Void aVoid) {
-                                                    Log.d(TAG, "DocumentSnapshot successfully updated!");
-                                                }
-                                            })
-                                            .addOnFailureListener(new OnFailureListener() {
-                                                @Override
-                                                public void onFailure(@NonNull Exception e) {
-                                                    Log.w(TAG, "Error updating document", e);
-                                                }
-                                            });
+                                    if((cocktailID/1000)==6)
+                                    {
+                                        DocumentReference Bookmark_ref = db.collection("Recipe").document(Integer.toString(cocktailID));
+                                        Bookmark_ref
+                                                .update("mark_number", Bookmark_count)
+                                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                    @Override
+                                                    public void onSuccess(Void aVoid) {
+                                                        Log.d(TAG, "DocumentSnapshot successfully updated!");
+                                                    }
+                                                })
+                                                .addOnFailureListener(new OnFailureListener() {
+                                                    @Override
+                                                    public void onFailure(@NonNull Exception e) {
+                                                        Log.w(TAG, "Error updating document", e);
+                                                    }
+                                                });
+                                    }
+                                    else
+                                    {
+                                        DocumentReference Bookmark_ref = db.collection("Self").document(Integer.toString(cocktailID));
+                                        Bookmark_ref
+                                                .update("mark_number", Bookmark_count)
+                                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                    @Override
+                                                    public void onSuccess(Void aVoid) {
+                                                        Log.d(TAG, "DocumentSnapshot successfully updated!");
+                                                    }
+                                                })
+                                                .addOnFailureListener(new OnFailureListener() {
+                                                    @Override
+                                                    public void onFailure(@NonNull Exception e) {
+                                                        Log.w(TAG, "Error updating document", e);
+                                                    }
+                                                });
+                                    }
+
                                 } else {
                                     Log.d(TAG, "Error getting documents: ", task.getException());
                                 }
@@ -796,26 +841,53 @@ public class CocktailRecipeActivity extends AppCompatActivity {
                                         Score_total += Float.parseFloat((String) document.get("점수"));
                                     }
                                     //해당 레시피번호와 동일한 레시피의 mark_number를 Bookmark_count와 동일하게 해서 업데이트함
-                                    DocumentReference Gradingmark_ref = db.collection("Recipe").document(Integer.toString(cocktailID));
-                                    Gradingmark_ref
-                                            .update("good_number", Float.toString((Score_total/Score_count)))
-                                            .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                @Override
-                                                public void onSuccess(Void aVoid) {
-                                                    Log.d(TAG, "DocumentSnapshot successfully updated!");
-                                                    Toast.makeText(getApplicationContext(), "나의 평가: " + gradeScore, Toast.LENGTH_SHORT).show();
-                                                    totalGradeScore = Float.toString((Score_total/Score_count));
-                                                    ratingBar.setRating(Float.valueOf(totalGradeScore));
-                                                    floatingActionButtonForGrade.setImageResource(R.mipmap.outline_star_white_36dp);
-                                                    gradeChecked=true;
-                                                }
-                                            })
-                                            .addOnFailureListener(new OnFailureListener() {
-                                                @Override
-                                                public void onFailure(@NonNull Exception e) {
-                                                    Log.w(TAG, "Error updating document", e);
-                                                }
-                                            });
+                                    if((cocktailID/1000)==6)
+                                    {
+                                        DocumentReference Gradingmark_ref = db.collection("Recipe").document(Integer.toString(cocktailID));
+                                        Gradingmark_ref
+                                                .update("good_number", Float.toString((Score_total/Score_count)))
+                                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                    @Override
+                                                    public void onSuccess(Void aVoid) {
+                                                        Log.d(TAG, "DocumentSnapshot successfully updated!");
+                                                        Toast.makeText(getApplicationContext(), "나의 평가: " + gradeScore, Toast.LENGTH_SHORT).show();
+                                                        totalGradeScore = Float.toString((Score_total/Score_count));
+                                                        ratingBar.setRating(Float.valueOf(totalGradeScore));
+                                                        floatingActionButtonForGrade.setImageResource(R.mipmap.outline_star_white_36dp);
+                                                        gradeChecked=true;
+                                                    }
+                                                })
+                                                .addOnFailureListener(new OnFailureListener() {
+                                                    @Override
+                                                    public void onFailure(@NonNull Exception e) {
+                                                        Log.w(TAG, "Error updating document", e);
+                                                    }
+                                                });
+                                    }
+                                    else
+                                    {
+                                        DocumentReference Gradingmark_ref = db.collection("Self").document(Integer.toString(cocktailID));
+                                        Gradingmark_ref
+                                                .update("good_number", Float.toString((Score_total/Score_count)))
+                                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                    @Override
+                                                    public void onSuccess(Void aVoid) {
+                                                        Log.d(TAG, "DocumentSnapshot successfully updated!");
+                                                        Toast.makeText(getApplicationContext(), "나의 평가: " + gradeScore, Toast.LENGTH_SHORT).show();
+                                                        totalGradeScore = Float.toString((Score_total/Score_count));
+                                                        ratingBar.setRating(Float.valueOf(totalGradeScore));
+                                                        floatingActionButtonForGrade.setImageResource(R.mipmap.outline_star_white_36dp);
+                                                        gradeChecked=true;
+                                                    }
+                                                })
+                                                .addOnFailureListener(new OnFailureListener() {
+                                                    @Override
+                                                    public void onFailure(@NonNull Exception e) {
+                                                        Log.w(TAG, "Error updating document", e);
+                                                    }
+                                                });
+                                    }
+
                                 } else {
                                     Log.d(TAG, "Error getting documents: ", task.getException());
                                 }

@@ -58,7 +58,6 @@ public class MyPageBookmarkActivity extends AppCompatActivity {
         Bookmark_name = new ArrayList();       //레시피 이름
         Bookmark_id = new ArrayList();         //각 문서 이름
         Bookmark_ref = new ArrayList();        //레시피 ref
-        Bookmark_uid = new ArrayList();        //사용자 uid
         method = new String[200];
         Recipe_Base = new String[200];
         abv = new String[200];
@@ -75,7 +74,6 @@ public class MyPageBookmarkActivity extends AppCompatActivity {
                                 Bookmark_name.add(document.get("레시피 이름").toString());       //레시피 이름
                                 Bookmark_id.add(document.get("레시피 번호").toString());         //각 문서 이름
                                 Bookmark_ref.add(document.get("레시피 ref").toString());        //레시피 ref
-                                Bookmark_uid.add(document.get("사용자 uid").toString());        //사용자 uid
                             }
                             Set_first();
                         } else {
@@ -160,7 +158,7 @@ public class MyPageBookmarkActivity extends AppCompatActivity {
                             if (document.exists()) {
                                 count = finalI1;
                                 Recipe_Base[count] = String.valueOf(document.get("만드는 방법"));
-                                method[count] = (document.get("설명").toString());
+                                method[count] = (document.get("칵테일 설명").toString());
                                 abv[count] = (document.get("칵테일 만든이").toString());
                                 recyclerViewForCocktailBookmark.setAdapter(adapterForCocktailBookmark);
                                 adapterForCocktailBookmark.addItem(new Cocktail(Bookmark_name.get(count).toString(), Integer.parseInt((String) Bookmark_id.get(count)),

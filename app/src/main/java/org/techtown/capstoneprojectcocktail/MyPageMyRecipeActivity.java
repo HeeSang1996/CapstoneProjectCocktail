@@ -107,8 +107,8 @@ public class MyPageMyRecipeActivity extends AppCompatActivity {
                     public boolean onMenuItemClick(MenuItem item) {
                         switch (item.getItemId()){
                             case R.id.popup_myRecipe_delete:
-                                DocumentReference Bookmark_ref = db.collection("Self").document(String.valueOf(cocktail.id));
-                                Bookmark_ref
+                                DocumentReference update_S_ref = db.collection("Self").document(String.valueOf(cocktail.id));
+                                update_S_ref
                                         .update("칵테일 만든 유저 id", "0")
                                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                                             @Override
@@ -121,6 +121,53 @@ public class MyPageMyRecipeActivity extends AppCompatActivity {
                                                 Self_user = new ArrayList();
                                                 Self_url = new ArrayList();
                                                 adapterForCocktailMyRecipe.clearAllForAdapter();
+                                                String B_name  = currentUser.getUid() + String.valueOf(cocktail.id);
+
+                                                DocumentReference update_B_ref = db.collection("Bookmark").document(B_name);
+                                                update_B_ref.update("사용자 uid", "0").addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                    @Override
+                                                    public void onSuccess(Void aVoid) {
+                                                    }
+                                                }).addOnFailureListener(new OnFailureListener() {
+                                                    @Override
+                                                    public void onFailure(@NonNull Exception e) {
+                                                    }
+                                                });
+                                                DocumentReference update_G_ref = db.collection("Grading").document(B_name);
+                                                update_G_ref.update("사용자 uid", "0").addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                    @Override
+                                                    public void onSuccess(Void aVoid) {
+                                                    }
+                                                }).addOnFailureListener(new OnFailureListener() {
+                                                    @Override
+                                                    public void onFailure(@NonNull Exception e) {
+                                                    }
+                                                });
+                                                db.collection("Comment")
+                                                        .whereEqualTo("레시피 번호", String.valueOf(cocktail.id))
+                                                        .get()
+                                                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                                            @Override
+                                                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                                if (task.isSuccessful()) {
+                                                                    for (QueryDocumentSnapshot document : task.getResult()) {
+                                                                        DocumentReference update_C_ref = db.collection("Comment").document(document.getId());
+                                                                        update_C_ref.update("사용자 uid", "0").addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                                            @Override
+                                                                            public void onSuccess(Void aVoid) {
+                                                                            }
+                                                                        }).addOnFailureListener(new OnFailureListener() {
+                                                                            @Override
+                                                                            public void onFailure(@NonNull Exception e) {
+                                                                            }
+                                                                        });
+                                                                    }
+                                                                    recyclerViewForCocktailMyRecipe.setAdapter(adapterForCocktailMyRecipe);
+                                                                } else {
+                                                                }
+
+                                                            }
+                                                        });
 
                                                 db.collection("Self")
                                                         .whereEqualTo("칵테일 만든 유저 id", currentUser.getUid())

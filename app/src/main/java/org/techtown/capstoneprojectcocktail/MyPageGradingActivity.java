@@ -155,7 +155,7 @@ public class MyPageGradingActivity extends AppCompatActivity {
                             if (document.exists()) {
                                 count = finalI1;
                                 Recipe_Base[count] = String.valueOf(document.get("만드는 방법"));
-                                method[count] = (document.get("설명").toString());
+                                method[count] = (document.get("칵테일 설명").toString());
                                 abv[count] = (document.get("칵테일 만든이").toString());
                                 recyclerViewForCocktailGrading.setAdapter(adapterForCocktailGrading);
                                 adapterForCocktailGrading.addItem(new Cocktail(Grading_name.get(count).toString(), Integer.parseInt((String) Grading_id.get(count)),
