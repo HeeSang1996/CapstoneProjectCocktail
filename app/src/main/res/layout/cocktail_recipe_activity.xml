@@ -140,6 +140,7 @@
                 android:textStyle="bold" />
 
             <RatingBar
+                android:theme="@style/RatingBar"
                 android:id="@+id/ratingBar_grading_recipe"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -231,7 +232,7 @@
         android:layout_height="wrap_content"
         android:clickable="true"
         android:layout_margin="20dp"
-        app:backgroundTint="#22FFFF"
+        app:backgroundTint="#701919"
         app:srcCompat="@mipmap/outline_more_vert_white_36dp"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout_cocktail_recipe"/>
