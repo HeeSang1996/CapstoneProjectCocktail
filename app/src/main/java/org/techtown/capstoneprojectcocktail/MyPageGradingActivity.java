@@ -36,7 +36,9 @@ public class MyPageGradingActivity extends AppCompatActivity {
     String[] method = new String[200];      //self이면 설명
     String[] Recipe_Base = new String[200]; //self이면 만드는 방법
     String[] abv = new String[200];         //self이면 칵테일 만든이
-    int count = 0;
+    String[] Score = new String[200];       //평가한 점수 받아오기
+    int count = 0;  //Recipe collection
+    int count2 = 0; //Grading collection
 
     FirebaseAuth mAuth  = FirebaseAuth.getInstance();
     FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -116,7 +118,7 @@ public class MyPageGradingActivity extends AppCompatActivity {
             if( Integer.parseInt(String.valueOf(Grading_id.get(i))) < 10000)
             {
                 DocumentReference docRef = db.collection("Recipe").document(String.valueOf(Grading_id.get(i)));
-                final int finalI = i;
+                final int finalI = i; //Recipe
                 docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -131,9 +133,27 @@ public class MyPageGradingActivity extends AppCompatActivity {
                                 Recipe_Base[count] = Recipe_Base[count].replaceAll("\\=", " ");
                                 method[count] = (document.get("method").toString());
                                 abv[count] = (document.get("abv").toString()) + "%";
-                                recyclerViewForCocktailGrading.setAdapter(adapterForCocktailGrading);
-                                adapterForCocktailGrading.addItem(new Cocktail(Grading_name.get(count).toString(), Integer.parseInt((String) Grading_id.get(count)),
-                                        method[count], Recipe_Base[count], abv[count],Grading_ref.get(count).toString()));
+                                DocumentReference Grading_doc_ref = db.collection("Grading").document(currentUser.getUid()+String.valueOf(Grading_id.get(count)));
+                                Grading_doc_ref.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                        if (task.isSuccessful()) {
+                                            DocumentSnapshot document = task.getResult();
+                                            if (document.exists()) {
+                                                count2 = finalI;
+                                                Score[count2] = String.valueOf(document.get("점수"));
+                                                recyclerViewForCocktailGrading.setAdapter(adapterForCocktailGrading);
+                                                adapterForCocktailGrading.addItem(new Cocktail(Grading_name.get(count2).toString(), Integer.parseInt((String) Grading_id.get(count2)),
+                                                        method[count2], Recipe_Base[count2], abv[count2],Grading_ref.get(count2).toString(),Score[count2]));
+                                            } else {
+                                                System.out.println("오류 발생 해당 컬렉션에 문서가 존재하지 않음.");
+                                            }
+                                        } else {
+                                            System.out.println("오류 발생 셀프 컬렉션에서 정상적으로 불러와지지 않음.");
+                                        }
+                                    }
+                                });
+
                             } else {
                                 System.out.println("오류 발생 해당 컬렉션에 문서가 존재하지 않음.");
                             }
@@ -157,9 +177,26 @@ public class MyPageGradingActivity extends AppCompatActivity {
                                 Recipe_Base[count] = String.valueOf(document.get("만드는 방법"));
                                 method[count] = (document.get("칵테일 설명").toString());
                                 abv[count] = (document.get("칵테일 만든이").toString());
-                                recyclerViewForCocktailGrading.setAdapter(adapterForCocktailGrading);
-                                adapterForCocktailGrading.addItem(new Cocktail(Grading_name.get(count).toString(), Integer.parseInt((String) Grading_id.get(count)),
-                                        method[count], Recipe_Base[count], abv[count],Grading_ref.get(count).toString()));
+                                DocumentReference Grading_doc_ref = db.collection("Grading").document(currentUser.getUid()+String.valueOf(Grading_id.get(count)));
+                                Grading_doc_ref.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                        if (task.isSuccessful()) {
+                                            DocumentSnapshot document = task.getResult();
+                                            if (document.exists()) {
+                                                count2 = finalI1;
+                                                Score[count2] = String.valueOf(document.get("점수"));
+                                                recyclerViewForCocktailGrading.setAdapter(adapterForCocktailGrading);
+                                                adapterForCocktailGrading.addItem(new Cocktail(Grading_name.get(count2).toString(), Integer.parseInt((String) Grading_id.get(count2)),
+                                                        method[count2], Recipe_Base[count2], abv[count2],Grading_ref.get(count2).toString(),Score[count2]));
+                                            } else {
+                                                System.out.println("오류 발생 해당 컬렉션에 문서가 존재하지 않음.");
+                                            }
+                                        } else {
+                                            System.out.println("오류 발생 셀프 컬렉션에서 정상적으로 불러와지지 않음.");
+                                        }
+                                    }
+                                });
                             } else {
                                 System.out.println("오류 발생 해당 컬렉션에 문서가 존재하지 않음.");
                             }
