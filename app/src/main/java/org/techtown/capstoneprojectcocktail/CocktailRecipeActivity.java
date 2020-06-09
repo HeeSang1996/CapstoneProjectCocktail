@@ -101,6 +101,7 @@ public class CocktailRecipeActivity extends AppCompatActivity {
         TextView textForCocktailID = (TextView) findViewById(R.id.textView_ingredientText_recipe);
         TextView textForCocktailDescription = (TextView) findViewById(R.id.textView_cocktailDescription_recipe);
         TextView textForCocktailIngredient = (TextView) findViewById(R.id.textView_cocktailIngredient_recipe);
+        TextView textForSimpleABV = (TextView) findViewById(R.id.textView_ABVText_recipe);
         TextView textForCocktailABV = (TextView) findViewById(R.id.textView_cocktailABV_recipe);
         TextView textForNonLoginUser = (TextView) findViewById(R.id.textView_info_for_nonLoginUser_recipe);
         TextView textForGrading = (TextView) findViewById(R.id.textView_simpleRating_recipe);
@@ -166,7 +167,11 @@ public class CocktailRecipeActivity extends AppCompatActivity {
             floatingActionButtonForBookmark.setVisibility(View.GONE);
             floatingActionButtonForGrade.setVisibility(View.GONE);
         }
-        else {
+        //유저가 올린 레시피이면, abv대신 작성자 텍스트 출력
+        else if ((cocktailID/1000)>=10) {
+            textForSimpleABV.setText("작성자: ");
+        }
+        else{
             textForCocktailID.setText("재료");
             //영진 여기다가 별점 불러다 박아주셈 totalGradeScore=
             currentUser = mAuth.getCurrentUser();
