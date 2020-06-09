@@ -78,13 +78,7 @@ public class MJH_SimulatorUiActivity extends AppCompatActivity implements View.O
                 try{
                     resultTest = "현재 현재글래스" + Integer.toString(test.glassType);
                     for(int i = 0 ; i < test.simulatorStep.get(test.totalStep-1).eachVolume.size(); i++){
-                        resultTest = resultTest + "/" + Float.toString(test.simulatorStep.get(test.totalStep-1).alpha);
-
-                            resultTest = resultTest + "/" + Float.toString(test.simulatorStep.get(test.totalStep-1).isColor.get(i).rgb_red)
-                            + "," + Float.toString(test.simulatorStep.get(test.totalStep-1).isColor.get(i).rgb_green)
-                            + "," + Float.toString(test.simulatorStep.get(test.totalStep-1).isColor.get(i).rgb_blue);
-
-
+                        resultTest = resultTest + "/" + Float.toString(test.simulatorStep.get(test.totalStep-1).totalVolume);
                     }
                     txt.setText(resultTest);
                 }catch(Exception e){

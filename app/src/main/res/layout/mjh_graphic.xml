@@ -13,7 +13,7 @@
         android:layout_height="458dp"
         app:layout_constraintBottom_toTopOf="@+id/constraintLayout_bottom_background_home"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.571"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.753"
