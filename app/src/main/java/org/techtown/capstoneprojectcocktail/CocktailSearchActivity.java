@@ -26,13 +26,17 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 public class CocktailSearchActivity extends AppCompatActivity{
 
     final CocktailAdapterForSearch adapterForCocktailSearch = new CocktailAdapterForSearch();
+    final CocktailAdapterForSearch adapterForSelfCocktailSearch = new CocktailAdapterForSearch();
 
     public FirebaseFirestore db = FirebaseFirestore.getInstance();
     private static final String TAG = "DocSnippets";
@@ -59,6 +63,14 @@ public class CocktailSearchActivity extends AppCompatActivity{
     String[] Ingredient_flavour = new String[140];
     String[] Ingredient_specific_gravity = new String[140];
     int Ingredient_count;
+
+    //사용자들의 레시피 정보를 받기위한 변수
+    ArrayList Self_name = new ArrayList();
+    ArrayList Self_id = new ArrayList();
+    ArrayList Self_description = new ArrayList();
+    ArrayList Self_base = new ArrayList();
+    ArrayList Self_user = new ArrayList();
+    ArrayList Self_url = new ArrayList();
 
     RecyclerView recyclerViewForCocktailSearch;
 
@@ -94,6 +106,7 @@ public class CocktailSearchActivity extends AppCompatActivity{
                     Toast.makeText(getApplicationContext(),"사용자 레시피 검색 ON",Toast.LENGTH_LONG).show();
                     //Toast.makeText(getApplicationContext(),"사용자 레시피 검색 ON" + spinner.getSelectedItemPosition(),Toast.LENGTH_LONG).show();
                     adapterForCocktailSearch.clearAllForAdapter();
+                    setAdapterForSelfCocktailSearchMethod("");
                 }else{
                     Toast.makeText(getApplicationContext(),"사용자 레시피 검색 OFF",Toast.LENGTH_LONG).show();
                     adapterForCocktailSearch.clearAllForAdapter();
@@ -268,6 +281,49 @@ public class CocktailSearchActivity extends AppCompatActivity{
                 }
             });
         }
+    }
+
+    private void setAdapterForSelfCocktailSearchMethod(String str){
+        final String _str = str;
+        db.collection("Self")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                //칵테일 이름, 칵테일 문서번호, 설명, 만드는방법, 칵테일 만든이, 이미지url
+                                if(document.get("칵테일 만든 유저 id").equals("0"))
+                                    System.out.println("얘는 안받아요");
+                                else{
+                                    Self_name.add(document.get("칵테일 이름").toString());
+                                    Self_id.add(document.getId().toString());
+                                    Self_description.add(document.get("칵테일 설명").toString());
+                                    Self_base.add(document.get("만드는 방법").toString());
+                                    Self_user.add(document.get("칵테일 만든이").toString());
+                                    Self_url.add(document.get("ref").toString());
+                                }
+                            }
+                            recyclerViewForCocktailSearch.setAdapter(adapterForCocktailSearch);
+                            for(int i=0;i<Self_name.size();i++){
+                                //칵테일 이름, 칵테일 문서번호, 설명, 만드는방법, 칵테일 만든이, 이미지url
+                                adapterForCocktailSearch.addItem(new Cocktail((String) Self_name.get(i), Integer.parseInt(String.valueOf(Self_id.get(i))), (String) Self_description.get(i), (String) Self_base.get(i), (String) Self_user.get(i),
+                                        (String) Self_url.get(i)));
+                            }
+                            //refresh 해주는 함수(아마)
+                            if (_str.length()==0){
+                                recyclerViewForCocktailSearch.setAdapter(adapterForCocktailSearch);
+                            }
+                            else{
+                                adapterForCocktailSearch.filterForCocktail(_str);
+                                recyclerViewForCocktailSearch.setAdapter(adapterForCocktailSearch);
+                            }
+                        } else {
+                            System.out.println("오류 발생 Grading 컬렉션에서 정상적으로 불러와지지 않음.");
+                        }
+
+                    }
+                });
     }
 
     private void setAdapterForIngredientSearch(){

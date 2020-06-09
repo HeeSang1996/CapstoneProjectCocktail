@@ -22,6 +22,7 @@ public class Cocktail {
     String ingredient;
     String abvNum;
     String imageUrl;
+    String rating;
 
     public Cocktail(String name, int id, String description, String ingredient, String abvNum, String imageUrl) {
         this.name = name;
@@ -30,6 +31,17 @@ public class Cocktail {
         this.ingredient = ingredient;
         this.abvNum = abvNum;
         this.imageUrl = imageUrl;
+        this.rating = "0.0";
+    }
+
+    public Cocktail(String name, int id, String description, String ingredient, String abvNum, String imageUrl,String rating) {
+        this.name = name;
+        this.id = id;
+        this.description = description;
+        this.ingredient = ingredient;
+        this.abvNum = abvNum;
+        this.imageUrl = imageUrl;
+        this.rating = rating;
     }
 
     public String getName() {
@@ -78,5 +90,13 @@ public class Cocktail {
 
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
+    }
+
+    public String getRating() {
+        return rating;
+    }
+
+    public void setRating(String rating) {
+        this.rating = rating;
     }
 }
