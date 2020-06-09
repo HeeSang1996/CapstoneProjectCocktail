@@ -6,6 +6,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.LinearGradient;
 import android.graphics.Paint;
+import android.graphics.Path;
 import android.graphics.RectF;
 import android.graphics.Shader;
 import android.os.Build;
@@ -112,7 +113,7 @@ public class MJH_SimulatorGraphicMartiniActivity extends AppCompatActivity {
 
                 //얼음
                 Bitmap bitmap2 = BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.martini_glass);
-                bitmap2 = resizeBitmapImg(bitmap2, 1480);
+                bitmap2 = resizeBitmapImg(bitmap2);
                 canvas.drawBitmap(bitmap2, 0, 0, null);
 
                 //빛반사
@@ -167,7 +168,7 @@ public class MJH_SimulatorGraphicMartiniActivity extends AppCompatActivity {
 
                 //얼음
                 Bitmap bitmap2 = BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.martini_glass);
-                bitmap2 = resizeBitmapImg(bitmap2, 1480);
+                bitmap2 = resizeBitmapImg(bitmap2);
                 canvas.drawBitmap(bitmap2, 0, 0, null);
 
                 //빛반사
@@ -178,7 +179,7 @@ public class MJH_SimulatorGraphicMartiniActivity extends AppCompatActivity {
             }
             else{
                 Canvas canvas;
-                Bitmap bitmap = Bitmap.createBitmap(720,1480, Bitmap.Config.ARGB_8888);
+                Bitmap bitmap = Bitmap.createBitmap(500,700, Bitmap.Config.ARGB_8888);
                 canvas = new Canvas(bitmap);
                 ImageView View = (ImageView) findViewById(R.id.martiniGlass);
                 View.setImageBitmap(bitmap);
@@ -199,7 +200,15 @@ public class MJH_SimulatorGraphicMartiniActivity extends AppCompatActivity {
 
                 //전체사각
                 paint.setColor(Color.rgb(red ,green ,blue));
-                canvas.drawRect(110, height, 650, 1320, paint);
+                canvas.drawRect(110,0, 650, 285, paint);
+
+                paint.setColor(Color.BLUE);
+                Path path = new Path();
+
+
+
+
+
 
                 //바닥부
                 paint.setColor(Color.rgb(red ,green ,blue));
@@ -208,8 +217,8 @@ public class MJH_SimulatorGraphicMartiniActivity extends AppCompatActivity {
                 canvas.drawArc(rect, 0, 360, true, paint);
 
                 //잔
-                Bitmap bitmap2 = BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.martini_glass);
-                bitmap2 = resizeBitmapImg(bitmap2, 1480);
+                Bitmap bitmap2 = BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.martini_glass_re);
+                bitmap2 = resizeBitmapImg(bitmap2);
                 canvas.drawBitmap(bitmap2, 0, 0, null);
 
                 //빛반사
@@ -226,26 +235,12 @@ public class MJH_SimulatorGraphicMartiniActivity extends AppCompatActivity {
     //param source 원본 Bitmap 객체
     //param maxResolution 제한 해상도
     //return 리사이즈된 이미지 Bitmap 객체
-    public Bitmap resizeBitmapImg(Bitmap source, int maxResolution){
+    public Bitmap resizeBitmapImg(Bitmap source){
         int width = source.getWidth();
         int height = source.getHeight();
-        int newWidth = width;
-        int newHeight = height;
-        float rate = 0.0f;
+        int newWidth = 500;
+        int newHeight = 700;
 
-        if(width > height){
-            if(maxResolution < width){
-                rate = maxResolution / (float) width;
-                newHeight = (int) (height * rate);
-                newWidth = maxResolution;
-            }
-        }else{
-            if(maxResolution < height){
-                rate = maxResolution / (float) height;
-                newWidth = (int) (width * rate);
-                newHeight = maxResolution;
-            }
-        }
         return Bitmap.createScaledBitmap(source, newWidth, newHeight, true);
     }
 }

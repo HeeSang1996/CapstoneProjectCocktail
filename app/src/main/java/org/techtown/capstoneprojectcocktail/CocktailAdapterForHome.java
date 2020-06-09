@@ -24,7 +24,7 @@ public class CocktailAdapterForHome extends RecyclerView.Adapter<CocktailAdapter
 
     public class ViewHolder extends RecyclerView.ViewHolder{
         TextView textForCocktailName;
-        TextView textForCocktailDescription;
+        //TextView textForCocktailDescription;
         TextView textForCocktailABV;
         ImageView imageForCocktail;
 
@@ -33,7 +33,7 @@ public class CocktailAdapterForHome extends RecyclerView.Adapter<CocktailAdapter
             super(itemView);
 
             textForCocktailName = itemView.findViewById(R.id.textView_cocktailName_home);
-            textForCocktailDescription = itemView.findViewById(R.id.textView_cocktailDescription_home);
+            //textForCocktailDescription = itemView.findViewById(R.id.textView_cocktailDescription_home);
             textForCocktailABV = itemView.findViewById(R.id.textView_cocktailABV_home);
             imageForCocktail = itemView.findViewById(R.id.imageView_cocktail_home);
 
@@ -71,7 +71,7 @@ public class CocktailAdapterForHome extends RecyclerView.Adapter<CocktailAdapter
                 }
             });
             textForCocktailName.setText(item.getName());
-            textForCocktailDescription.setText(item.getDescription());
+            //textForCocktailDescription.setText(item.getDescription());
             textForCocktailABV.setText(item.getAbvNum());
             //Glide.with(itemView).load(imageUrl).into(imageForCocktail);
         }
