@@ -120,7 +120,7 @@
 
         <activity
             android:name=".MJH_SimulatorUiActivity"
-            android:label="aa"
+            android:label="  Simulation"
             android:launchMode="singleTop"
             android:screenOrientation="portrait">
         </activity>
@@ -133,7 +133,7 @@
         </activity>
         <activity
             android:name=".MJH_Popup1Activity"
-            android:label="aa2"
+            android:label="  Simulation Result"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Dialog">
