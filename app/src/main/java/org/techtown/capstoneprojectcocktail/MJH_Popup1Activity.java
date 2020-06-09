@@ -52,7 +52,7 @@ public class MJH_Popup1Activity extends Activity {
         }
         else if (buttonFlag == 0){
             bt.setBackgroundColor(Color.parseColor("#ffffff"));
-            bt.setTextColor(Color.parseColor("#262626"));
+            bt.setTextColor(Color.parseColor("#424242"));
             selectButtonId = v.getId();
             buttonFlag = 1;
 
@@ -62,7 +62,7 @@ public class MJH_Popup1Activity extends Activity {
         }
         else if(selectButtonId == v.getId()){
             bt = (Button) findViewById(v.getId());
-            bt.setBackgroundColor(Color.parseColor("#262626"));
+            bt.setBackgroundColor(Color.parseColor("#424242"));
             bt.setTextColor(Color.parseColor("#ffffff"));
             buttonFlag = 0;
 
