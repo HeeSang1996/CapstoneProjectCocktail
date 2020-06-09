@@ -26,6 +26,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -67,6 +69,16 @@ public class MJH_Popup3Activity extends Activity {
     RecyclerView recyclerViewForCocktailSearch;
     ArrayList<MJH_Object_ingredient> bufferUpdateIngredient;
     ArrayList<Float> bufferUpdateIngredientAmount;
+
+    //db 재료 저장용 리스트 선언
+    //이름, 번호, 향, 당도, 도수 , ref
+    private ArrayList I_name = new ArrayList();
+    private ArrayList I_ID = new ArrayList();
+    private ArrayList I_flavour = new ArrayList();
+    private ArrayList I_sugar = new ArrayList();
+    private ArrayList I_abv = new ArrayList();
+    private ArrayList I_ref = new ArrayList();
+
 
     /////////////////////////////////////////////
     MJH_SimulatorUiActivity simulatorUiAddress;
@@ -211,66 +223,33 @@ public class MJH_Popup3Activity extends Activity {
 
 
     private void setAdapterForIngredientSearch(){
-        for(int i=0; i < 140; i++)
-        {
-            List<String> list;
-
-            DocumentReference docRef = db.collection("Ingredient").document(String.valueOf(i+5001));
-
-            final int finalI = i;
-            docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                    if (task.isSuccessful()) {
-                        DocumentSnapshot document = task.getResult();
-                        if (document.exists()) {
-                            //System.out.println("DocumentSnapshot data: " + document.getData());
-                            //Log.d(TAG, "DocumentSnapshot data: " + document.getData());
-                            count = finalI;
-                            Ingredient_name[count] = (String) document.get("Ingredient_name"); //재료 이름
-                            //Log.d(TAG, "count"+ count + "Ingredient_name data: " +Ingredient_name[count]);
-                            System.out.println("array_count : "+ count + "   Ingredient_name data: " +Ingredient_name[count]);
-                            Ingredient_ID[count] = 5001+ count;
-                            Ingredient_flavour[count] = (String) document.get("flavour"); //향(칵테일에선 설명 method)
-                            //abv[0] = (String) document.get("abv");
-
-                            //Recipe_Ingredient = (Map<String, Number>) document.get("Ingredient_content");
-                            //Recipe_Base[count] = (String) document.get("Recipe_Base");
-                            //map으로 받아온 정보를 string으로 치환한뒤 유저에게 보여줄 수 있도록 replaceall함({, }, = 삭제 ml 추가)
-                            //형변환 올바른 예시 왠진 모르지만 (float)로 명시적 형변환 하면 터지고 저리 하면 안터짐
-//                            Number abc;
-//                            float abcd;
-//                            abc  = (Number) document.get("sugar_rate");
-//                            abcd = abc.floatValue();
-
-                            Ingredient_sugar[count] = (Number) document.get("sugar_rate"); //suger_rate(칵테일에선 재료와 용량)
-                            Ingredient_Realsugar[count] = Ingredient_sugar[count] + "%";
-//                            Recipe_Base[count] = Recipe_Base[count].replaceAll("\\,", "ml ");
-//                            Recipe_Base[count] = Recipe_Base[count].replaceAll("\\{", " ");
-//                            Recipe_Base[count] = Recipe_Base[count].replaceAll("\\}", "ml ");
-//                            Recipe_Base[count] = Recipe_Base[count].replaceAll("\\=", " ");
-                            //long형태로 받은 abv를 유저에게 보여줄 수 있도록 %를 붙여 재저장
-                            Ingredient_Realabv[count] = (long) document.get("abv");
-                            Ingredient_abv[count] = Ingredient_Realabv[count] + "%";
-                            Ingredient_ref[count] = (String) document.get("ref");
-                            adapterForCocktailSearch.addItem(new Cocktail(Ingredient_name[count], Ingredient_ID[count], Ingredient_flavour[count], Ingredient_Realsugar[count], Ingredient_abv[count],Ingredient_ref[count]));
-                            Log.d(TAG, "Ingredient_ID data: " +  Ingredient_ID[count]);
-                            //refresh 해주는 함수(아마)
-                            recyclerViewForCocktailSearch.setAdapter(adapterForCocktailSearch);
-
-                            //배열에 잘드갔는지 테스트한 for 구문
-                            for(int k=0; k < 140; k++)
-                            {
-                                System.out.println("array_count : "+ k + "   Ingredient_name data: " +Ingredient_name[k]);
+        //Ingredient_type이 시럽인것만 나오도록
+        db.collection("Ingredient").whereEqualTo("Ingredient_type", "시럽")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                I_name.add(document.get("Ingredient_name"));
+                                I_ID.add(document.getId());
+                                I_flavour.add(document.get("flavour"));
+                                I_sugar.add(document.get("sugar_rate"));
+                                I_abv.add(document.get("abv"));
+                                I_ref.add(document.get("ref"));
+                                adapterForCocktailSearch.addItem(new Cocktail((String) I_name.get(I_name.size()-1),
+                                        Integer.parseInt((String) I_ID.get(I_ID.size()-1)),
+                                        (String) I_flavour.get(I_flavour.size()-1),
+                                        String.valueOf(I_sugar.get(I_sugar.size()-1)) ,
+                                        String.valueOf(I_sugar.get(I_abv.size()-1)) ,
+                                        (String) I_ref.get(I_ref.size()-1)));
                             }
+                            recyclerViewForCocktailSearch.setAdapter(adapterForCocktailSearch);
                         } else {
-                            //Log.d(TAG, "No such document");
+                            System.out.println("해당하는 문서가 없습니다.");
                         }
-                    } else {
-                        //Log.d(TAG, "get failed with ", task.getException());
                     }
-                }
-            });
-        }
+                });
+
     }
 }
