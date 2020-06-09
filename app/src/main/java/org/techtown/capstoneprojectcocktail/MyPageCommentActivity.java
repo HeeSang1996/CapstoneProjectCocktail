@@ -101,3 +101,4 @@ public class MyPageCommentActivity extends AppCompatActivity {
         }
     }
 }
+//마이 코멘트 액티비티
