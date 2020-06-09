@@ -16,14 +16,14 @@
             android:id="@+id/linearLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#00B0FF"
+            android:background="#171717"
             android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/do_select_glass"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="●   잔을 고르세요   "
+                android:text="●   잔을 골라주세요  "
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textColor="#fff" />
 
@@ -43,7 +43,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:checked="false"
-                android:text="칵테일 잔" />
+                android:text="칵테일 잔"
+                android:textColor="#fff"/>
 
             <Button
                 android:id="@+id/button"
@@ -57,12 +58,16 @@
             android:id="@+id/textView"
             android:layout_width="match_parent"
             android:layout_height="300dp"
-            android:text="TextView" />
+            android:text="TextView"
+            android:textColor="#333333"
+            android:background="#333333"/>
 
         <ListView
             android:id="@+id/listview1"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:textColor="#fff"
+            android:background="#333333">
 
         </ListView>
 
@@ -100,7 +105,7 @@
         android:id="@+id/constraintLayout_bottom_background_home"
         android:layout_width="match_parent"
         android:layout_height="70dp"
-        android:background="#00B0FF"
+        android:background="#171717"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent">
@@ -116,7 +121,7 @@
         app:maxImageSize = "45dp"
         app:srcCompat="@mipmap/fab_cocktail"
         app:fabCustomSize="80dp"
-        app:backgroundTint="#03C3DA"
+        app:backgroundTint="#c20000"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent" />

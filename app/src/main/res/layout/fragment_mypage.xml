@@ -3,14 +3,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#333333">
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/myPageConsLayout"
         android:layout_width="match_parent"
         android:layout_height="160dp"
-        android:background="@drawable/side_nav_bar"
+        android:background="#171717"
         android:paddingHorizontal="@dimen/activity_horizontal_margin"
         android:theme="@style/ThemeOverlay.AppCompat.Dark"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -33,6 +34,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/nav_header_title"
+            android:typeface="serif"
             android:textSize="18sp"
             android:paddingHorizontal="@dimen/nav_header_vertical_spacing"
             app:layout_constraintBottom_toTopOf="@+id/userNameText_myPage"
@@ -46,6 +48,7 @@
             android:maxLines="1"
             android:paddingHorizontal="@dimen/nav_header_vertical_spacing"
             android:text="@string/nav_header_subtitle"
+            android:typeface="serif"
             android:textSize="26sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toRightOf="@+id/profileImageView_myPage"
@@ -62,7 +65,8 @@
         android:layout_marginVertical="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/myPageConsLayout">
+        app:layout_constraintTop_toBottomOf="@+id/myPageConsLayout"
+        android:background="#333333">
 
         <Button
             android:id="@+id/button_bookmark_myPage"
@@ -76,6 +80,7 @@
             android:gravity="center_vertical"
             android:padding="15dp"
             android:text="Bookmark"
+            android:typeface="serif"
             android:textAllCaps="false"
             android:textColor="#DDEFEF"
             android:singleLine="true"/>
@@ -88,6 +93,7 @@
             android:layout_marginVertical="10dp"
             android:background="@drawable/button_shape"
             android:text="My Comment"
+            android:typeface="serif"
             android:textAllCaps="false"
             android:textColor="#DDEFEF"
             android:padding="15dp"
@@ -104,6 +110,7 @@
             android:layout_marginVertical="10dp"
             android:background="@drawable/button_shape"
             android:text="My Grading"
+            android:typeface="serif"
             android:textAllCaps="false"
             android:textColor="#DDEFEF"
             android:padding="15dp"
@@ -120,6 +127,7 @@
             android:layout_marginVertical="10dp"
             android:background="@drawable/button_shape"
             android:text="My Recipe"
+            android:typeface="serif"
             android:textAllCaps="false"
             android:textColor="#DDEFEF"
             android:padding="15dp"
@@ -136,6 +144,7 @@
             android:layout_marginVertical="10dp"
             android:background="@drawable/button_shape"
             android:text="Recipe Upload"
+            android:typeface="serif"
             android:textAllCaps="false"
             android:textColor="#DDEFEF"
             android:padding="15dp"

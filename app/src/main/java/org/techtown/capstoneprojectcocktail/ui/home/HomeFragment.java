@@ -75,6 +75,7 @@ public class HomeFragment extends Fragment {
     String[][] Salty_Value = new String[81][10];
     String[][] Hot_Value = new String[81][10];
 
+    //db관련 테스트하거나 안드로이드 통해서 일괄적으로 수정할때 사용하는 함수입니다.
     public void setDocument() {
 
     }

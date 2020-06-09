@@ -795,7 +795,6 @@ public class CocktailRecipeActivity extends AppCompatActivity {
                                         Score_total += Float.parseFloat((String) document.get("점수"));
                                     }
                                     //해당 레시피번호와 동일한 레시피의 mark_number를 Bookmark_count와 동일하게 해서 업데이트함
-                                    Log.d(TAG, "왜 안나눠지냐 : " + Score_count + "   넌 왜 갱신만 되냐 : " +Score_total);
                                     DocumentReference Gradingmark_ref = db.collection("Recipe").document(Integer.toString(cocktailID));
                                     Gradingmark_ref
                                             .update("good_number", Float.toString((Score_total/Score_count)))
