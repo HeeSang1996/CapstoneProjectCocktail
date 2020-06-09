@@ -9,7 +9,7 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:cardBackgroundColor="#FFFFFF"
+        app:cardBackgroundColor="#3d3d3d"
         app:cardCornerRadius="20dp"
         app:cardElevation="5dp"
         app:cardUseCompatPadding="true">
@@ -41,7 +41,8 @@
                 android:ellipsize="end"
                 android:maxLines="1"
                 android:textSize = "20sp"
-                android:textStyle="bold"/>
+                android:textStyle="bold"
+                android:textColor="#DDEFEF"/>
 
             <TextView
                 android:id="@+id/textView_cocktailDescription_search"
@@ -53,7 +54,8 @@
                 android:maxLines="4"
                 android:gravity="center"
                 android:ellipsize="end"
-                android:textSize="12sp"/>
+                android:textSize="12sp"
+                android:textColor="#DDEFEF"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -70,7 +72,7 @@
                     android:gravity="right|center_vertical"
                     android:textSize="18sp"
                     android:maxLines="1"
-                    android:textColor="#00B0FF"/>
+                    android:textColor="#ffc800"/>
 
                 <TextView
                     android:id="@+id/textView_cocktailABV_search"
@@ -83,7 +85,7 @@
                     android:textStyle="bold"
                     android:ellipsize="end"
                     android:maxLines="1"
-                    android:textColor="#00B0FF"/>
+                    android:textColor="#ffc800"/>
             </LinearLayout>
         </LinearLayout>
     </androidx.cardview.widget.CardView>
