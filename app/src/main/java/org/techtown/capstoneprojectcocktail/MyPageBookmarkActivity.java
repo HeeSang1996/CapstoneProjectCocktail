@@ -1,7 +1,7 @@
 package org.techtown.capstoneprojectcocktail;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -11,8 +11,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -91,6 +89,14 @@ public class MyPageBookmarkActivity extends AppCompatActivity {
             @Override
             public void onItemClick(CocktailAdapterForSearch.ViewHolder holder, View view, int position) {
                 Cocktail item = adapterForCocktailBookmark.getItem(position);
+                Intent intent = new Intent(view.getContext(), CocktailRecipeActivity.class);
+                intent.putExtra("cocktailName", item.getName());
+                intent.putExtra("cocktailID",item.getId());
+                intent.putExtra("cocktailDescription",item.getDescription());
+                intent.putExtra("cocktailIngredient",item.getIngredient());
+                intent.putExtra("cocktailABV",item.getAbvNum());
+                intent.putExtra("cocktailRef",item.getImageUrl());
+                startActivity(intent);
                 System.out.println(item.getId());
             }
         });

@@ -1,5 +1,6 @@
 package org.techtown.capstoneprojectcocktail;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
@@ -93,6 +94,14 @@ public class MyPageGradingActivity extends AppCompatActivity {
             public void onItemClick(CocktailGradingAdapter.ViewHolder holder, View view, int position) {
                 Cocktail item = adapterForCocktailGrading.getItem(position);
                 System.out.println(item.getId());
+                Intent intent = new Intent(view.getContext(), CocktailRecipeActivity.class);
+                intent.putExtra("cocktailName", item.getName());
+                intent.putExtra("cocktailID",item.getId());
+                intent.putExtra("cocktailDescription",item.getDescription());
+                intent.putExtra("cocktailIngredient",item.getIngredient());
+                intent.putExtra("cocktailABV",item.getAbvNum());
+                intent.putExtra("cocktailRef",item.getImageUrl());
+                startActivity(intent);
             }
         });
     }
