@@ -52,6 +52,32 @@ public class MyPageBookmarkActivity extends AppCompatActivity {
         LinearLayoutManager layoutManagerForCocktailBookmark = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL,false);
         layoutManagerForCocktailBookmark.setReverseLayout(true);
         layoutManagerForCocktailBookmark.setStackFromEnd(true);
+
+        recyclerViewForCocktailBookmark.setLayoutManager(layoutManagerForCocktailBookmark);
+        recyclerViewForCocktailBookmark.setAdapter(adapterForCocktailBookmark);
+
+        //리사이클러뷰를 클릭했을 경우
+        adapterForCocktailBookmark.setOnItemClickListener(new OnCocktailItemClickListenerForSearch() {
+            @Override
+            public void onItemClick(CocktailAdapterForSearch.ViewHolder holder, View view, int position) {
+                Cocktail item = adapterForCocktailBookmark.getItem(position);
+                Intent intent = new Intent(view.getContext(), CocktailRecipeActivity.class);
+                intent.putExtra("cocktailName", item.getName());
+                intent.putExtra("cocktailID",item.getId());
+                intent.putExtra("cocktailDescription",item.getDescription());
+                intent.putExtra("cocktailIngredient",item.getIngredient());
+                intent.putExtra("cocktailABV",item.getAbvNum());
+                intent.putExtra("cocktailRef",item.getImageUrl());
+                startActivity(intent);
+                System.out.println(item.getId());
+            }
+        });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        adapterForCocktailBookmark.clearAllForAdapter();
         //받아오기위해 변수들 초기화 = new ArrayList();
         Bookmark_name = new ArrayList();       //레시피 이름
         Bookmark_id = new ArrayList();         //각 문서 이름
@@ -79,38 +105,6 @@ public class MyPageBookmarkActivity extends AppCompatActivity {
                         }
                     }
                 });
-
-        recyclerViewForCocktailBookmark.setLayoutManager(layoutManagerForCocktailBookmark);
-        recyclerViewForCocktailBookmark.setAdapter(adapterForCocktailBookmark);
-
-        //리사이클러뷰를 클릭했을 경우
-        adapterForCocktailBookmark.setOnItemClickListener(new OnCocktailItemClickListenerForSearch() {
-            @Override
-            public void onItemClick(CocktailAdapterForSearch.ViewHolder holder, View view, int position) {
-                Cocktail item = adapterForCocktailBookmark.getItem(position);
-                Intent intent = new Intent(view.getContext(), CocktailRecipeActivity.class);
-                intent.putExtra("cocktailName", item.getName());
-                intent.putExtra("cocktailID",item.getId());
-                intent.putExtra("cocktailDescription",item.getDescription());
-                intent.putExtra("cocktailIngredient",item.getIngredient());
-                intent.putExtra("cocktailABV",item.getAbvNum());
-                intent.putExtra("cocktailRef",item.getImageUrl());
-                startActivity(intent);
-                System.out.println(item.getId());
-            }
-        });
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        adapterForCocktailBookmark.clearAllForAdapter();
-        //해당 북마크 갯수만큼 for구문을 돌려 아이템 add
-        for(int i = 0; i < Bookmark_name.size(); i++)
-        {
-            adapterForCocktailBookmark.addItem(new Cocktail(Bookmark_name.get(i).toString(), Integer.parseInt((String) Bookmark_id.get(i)),
-                    method[i], Recipe_Base[i], abv[i],Bookmark_ref.get(i).toString()));
-        }
     }
 
     void Set_first()

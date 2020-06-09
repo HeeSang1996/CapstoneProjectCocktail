@@ -54,6 +54,32 @@ public class MyPageGradingActivity extends AppCompatActivity {
         LinearLayoutManager layoutManagerForCocktailGrading = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL,false);
         layoutManagerForCocktailGrading.setReverseLayout(true);
         layoutManagerForCocktailGrading.setStackFromEnd(true);
+        recyclerViewForCocktailGrading.setLayoutManager(layoutManagerForCocktailGrading);
+        recyclerViewForCocktailGrading.setAdapter(adapterForCocktailGrading);
+
+        //리사이클러뷰를 클릭했을 경우
+        adapterForCocktailGrading.setOnItemClickListener(new OnCocktailGradingClickListener() {
+            @Override
+            public void onItemClick(CocktailGradingAdapter.ViewHolder holder, View view, int position) {
+                Cocktail item = adapterForCocktailGrading.getItem(position);
+                System.out.println(item.getId());
+                Intent intent = new Intent(view.getContext(), CocktailRecipeActivity.class);
+                intent.putExtra("cocktailName", item.getName());
+                intent.putExtra("cocktailID",item.getId());
+                intent.putExtra("cocktailDescription",item.getDescription());
+                intent.putExtra("cocktailIngredient",item.getIngredient());
+                intent.putExtra("cocktailABV",item.getAbvNum());
+                intent.putExtra("cocktailRef",item.getImageUrl());
+                startActivity(intent);
+            }
+        });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        adapterForCocktailGrading.clearAllForAdapter();
         //받아오기위해 변수들 초기화 = new ArrayList();
         Grading_name = new ArrayList();       //레시피 이름
         Grading_id = new ArrayList();         //각 문서 이름
@@ -84,37 +110,6 @@ public class MyPageGradingActivity extends AppCompatActivity {
 
                     }
                 });
-
-        recyclerViewForCocktailGrading.setLayoutManager(layoutManagerForCocktailGrading);
-        recyclerViewForCocktailGrading.setAdapter(adapterForCocktailGrading);
-
-        //리사이클러뷰를 클릭했을 경우
-        adapterForCocktailGrading.setOnItemClickListener(new OnCocktailGradingClickListener() {
-            @Override
-            public void onItemClick(CocktailGradingAdapter.ViewHolder holder, View view, int position) {
-                Cocktail item = adapterForCocktailGrading.getItem(position);
-                System.out.println(item.getId());
-                Intent intent = new Intent(view.getContext(), CocktailRecipeActivity.class);
-                intent.putExtra("cocktailName", item.getName());
-                intent.putExtra("cocktailID",item.getId());
-                intent.putExtra("cocktailDescription",item.getDescription());
-                intent.putExtra("cocktailIngredient",item.getIngredient());
-                intent.putExtra("cocktailABV",item.getAbvNum());
-                intent.putExtra("cocktailRef",item.getImageUrl());
-                startActivity(intent);
-            }
-        });
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        adapterForCocktailGrading.clearAllForAdapter();
-        for(int i = 0; i < Grading_name.size(); i++){
-            adapterForCocktailGrading.addItem(new Cocktail(Grading_name.get(i).toString(), Integer.parseInt((String) Grading_id.get(i)),
-                    method[i], Recipe_Base[i], abv[i],Grading_ref.get(i).toString()));
-        }
     }
 
     void Set_first()
