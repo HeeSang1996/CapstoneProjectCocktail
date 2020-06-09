@@ -74,7 +74,7 @@ public class CocktailGradingAdapter extends RecyclerView.Adapter<CocktailGrading
             });
             textForCocktailName.setText(item.getName());
             textForCocktailDescription.setText(item.getDescription());
-            textForCocktailGrading.setText(item.getAbvNum());
+            textForCocktailGrading.setText(item.getRating());
         }
     }
 
@@ -86,7 +86,6 @@ public class CocktailGradingAdapter extends RecyclerView.Adapter<CocktailGrading
         View itemView;
         itemView = inflater.inflate(R.layout.cocktail_cardview_grading, viewGroup, false);
         return new CocktailGradingAdapter.ViewHolder(itemView, this);
-        //mjh
     }
 
     @Override
