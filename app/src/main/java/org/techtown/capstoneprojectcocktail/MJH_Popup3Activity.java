@@ -71,13 +71,16 @@ public class MJH_Popup3Activity extends Activity {
     ArrayList<Float> bufferUpdateIngredientAmount;
 
     //db 재료 저장용 리스트 선언
-    //이름, 번호, 향, 당도, 도수 , ref
+    //이름, 번호, 향, 당도, 도수 , ref (additem)
     private ArrayList I_name = new ArrayList();
     private ArrayList I_ID = new ArrayList();
     private ArrayList I_flavour = new ArrayList();
     private ArrayList I_sugar = new ArrayList();
     private ArrayList I_abv = new ArrayList();
     private ArrayList I_ref = new ArrayList();
+
+    //비중
+   private ArrayList I_gravity = new ArrayList();
 
 
     /////////////////////////////////////////////
@@ -237,6 +240,7 @@ public class MJH_Popup3Activity extends Activity {
                                 I_sugar.add(document.get("sugar_rate"));
                                 I_abv.add(document.get("abv"));
                                 I_ref.add(document.get("ref"));
+                                I_gravity.add(document.get("specific_gravity"));
                                 adapterForCocktailSearch.addItem(new Cocktail((String) I_name.get(I_name.size()-1),
                                         Integer.parseInt((String) I_ID.get(I_ID.size()-1)),
                                         (String) I_flavour.get(I_flavour.size()-1),
@@ -244,6 +248,7 @@ public class MJH_Popup3Activity extends Activity {
                                         String.valueOf(I_sugar.get(I_abv.size()-1)) ,
                                         (String) I_ref.get(I_ref.size()-1)));
                             }
+                            System.out.println("시럽인 재료들의 비중 값 : " + I_gravity );
                             recyclerViewForCocktailSearch.setAdapter(adapterForCocktailSearch);
                         } else {
                             System.out.println("해당하는 문서가 없습니다.");
