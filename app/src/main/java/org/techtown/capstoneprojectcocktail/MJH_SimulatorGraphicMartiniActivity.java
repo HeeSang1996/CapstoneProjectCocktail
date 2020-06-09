@@ -205,27 +205,9 @@ public class MJH_SimulatorGraphicMartiniActivity extends AppCompatActivity {
                 paint.setColor(Color.BLUE);
                 Path path = new Path();
 
-                private final float Width = 350;     // 길이 기준
-
-                private float Height;                // 전체 길이
-
-                private float centerX , centerY;     // 기준점
-
-                private float WidthTriangle = 1.5F;  // 삼각형의 가중치가 1.5
-
-                private float WidthRect = 2;         // 사각형의 가중치가 2 (2 : 1) 비율
-
-                private float HeightTriangle;        // Triangle 높이
 
 
 
-                출처: https://dudwk04.tistory.com/entry/Android-삼각형-사각형-타원-선긋기 [로리롱's]
-                path.moveTo(centerX + Width / 2, centerY);
-                path.lineTo(centerX + Width, centerY + HeightTriangle);
-                path.lineTo(centerX, centerY + HeightTriangle);
-                path.lineTo(centerX + Width / 2, centerY);
-                path.close();
-                canvas.drawPath(path, paint);
 
 
                 //바닥부
