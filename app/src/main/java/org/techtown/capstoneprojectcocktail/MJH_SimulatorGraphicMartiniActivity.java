@@ -208,9 +208,9 @@ public class MJH_SimulatorGraphicMartiniActivity extends AppCompatActivity {
                 canvas.drawArc(rect, 0, 360, true, paint);
 
                 //잔
-                Bitmap bitmap2 = BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.martini_glass);
-                bitmap2 = resizeBitmapImg(bitmap2, 1480);
-                canvas.drawBitmap(bitmap2, 0, 0, null);
+                Bitmap bitmap2 = BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.martini_glass_re);
+                bitmap2 = resizeBitmapImg(bitmap2, 740);
+                canvas.drawBitmap(bitmap2, 0, 200, null);
 
                 //빛반사
                 paint.setColor(0x56FFFFFF);
