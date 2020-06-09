@@ -1,6 +1,7 @@
 package org.techtown.capstoneprojectcocktail;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -167,6 +168,7 @@ public class CocktailSearchActivity extends AppCompatActivity{
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                ((TextView)parent.getChildAt(0)).setTextColor(Color.WHITE);
                 //수정필
                 //Toast.makeText(getApplicationContext(),"선택된 하이: " + parent.getItemAtPosition(position),Toast.LENGTH_LONG).show();
                 switch (position){
