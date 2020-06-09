@@ -94,9 +94,25 @@ public class MJH_SimulatorUiActivity extends AppCompatActivity implements View.O
         });
 
 
-
         cb1 = (CheckBox)findViewById(R.id.checkBox1);
+        cb1.setOnClickListener(new CheckBox.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (((CheckBox)v).isChecked()) {
+                    cb2.setChecked(false);
+                }
+            }
+        }) ;
+
         cb2 = (CheckBox)findViewById(R.id.checkBox2);
+        cb2.setOnClickListener(new CheckBox.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (((CheckBox)v).isChecked()) {
+                    cb1.setChecked(false);
+                }
+            }
+        }) ;
 
         floatingActionButtonForAddList = (FloatingActionButton) findViewById(R.id.floatingActionButtonForAddList);
         floatingActionButtonForAddList.setOnClickListener(this);
@@ -146,6 +162,11 @@ public class MJH_SimulatorUiActivity extends AppCompatActivity implements View.O
                     else{
                         test.addStepLayering(stepNum, listUpdateStep.get(0), null, 0, 0);
                     }
+                }
+                else if(listUpdateTech.equals("Gradient")){
+                    Toast myToast = Toast.makeText(this.getApplicationContext(),"그라디언트 작동", Toast.LENGTH_SHORT);
+                    myToast.show();
+                    test.addStepLayering(stepNum, 0, listUpdateIngredient.get(0), listUpdateIngredientAmount.get(0), 1);
                 }
                 else{
                     test.addStepBuildings(stepNum, listUpdateStep, listUpdateIngredient, listUpdateIngredientAmount, true);
@@ -226,14 +247,20 @@ public class MJH_SimulatorUiActivity extends AppCompatActivity implements View.O
                 }
                 break;
             case R.id.button_simulation_action: // 시뮬레이션 작동시키기
-                if(test.simulatorStep.size() == 0) {
+
+                try{
+                    if(test.simulatorStep.size() == 0) {
+                        Toast myToast = Toast.makeText(this.getApplicationContext(),"칵테일 시뮬레이션 스텝을 추가해 주세요!", Toast.LENGTH_SHORT);
+                        myToast.show();
+                    }
+                    else if(stepNum != 0){
+                        Intent intent2 = new Intent(this, MJH_SimulatorGraphicActivity.class);
+                        startActivityForResult(intent2, 1);
+                        break;
+                    }
+                }catch(Exception e){
                     Toast myToast = Toast.makeText(this.getApplicationContext(),"칵테일 시뮬레이션 스텝을 추가해 주세요!", Toast.LENGTH_SHORT);
                     myToast.show();
-                }
-                else{
-                    Intent intent2 = new Intent(this, MJH_SimulatorGraphicActivity.class);
-                    startActivityForResult(intent2, 1);
-                    break;
                 }
         }
     }

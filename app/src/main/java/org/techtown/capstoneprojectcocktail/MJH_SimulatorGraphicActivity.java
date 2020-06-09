@@ -31,9 +31,79 @@ public class MJH_SimulatorGraphicActivity extends AppCompatActivity {
         setContentView(R.layout.mjh_graphic);
 
         try{
+            if(MJH_SimulatorUiActivity.test.isGradient == 1){
+                setNumber++;
+                Toast myToast = Toast.makeText(this.getApplicationContext(),Integer.toString(setNumber), Toast.LENGTH_SHORT);
+                myToast.show();
 
-            if( MJH_SimulatorUiActivity.test.simulatorStep.get(MJH_SimulatorUiActivity.test.simulatorStep.size()-1 ).isLayering > 1){
+                Canvas canvas;
+                Bitmap bitmap = Bitmap.createBitmap(720,1480, Bitmap.Config.ARGB_8888);
+                canvas = new Canvas(bitmap);
+                ImageView View = (ImageView) findViewById(R.id.highballGlass);
+                View.setImageBitmap(bitmap);
 
+                float volume;
+                int red, green, blue;
+                int height = 1320;
+                int prev_h = 1320;
+
+
+                Paint paint = new Paint();
+                Paint paint_gradient = new Paint();
+                RectF rect = new RectF();
+
+                int setIndex = MJH_SimulatorUiActivity.test.simulatorStep.get(MJH_SimulatorUiActivity.test.simulatorStep.size()-1 ).isLayering;
+                for(int index = 1; index > -1; index--){
+                    red = (int) MJH_SimulatorUiActivity.test.simulatorStep.get(MJH_SimulatorUiActivity.test.simulatorStep.size()-1 ).isColor.get(index).rgb_red;
+                    green = (int) MJH_SimulatorUiActivity.test.simulatorStep.get(MJH_SimulatorUiActivity.test.simulatorStep.size()-1 ).isColor.get(index).rgb_green;
+                    blue = (int) MJH_SimulatorUiActivity.test.simulatorStep.get(MJH_SimulatorUiActivity.test.simulatorStep.size()-1 ).isColor.get(index).rgb_blue;
+
+                    volume = MJH_SimulatorUiActivity.test.simulatorStep.get(MJH_SimulatorUiActivity.test.inGlassStep-1 ).eachVolume.get(index);
+
+                    if(index == 1){
+                        //바닥부
+                        paint.setColor(Color.rgb(red ,green ,blue));
+                        rect.set(110, 1270, 650, 1370);
+                        canvas.drawArc(rect, 0, 360, true, paint);
+                    }
+
+                    //전체사각
+                    height = (int)((float)height - ((float)4.0 * volume));
+                    paint.setColor(Color.rgb(red ,green ,blue));
+                    canvas.drawRect(110, height, 650, prev_h, paint);
+                    prev_h = height;
+                }
+
+                if(MJH_SimulatorUiActivity.test.simulatorStep.get(MJH_SimulatorUiActivity.test.simulatorStep.size()-1 ).isLayering > 2){
+                    for(int index = 2; index < MJH_SimulatorUiActivity.test.simulatorStep.get(MJH_SimulatorUiActivity.test.simulatorStep.size()-1 ).isLayering; index++){
+                        red = (int) MJH_SimulatorUiActivity.test.simulatorStep.get(MJH_SimulatorUiActivity.test.simulatorStep.size()-1 ).isColor.get(index).rgb_red;
+                        green = (int) MJH_SimulatorUiActivity.test.simulatorStep.get(MJH_SimulatorUiActivity.test.simulatorStep.size()-1 ).isColor.get(index).rgb_green;
+                        blue = (int) MJH_SimulatorUiActivity.test.simulatorStep.get(MJH_SimulatorUiActivity.test.simulatorStep.size()-1 ).isColor.get(index).rgb_blue;
+
+                        volume = MJH_SimulatorUiActivity.test.simulatorStep.get(MJH_SimulatorUiActivity.test.inGlassStep-1 ).eachVolume.get(index);
+
+                        //전체사각
+                        height = (int)((float)height - ((float)4.0 * volume));
+                        paint.setColor(Color.rgb(red ,green ,blue));
+                        canvas.drawRect(110, height, 650, prev_h, paint);
+                        prev_h = height;
+                    }
+                }
+
+
+                //얼음
+                Bitmap bitmap2 = BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.highball_glass_test_ice);
+                bitmap2 = resizeBitmapImg(bitmap2, 1480);
+                canvas.drawBitmap(bitmap2, 0, 0, null);
+
+                //빛반사
+                paint.setColor(0x56FFFFFF);
+                canvas.drawRect(150, 75, 300, 1370, paint);
+                rect.set(150, 1350, 300, 1390);
+                canvas.drawArc(rect, 90, 90, true, paint);
+            }
+
+            else if( MJH_SimulatorUiActivity.test.simulatorStep.get(MJH_SimulatorUiActivity.test.simulatorStep.size()-1 ).isLayering > 1){
                 setNumber++;
                 Toast myToast = Toast.makeText(this.getApplicationContext(),Integer.toString(setNumber), Toast.LENGTH_SHORT);
                 myToast.show();

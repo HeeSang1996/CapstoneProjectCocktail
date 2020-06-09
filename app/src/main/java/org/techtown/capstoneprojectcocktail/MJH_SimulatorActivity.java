@@ -237,6 +237,10 @@ public class MJH_SimulatorActivity extends AppCompatActivity {
         canvas.drawArc(rect1, 180, 180, true, paint);
 
         //위 사각
+
+
+
+
         paint.setColor(0xE6FFFF00);
         canvas.drawRect(110, 380, 650, 620, paint);
 

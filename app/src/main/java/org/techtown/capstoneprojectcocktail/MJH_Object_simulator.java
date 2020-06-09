@@ -9,6 +9,7 @@ public class MJH_Object_simulator {
     int glassType = 0;
     int totalStep = 0; // 전체 스텝 갯수
     int inGlassStep = 0; // 현재 글래스에 담겨있는 스텝(0 이면 암것도 없는것)
+    int isGradient = 0;
     ArrayList<MJH_Object_cocktail> simulatorStep  = new ArrayList<MJH_Object_cocktail>(); // 칵테일 시뮬 각 스텝에 대한 객체 리스트
     ArrayList<MJH_Object_ingredient> muddleList  = new ArrayList<MJH_Object_ingredient>(); // 머들링이 된 재료 목록
 
@@ -155,7 +156,9 @@ public class MJH_Object_simulator {
     }
     //+
     public void calcKindLayering(int associateStep, MJH_Object_ingredient inputIngredient, float inputAmount, int layeringType){
-        //int layeringType: 1->완벽한 플로팅, 2->어설픈 플로팅
+        //int layeringType: 1->그라디언트
+        if(layeringType == 1)
+            isGradient = 1;
 
         try{
             MJH_Object_cocktail buf = stepClone(this.simulatorStep.get(inGlassStep - 1));

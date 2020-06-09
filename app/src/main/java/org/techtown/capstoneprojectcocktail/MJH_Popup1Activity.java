@@ -14,6 +14,7 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import static org.techtown.capstoneprojectcocktail.MJH_SimulatorUiActivity.stepNum;
 import static org.techtown.capstoneprojectcocktail.MJH_SimulatorUiActivity.usingStepNum;
 
 public class MJH_Popup1Activity extends Activity {
@@ -91,14 +92,26 @@ public class MJH_Popup1Activity extends Activity {
         selectButton(v);
     }
     public void mLayering(View v){
-        Toast myToast = Toast.makeText(this.getApplicationContext(),"mLayering", Toast.LENGTH_SHORT);
-        myToast.show();
-        selectButton(v);
+        if(stepNum == 0){
+            Toast myToast = Toast.makeText(this.getApplicationContext(),"현재 잔에 아무것도 없습니다 Layering은 불가합니다.", Toast.LENGTH_SHORT);
+            myToast.show();
+        }
+        else{
+            Toast myToast = Toast.makeText(this.getApplicationContext(),"mLayering", Toast.LENGTH_SHORT);
+            myToast.show();
+            selectButton(v);
+        }
     }
     public void mGradient(View v){
-        Toast myToast = Toast.makeText(this.getApplicationContext(),"mGradient", Toast.LENGTH_SHORT);
-        myToast.show();
-        selectButton(v);
+        if(stepNum == 0){
+            Toast myToast = Toast.makeText(this.getApplicationContext(),"현재 잔에 아무것도 없습니다 Gradient은 불가합니다.", Toast.LENGTH_SHORT);
+            myToast.show();
+        }
+        else{
+            Toast myToast = Toast.makeText(this.getApplicationContext(),"mGradient", Toast.LENGTH_SHORT);
+            myToast.show();
+            selectButton(v);
+        }
     }
     public void mBlend(View v){
         Toast myToast = Toast.makeText(this.getApplicationContext(),"mBlend", Toast.LENGTH_SHORT);
@@ -110,18 +123,8 @@ public class MJH_Popup1Activity extends Activity {
         myToast.show();
         selectButton(v);
     }
-    public void mMuddle(View v){
-        Toast myToast = Toast.makeText(this.getApplicationContext(),"mMuddle", Toast.LENGTH_SHORT);
-        myToast.show();
-        selectButton(v);
-    }
     public void mRolling(View v){
         Toast myToast = Toast.makeText(this.getApplicationContext(),"mRolling", Toast.LENGTH_SHORT);
-        myToast.show();
-        selectButton(v);
-    }
-    public void mHelp(View v){
-        Toast myToast = Toast.makeText(this.getApplicationContext(),"mHelp", Toast.LENGTH_SHORT);
         myToast.show();
         selectButton(v);
     }
@@ -140,7 +143,7 @@ public class MJH_Popup1Activity extends Activity {
                 startActivityForResult(intent, 1);
                 finish();
             }
-            else if( simulatorUiAddress.stepNum == 0){ // 이전 스텝이 없으면
+            else if( stepNum == 0){ // 이전 스텝이 없으면
                 Intent intent = new Intent(this,MJH_Popup3Activity.class);
                 startActivityForResult(intent, 1);
                 finish();

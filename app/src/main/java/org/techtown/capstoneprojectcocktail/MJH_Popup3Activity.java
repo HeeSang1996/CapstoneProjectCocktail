@@ -160,12 +160,17 @@ public class MJH_Popup3Activity extends Activity {
     }
     public void mNext(View v){
         //데이터 전달하기
-
-        simulatorUiAddress.listUpdateFlag = 1;
-        simulatorUiAddress.listUpdateIngredient = bufferUpdateIngredient;
-        simulatorUiAddress.listUpdateIngredientAmount =  bufferUpdateIngredientAmount;
-        useByMinFlag = 0;
-        finish();
+        if(bufferUpdateIngredient.size() == 0 && simulatorUiAddress.listUpdateStep.size() == 0) {
+            Toast.makeText(uiThis,"이번 스텝에 사용할 재료나 이전 스텝을 선택해주세요!",Toast.LENGTH_LONG).show();
+        }
+        else{
+            simulatorUiAddress.listUpdateFlag = 1;
+            simulatorUiAddress.listUpdateIngredient = bufferUpdateIngredient;
+            simulatorUiAddress.listUpdateIngredientAmount =  bufferUpdateIngredientAmount;
+            useByMinFlag = 0;
+            finish();
+        }
+;
     }
     @Override
     public boolean onTouchEvent(MotionEvent event) {

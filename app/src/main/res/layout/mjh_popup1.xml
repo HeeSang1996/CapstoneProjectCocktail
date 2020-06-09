@@ -121,23 +121,6 @@
                 android:textColor="#fff"/>
 
             <Button
-                android:id="@+id/buttonMuddle"
-                android:layout_width="148dp"
-                android:layout_height="70dp"
-                android:layout_margin="1dp"
-                android:onClick="mMuddle"
-                android:text="Muddle"
-                android:background="#00B0FF"
-                android:textColor="#fff"/>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-
-            <Button
                 android:id="@+id/buttonRolling"
                 android:layout_width="148dp"
                 android:layout_height="70dp"
@@ -146,17 +129,8 @@
                 android:text="Rolling"
                 android:background="#00B0FF"
                 android:textColor="#fff"/>
-
-            <Button
-                android:id="@+id/buttonHelp"
-                android:layout_width="148dp"
-                android:layout_height="70dp"
-                android:layout_margin="1dp"
-                android:onClick="mHelp"
-                android:text="Help"
-                android:background="#00B0FF"
-                android:textColor="#fff"/>
         </LinearLayout>
+
 
         <LinearLayout
             android:layout_width="match_parent"
