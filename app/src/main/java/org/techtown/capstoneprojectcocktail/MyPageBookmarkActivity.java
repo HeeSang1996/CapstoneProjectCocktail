@@ -177,4 +177,4 @@ public class MyPageBookmarkActivity extends AppCompatActivity {
         }
     }
 }
-//마이 페이지 북마크 액티비티
+//마이 페이지 북마크 액티비티 푸시
