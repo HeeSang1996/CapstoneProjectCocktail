@@ -23,7 +23,7 @@ import java.util.ArrayList;
 
 public class MyPageGradingActivity extends AppCompatActivity {
 
-    private CocktailAdapterForSearch adapterForCocktailGrading = new CocktailAdapterForSearch();
+    private CocktailGradingAdapter adapterForCocktailGrading = new CocktailGradingAdapter();
     private RecyclerView recyclerViewForCocktailGrading;
 
     //db 북마크 컬렉션의 데이터를 읽어와 저장할 리스트 선언
@@ -88,9 +88,9 @@ public class MyPageGradingActivity extends AppCompatActivity {
         recyclerViewForCocktailGrading.setAdapter(adapterForCocktailGrading);
 
         //리사이클러뷰를 클릭했을 경우
-        adapterForCocktailGrading.setOnItemClickListener(new OnCocktailItemClickListenerForSearch() {
+        adapterForCocktailGrading.setOnItemClickListener(new OnCocktailGradingClickListener() {
             @Override
-            public void onItemClick(CocktailAdapterForSearch.ViewHolder holder, View view, int position) {
+            public void onItemClick(CocktailGradingAdapter.ViewHolder holder, View view, int position) {
                 Cocktail item = adapterForCocktailGrading.getItem(position);
                 System.out.println(item.getId());
             }
