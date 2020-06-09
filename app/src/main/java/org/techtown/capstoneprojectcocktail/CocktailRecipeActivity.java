@@ -285,6 +285,7 @@ public class CocktailRecipeActivity extends AppCompatActivity {
                                 Log.d(TAG, "Grading Document is empty!");
                             } else {
                                 gradeChecked = true;
+                                gradeScore = String.valueOf(document.get("점수"));
                                 Log.d(TAG, "Grading Document is not empty!");
                             }
                         }
