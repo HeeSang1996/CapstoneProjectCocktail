@@ -120,7 +120,7 @@
 
         <activity
             android:name=".MJH_SimulatorUiActivity"
-            android:label="aa"
+            android:label="  Simulation"
             android:launchMode="singleTop"
             android:screenOrientation="portrait">
         </activity>
@@ -161,13 +161,13 @@
         </activity>
         <activity
             android:name=".MJH_SimulatorGraphicActivity"
-            android:label="aa2"
+            android:label="  Simulation Result"
             android:launchMode="singleTop"
             android:screenOrientation="portrait">
         </activity>
         <activity
             android:name=".MJH_SimulatorGraphicMartiniActivity"
-            android:label="aa2"
+            android:label="  Simulation Result"
             android:launchMode="singleTop"
             android:screenOrientation="portrait">
         </activity>
