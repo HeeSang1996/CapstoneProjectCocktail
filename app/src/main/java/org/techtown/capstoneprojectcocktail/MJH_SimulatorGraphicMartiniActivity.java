@@ -216,7 +216,7 @@ public class MJH_SimulatorGraphicMartiniActivity extends AppCompatActivity {
 
                 Path path = new Path();
 
-<<<<<<< HEAD
+
                 //좌측삼각
                 path.moveTo(215, 285-firstConeHeight);
                 path.lineTo(250 - firstConeX, 285-firstConeHeight);
@@ -224,8 +224,8 @@ public class MJH_SimulatorGraphicMartiniActivity extends AppCompatActivity {
                 path.close();
                 canvas.drawPath(path, paint);
 
-                //우측삼각각
-               Path path1 = new Path();
+                //우측삼각
+                Path path1 = new Path();
                 path1.moveTo(285, 285-firstConeHeight);
                 path1.lineTo(250 + firstConeX, 285-firstConeHeight);
                 path1.lineTo(285, 285);
@@ -244,12 +244,7 @@ public class MJH_SimulatorGraphicMartiniActivity extends AppCompatActivity {
                 //바닥부
                 RectF rect1 = new RectF();
                 rect1.set(215, 270, 285, 300);
-                canvas.drawArc(rect1, 0, 360, true, paint);
-=======
 
-
-
->>>>>>> 2a74e04c29d0ee033849d9e219017a7b66111d19
 
 
                 //////////////////////
