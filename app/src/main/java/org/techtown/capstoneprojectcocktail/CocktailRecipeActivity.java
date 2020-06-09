@@ -101,6 +101,7 @@ public class CocktailRecipeActivity extends AppCompatActivity {
         TextView textForCocktailID = (TextView) findViewById(R.id.textView_ingredientText_recipe);
         TextView textForCocktailDescription = (TextView) findViewById(R.id.textView_cocktailDescription_recipe);
         TextView textForCocktailIngredient = (TextView) findViewById(R.id.textView_cocktailIngredient_recipe);
+        TextView textForSimpleABV = (TextView) findViewById(R.id.textView_ABVText_recipe);
         TextView textForCocktailABV = (TextView) findViewById(R.id.textView_cocktailABV_recipe);
         TextView textForNonLoginUser = (TextView) findViewById(R.id.textView_info_for_nonLoginUser_recipe);
         TextView textForGrading = (TextView) findViewById(R.id.textView_simpleRating_recipe);
@@ -166,8 +167,14 @@ public class CocktailRecipeActivity extends AppCompatActivity {
             floatingActionButtonForBookmark.setVisibility(View.GONE);
             floatingActionButtonForGrade.setVisibility(View.GONE);
         }
-        else {
-            textForCocktailID.setText("재료");
+        else{
+            if ((cocktailID/1000)>=10) {
+                //유저가 올린 레시피이면, abv대신 작성자 텍스트 출력
+                textForSimpleABV.setText("작성자: ");
+            }
+            else{
+                textForCocktailID.setText("재료");
+            }
             //영진 여기다가 별점 불러다 박아주셈 totalGradeScore=
             currentUser = mAuth.getCurrentUser();
             FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -346,11 +353,18 @@ public class CocktailRecipeActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             adapterForCocktailComment.clearAllForAdapter();
                             for (QueryDocumentSnapshot document : task.getResult()) {
-                                Comment_name.add(document.get("사용자 이름").toString());
-                                Comment_date.add("날짜: "+document.get("댓글 날짜").toString());
-                                Comment_content.add(document.get("내용").toString());
-                                Comment_url.add(document.get("사용자 url").toString());
-                                Comment_uid.add(document.get("사용자 uid").toString());
+                                if(document.get("사용자 uid").equals("0") )
+                                {
+                                    System.out.println("얘는 거른다");
+                                }
+                                else
+                                {
+                                    Comment_name.add(document.get("사용자 이름").toString());
+                                    Comment_date.add("날짜: "+document.get("댓글 날짜").toString());
+                                    Comment_content.add(document.get("내용").toString());
+                                    Comment_url.add(document.get("사용자 url").toString());
+                                    Comment_uid.add(document.get("사용자 uid").toString());
+                                }
                             }
                             for(int i = 0; i< Comment_name.size(); i++)
                             {

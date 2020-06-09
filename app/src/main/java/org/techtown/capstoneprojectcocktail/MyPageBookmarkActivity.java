@@ -1,7 +1,7 @@
 package org.techtown.capstoneprojectcocktail;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -11,8 +11,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -54,6 +52,32 @@ public class MyPageBookmarkActivity extends AppCompatActivity {
         LinearLayoutManager layoutManagerForCocktailBookmark = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL,false);
         layoutManagerForCocktailBookmark.setReverseLayout(true);
         layoutManagerForCocktailBookmark.setStackFromEnd(true);
+
+        recyclerViewForCocktailBookmark.setLayoutManager(layoutManagerForCocktailBookmark);
+        recyclerViewForCocktailBookmark.setAdapter(adapterForCocktailBookmark);
+
+        //리사이클러뷰를 클릭했을 경우
+        adapterForCocktailBookmark.setOnItemClickListener(new OnCocktailItemClickListenerForSearch() {
+            @Override
+            public void onItemClick(CocktailAdapterForSearch.ViewHolder holder, View view, int position) {
+                Cocktail item = adapterForCocktailBookmark.getItem(position);
+                Intent intent = new Intent(view.getContext(), CocktailRecipeActivity.class);
+                intent.putExtra("cocktailName", item.getName());
+                intent.putExtra("cocktailID",item.getId());
+                intent.putExtra("cocktailDescription",item.getDescription());
+                intent.putExtra("cocktailIngredient",item.getIngredient());
+                intent.putExtra("cocktailABV",item.getAbvNum());
+                intent.putExtra("cocktailRef",item.getImageUrl());
+                startActivity(intent);
+                System.out.println(item.getId());
+            }
+        });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        adapterForCocktailBookmark.clearAllForAdapter();
         //받아오기위해 변수들 초기화 = new ArrayList();
         Bookmark_name = new ArrayList();       //레시피 이름
         Bookmark_id = new ArrayList();         //각 문서 이름
@@ -79,34 +103,8 @@ public class MyPageBookmarkActivity extends AppCompatActivity {
                         } else {
                             System.out.println("오류 발생 북마크 컬렉션에서 정상적으로 불러와지지 않음.");
                         }
-
                     }
                 });
-
-        recyclerViewForCocktailBookmark.setLayoutManager(layoutManagerForCocktailBookmark);
-        recyclerViewForCocktailBookmark.setAdapter(adapterForCocktailBookmark);
-
-        //리사이클러뷰를 클릭했을 경우
-        adapterForCocktailBookmark.setOnItemClickListener(new OnCocktailItemClickListenerForSearch() {
-            @Override
-            public void onItemClick(CocktailAdapterForSearch.ViewHolder holder, View view, int position) {
-                Cocktail item = adapterForCocktailBookmark.getItem(position);
-                System.out.println(item.getId());
-            }
-        });
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        adapterForCocktailBookmark.clearAllForAdapter();
-        //adapterForCocktailBookmark.addItem(new Cocktail("안녕", 9998, "대충 스까", "대충 스까", "작성자" ,"gs://sbsimulator-96f70.appspot.com/Recipe/AMERICANO.jpg"));
-        //해당 북마크 갯수만큼 for구문을 돌려 아이템 add
-        for(int i = 0; i < Bookmark_name.size(); i++)
-        {
-            adapterForCocktailBookmark.addItem(new Cocktail(Bookmark_name.get(count).toString(), Integer.parseInt((String) Bookmark_id.get(count)),
-                    method[count], Recipe_Base[count], abv[count],Bookmark_ref.get(count).toString()));
-        }
     }
 
     void Set_first()

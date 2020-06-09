@@ -1,7 +1,7 @@
 package org.techtown.capstoneprojectcocktail;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.PopupMenu;
@@ -97,7 +97,7 @@ public class MyPageMyRecipeActivity extends AppCompatActivity {
         //리사이클러뷰를 클릭했을 경우
         adapterForCocktailMyRecipe.setOnItemClickListener(new OnCocktailItemClickListenerForSearch() {
             @Override
-            public void onItemClick(CocktailAdapterForSearch.ViewHolder holder, View view, int position) {
+            public void onItemClick(CocktailAdapterForSearch.ViewHolder holder, final View view, int position) {
                 final Cocktail cocktail = adapterForCocktailMyRecipe.getItem(position);
 
                 PopupMenu popup= new PopupMenu(getApplicationContext(), view);
@@ -210,6 +210,14 @@ public class MyPageMyRecipeActivity extends AppCompatActivity {
                                 break;
                             case R.id.popup_myRecipe_recipe:
                                 Toast.makeText(getApplication(),"게시물 보기",Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(view.getContext(), CocktailRecipeActivity.class);
+                                intent.putExtra("cocktailName", cocktail.getName());
+                                intent.putExtra("cocktailID",cocktail.getId());
+                                intent.putExtra("cocktailDescription",cocktail.getDescription());
+                                intent.putExtra("cocktailIngredient",cocktail.getIngredient());
+                                intent.putExtra("cocktailABV",cocktail.getAbvNum());
+                                intent.putExtra("cocktailRef",cocktail.getImageUrl());
+                                startActivity(intent);
                                 break;
                             default:
                                 Toast.makeText(getApplication(),"취소",Toast.LENGTH_SHORT).show();
