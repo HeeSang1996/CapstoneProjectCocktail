@@ -285,6 +285,13 @@ public class CocktailSearchActivity extends AppCompatActivity{
 
     private void setAdapterForSelfCocktailSearchMethod(String str){
         final String _str = str;
+        //사용자들의 레시피 정보를 받기위한 변수 초기화
+        Self_name = new ArrayList();
+        Self_id = new ArrayList();
+        Self_description = new ArrayList();
+        Self_base = new ArrayList();
+        Self_user = new ArrayList();
+        Self_url = new ArrayList();
         db.collection("Self")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
