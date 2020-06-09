@@ -16,8 +16,11 @@ public class MJH_Object_ingredient { // 겟셋, 추상화 시간관계상 구현
 
     MJH_Object_color my_color;
 
+
     String flavour; // 스트링한개로 넣고 파싱할지 이런식으로 배열로 할지는 논의 필요
     public MJH_Object_ingredient(){}
+    float alpha = 0;
+    float muddy = 0;
 
 
     public MJH_Object_ingredient(String _name, float _specific_gravity , float _abv, float _sugar, float _sour, float _salty, float _bitter, MJH_Object_color _my_color){

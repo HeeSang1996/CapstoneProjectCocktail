@@ -1,5 +1,6 @@
 package org.techtown.capstoneprojectcocktail.ui.home;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -8,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -29,6 +31,8 @@ import org.techtown.capstoneprojectcocktail.CocktailIngredientButton;
 import org.techtown.capstoneprojectcocktail.CocktailIngredientButtonAdapter;
 import org.techtown.capstoneprojectcocktail.CocktailRecipeActivity;
 import org.techtown.capstoneprojectcocktail.CocktailSearchActivity;
+import org.techtown.capstoneprojectcocktail.MJH_CustomView;
+import org.techtown.capstoneprojectcocktail.MJH_ListviewItem;
 import org.techtown.capstoneprojectcocktail.MJH_SimulatorUiActivity;
 import org.techtown.capstoneprojectcocktail.OnCocktailIngredientButtonItemClickListener;
 import org.techtown.capstoneprojectcocktail.OnCocktailItemClickListenerForHome;
@@ -44,6 +48,7 @@ import java.util.Map;
 import static androidx.constraintlayout.widget.Constraints.TAG;
 import static java.lang.Integer.parseInt;
 import static java.util.Date.parse;
+import static org.techtown.capstoneprojectcocktail.MJH_SimulatorUiActivity.usingStepNum;
 
 public class HomeFragment extends Fragment {
     public FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -74,6 +79,7 @@ public class HomeFragment extends Fragment {
     String[][] Sour_Value = new String[81][10];
     String[][] Salty_Value = new String[81][10];
     String[][] Hot_Value = new String[81][10];
+
 
     public void setDocument() {
 
@@ -201,8 +207,12 @@ public class HomeFragment extends Fragment {
         testButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(view.getContext(), TestForCosine.class);
-                startActivity(intent);
+                try{
+                    Intent intent = new Intent(view.getContext(), MJH_CustomView.class);
+                    startActivity(intent);
+                }catch(Exception e){
+                    System.out.println("err" + e.toString());
+                }
             }
         });
 

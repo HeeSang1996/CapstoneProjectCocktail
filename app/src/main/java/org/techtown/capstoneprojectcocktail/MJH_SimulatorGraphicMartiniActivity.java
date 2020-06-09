@@ -10,25 +10,19 @@ import android.graphics.RectF;
 import android.graphics.Shader;
 import android.os.Build;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
-
-public class MJH_SimulatorGraphicActivity extends AppCompatActivity {
-
+public class MJH_SimulatorGraphicMartiniActivity extends AppCompatActivity {
     int setNumber = 0;
     @RequiresApi(api = Build.VERSION_CODES.Q)
     @Override
     public void onCreate(Bundle saveInstanceState){
         super.onCreate(saveInstanceState);
-        setContentView(R.layout.mjh_graphic);
+        setContentView(R.layout.mjh_graphic_martini);
 
         try{
             //그라데이션
@@ -40,8 +34,6 @@ public class MJH_SimulatorGraphicActivity extends AppCompatActivity {
                 Canvas canvas;
                 Bitmap bitmap = Bitmap.createBitmap(720,1480, Bitmap.Config.ARGB_8888);
                 canvas = new Canvas(bitmap);
-                ImageView View = (ImageView) findViewById(R.id.highballGlass);
-                View.setImageBitmap(bitmap);
 
                 float volume;
                 int s_red, s_green, s_blue;
@@ -119,7 +111,7 @@ public class MJH_SimulatorGraphicActivity extends AppCompatActivity {
 
 
                 //얼음
-                Bitmap bitmap2 = BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.highball_glass_test_ice);
+                Bitmap bitmap2 = BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.martini_glass);
                 bitmap2 = resizeBitmapImg(bitmap2, 1480);
                 canvas.drawBitmap(bitmap2, 0, 0, null);
 
@@ -129,7 +121,7 @@ public class MJH_SimulatorGraphicActivity extends AppCompatActivity {
                 rect.set(150, 1350, 300, 1390);
                 canvas.drawArc(rect, 90, 90, true, paint);
             }
-            //레이어링
+
             else if( MJH_SimulatorUiActivity.test.simulatorStep.get(MJH_SimulatorUiActivity.test.simulatorStep.size()-1 ).isLayering > 1){
                 setNumber++;
                 Toast myToast = Toast.makeText(this.getApplicationContext(),Integer.toString(setNumber), Toast.LENGTH_SHORT);
@@ -138,7 +130,7 @@ public class MJH_SimulatorGraphicActivity extends AppCompatActivity {
                 Canvas canvas;
                 Bitmap bitmap = Bitmap.createBitmap(720,1480, Bitmap.Config.ARGB_8888);
                 canvas = new Canvas(bitmap);
-                ImageView View = (ImageView) findViewById(R.id.highballGlass);
+                ImageView View = (ImageView) findViewById(R.id.martiniGlass);
                 View.setImageBitmap(bitmap);
 
                 float volume;
@@ -173,8 +165,8 @@ public class MJH_SimulatorGraphicActivity extends AppCompatActivity {
                 }
 
 
-                //잔
-                Bitmap bitmap2 = BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.highball_glass_test_ice);
+                //얼음
+                Bitmap bitmap2 = BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.martini_glass);
                 bitmap2 = resizeBitmapImg(bitmap2, 1480);
                 canvas.drawBitmap(bitmap2, 0, 0, null);
 
@@ -184,12 +176,11 @@ public class MJH_SimulatorGraphicActivity extends AppCompatActivity {
                 rect.set(150, 1350, 300, 1390);
                 canvas.drawArc(rect, 90, 90, true, paint);
             }
-            //노멀
             else{
                 Canvas canvas;
                 Bitmap bitmap = Bitmap.createBitmap(720,1480, Bitmap.Config.ARGB_8888);
                 canvas = new Canvas(bitmap);
-                ImageView View = (ImageView) findViewById(R.id.highballGlass);
+                ImageView View = (ImageView) findViewById(R.id.martiniGlass);
                 View.setImageBitmap(bitmap);
 
                 float volume;
@@ -217,7 +208,7 @@ public class MJH_SimulatorGraphicActivity extends AppCompatActivity {
                 canvas.drawArc(rect, 0, 360, true, paint);
 
                 //잔
-                Bitmap bitmap2 = BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.highball_glass_test_ice);
+                Bitmap bitmap2 = BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.martini_glass);
                 bitmap2 = resizeBitmapImg(bitmap2, 1480);
                 canvas.drawBitmap(bitmap2, 0, 0, null);
 
@@ -227,6 +218,7 @@ public class MJH_SimulatorGraphicActivity extends AppCompatActivity {
                 rect.set(150, 1350, 300, 1390);
                 canvas.drawArc(rect, 90, 90, true, paint);
             }
+
         }catch (Exception e){e.printStackTrace(); }
     }
 

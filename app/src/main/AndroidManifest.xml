@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="org.techtown.capstoneprojectcocktail">
 
     <uses-permission android:name="android.permission.INTERNET"/>
@@ -164,5 +165,18 @@
             android:launchMode="singleTop"
             android:screenOrientation="portrait">
         </activity>
+        <activity
+            android:name=".MJH_SimulatorGraphicMartiniActivity"
+            android:label="aa2"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity
+            android:name=".MJH_CustomView"
+            android:label="aa2"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait">
+        </activity>
     </application>
 </manifest>
+

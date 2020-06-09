@@ -35,6 +35,7 @@ public class MJH_SimulatorUiActivity extends AppCompatActivity implements View.O
     public ListView listview;
 
     public int isFirst = 0;
+    public int glassType = 0;
 
     public int listUpdateFlag = 0;
     public int lastStepTechFlag = 0;
@@ -75,15 +76,15 @@ public class MJH_SimulatorUiActivity extends AppCompatActivity implements View.O
             @Override
             public void onClick(View v){
                 try{
-                    resultTest = "현재 시뮬 스텝 사이즈" + Integer.toString(test.simulatorStep.size()) + "," + Integer.toString(test.totalStep)+ ": ";
-                    for(int i = 0 ; i < test.simulatorStep.get(test.totalStep-2).eachVolume.size(); i++){
-                        resultTest = resultTest + "/" + Float.toString(test.simulatorStep.get(test.totalStep-2).eachVolume.get(i));
-                    /*
-                    resultTest = resultTest + "/" + Float.toString(test.simulatorStep.get(2).isColor.get(i).rgb_red)
-                            + "," + Float.toString(test.simulatorStep.get(2).isColor.get(i).rgb_green)
-                            + "," + Float.toString(test.simulatorStep.get(2).isColor.get(i).rgb_blue);
+                    resultTest = "현재 현재글래스" + Integer.toString(test.glassType);
+                    for(int i = 0 ; i < test.simulatorStep.get(test.totalStep-1).eachVolume.size(); i++){
+                        resultTest = resultTest + "/" + Float.toString(test.simulatorStep.get(test.totalStep-1).alpha);
 
-                     */
+                            resultTest = resultTest + "/" + Float.toString(test.simulatorStep.get(test.totalStep-1).isColor.get(i).rgb_red)
+                            + "," + Float.toString(test.simulatorStep.get(test.totalStep-1).isColor.get(i).rgb_green)
+                            + "," + Float.toString(test.simulatorStep.get(test.totalStep-1).isColor.get(i).rgb_blue);
+
+
                     }
                     txt.setText(resultTest);
                 }catch(Exception e){
@@ -100,6 +101,15 @@ public class MJH_SimulatorUiActivity extends AppCompatActivity implements View.O
             public void onClick(View v) {
                 if (((CheckBox)v).isChecked()) {
                     cb2.setChecked(false);
+                    glassType = 0;
+                    try{
+                        test.glassType = glassType;
+                    }catch(Exception e){
+                        Toast myToast = Toast.makeText(uiMain,e.toString(), Toast.LENGTH_SHORT);
+                        myToast.show();
+                    }
+                    //Toast myToast = Toast.makeText(uiMain,"하이볼잔", Toast.LENGTH_SHORT);
+                    //myToast.show();
                 }
             }
         }) ;
@@ -110,6 +120,15 @@ public class MJH_SimulatorUiActivity extends AppCompatActivity implements View.O
             public void onClick(View v) {
                 if (((CheckBox)v).isChecked()) {
                     cb1.setChecked(false);
+                    glassType = 1;
+                    try{
+                        test.glassType = glassType;
+                    }catch(Exception e){
+                        Toast myToast = Toast.makeText(uiMain,e.toString(), Toast.LENGTH_SHORT);
+                        myToast.show();
+                    }
+                    //Toast myToast = Toast.makeText(uiMain,"마티니잔", Toast.LENGTH_SHORT);
+                    //myToast.show();
                 }
             }
         }) ;
@@ -187,22 +206,12 @@ public class MJH_SimulatorUiActivity extends AppCompatActivity implements View.O
         int id = v.getId();
         switch (id) {
             case R.id.floatingActionButtonForAddList: // 시뮬 스텝 추가 팝업으로 넘어감
-                if(cb1.isChecked() == true){ // 체크 버튼 점검
-                    if(isFirst == 0){
-                        isFirst = 1;
-                        test = new MJH_Object_simulator(0, 1); // 글래스타입 0 -> 하이볼 잔
-                    }
-                    Toast myToast = Toast.makeText(this.getApplicationContext(),"하이볼잔", Toast.LENGTH_SHORT);
-                    myToast.show();
+
+                if(isFirst == 0){
+                    isFirst = 1;
+                    test = new MJH_Object_simulator(glassType, 1); // 글래스타입 0 -> 하이볼 잔
                 }
-                else if(cb2.isChecked() == true){
-                    if(isFirst == 0){
-                        isFirst = 1;
-                        test = new MJH_Object_simulator(1, 1); // 글래스타입 0 -> 하이볼 잔
-                    }
-                    Toast myToast = Toast.makeText(this.getApplicationContext(),"칵테일잔", Toast.LENGTH_SHORT);
-                    myToast.show();
-                }
+
                 Intent intent = new Intent(this,MJH_Popup1Activity.class);
                 startActivityForResult(intent, 1);
                 adapterMIN.callByPopup = 1;
@@ -254,12 +263,24 @@ public class MJH_SimulatorUiActivity extends AppCompatActivity implements View.O
                         myToast.show();
                     }
                     else if(stepNum != 0){
-                        Intent intent2 = new Intent(this, MJH_SimulatorGraphicActivity.class);
-                        startActivityForResult(intent2, 1);
-                        break;
+                        if(test.glassType == 0){ // 체크 버튼 점검
+                            Intent intent2 = new Intent(this, MJH_SimulatorGraphicActivity.class);
+                            startActivityForResult(intent2, 1);
+                            break;
+                        }
+                        else if(test.glassType == 1){
+                            Intent intent2 = new Intent(this, MJH_SimulatorGraphicMartiniActivity.class);
+                            startActivityForResult(intent2, 1);
+                            break;
+                        }
+                    }
+                    else{
+                        Toast myToast = Toast.makeText(this.getApplicationContext(),"칵테일 시뮬레이션 스텝을 추가해 주세요!", Toast.LENGTH_SHORT);
+                        myToast.show();
                     }
                 }catch(Exception e){
-                    Toast myToast = Toast.makeText(this.getApplicationContext(),"칵테일 시뮬레이션 스텝을 추가해 주세요!", Toast.LENGTH_SHORT);
+                    //Toast myToast = Toast.makeText(this.getApplicationContext(),"칵테일 시뮬레이션 스텝을 추가해 주세요!", Toast.LENGTH_SHORT);
+                    Toast myToast = Toast.makeText(this.getApplicationContext(),e.toString(), Toast.LENGTH_SHORT);
                     myToast.show();
                 }
         }
@@ -276,6 +297,31 @@ public class MJH_SimulatorUiActivity extends AppCompatActivity implements View.O
             }
         }
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
+        isFirst = 0;
+
+        listUpdateFlag = 0;
+        lastStepTechFlag = 0;
+
+        usingStep = new ArrayList<Integer>();
+        usingStepNum = new ArrayList<Integer>();
+
+
+        listUpdateStep = new ArrayList<Integer>();
+        listUpdateIngredient = new ArrayList<MJH_Object_ingredient>();
+        listUpdateIngredientAmount = new ArrayList<Float>();
+
+        stepNum = 0;
+
+        ingredientList = new MJH_Object_ingredient[200];
+        listCount = 0;
+        finish();
+    }
+
 
     public void setAdapterForIngredientSearch(){
         FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -306,9 +352,13 @@ public class MJH_SimulatorUiActivity extends AppCompatActivity implements View.O
                                 ingredientRGB = (Map<String, Number>) document.getData().get("Ingredient_color");
                                 colorBuffer = new MJH_Object_color(Float.parseFloat(ingredientRGB.get("Red").toString()), Float.parseFloat(ingredientRGB.get("Green").toString()),
                                         Float.parseFloat(ingredientRGB.get("Blue").toString()));
+                                ingredientList[listCount].alpha = Float.parseFloat(document.get("alpha").toString());
+                                ingredientList[listCount].muddy = Float.parseFloat(document.get("muddy").toString());
+
                                 ingredientList[listCount].my_color = colorBuffer;
                             }catch (Exception e){
-                                e.printStackTrace();
+                                Toast myToast = Toast.makeText(uiMain,e.toString(), Toast.LENGTH_SHORT);
+                                myToast.show();
                             }
 
                         } else {

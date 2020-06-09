@@ -15,6 +15,8 @@ public class MJH_Object_cocktail implements Cloneable{
     ArrayList<Float> eachVolume = new ArrayList<Float>();
     ArrayList<Float> specificGravity  = new ArrayList<Float>();
     ArrayList<MJH_Object_color> isColor  = new ArrayList<MJH_Object_color>();
+    float alpha = 0;
+    float muddy = 0;
 
     //플로팅이 깔끔하지 않은가?
     ArrayList<Integer> isBoundaryDirty  = new ArrayList<Integer>();
