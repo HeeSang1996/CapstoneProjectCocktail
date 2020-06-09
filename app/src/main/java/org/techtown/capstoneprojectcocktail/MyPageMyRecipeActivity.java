@@ -1,24 +1,47 @@
 package org.techtown.capstoneprojectcocktail;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.PopupMenu;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.ArrayList;
 
 public class MyPageMyRecipeActivity extends AppCompatActivity {
 
     private CocktailAdapterForSearch adapterForCocktailMyRecipe = new CocktailAdapterForSearch();
     private RecyclerView recyclerViewForCocktailMyRecipe;
-    private FirebaseAuth mAuth;
+    //db Self 컬렉션의 데이터를 읽어와 저장할 리스트 선언
+    //칵테일 이름, 칵테일 문서번호, 설명, 만드는방법, 칵테일 만든이, 이미지url
+    private ArrayList Self_name;
+    private ArrayList Self_id;
+    private ArrayList Self_description;
+    private ArrayList Self_base;
+    private ArrayList Self_user;
+    private ArrayList Self_url;
+
+    FirebaseAuth mAuth  = FirebaseAuth.getInstance();
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
+    FirebaseUser currentUser = mAuth.getCurrentUser();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -29,6 +52,45 @@ public class MyPageMyRecipeActivity extends AppCompatActivity {
         LinearLayoutManager layoutManagerForCocktailMyRecipe = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL,false);
         layoutManagerForCocktailMyRecipe.setReverseLayout(true);
         layoutManagerForCocktailMyRecipe.setStackFromEnd(true);
+
+        //받아오기위해 변수들 초기화
+        Self_name = new ArrayList();
+        Self_id = new ArrayList();
+        Self_description = new ArrayList();
+        Self_base = new ArrayList();
+        Self_user = new ArrayList();
+        Self_url = new ArrayList();
+
+        db.collection("Self")
+                .whereEqualTo("칵테일 만든 유저 id", currentUser.getUid())
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                //칵테일 이름, 칵테일 문서번호, 설명, 만드는방법, 칵테일 만든이, 이미지url
+                                Self_name.add(document.get("칵테일 이름").toString());
+                                Self_id.add(document.getId().toString());
+                                Self_description.add(document.get("칵테일 설명").toString());
+                                Self_base.add(document.get("만드는 방법").toString());
+                                Self_user.add(document.get("칵테일 만든이").toString());
+                                Self_url.add(document.get("ref").toString());
+                            }
+                            recyclerViewForCocktailMyRecipe.setAdapter(adapterForCocktailMyRecipe);
+                            for(int i=0;i<Self_name.size();i++){
+                                //칵테일 이름, 칵테일 문서번호, 설명, 만드는방법, 칵테일 만든이, 이미지url
+                                adapterForCocktailMyRecipe.addItem(new Cocktail((String) Self_name.get(i), Integer.parseInt(String.valueOf(Self_id.get(i))), (String) Self_description.get(i), (String) Self_base.get(i), (String) Self_user.get(i),
+                                        (String) Self_url.get(i)));
+                            }
+                        } else {
+                            System.out.println("오류 발생 Grading 컬렉션에서 정상적으로 불러와지지 않음.");
+                        }
+
+                    }
+                });
+
+
         recyclerViewForCocktailMyRecipe.setLayoutManager(layoutManagerForCocktailMyRecipe);
         recyclerViewForCocktailMyRecipe.setAdapter(adapterForCocktailMyRecipe);
 
@@ -36,7 +98,7 @@ public class MyPageMyRecipeActivity extends AppCompatActivity {
         adapterForCocktailMyRecipe.setOnItemClickListener(new OnCocktailItemClickListenerForSearch() {
             @Override
             public void onItemClick(CocktailAdapterForSearch.ViewHolder holder, View view, int position) {
-                Cocktail cocktail = adapterForCocktailMyRecipe.getItem(position);
+                final Cocktail cocktail = adapterForCocktailMyRecipe.getItem(position);
 
                 PopupMenu popup= new PopupMenu(getApplicationContext(), view);
                 getMenuInflater().inflate(R.menu.popup_menu_my_recipe, popup.getMenu());
@@ -45,7 +107,59 @@ public class MyPageMyRecipeActivity extends AppCompatActivity {
                     public boolean onMenuItemClick(MenuItem item) {
                         switch (item.getItemId()){
                             case R.id.popup_myRecipe_delete:
-                                Toast.makeText(getApplication(),"게시물 삭제",Toast.LENGTH_SHORT).show();
+                                DocumentReference Bookmark_ref = db.collection("Self").document(String.valueOf(cocktail.id));
+                                Bookmark_ref
+                                        .update("칵테일 만든 유저 id", "0")
+                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void aVoid) {
+                                                //받아오기위해 변수들 초기화
+                                                Self_name = new ArrayList();
+                                                Self_id = new ArrayList();
+                                                Self_description = new ArrayList();
+                                                Self_base = new ArrayList();
+                                                Self_user = new ArrayList();
+                                                Self_url = new ArrayList();
+                                                adapterForCocktailMyRecipe.clearAllForAdapter();
+
+                                                db.collection("Self")
+                                                        .whereEqualTo("칵테일 만든 유저 id", currentUser.getUid())
+                                                        .get()
+                                                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                                            @Override
+                                                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                                if (task.isSuccessful()) {
+                                                                    for (QueryDocumentSnapshot document : task.getResult()) {
+                                                                        //칵테일 이름, 칵테일 문서번호, 설명, 만드는방법, 칵테일 만든이, 이미지url
+                                                                        Self_name.add(document.get("칵테일 이름").toString());
+                                                                        Self_id.add(document.getId().toString());
+                                                                        Self_description.add(document.get("칵테일 설명").toString());
+                                                                        Self_base.add(document.get("만드는 방법").toString());
+                                                                        Self_user.add(document.get("칵테일 만든이").toString());
+                                                                        Self_url.add(document.get("ref").toString());
+                                                                    }
+                                                                    recyclerViewForCocktailMyRecipe.setAdapter(adapterForCocktailMyRecipe);
+                                                                    for(int i=0;i<Self_name.size();i++){
+                                                                        //칵테일 이름, 칵테일 문서번호, 설명, 만드는방법, 칵테일 만든이, 이미지url
+                                                                        adapterForCocktailMyRecipe.addItem(new Cocktail((String) Self_name.get(i), Integer.parseInt(String.valueOf(Self_id.get(i))), (String) Self_description.get(i), (String) Self_base.get(i), (String) Self_user.get(i),
+                                                                                (String) Self_url.get(i)));
+                                                                    }
+                                                                } else {
+                                                                    System.out.println("오류 발생 Grading 컬렉션에서 정상적으로 불러와지지 않음.");
+                                                                }
+
+                                                            }
+                                                        });
+                                                Toast.makeText(getApplication(),"게시물 삭제 성공",Toast.LENGTH_SHORT).show();
+                                            }
+                                        })
+                                        .addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+                                                Toast.makeText(getApplication(),"게시물 삭제 실패",Toast.LENGTH_SHORT).show();
+                                            }
+                                        });
+                                recyclerViewForCocktailMyRecipe.setAdapter(adapterForCocktailMyRecipe);
                                 break;
                             case R.id.popup_myRecipe_recipe:
                                 Toast.makeText(getApplication(),"게시물 보기",Toast.LENGTH_SHORT).show();
@@ -67,9 +181,10 @@ public class MyPageMyRecipeActivity extends AppCompatActivity {
         super.onResume();
 
         adapterForCocktailMyRecipe.clearAllForAdapter();
-        adapterForCocktailMyRecipe.addItem(new Cocktail("안녕", 9998, "대충 스까", "대충 스까", "작성자" ,"gs://sbsimulator-96f70.appspot.com/Recipe/AMERICANO.jpg"));
-        for(int i=0;i<20;i++){
-            adapterForCocktailMyRecipe.addItem(new Cocktail("안녕 나의 레시피"+i, 9998+i, "대충 스까", "대충 스까", "작성자" + i,"gs://sbsimulator-96f70.appspot.com/Recipe/AMERICANO.jpg"));
+        for(int i=0;i<Self_name.size();i++){
+            //칵테일 이름, 칵테일 문서번호, 설명, 만드는방법, 칵테일 만든이, 이미지url
+            adapterForCocktailMyRecipe.addItem(new Cocktail((String) Self_name.get(i), Integer.parseInt(String.valueOf(Self_id.get(i))), (String) Self_description.get(i), (String) Self_base.get(i), (String) Self_user.get(i),
+                    (String) Self_url.get(i)));
         }
     }
 }
