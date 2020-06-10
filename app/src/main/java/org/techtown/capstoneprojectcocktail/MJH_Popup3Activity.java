@@ -45,29 +45,6 @@ public class MJH_Popup3Activity extends Activity {
     public FirebaseFirestore db = FirebaseFirestore.getInstance();
     private static final String TAG = "DocSnippets";
 
-    //레시피 정보를 받기 위한 변수들
-    String[] Recipe_name = new String[81];
-    int[] ID = new int[81];
-    String[] method = new String[81];
-    String[] Recipe_Base = new String[81];
-    String[] abv = new String[81];
-    String[] ref = new String[81];
-    Map<String, Number> Recipe_Ingredient;
-    long[] Realabv = new long[81];
-    int count;
-
-    //재료 정보를 받기 위한 변수들
-    String[] Ingredient_name = new String[140];
-    int[] Ingredient_ID = new int[140];
-    long[] Ingredient_Realabv = new long[140];
-    String[] Ingredient_abv = new String[140];
-    String[] Ingredient_ref = new String[140];
-    Number[] Ingredient_sugar = new Number[140];
-    String[] Ingredient_Realsugar = new String[140];
-    String[] Ingredient_flavour = new String[140];
-    String[] Ingredient_specific_gravity = new String[140];
-    int Ingredient_count;
-
     RecyclerView recyclerViewForCocktailSearch;
     ArrayList<MJH_Object_ingredient> bufferUpdateIngredient;
     ArrayList<Float> bufferUpdateIngredientAmount;
@@ -83,8 +60,6 @@ public class MJH_Popup3Activity extends Activity {
 
     //비중
    private ArrayList I_gravity = new ArrayList();
-
-
     /////////////////////////////////////////////
     MJH_SimulatorUiActivity simulatorUiAddress;
     public static Context uiThis;
@@ -235,26 +210,65 @@ public class MJH_Popup3Activity extends Activity {
                 setAdapterForIngredientSearchByType("시럽");
             }
             else if(listUpdateTech.equals("Layering")){
-                setAdapterForIngredientSearchByType("베이스");
-                setAdapterForIngredientSearchByType("리큐르");
-                setAdapterForIngredientSearchByType("시럽");
-                setAdapterForIngredientSearchByType("주스");
-                setAdapterForIngredientSearchByType("음료");
+                //setAdapterForIngredientSearchByType("베이스");
+                //setAdapterForIngredientSearchByType("리큐르");
+                //setAdapterForIngredientSearchByType("시럽");
+                //setAdapterForIngredientSearchByType("주스");
+                //setAdapterForIngredientSearchByType("음료");
                 Toast myToast = Toast.makeText(uiThis, Integer.toString(I_name.size()), Toast.LENGTH_LONG);
                 myToast.show();
                 adapterForCocktailSearch.clearAllForAdapter();
-                for (int i = 0; i < I_name.size() - 1; i++) {
 
-                    if(Float.parseFloat((String)(I_gravity.get(i))) >= test.simulatorStep.get(test.simulatorStep.size() - 1).specificGravity.get(test.simulatorStep.get(test.simulatorStep.size() - 1).specificGravity.size() - 1)) {
-                        adapterForCocktailSearch.addItem(new Cocktail((String) I_name.get(i),
-                                Integer.parseInt((String) I_ID.get(i)),
-                                (String) I_flavour.get(i),
-                                String.valueOf(I_sugar.get(i)),
-                                String.valueOf(I_abv.get(i)),
-                                (String) I_ref.get(i)));
-                    }
-                }
-                recyclerViewForCocktailSearch.setAdapter(adapterForCocktailSearch);
+                System.out.println("확인용 : " + (I_name.size()-1));
+//                for (int i = 0; i < I_name.size()-1; i++) {
+//                    if(Float.parseFloat((String)(I_gravity.get(i))) >= test.simulatorStep.get(test.simulatorStep.size() - 1).specificGravity.get(test.simulatorStep.get(test.simulatorStep.size() - 1).specificGravity.size() - 1)) {
+//                        adapterForCocktailSearch.addItem(new Cocktail((String) I_name.get(i),
+//                                Integer.parseInt((String) I_ID.get(i)),
+//                                (String) I_flavour.get(i),
+//                                String.valueOf(I_sugar.get(i)),
+//                                String.valueOf(I_abv.get(i)),
+//                                (String) I_ref.get(i)));
+//                    }
+//                }
+//                recyclerViewForCocktailSearch.setAdapter(adapterForCocktailSearch);
+                db.collection("Ingredient")
+                        .get()
+                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                if (task.isSuccessful()) {
+                                    I_name.clear();
+                                    I_ID.clear();
+                                    I_flavour.clear();
+                                    I_sugar.clear();
+                                    I_abv.clear();
+                                    I_ref.clear();
+                                    I_gravity.clear();
+                                    for (QueryDocumentSnapshot document : task.getResult()) {
+                                        if(Float.parseFloat(String.valueOf((document.get("specific_gravity")))) >= test.simulatorStep.get(test.simulatorStep.size() - 1).specificGravity.get(test.simulatorStep.get(test.simulatorStep.size() - 1).specificGravity.size() - 1))
+                                        {
+                                            I_name.add(document.get("Ingredient_name"));
+                                            I_ID.add(document.getId());
+                                            I_flavour.add(document.get("flavour"));
+                                            I_sugar.add(document.get("sugar_rate"));
+                                            I_abv.add(document.get("abv"));
+                                            I_ref.add(document.get("ref"));
+                                            I_gravity.add(document.get("specific_gravity"));
+                                            adapterForCocktailSearch.addItem(new Cocktail((String) I_name.get(I_name.size()-1),
+                                                    Integer.parseInt((String) I_ID.get(I_ID.size()-1)),
+                                                    (String) I_flavour.get(I_flavour.size()-1),
+                                                    String.valueOf(I_sugar.get(I_sugar.size()-1)) ,
+                                                    String.valueOf(I_abv.get(I_abv.size()-1)) ,
+                                                    (String) I_ref.get(I_ref.size()-1)));
+                                        }
+                                    }
+                                    System.out.println("시럽인 재료들의 비중 값 : " + I_gravity );
+                                    recyclerViewForCocktailSearch.setAdapter(adapterForCocktailSearch);
+                                } else {
+                                    System.out.println("해당하는 문서가 없습니다.");
+                                }
+                            }
+                        });
             }
 
             else {
@@ -297,7 +311,6 @@ public class MJH_Popup3Activity extends Activity {
                                 I_ref.add(document.get("ref"));
                                 I_gravity.add(document.get("specific_gravity"));
 
-
                                 adapterForCocktailSearch.addItem(new Cocktail((String) I_name.get(I_name.size()-1),
                                         Integer.parseInt((String) I_ID.get(I_ID.size()-1)),
                                         (String) I_flavour.get(I_flavour.size()-1),
@@ -314,4 +327,5 @@ public class MJH_Popup3Activity extends Activity {
                 });
 
     }
+
 }
