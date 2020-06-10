@@ -659,7 +659,8 @@ public class CocktailRecipeActivity extends AppCompatActivity {
                             @Override
                             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                                 if (task.isSuccessful()) {
-                                    adapterForCocktailComment.clearAllForAdapter();
+                                    //수정
+                                    //adapterForCocktailComment.clearAllForAdapter();
                                     for (QueryDocumentSnapshot document : task.getResult()) {
                                         Bookmark_count++;
                                     }
