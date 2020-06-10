@@ -449,6 +449,7 @@ public class CocktailRecipeActivity extends AppCompatActivity {
                                 }
                             });
 
+
                     //recyclerViewForComment.setAdapter(adapterForCocktailComment);
                     editTextForCocktailComment.getText().clear();
                     //영진 이부분에서 db 에 있는 댓글내용 불러와
@@ -659,7 +660,8 @@ public class CocktailRecipeActivity extends AppCompatActivity {
                             @Override
                             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                                 if (task.isSuccessful()) {
-                                    adapterForCocktailComment.clearAllForAdapter();
+                                    //수정
+                                    //adapterForCocktailComment.clearAllForAdapter();
                                     for (QueryDocumentSnapshot document : task.getResult()) {
                                         Bookmark_count++;
                                     }
