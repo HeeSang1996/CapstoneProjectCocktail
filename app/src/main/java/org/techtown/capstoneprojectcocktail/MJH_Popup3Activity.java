@@ -229,7 +229,6 @@ public class MJH_Popup3Activity extends Activity {
 
     private void setAdapterForIngredientSearch(){
         //Ingredient_type이 시럽인것만 나오도록
-
         try{
             if(listUpdateTech.equals("Gradient")){
                 adapterForCocktailSearch.clearAllForAdapter();
