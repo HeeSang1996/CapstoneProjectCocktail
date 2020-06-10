@@ -210,11 +210,6 @@ public class MJH_Popup3Activity extends Activity {
                 setAdapterForIngredientSearchByType("시럽");
             }
             else if(listUpdateTech.equals("Layering")){
-                //setAdapterForIngredientSearchByType("베이스");
-                //setAdapterForIngredientSearchByType("리큐르");
-                //setAdapterForIngredientSearchByType("시럽");
-                //setAdapterForIngredientSearchByType("주스");
-                //setAdapterForIngredientSearchByType("음료");
                 Toast myToast = Toast.makeText(uiThis, Integer.toString(I_name.size()), Toast.LENGTH_LONG);
                 myToast.show();
                 adapterForCocktailSearch.clearAllForAdapter();
