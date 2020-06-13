@@ -9,19 +9,15 @@ import android.graphics.LinearGradient;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.graphics.Shader;
-import android.os.Build;
-import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import androidx.annotation.RequiresApi;
-
-public class ObjectHighballGlass {
+public class ObjectShooterGlass {
 
     int setNumber = 0;
 
-    int left = 140;
-    int right = 760;
+    int left = 298;
+    int right = 602;
 
     public void draw(ImageView View, Context context){
 
@@ -42,9 +38,9 @@ public class ObjectHighballGlass {
                 int s_red, s_green, s_blue;
                 int red, green, blue;
 
-                int s_height = 1080;
-                int height = 1080;
-                int prev_h = 1080;
+                int s_height = 835;
+                int height = 835;
+                int prev_h = 835;
 
 
                 Paint paint = new Paint();
@@ -68,20 +64,20 @@ public class ObjectHighballGlass {
                 //상단부
                 for(int index = 0; index < MJH_SimulatorUiActivity.test.simulatorStep.get(MJH_SimulatorUiActivity.test.simulatorStep.size()-1 ).isLayering; index++){
                     volume = MJH_SimulatorUiActivity.test.simulatorStep.get(MJH_SimulatorUiActivity.test.inGlassStep-1 ).eachVolume.get(index);
-                    height = (int)((float)height - ((float)4.0 * volume));
+                    height = (int)((float)height - ((float)8.0 * volume));
                 }
                 paint.setColor(Color.rgb(red ,green ,blue));
                 paint.setAlpha(200);
                 RectF rect2 = new RectF();
                 rect2.set(left, height -20, right, height + 20);
-                canvas.drawArc(rect2, 0, 360, true, paint);
+                canvas.drawArc(rect2, 180, 180, true, paint);
 
-                height = 1080;
+                height = 835;
 
                 //잔
-                Bitmap bitmap2 = BitmapFactory.decodeResource(context.getResources(), R.drawable.highball_glass_5_ice);
+                Bitmap bitmap2 = BitmapFactory.decodeResource(context.getResources(), R.drawable.highball_glass_5);
                 bitmap2 = resizeBitmapImg(bitmap2, 1480);
-                canvas.drawBitmap(bitmap2, 0, 0, null);
+                canvas.drawBitmap(bitmap2, 225, 300, null);
 
 
 
@@ -97,7 +93,7 @@ public class ObjectHighballGlass {
                 ///바닥부
                 paint.setColor(Color.rgb(s_red ,s_green ,s_blue));
                 paint.setAlpha(200);
-                rect.set(left, 1045, right, 1115);
+                rect.set(left, 815, right, 855);
                 canvas.drawArc(rect, 0, 180, true, paint);
 
 
@@ -107,23 +103,23 @@ public class ObjectHighballGlass {
                 blue = (int) MJH_SimulatorUiActivity.test.simulatorStep.get(MJH_SimulatorUiActivity.test.simulatorStep.size()-1 ).isColor.get(0).rgb_blue;
 
                 ///그라데이션 높이
-                s_height = (int)((float)height - ((float)4.0 * volume));
+                s_height = (int)((float)height - ((float)8.0 * volume));
                 height = s_height;
                 prev_h = height;
 
                 volume = MJH_SimulatorUiActivity.test.simulatorStep.get(MJH_SimulatorUiActivity.test.inGlassStep-1 ).eachVolume.get(0);
 
                 ///전체사각
-                height = (int)((float)height - ((float)4.0 * volume));
+                height = (int)((float)height - ((float)8.0 * volume));
                 paint.setColor(Color.rgb(red ,green ,blue));
                 paint.setAlpha(200);
-                canvas.drawRect(left, height, right, s_height - (int)(((float)4.0 * volume)/2), paint);
+                canvas.drawRect(left, height, right, s_height - (int)(((float)8.0 * volume)/2), paint);
                 prev_h = height;
 
                 ///그라데이션 출력
-                paint_gradient.setShader(new LinearGradient(0, s_height - (int)(((float)4.0 * volume)/2), 0, 1080, Color.rgb(red ,green ,blue), Color.rgb(s_red ,s_green ,s_blue), Shader.TileMode.CLAMP));
+                paint_gradient.setShader(new LinearGradient(0, s_height - (int)(((float)8.0 * volume)/2), 0, 835, Color.rgb(red ,green ,blue), Color.rgb(s_red ,s_green ,s_blue), Shader.TileMode.CLAMP));
                 paint_gradient.setAlpha(200);
-                canvas.drawRect(left, s_height - (int)(((float)4.0 * volume)/2), right, 1080, paint_gradient);
+                canvas.drawRect(left, s_height - (int)(((float)8.0 * volume)/2), right, 835, paint_gradient);
 
 
                 if(MJH_SimulatorUiActivity.test.simulatorStep.get(MJH_SimulatorUiActivity.test.simulatorStep.size()-1 ).isLayering > 2){
@@ -137,11 +133,11 @@ public class ObjectHighballGlass {
                         //층 하단
                         paint.setColor(Color.rgb(red ,green ,blue));
                         paint.setAlpha(200);
-                        rect.set(left, height -30, right, height + 30);
+                        rect.set(left, height -20, right, height + 20);
                         canvas.drawArc(rect, 0, 180, true, paint);
 
                         //전체사각
-                        height = (int)((float)height - ((float)4.0 * volume));
+                        height = (int)((float)height - ((float)8.0 * volume));
                         paint.setColor(Color.rgb(red ,green ,blue));
                         paint.setAlpha(200);
                         canvas.drawRect(left, height, right, prev_h, paint);
@@ -153,13 +149,13 @@ public class ObjectHighballGlass {
                 paintBound.setColor(0x56000000);
                 paintBound.setStyle(Paint.Style.STROKE);
                 RectF rect3 = new RectF();
-                rect3.set(left, height -35, right, height + 35);
+                rect3.set(left, height -8, right, height + 8);
                 canvas.drawArc(rect3, 0, 180, false, paintBound);
 
                 //빛반사
                 paint.setColor(0x56FFFFFF);
-                canvas.drawRect(left+30, 75, left+160, 1065, paint);
-                rect.set(left+30, 1035, left+290, 1095);
+                canvas.drawRect(left+30, 350, left+70, 810, paint);
+                rect.set(left+30, 795, left+110, 825);
                 canvas.drawArc(rect, 90, 90, true, paint);
             }
             //레이어링
@@ -175,8 +171,8 @@ public class ObjectHighballGlass {
 
                 float volume;
                 int red = 0, green = 0, blue = 0;
-                int height = 1080;
-                int prev_h = 1080;
+                int height = 835;
+                int prev_h = 835;
 
                 int lastIndex = 0;
 
@@ -194,19 +190,20 @@ public class ObjectHighballGlass {
                 //상단부
                 for(int index = 0; index < MJH_SimulatorUiActivity.test.simulatorStep.get(MJH_SimulatorUiActivity.test.simulatorStep.size()-1 ).isLayering; index++){
                     volume = MJH_SimulatorUiActivity.test.simulatorStep.get(MJH_SimulatorUiActivity.test.inGlassStep-1 ).eachVolume.get(index);
-                    height = (int)((float)height - ((float)4.0 * volume));
+                    height = (int)((float)height - ((float)8.0 * volume));
                 }
                 paint.setColor(Color.rgb(red ,green ,blue));
+                paint.setAlpha(200);
                 RectF rect2 = new RectF();
                 rect2.set(left, height -20, right, height + 20);
-                canvas.drawArc(rect2, 0, 360, true, paint);
+                canvas.drawArc(rect2, 180, 180, true, paint);
 
                 //잔
-                Bitmap bitmap2 = BitmapFactory.decodeResource(context.getResources(), R.drawable.highball_glass_5_ice);
+                Bitmap bitmap2 = BitmapFactory.decodeResource(context.getResources(), R.drawable.highball_glass_5);
                 bitmap2 = resizeBitmapImg(bitmap2, 1480);
-                canvas.drawBitmap(bitmap2, 0, 0, null);
+                canvas.drawBitmap(bitmap2, 225, 300, null);
 
-                height = 1080;
+                height = 835;
                 for(int index = 0; index < MJH_SimulatorUiActivity.test.simulatorStep.get(MJH_SimulatorUiActivity.test.simulatorStep.size()-1 ).isLayering; index++){
                     red = (int) MJH_SimulatorUiActivity.test.simulatorStep.get(MJH_SimulatorUiActivity.test.simulatorStep.size()-1 ).isColor.get(index).rgb_red;
                     green = (int) MJH_SimulatorUiActivity.test.simulatorStep.get(MJH_SimulatorUiActivity.test.simulatorStep.size()-1 ).isColor.get(index).rgb_green;
@@ -217,11 +214,11 @@ public class ObjectHighballGlass {
 
                     //층 하단
                     paint.setColor(Color.rgb(red ,green ,blue));
-                    rect.set(left, height -30, right, height + 30);
+                    rect.set(left, height -20, right, height + 20);
                     canvas.drawArc(rect, 0, 180, true, paint);
 
                     //전체사각
-                    height = (int)((float)height - ((float)4.0 * volume));
+                    height = (int)((float)height - ((float)8.0 * volume));
                     paint.setColor(Color.rgb(red ,green ,blue));
                     canvas.drawRect(left, height, right, prev_h, paint);
                     prev_h = height;
@@ -232,13 +229,13 @@ public class ObjectHighballGlass {
                 paintBound.setColor(0x56000000);
                 paintBound.setStyle(Paint.Style.STROKE);
                 RectF rect3 = new RectF();
-                rect3.set(left, height -35, right, height + 35);
+                rect3.set(left, height -8, right, height + 8);
                 canvas.drawArc(rect3, 0, 180, false, paintBound);
 
                 //빛반사
                 paint.setColor(0x56FFFFFF);
-                canvas.drawRect(left+30, 75, left+160, 1065, paint);
-                rect.set(left+30, 1035, left+290, 1095);
+                canvas.drawRect(left+30, 350, left+70, 810, paint);
+                rect.set(left+30, 795, left+110, 825);
                 canvas.drawArc(rect, 90, 90, true, paint);
             }
             //노멀
@@ -260,44 +257,44 @@ public class ObjectHighballGlass {
                 Paint paint = new Paint();
                 Paint paint_gradient = new Paint();
 
-                height = (int)((float)1080 - ((float)4.0 * volume));
+                height = (int)((float)835 - ((float)8.0 * volume));
 
                 //상단부
                 paint.setColor(Color.rgb(red ,green ,blue));
                 paint.setAlpha(200);
                 RectF rect2 = new RectF();
                 rect2.set(left, height -20, right, height + 20);
-                canvas.drawArc(rect2, 0, 360, true, paint);
+                canvas.drawArc(rect2, 180, 180, true, paint);
 
                 //잔
-                Bitmap bitmap2 = BitmapFactory.decodeResource(context.getResources(), R.drawable.highball_glass_5_ice);
+                Bitmap bitmap2 = BitmapFactory.decodeResource(context.getResources(), R.drawable.highball_glass_5);
                 bitmap2 = resizeBitmapImg(bitmap2, 1480);
-                canvas.drawBitmap(bitmap2, 0, 0, null);
+                canvas.drawBitmap(bitmap2, 225, 300, null);
 
 
                 //전체사각
                 paint.setColor(Color.rgb(red ,green ,blue));
                 paint.setAlpha(200);
-                canvas.drawRect(left, height, right, 1080, paint);
+                canvas.drawRect(left, height, right, 835, paint);
 
                 //경계
                 paintBound.setColor(0x56000000);
                 paintBound.setStyle(Paint.Style.STROKE);
                 RectF rect3 = new RectF();
-                rect3.set(left, height -35, right, height + 35);
+                rect3.set(left, height -8, right, height + 8);
                 canvas.drawArc(rect3, 0, 180, false, paintBound);
 
                 //바닥부
                 paint.setColor(Color.rgb(red ,green ,blue));
                 paint.setAlpha(200);
                 RectF rect = new RectF();
-                rect.set(left, 1045, right, 1115);
+                rect.set(left, 815, right, 855);
                 canvas.drawArc(rect, 0, 180, true, paint);
 
                 //빛반사
                 paint.setColor(0x56FFFFFF);
-                canvas.drawRect(left+30, 75, left+160, 1065, paint);
-                rect.set(left+30, 1035, left+290, 1095);
+                canvas.drawRect(left+30, 350, left+70, 810, paint);
+                rect.set(left+30, 795, left+110, 825);
                 canvas.drawArc(rect, 90, 90, true, paint);
             }
         }catch (Exception e){e.printStackTrace(); }
@@ -309,8 +306,8 @@ public class ObjectHighballGlass {
     //return 리사이즈된 이미지 Bitmap 객체
     public Bitmap resizeBitmapImg(Bitmap source, int maxResolution){
 
-        int newWidth = 900;
-        int newHeight = 1200;
+        int newWidth = 450;
+        int newHeight = 600;
 
 
         return Bitmap.createScaledBitmap(source, newWidth, newHeight, true);

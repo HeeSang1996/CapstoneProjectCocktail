@@ -377,6 +377,7 @@ public class MJH_SimulatorUiActivity extends AppCompatActivity implements View.O
         if(test.glassType == 0){
             ImageView View = (ImageView) findViewById(R.id.simulatorImage);
             ObjectHighballGlass graphic = new  ObjectHighballGlass();
+            //ObjectShooterGlass graphic = new  ObjectShooterGlass();
             graphic.draw(View, uiMain);
         }
         else if(test.glassType == 1) {

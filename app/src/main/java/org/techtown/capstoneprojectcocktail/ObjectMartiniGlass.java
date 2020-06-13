@@ -46,6 +46,7 @@ public class ObjectMartiniGlass {
                 Paint paint = new Paint();
                 Paint paint_gradient = new Paint();
 
+
                 //////////////////
                 int start = MJH_SimulatorUiActivity.test.simulatorStep.get(MJH_SimulatorUiActivity.test.simulatorStep.size()-1 ).isLayering;
 
@@ -67,14 +68,14 @@ public class ObjectMartiniGlass {
                     firstConeHeight =(float) (Math.pow(graphicVol/3.14*3/Math.pow(225, 2)*Math.pow(210, 2) ,1d/3d));
                     firstConeX = firstConeHeight * 210 /225;
 
-                    Toast myToast = Toast.makeText(context, Double.toString(Math.pow(graphicVol/3.14*3/Math.pow(225, 2)*Math.pow(210, 2) ,1d/3d)), Toast.LENGTH_LONG);
+                    Toast myToast = Toast.makeText(context,  Double.toString(graphicVol), Toast.LENGTH_LONG);
                     myToast.show();
 
                     Path path = new Path();
 
                     //좌측삼각
                     path.moveTo(215, 285-firstConeHeight);
-                    path.lineTo(240 - firstConeX, 285-firstConeHeight);
+                    path.lineTo(237 - firstConeX, 285-firstConeHeight);
                     path.lineTo(215, 285);
                     path.close();
                     canvas.drawPath(path, paint);
@@ -82,7 +83,7 @@ public class ObjectMartiniGlass {
                     //우측삼각
                     Path path1 = new Path();
                     path1.moveTo(285, 285-firstConeHeight);
-                    path1.lineTo(260 + firstConeX, 285-firstConeHeight);
+                    path1.lineTo(263 + firstConeX, 285-firstConeHeight);
                     path1.lineTo(285, 285);
                     path1.close();
                     canvas.drawPath(path1, paint);
@@ -113,7 +114,7 @@ public class ObjectMartiniGlass {
                 realVolume = MJH_SimulatorUiActivity.test.simulatorStep.get(MJH_SimulatorUiActivity.test.simulatorStep.size()-1 ).eachVolume.get(1);
                 graphicVol = (double) (realVolume * graphicVolumeWeight);
 
-                finalIndexHeightBuf = firstConeHeight;
+                finalIndexHeightBuf = firstConeHeight/2;
 
                 firstConeHeight =(float) (Math.pow(graphicVol/3.14*3/Math.pow(225, 2)*Math.pow(210, 2) ,1d/3d));
                 firstConeHeight = (firstConeHeight + firstConeHeight + finalIndexHeightBuf) / 2;
