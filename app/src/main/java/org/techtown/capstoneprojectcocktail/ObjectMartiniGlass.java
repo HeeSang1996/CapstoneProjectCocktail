@@ -10,31 +10,19 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.RectF;
 import android.graphics.Shader;
-import android.os.Build;
-import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
+public class ObjectMartiniGlass {
 
-public class MJH_SimulatorGraphicMartiniActivity extends AppCompatActivity {
-    int setNumber = 0;
-    public Context me;
-    @RequiresApi(api = Build.VERSION_CODES.Q)
-    @Override
 
-    public void onCreate(Bundle saveInstanceState){
-        super.onCreate(saveInstanceState);
-        setContentView(R.layout.mjh_graphic_martini);
-        me = this;
+    public void draw(ImageView View, Context context){
         try{
             //그라데이션
             if(MJH_SimulatorUiActivity.test.isGradient == 1){
                 Canvas canvas;
                 Bitmap bitmap = Bitmap.createBitmap(500,700, Bitmap.Config.ARGB_8888);
                 canvas = new Canvas(bitmap);
-                ImageView View = (ImageView) findViewById(R.id.martiniGlass);
                 View.setImageBitmap(bitmap);
 
                 float realVolume;
@@ -79,7 +67,7 @@ public class MJH_SimulatorGraphicMartiniActivity extends AppCompatActivity {
                     firstConeHeight =(float) (Math.pow(graphicVol/3.14*3/Math.pow(225, 2)*Math.pow(210, 2) ,1d/3d));
                     firstConeX = firstConeHeight * 210 /225;
 
-                    Toast myToast = Toast.makeText(me, Double.toString(Math.pow(graphicVol/3.14*3/Math.pow(225, 2)*Math.pow(210, 2) ,1d/3d)), Toast.LENGTH_LONG);
+                    Toast myToast = Toast.makeText(context, Double.toString(Math.pow(graphicVol/3.14*3/Math.pow(225, 2)*Math.pow(210, 2) ,1d/3d)), Toast.LENGTH_LONG);
                     myToast.show();
 
                     Path path = new Path();
@@ -161,7 +149,7 @@ public class MJH_SimulatorGraphicMartiniActivity extends AppCompatActivity {
 
 
                 //잔
-                Bitmap bitmap2 = BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.martini_glass_re);
+                Bitmap bitmap2 = BitmapFactory.decodeResource(context.getResources(), R.drawable.martini_glass_re);
                 bitmap2 = resizeBitmapImg(bitmap2);
                 canvas.drawBitmap(bitmap2, 0, 0, null);
 
@@ -171,7 +159,6 @@ public class MJH_SimulatorGraphicMartiniActivity extends AppCompatActivity {
                 Canvas canvas;
                 Bitmap bitmap = Bitmap.createBitmap(500,700, Bitmap.Config.ARGB_8888);
                 canvas = new Canvas(bitmap);
-                ImageView View = (ImageView) findViewById(R.id.martiniGlass);
                 View.setImageBitmap(bitmap);
 
                 float realVolume;
@@ -206,7 +193,7 @@ public class MJH_SimulatorGraphicMartiniActivity extends AppCompatActivity {
                     firstConeHeight =(float) (Math.pow(graphicVol/3.14*3/Math.pow(225, 2)*Math.pow(210, 2) ,1d/3d));
                     firstConeX = firstConeHeight * 210 /225;
 
-                    Toast myToast = Toast.makeText(me, Double.toString(Math.pow(graphicVol/3.14*3/Math.pow(225, 2)*Math.pow(210, 2) ,1d/3d)), Toast.LENGTH_LONG);
+                    Toast myToast = Toast.makeText(context, Double.toString(Math.pow(graphicVol/3.14*3/Math.pow(225, 2)*Math.pow(210, 2) ,1d/3d)), Toast.LENGTH_LONG);
                     myToast.show();
 
                     Path path = new Path();
@@ -241,7 +228,7 @@ public class MJH_SimulatorGraphicMartiniActivity extends AppCompatActivity {
                 }
 
                 //잔
-                Bitmap bitmap2 = BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.martini_glass_re);
+                Bitmap bitmap2 = BitmapFactory.decodeResource(context.getResources(), R.drawable.martini_glass_re);
                 bitmap2 = resizeBitmapImg(bitmap2);
                 canvas.drawBitmap(bitmap2, 0, 0, null);
             }
@@ -249,7 +236,6 @@ public class MJH_SimulatorGraphicMartiniActivity extends AppCompatActivity {
                 Canvas canvas;
                 Bitmap bitmap = Bitmap.createBitmap(500,700, Bitmap.Config.ARGB_8888);
                 canvas = new Canvas(bitmap);
-                ImageView View = (ImageView) findViewById(R.id.martiniGlass);
                 View.setImageBitmap(bitmap);
 
                 float realVolume;
@@ -275,7 +261,7 @@ public class MJH_SimulatorGraphicMartiniActivity extends AppCompatActivity {
                 firstConeHeight =(float) (Math.pow(graphicVol/3.14*3/Math.pow(225, 2)*Math.pow(210, 2) ,1d/3d));
                 firstConeX = firstConeHeight * 210 /225;
 
-                Toast myToast = Toast.makeText(me, Double.toString(Math.pow(graphicVol/3.14*3/Math.pow(225, 2)*Math.pow(210, 2) ,1d/3d)), Toast.LENGTH_LONG);
+                Toast myToast = Toast.makeText(context, Double.toString(Math.pow(graphicVol/3.14*3/Math.pow(225, 2)*Math.pow(210, 2) ,1d/3d)), Toast.LENGTH_LONG);
                 myToast.show();
                 paint.setColor(Color.rgb(red ,green ,blue));
 
@@ -313,14 +299,13 @@ public class MJH_SimulatorGraphicMartiniActivity extends AppCompatActivity {
 
 
                 //잔
-                Bitmap bitmap2 = BitmapFactory.decodeResource(me.getResources(), R.drawable.martini_glass_re);
+                Bitmap bitmap2 = BitmapFactory.decodeResource(context.getResources(), R.drawable.martini_glass_re);
                 bitmap2 = resizeBitmapImg(bitmap2);
                 canvas.drawBitmap(bitmap2, 0, 0, null);
             }
 
         }catch (Exception e){e.printStackTrace(); }
     }
-
 
     //param source 원본 Bitmap 객체
     //param maxResolution 제한 해상도
@@ -333,4 +318,5 @@ public class MJH_SimulatorGraphicMartiniActivity extends AppCompatActivity {
 
         return Bitmap.createScaledBitmap(source, newWidth, newHeight, true);
     }
+
 }

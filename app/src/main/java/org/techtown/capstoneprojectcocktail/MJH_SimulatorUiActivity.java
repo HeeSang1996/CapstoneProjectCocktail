@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -69,22 +70,12 @@ public class MJH_SimulatorUiActivity extends AppCompatActivity implements View.O
         uiMain = this;
         button1=(Button) findViewById(R.id.button);
 
-        final TextView txt = (TextView)findViewById(R.id.textView);
+
 
         button1.setOnClickListener(new View.OnClickListener() {
             String resultTest = "";
             @Override
             public void onClick(View v){
-                try{
-                    resultTest = "현재 현재글래스" + Integer.toString(test.glassType);
-                    for(int i = 0 ; i < test.simulatorStep.get(test.totalStep-1).eachVolume.size(); i++){
-                        resultTest = resultTest + "/" + Float.toString(test.simulatorStep.get(test.totalStep-1).totalVolume);
-                    }
-                    txt.setText(resultTest);
-                }catch(Exception e){
-                    Toast myToast = Toast.makeText(uiMain, e.toString(), Toast.LENGTH_LONG);
-                    myToast.show();
-                }
             }
         });
 
@@ -105,6 +96,7 @@ public class MJH_SimulatorUiActivity extends AppCompatActivity implements View.O
                     //Toast myToast = Toast.makeText(uiMain,"하이볼잔", Toast.LENGTH_SHORT);
                     //myToast.show();
                 }
+                drawingCocktail();
             }
         }) ;
 
@@ -124,6 +116,7 @@ public class MJH_SimulatorUiActivity extends AppCompatActivity implements View.O
                     //Toast myToast = Toast.makeText(uiMain,"마티니잔", Toast.LENGTH_SHORT);
                     //myToast.show();
                 }
+                drawingCocktail();
             }
         }) ;
 
@@ -191,6 +184,8 @@ public class MJH_SimulatorUiActivity extends AppCompatActivity implements View.O
             if(listUpdateTech.equals("Layering") || listUpdateTech.equals("Gradient") ){
                 lastStepTechFlag = 1;
             }
+
+            drawingCocktail();
         }
         adapterMIN.callByPopup = 0;
     }
@@ -233,21 +228,30 @@ public class MJH_SimulatorUiActivity extends AppCompatActivity implements View.O
                         for(int i = 0; i <usingStepNum.get(usingStepNum.size() - 1); i++){
                             usingStep.remove(usingStep.size() - 1);
                         }
+
                     }catch(Exception e){
                         Toast myToast = Toast.makeText(this.getApplicationContext(), e.toString(), Toast.LENGTH_LONG);
                         myToast.show();
                     }
                 }
 
+
                 if(stepNum == 0){
                     lastStepTechFlag = 0;
+
+                    ImageView View = (ImageView) findViewById(R.id.simulatorImage);
+                    View .setImageResource(0);
                 }
                 else if(adapterMIN.listViewItemList.get(adapterMIN.listViewItemList.size()-1).getTech().equals("Layering") || adapterMIN.listViewItemList.get(adapterMIN.listViewItemList.size()-1).getTech().equals("Gradient") ){
                     lastStepTechFlag = 1;
+                    drawingCocktail();
                 }
                 else{
                     lastStepTechFlag = 0;
+                    drawingCocktail();
                 }
+
+
                 break;
             case R.id.button_simulation_action: // 시뮬레이션 작동시키기
 
@@ -263,8 +267,8 @@ public class MJH_SimulatorUiActivity extends AppCompatActivity implements View.O
                             break;
                         }
                         else if(test.glassType == 1){
-                            Intent intent2 = new Intent(this, MJH_SimulatorGraphicMartiniActivity.class);
-                            startActivityForResult(intent2, 1);
+                            //Intent intent2 = new Intent(this, MJH_SimulatorGraphicMartiniActivity.class);
+                            // startActivityForResult(intent2, 1);
                             break;
                         }
                     }
@@ -366,6 +370,20 @@ public class MJH_SimulatorUiActivity extends AppCompatActivity implements View.O
         }
         listCount = 0;
 
+    }
+
+
+    public void drawingCocktail(){
+        if(test.glassType == 0){
+            ImageView View = (ImageView) findViewById(R.id.simulatorImage);
+            ObjectHighballGlass graphic = new  ObjectHighballGlass();
+            graphic.draw(View, uiMain);
+        }
+        else if(test.glassType == 1) {
+            ImageView View = (ImageView) findViewById(R.id.simulatorImage);
+            ObjectMartiniGlass graphic = new  ObjectMartiniGlass();
+            graphic.draw(View, uiMain);
+        }
     }
 
 }

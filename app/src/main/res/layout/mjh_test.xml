@@ -10,7 +10,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:background="#333333">
 
         <LinearLayout
             android:id="@+id/linearLayout"
@@ -54,13 +55,12 @@
 
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="match_parent"
-            android:layout_height="300dp"
-            android:text="TextView"
-            android:textColor="#ffffff"
-            android:background="#333333"/>
+        <ImageView
+            android:id="@+id/simulatorImage"
+            android:layout_width="200dp"
+            android:layout_height="280dp"
+            android:layout_gravity="center"
+            android:layout_marginVertical="35dp"/>
 
         <ListView
             android:id="@+id/listview1"
