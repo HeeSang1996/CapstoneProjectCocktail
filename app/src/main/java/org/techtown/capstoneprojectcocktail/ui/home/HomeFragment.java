@@ -203,6 +203,7 @@ public class HomeFragment extends Fragment {
         });
 
         //테스트용 삭제필
+        /*
         Button testButton = root.findViewById(R.id.buttonForTestCosine_home);
         testButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -215,7 +216,7 @@ public class HomeFragment extends Fragment {
                 }
             }
         });
-
+         */
         return root;
     }
 }
