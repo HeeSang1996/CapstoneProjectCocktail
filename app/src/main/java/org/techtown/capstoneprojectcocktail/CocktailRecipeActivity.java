@@ -545,7 +545,7 @@ public class CocktailRecipeActivity extends AppCompatActivity {
                                     Comment_uid = new ArrayList();
                                     //Comment컬렉션의 문서들중 레시피 번호 필드가 현재 보고있는 레시피 번호와 일치하는 것들 검색
                                     db.collection("Comment")
-                                            .whereEqualTo("레시피 번호", Integer.toString(cocktailID)).orderBy("댓글 날짜", Query.Direction.ASCENDING)
+                                            .whereEqualTo("레시피 번호", Integer.toString(cocktailID))
                                             .get()
                                             .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                                 @Override
