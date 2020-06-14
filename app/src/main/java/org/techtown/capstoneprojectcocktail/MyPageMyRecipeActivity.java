@@ -21,6 +21,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -84,7 +85,7 @@ public class MyPageMyRecipeActivity extends AppCompatActivity {
                                         (String) Self_url.get(i)));
                             }
                         } else {
-                            System.out.println("오류 발생 Grading 컬렉션에서 정상적으로 불러와지지 않음.");
+                            System.out.println("오류 발생 컬렉션에서 정상적으로 불러와지지 않음.");
                         }
 
                     }

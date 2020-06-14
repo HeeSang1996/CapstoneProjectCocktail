@@ -17,6 +17,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -91,7 +92,7 @@ public class MyPageGradingActivity extends AppCompatActivity {
 
         //북마크 컬렉션에서 사용자 uid와 같은 문서들을 전부 불러온다.
         db.collection("Grading")
-                .whereEqualTo("사용자 uid", currentUser.getUid())
+                .whereEqualTo("사용자 uid", currentUser.getUid()).orderBy("레시피 이름", Query.Direction.ASCENDING)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
