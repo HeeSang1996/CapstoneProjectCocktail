@@ -38,7 +38,7 @@ import java.util.Map;
 public class CocktailSearchActivity extends AppCompatActivity{
 
     final CocktailAdapterForSearch adapterForCocktailSearch = new CocktailAdapterForSearch();
-    final CocktailAdapterForSearch adapterForSelfCocktailSearch = new CocktailAdapterForSearch();
+    //final CocktailAdapterForSearch adapterForSelfCocktailSearch = new CocktailAdapterForSearch();
 
     public FirebaseFirestore db = FirebaseFirestore.getInstance();
     private static final String TAG = "DocSnippets";
@@ -106,20 +106,22 @@ public class CocktailSearchActivity extends AppCompatActivity{
 
         LinearLayoutManager layoutManagerForCocktailSearch = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL,false);
         recyclerViewForCocktailSearch.setLayoutManager(layoutManagerForCocktailSearch);
+        recyclerViewForCocktailSearch.setAdapter(adapterForCocktailSearch);
 
         switchForUserMade.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                textForSearch.getText().clear();
                 if (isChecked){
                     Toast.makeText(getApplicationContext(),"사용자 레시피 검색 ON",Toast.LENGTH_LONG).show();
                     //Toast.makeText(getApplicationContext(),"사용자 레시피 검색 ON" + spinner.getSelectedItemPosition(),Toast.LENGTH_LONG).show();
-                    adapterForCocktailSearch.clearAllForAdapter();
+                    //adapterForCocktailSearch.clearAllForAdapter();
                     view_case = 1;
                     setAdapterForSelfCocktailSearchMethod("");
 
                 }else{
                     Toast.makeText(getApplicationContext(),"사용자 레시피 검색 OFF",Toast.LENGTH_LONG).show();
-                    adapterForCocktailSearch.clearAllForAdapter();
+                    //adapterForCocktailSearch.clearAllForAdapter();
                     view_case = 0;
                     setAdapterForCocktailSearchMethod("");
                 }
@@ -131,17 +133,18 @@ public class CocktailSearchActivity extends AppCompatActivity{
         toggleForCocktailOrIngredient.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                textForSearch.getText().clear();
                 if (isChecked){
                     Toast.makeText(getApplicationContext(),"재료 검색 모드",Toast.LENGTH_LONG).show();
                     //switchForUserMade.setChecked(false);
-                    adapterForCocktailSearch.clearAllForAdapter();
+                    //adapterForCocktailSearch.clearAllForAdapter();
                     switchForUserMade.setVisibility(View.GONE);
                     spinner.setVisibility(View.GONE);
                     setAdapterForIngredientSearch();
                 }
                 else{
                     Toast.makeText(getApplicationContext(),"칵테일 검색 모드",Toast.LENGTH_LONG).show();
-                    adapterForCocktailSearch.clearAllForAdapter();
+                    //adapterForCocktailSearch.clearAllForAdapter();
                     switchForUserMade.setVisibility(View.VISIBLE);
                     spinner.setVisibility(View.VISIBLE);
                     //유저가 올린 칵테일 검색 모드가 켜져 있을 경우
@@ -195,9 +198,7 @@ public class CocktailSearchActivity extends AppCompatActivity{
                 ((TextView)parent.getChildAt(0)).setTextColor(Color.WHITE);
                 //수정필
                 //Toast.makeText(getApplicationContext(),"선택된 하이: " + parent.getItemAtPosition(position),Toast.LENGTH_LONG).show();
-                adapterForCocktailSearch.clearAllForAdapter();
-                adapterForSelfCocktailSearch.clearAllForAdapter();
-
+                //adapterForCocktailSearch.clearAllForAdapter();
                 switch (position){
                     case 0:
                         //북마크 내림차순
@@ -212,7 +213,7 @@ public class CocktailSearchActivity extends AppCompatActivity{
                         else if(view_case == 1)
                         {
                             setAdapterForSelfCocktailSearchMethod(textForSearch.getText().toString());
-                            recyclerViewForCocktailSearch.setAdapter(adapterForSelfCocktailSearch);
+                            recyclerViewForCocktailSearch.setAdapter(adapterForCocktailSearch);
                         }
                         else
                             System.out.println("뷰 케이스 오류발생.");
@@ -230,7 +231,7 @@ public class CocktailSearchActivity extends AppCompatActivity{
                         else if(view_case == 1)
                         {
                             setAdapterForSelfCocktailSearchMethod(textForSearch.getText().toString());
-                            recyclerViewForCocktailSearch.setAdapter(adapterForSelfCocktailSearch);
+                            recyclerViewForCocktailSearch.setAdapter(adapterForCocktailSearch);
                         }
                         else
                             System.out.println("뷰 케이스 오류발생.");
@@ -248,7 +249,7 @@ public class CocktailSearchActivity extends AppCompatActivity{
                         else if(view_case == 1)
                         {
                             setAdapterForSelfCocktailSearchMethod(textForSearch.getText().toString());
-                            recyclerViewForCocktailSearch.setAdapter(adapterForSelfCocktailSearch);
+                            recyclerViewForCocktailSearch.setAdapter(adapterForCocktailSearch);
                         }
                         else
                             System.out.println("뷰 케이스 오류발생.");
@@ -266,7 +267,7 @@ public class CocktailSearchActivity extends AppCompatActivity{
                         else if(view_case == 1)
                         {
                             setAdapterForSelfCocktailSearchMethod(textForSearch.getText().toString());
-                            recyclerViewForCocktailSearch.setAdapter(adapterForSelfCocktailSearch);
+                            recyclerViewForCocktailSearch.setAdapter(adapterForCocktailSearch);
                         }
                         else
                             System.out.println("뷰 케이스 오류발생.");
@@ -309,7 +310,8 @@ public class CocktailSearchActivity extends AppCompatActivity{
         abv = new String[81];
         ref = new String[81];
         Realabv = new long[81];
-        recyclerViewForCocktailSearch.setAdapter(adapterForCocktailSearch);
+        //recyclerViewForCocktailSearch.setAdapter(adapterForCocktailSearch);
+        adapterForCocktailSearch.clearAllForAdapter();
 
         CollectionReference RecipeRef = db.collection("Recipe");
 
@@ -501,6 +503,7 @@ public class CocktailSearchActivity extends AppCompatActivity{
     //사용자레시피
     private void setAdapterForSelfCocktailSearchMethod(String str){
         final String _str = str;
+        adapterForCocktailSearch.clearAllForAdapter();
         //사용자들의 레시피 정보를 받기위한 변수 초기화
         Self_name = new ArrayList();
         Self_id = new ArrayList();
@@ -686,6 +689,7 @@ public class CocktailSearchActivity extends AppCompatActivity{
 
     private void setAdapterForIngredientSearch(){
         count = 0;
+        adapterForCocktailSearch.clearAllForAdapter();
         CollectionReference IngredientRef = db.collection("Ingredient");
 
         IngredientRef.orderBy("Ingredient_name", Query.Direction.ASCENDING).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -710,7 +714,6 @@ public class CocktailSearchActivity extends AppCompatActivity{
                         recyclerViewForCocktailSearch.setAdapter(adapterForCocktailSearch);
                         count++;
                     }
-
                 } else {
                     System.out.println("오류 발생 컬렉션에서 정상적으로 불러와지지 않음.");
                 }
