@@ -210,7 +210,7 @@ public class CocktailUploadActivity extends AppCompatActivity {
                     uploadRecipe.put("칵테일 이름", stringForCocktailName);
                     uploadRecipe.put("만드는 방법", stringForCocktailHowToMake);
                     uploadRecipe.put("칵테일 설명", stringForCocktailDescription);
-                    uploadRecipe.put("good_number", 0);
+                    uploadRecipe.put("good_number", "0");
                     uploadRecipe.put("mark_number", 0);
                     uploadRecipe.put("ref", "gs://sbsimulator-96f70.appspot.com/Self/"+file.getLastPathSegment());
 
