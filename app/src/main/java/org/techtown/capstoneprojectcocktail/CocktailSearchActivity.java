@@ -42,6 +42,8 @@ public class CocktailSearchActivity extends AppCompatActivity{
 
     public FirebaseFirestore db = FirebaseFirestore.getInstance();
     private static final String TAG = "DocSnippets";
+    //레시피 검색 플래그
+    int Recipe_case = 0;
 
     //레시피 정보를 받기 위한 변수들
     String[] Recipe_name = new String[81];
@@ -186,23 +188,35 @@ public class CocktailSearchActivity extends AppCompatActivity{
                 ((TextView)parent.getChildAt(0)).setTextColor(Color.WHITE);
                 //수정필
                 //Toast.makeText(getApplicationContext(),"선택된 하이: " + parent.getItemAtPosition(position),Toast.LENGTH_LONG).show();
+                adapterForCocktailSearch.clearAllForAdapter();
                 switch (position){
                     case 0:
                         //북마크 내림차순
                         Toast.makeText(getApplicationContext(),"선택된 정렬순서:" + parent.getItemAtPosition(position),Toast.LENGTH_LONG).show();
+                        Recipe_case = 0; //플래그 북마크 내림차순
                         setAdapterForCocktailSearchMethod(textForSearch.getText().toString());
+                        recyclerViewForCocktailSearch.setAdapter(adapterForCocktailSearch);
                         break;
                     case 1:
                         //북마크 오름차순
                         Toast.makeText(getApplicationContext(),"선택된 정렬순서:" + parent.getItemAtPosition(position),Toast.LENGTH_LONG).show();
+                        Recipe_case = 1; //플래그 북마크 오름차순
+                        setAdapterForCocktailSearchMethod(textForSearch.getText().toString());
+                        recyclerViewForCocktailSearch.setAdapter(adapterForCocktailSearch);
                         break;
                     case 2:
                         //평점 내림차순
                         Toast.makeText(getApplicationContext(),"선택된 정렬순서:" + parent.getItemAtPosition(position),Toast.LENGTH_LONG).show();
+                        Recipe_case = 2; //플래그 평가 내림차순
+                        setAdapterForCocktailSearchMethod(textForSearch.getText().toString());
+                        recyclerViewForCocktailSearch.setAdapter(adapterForCocktailSearch);
                         break;
                     case 3:
                         //평점 오름차순
                         Toast.makeText(getApplicationContext(),"선택된 정렬순서:" + parent.getItemAtPosition(position),Toast.LENGTH_LONG).show();
+                        Recipe_case = 3; //플래그 평가 오름차순
+                        setAdapterForCocktailSearchMethod(textForSearch.getText().toString());
+                        recyclerViewForCocktailSearch.setAdapter(adapterForCocktailSearch);
                         break;
                 }
             }
@@ -233,15 +247,29 @@ public class CocktailSearchActivity extends AppCompatActivity{
 
     private void setAdapterForCocktailSearchMethod(String str){
         final String _str = str;
+        //전체 초기화
         count = 0;
+        Recipe_name = new String[81];
+        ID = new int[81];
+        method = new String[81];
+        Recipe_Base = new String[81];
+        abv = new String[81];
+        ref = new String[81];
+        Realabv = new long[81];
+        recyclerViewForCocktailSearch.setAdapter(adapterForCocktailSearch);
+
         CollectionReference RecipeRef = db.collection("Recipe");
 
-        RecipeRef.orderBy("Recipe_name", Query.Direction.ASCENDING).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    for (QueryDocumentSnapshot document : task.getResult()) {
-                        //칵테일 이름, 칵테일 문서번호, 설명, 만드는방법, 칵테일 만든이, 이미지url
+        if(Recipe_case == 0)
+        {
+            System.out.println("플래그 상태 : "+ Recipe_case);
+
+            RecipeRef.orderBy("mark_number", Query.Direction.DESCENDING).orderBy("Recipe_name", Query.Direction.ASCENDING).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    if (task.isSuccessful()) {
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            //칵테일 이름, 칵테일 문서번호, 설명, 만드는방법, 칵테일 만든이, 이미지url
                             Recipe_name[count] = (String) document.get("Recipe_name");
                             ID[count] = Integer.parseInt(document.getId());
                             method[count] = (String) document.get("method");
@@ -254,7 +282,7 @@ public class CocktailSearchActivity extends AppCompatActivity{
                             Recipe_Base[count] = Recipe_Base[count].replaceAll("\\{", " ");
                             Recipe_Base[count] = Recipe_Base[count].replaceAll("\\}", "ml ");
                             Recipe_Base[count] = Recipe_Base[count].replaceAll("\\=", " ");
-                           //long형태로 받은 abv를 유저에게 보여줄 수 있도록 %를 붙여 재저장
+                            //long형태로 받은 abv를 유저에게 보여줄 수 있도록 %를 붙여 재저장
                             Realabv[count] = (long) document.get("abv");
                             abv[count] = Realabv[count] + "%";
                             ref[count] = (String) document.get("ref");
@@ -270,12 +298,153 @@ public class CocktailSearchActivity extends AppCompatActivity{
                             }
                         }
 
-                } else {
-                    System.out.println("오류 발생 컬렉션에서 정상적으로 불러와지지 않음.");
-                }
+                    } else {
+                        System.out.println("오류 발생 컬렉션에서 정상적으로 불러와지지 않음.");
+                    }
 
-            }
-        });
+                }
+            });
+        }
+        else if(Recipe_case ==1)
+        {
+            System.out.println("플래그 상태 : "+ Recipe_case);
+
+            RecipeRef.orderBy("mark_number", Query.Direction.ASCENDING).orderBy("Recipe_name", Query.Direction.ASCENDING).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    if (task.isSuccessful()) {
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            //칵테일 이름, 칵테일 문서번호, 설명, 만드는방법, 칵테일 만든이, 이미지url
+                            Recipe_name[count] = (String) document.get("Recipe_name");
+                            ID[count] = Integer.parseInt(document.getId());
+                            method[count] = (String) document.get("method");
+
+                            Recipe_Ingredient = (Map<String, Number>) document.get("Ingredient_content");
+
+                            //map으로 받아온 정보를 string으로 치환한뒤 유저에게 보여줄 수 있도록 replaceall함({, }, = 삭제 ml 추가)
+                            Recipe_Base[count] = String.valueOf(Recipe_Ingredient);
+                            Recipe_Base[count] = Recipe_Base[count].replaceAll("\\,", "ml ");
+                            Recipe_Base[count] = Recipe_Base[count].replaceAll("\\{", " ");
+                            Recipe_Base[count] = Recipe_Base[count].replaceAll("\\}", "ml ");
+                            Recipe_Base[count] = Recipe_Base[count].replaceAll("\\=", " ");
+                            //long형태로 받은 abv를 유저에게 보여줄 수 있도록 %를 붙여 재저장
+                            Realabv[count] = (long) document.get("abv");
+                            abv[count] = Realabv[count] + "%";
+                            ref[count] = (String) document.get("ref");
+                            adapterForCocktailSearch.addItem(new Cocktail(Recipe_name[count], ID[count], method[count], Recipe_Base[count], abv[count],ref[count]));
+                            count++;
+                            //refresh 해주는 함수(아마)
+                            if (_str.length()==0){
+                                recyclerViewForCocktailSearch.setAdapter(adapterForCocktailSearch);
+                            }
+                            else{
+                                adapterForCocktailSearch.filterForCocktail(_str);
+                                recyclerViewForCocktailSearch.setAdapter(adapterForCocktailSearch);
+                            }
+                        }
+
+                    } else {
+                        System.out.println("오류 발생 컬렉션에서 정상적으로 불러와지지 않음.");
+                    }
+
+                }
+            });
+        }
+        else if(Recipe_case ==2)
+        {
+            System.out.println("플래그 상태 : "+ Recipe_case);
+
+            RecipeRef.orderBy("good_number", Query.Direction.DESCENDING).orderBy("Recipe_name", Query.Direction.ASCENDING).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    if (task.isSuccessful()) {
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            //칵테일 이름, 칵테일 문서번호, 설명, 만드는방법, 칵테일 만든이, 이미지url
+                            Recipe_name[count] = (String) document.get("Recipe_name");
+                            ID[count] = Integer.parseInt(document.getId());
+                            method[count] = (String) document.get("method");
+
+                            Recipe_Ingredient = (Map<String, Number>) document.get("Ingredient_content");
+
+                            //map으로 받아온 정보를 string으로 치환한뒤 유저에게 보여줄 수 있도록 replaceall함({, }, = 삭제 ml 추가)
+                            Recipe_Base[count] = String.valueOf(Recipe_Ingredient);
+                            Recipe_Base[count] = Recipe_Base[count].replaceAll("\\,", "ml ");
+                            Recipe_Base[count] = Recipe_Base[count].replaceAll("\\{", " ");
+                            Recipe_Base[count] = Recipe_Base[count].replaceAll("\\}", "ml ");
+                            Recipe_Base[count] = Recipe_Base[count].replaceAll("\\=", " ");
+                            //long형태로 받은 abv를 유저에게 보여줄 수 있도록 %를 붙여 재저장
+                            Realabv[count] = (long) document.get("abv");
+                            abv[count] = Realabv[count] + "%";
+                            ref[count] = (String) document.get("ref");
+                            adapterForCocktailSearch.addItem(new Cocktail(Recipe_name[count], ID[count], method[count], Recipe_Base[count], abv[count],ref[count]));
+                            count++;
+                            //refresh 해주는 함수(아마)
+                            if (_str.length()==0){
+                                recyclerViewForCocktailSearch.setAdapter(adapterForCocktailSearch);
+                            }
+                            else{
+                                adapterForCocktailSearch.filterForCocktail(_str);
+                                recyclerViewForCocktailSearch.setAdapter(adapterForCocktailSearch);
+                            }
+                        }
+
+                    } else {
+                        System.out.println("오류 발생 컬렉션에서 정상적으로 불러와지지 않음.");
+                    }
+
+                }
+            });
+        }
+        else if(Recipe_case ==3)
+        {
+            System.out.println("플래그 상태 : "+ Recipe_case);
+            RecipeRef.orderBy("good_number", Query.Direction.ASCENDING).orderBy("Recipe_name", Query.Direction.ASCENDING).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    if (task.isSuccessful()) {
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            //칵테일 이름, 칵테일 문서번호, 설명, 만드는방법, 칵테일 만든이, 이미지url
+                            Recipe_name[count] = (String) document.get("Recipe_name");
+                            ID[count] = Integer.parseInt(document.getId());
+                            method[count] = (String) document.get("method");
+
+                            Recipe_Ingredient = (Map<String, Number>) document.get("Ingredient_content");
+
+                            //map으로 받아온 정보를 string으로 치환한뒤 유저에게 보여줄 수 있도록 replaceall함({, }, = 삭제 ml 추가)
+                            Recipe_Base[count] = String.valueOf(Recipe_Ingredient);
+                            Recipe_Base[count] = Recipe_Base[count].replaceAll("\\,", "ml ");
+                            Recipe_Base[count] = Recipe_Base[count].replaceAll("\\{", " ");
+                            Recipe_Base[count] = Recipe_Base[count].replaceAll("\\}", "ml ");
+                            Recipe_Base[count] = Recipe_Base[count].replaceAll("\\=", " ");
+                            //long형태로 받은 abv를 유저에게 보여줄 수 있도록 %를 붙여 재저장
+                            Realabv[count] = (long) document.get("abv");
+                            abv[count] = Realabv[count] + "%";
+                            ref[count] = (String) document.get("ref");
+                            adapterForCocktailSearch.addItem(new Cocktail(Recipe_name[count], ID[count], method[count], Recipe_Base[count], abv[count],ref[count]));
+                            count++;
+                            //refresh 해주는 함수(아마)
+                            if (_str.length()==0){
+                                recyclerViewForCocktailSearch.setAdapter(adapterForCocktailSearch);
+                            }
+                            else{
+                                adapterForCocktailSearch.filterForCocktail(_str);
+                                recyclerViewForCocktailSearch.setAdapter(adapterForCocktailSearch);
+                            }
+                        }
+
+                    } else {
+                        System.out.println("오류 발생 컬렉션에서 정상적으로 불러와지지 않음.");
+                    }
+
+                }
+            });
+        }
+        else
+        {
+            System.out.println("플래그 오류 발생 컬렉션에서 정상적으로 불러와지지 않음.");
+            System.out.println("플래그 오류 상태 : "+ Recipe_case);
+        }
+
 
 
 //        for(int i=0; i < 81; i++)
