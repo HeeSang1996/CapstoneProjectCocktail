@@ -14,6 +14,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -55,7 +56,7 @@ public class MyPageCommentActivity extends AppCompatActivity {
         Comment_uid = new ArrayList();
 
         db.collection("Comment")
-                .whereEqualTo("사용자 uid", currentUser.getUid())
+                .whereEqualTo("사용자 uid", currentUser.getUid()).orderBy("댓글 날짜", Query.Direction.ASCENDING)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override

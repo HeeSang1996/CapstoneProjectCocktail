@@ -37,6 +37,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
@@ -544,7 +545,7 @@ public class CocktailRecipeActivity extends AppCompatActivity {
                                     Comment_uid = new ArrayList();
                                     //Comment컬렉션의 문서들중 레시피 번호 필드가 현재 보고있는 레시피 번호와 일치하는 것들 검색
                                     db.collection("Comment")
-                                            .whereEqualTo("레시피 번호", Integer.toString(cocktailID))
+                                            .whereEqualTo("레시피 번호", Integer.toString(cocktailID)).orderBy("댓글 날짜", Query.Direction.ASCENDING)
                                             .get()
                                             .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                                 @Override
