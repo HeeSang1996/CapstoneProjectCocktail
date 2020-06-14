@@ -297,7 +297,7 @@ public class CocktailSearchActivity extends AppCompatActivity{
             }
         });
     }
-
+    //기존레시피
     private void setAdapterForCocktailSearchMethod(String str){
         final String _str = str;
         //전체 초기화
@@ -498,7 +498,7 @@ public class CocktailSearchActivity extends AppCompatActivity{
             System.out.println("플래그 오류 상태 : "+ Recipe_case);
         }
     }
-
+    //사용자레시피
     private void setAdapterForSelfCocktailSearchMethod(String str){
         final String _str = str;
         //사용자들의 레시피 정보를 받기위한 변수 초기화
