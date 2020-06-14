@@ -1,5 +1,6 @@
 package org.techtown.capstoneprojectcocktail;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
@@ -87,6 +88,14 @@ public class MyPageCommentActivity extends AppCompatActivity {
             @Override
             public void onItemClick(CocktailCommentAdapter.ViewHolder holder, View view, int position) {
                 Comment item = adapterForCocktailComment.getItem(position);
+                Intent intent = new Intent(view.getContext(), CocktailRecipeActivity.class);
+                intent.putExtra("cocktailName", item.getCocktailName());
+                intent.putExtra("cocktailID",item.getCocktailID());
+                intent.putExtra("cocktailDescription",item.getCocktailDescription());
+                intent.putExtra("cocktailIngredient",item.getCocktailIngredient());
+                intent.putExtra("cocktailABV",item.getCocktailAbvNum());
+                intent.putExtra("cocktailRef",item.getCocktailImageUri());
+                startActivity(intent);
                 System.out.println(item.getName());
             }
         });
