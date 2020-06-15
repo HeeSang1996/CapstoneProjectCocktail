@@ -446,8 +446,4 @@ public class MJH_SimulatorUiActivity extends AppCompatActivity implements View.O
             txt2.setText(Integer.toString((int)sojuUnit));
         }catch (Exception e){}
     }
-
-
-
-
 }

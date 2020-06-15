@@ -31,7 +31,7 @@
                 android:layout_height="wrap_content"
                 android:text="유사한 칵테일"
                 android:background="#424242"
-                android:layout_marginTop="1dp"
+                android:layout_marginVertical="1dp"
                 android:padding="5dp"
                 android:textColor="#fff"
                 android:textSize="20sp"
