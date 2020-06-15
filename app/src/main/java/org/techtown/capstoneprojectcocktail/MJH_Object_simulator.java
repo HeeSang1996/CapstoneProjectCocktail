@@ -83,36 +83,22 @@ public class MJH_Object_simulator {
                         cocktailBuffer.specificGravity.get(0), inputIngredient.get(i).specific_gravity));
 
                 //색 변경
-                if (stepNum == 1 && i == 0){
+                if (associateStep.size() == 0 && i == 0){
                     cocktailBuffer.isColor.set(0, new MJH_Object_color(inputIngredient.get(i).my_color.rgb_red, inputIngredient.get(i).my_color.rgb_green,
                             inputIngredient.get(i).my_color.rgb_blue));
 
                     cocktailBuffer.alpha = inputIngredient.get(i).alpha;
                 }
-
                 else{
                     cocktailBuffer.isColor.set(0, changeColor(cocktailBuffer.isColor.get(0), inputIngredient.get(i).my_color, cocktailBuffer.totalVolume*cocktailBuffer.alpha,
                             inputAmount.get(i)*inputIngredient.get(i).alpha));
-                    cocktailBuffer.alpha = (cocktailBuffer.totalVolume*cocktailBuffer.alpha +  inputAmount.get(i)*inputIngredient.get(i).alpha) / (cocktailBuffer.totalVolume + inputAmount.get(i));
+                    cocktailBuffer.alpha = (cocktailBuffer.totalVolume*cocktailBuffer.alpha + inputAmount.get(i)*inputIngredient.get(i).alpha) / (cocktailBuffer.totalVolume + inputAmount.get(i));
                 }
 
                 //0615
                 float inputIngerAlpha = inputIngredient.get(i).alpha;
                 float inputIngerVolume = inputAmount.get(i);
 
-                if(inputIngredient.get(i).muddy == 0 && inputIngredient.get(i).alpha > 0){
-                    inputIngerAlpha = 12;
-                }
-                else if(inputIngredient.get(i).muddy == 1){
-                    inputIngerAlpha = 25;
-                }
-                //임시로 수정한 알파값
-                if(inputIngredient.get(i).alpha == 0)
-                {
-                    inputIngerAlpha = 3;
-                }
-                //cocktailBuffer.alpha = ((cocktailBuffer.alpha * cocktailBuffer.totalVolume) + (inputIngerAlpha * inputAmount.get(i))) / (cocktailBuffer.totalVolume + inputAmount.get(i));
-                //탁한거랑 섞었을때(예시 커피리큐르) 너무 투명해보이므로 볼륨값을 조정하여 알파값을 크게 바꿔줌// 이러면 순서따라 너무 크게 달라짐
                 cocktailBuffer.alpha = ((cocktailBuffer.alpha * cocktailBuffer.totalVolume) + (inputIngerAlpha * inputAmount.get(i))) / (cocktailBuffer.totalVolume + inputIngerVolume);
                 System.out.println("알파값" + cocktailBuffer.alpha);
 
