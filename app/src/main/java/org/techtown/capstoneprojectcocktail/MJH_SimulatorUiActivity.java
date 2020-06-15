@@ -34,6 +34,7 @@ public class MJH_SimulatorUiActivity extends AppCompatActivity implements View.O
 
     public FloatingActionButton floatingActionButtonForAddList, floatingActionButtonForAddList2, button_simulation_action;
     private Button switchGlassButton;
+    private Button switchGraphicButton;
     public static MJH_ListviewAdapter adapterMIN;
     public ListView listview;
 
@@ -68,6 +69,9 @@ public class MJH_SimulatorUiActivity extends AppCompatActivity implements View.O
     public static boolean martiniChecked = false;
     public static boolean shooterChecked = false;
 
+    public static boolean realisticChecked = true;
+    public static boolean illustChecked = false;
+
     @Override
     public void onCreate(Bundle saveInstanceState){
         setAdapterForIngredientSearch();
@@ -87,6 +91,9 @@ public class MJH_SimulatorUiActivity extends AppCompatActivity implements View.O
 
         switchGlassButton =  (Button) findViewById(R.id.switch_glass_simulation);
         switchGlassButton.setOnClickListener(this);
+
+        switchGraphicButton = (Button) findViewById(R.id.switch_graphic_mode_simulation);
+        switchGraphicButton.setOnClickListener(this);
 
         // Adapter 생성
         adapterMIN = new MJH_ListviewAdapter() ;
@@ -333,6 +340,8 @@ public class MJH_SimulatorUiActivity extends AppCompatActivity implements View.O
                     myToast.show();
                 }
                 break;
+            case R.id.switch_graphic_mode_simulation:
+
         }
     }
 
