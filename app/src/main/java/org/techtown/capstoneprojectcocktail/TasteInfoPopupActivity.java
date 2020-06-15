@@ -113,6 +113,7 @@ public class TasteInfoPopupActivity extends Activity {
                                 Recipe_bitter.add(document.get("쓴맛").toString());            //레시피의 쓴맛
                                 Recipe_salty.add(document.get("짠맛").toString());             //레시피의 짠맛
                             }
+                            //여기에 밑에 함수 넣듯이 넣어서 써먹으면 무조건 다 들어간 이후에 작동하는거라 null값 안들어가요(예시 SetDocument)
                             SetDocument();
                         } else {
                             System.out.println("오류 발생 Grading 컬렉션에서 정상적으로 불러와지지 않음.");
