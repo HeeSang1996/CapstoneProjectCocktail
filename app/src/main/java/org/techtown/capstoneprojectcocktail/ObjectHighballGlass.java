@@ -321,7 +321,7 @@ public class ObjectHighballGlass {
     }
 
     public int getAlpha(float _alpha){
-        int alphaVal = 15 + (int)(_alpha*_alpha);
+        int alphaVal = 155 + (int)(_alpha*_alpha);
 
         System.out.println("최종 알파값" + alphaVal);
 
