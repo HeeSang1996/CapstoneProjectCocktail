@@ -105,6 +105,7 @@ public class MJH_Object_simulator {
                 else if(inputIngredient.get(i).muddy == 1){
                     inputIngerAlpha = 20;
                 }
+                //임시로 수정한 알파값
                 if(inputIngredient.get(i).alpha == 0)
                 {
                     inputIngerAlpha = 3;
