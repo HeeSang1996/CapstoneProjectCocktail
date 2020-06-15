@@ -13,8 +13,11 @@ import android.graphics.Shader;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import static org.techtown.capstoneprojectcocktail.MJH_SimulatorUiActivity.realisticChecked;
+
 public class ObjectMartiniGlass {
 
+    float alpha = 0;
 
     public void draw(ImageView View, Context context){
         try{
@@ -255,6 +258,8 @@ public class ObjectMartiniGlass {
                 realVolume = MJH_SimulatorUiActivity.test.simulatorStep.get(MJH_SimulatorUiActivity.test.inGlassStep-1 ).totalVolume;
                 graphicVol = (double) (realVolume * graphicVolumeWeight);
 
+                alpha = MJH_SimulatorUiActivity.test.simulatorStep.get(MJH_SimulatorUiActivity.test.inGlassStep-1 ).alpha;
+
                 Paint paint = new Paint();
                 Paint paint_gradient = new Paint();
 
@@ -265,6 +270,9 @@ public class ObjectMartiniGlass {
                 Toast myToast = Toast.makeText(context, Double.toString(Math.pow(graphicVol/3.14*3/Math.pow(225, 2)*Math.pow(210, 2) ,1d/3d)), Toast.LENGTH_LONG);
                 myToast.show();
                 paint.setColor(Color.rgb(red ,green ,blue));
+                if(realisticChecked == true){
+                    paint.setAlpha(getAlpha(alpha));
+                }
 
                 Path path = new Path();
 
@@ -318,6 +326,17 @@ public class ObjectMartiniGlass {
         int newHeight = 700;
 
         return Bitmap.createScaledBitmap(source, newWidth, newHeight, true);
+    }
+
+    public int getAlpha(float _alpha){
+        //int alphaVal = (int)(_alpha*_alpha);
+        int alphaVal = (int) ((((_alpha)*1.5) + 0.5) * 30);
+
+        if(alphaVal > 255){
+            alphaVal = 255;
+            return alphaVal;
+        }
+        return alphaVal;
     }
 
 }

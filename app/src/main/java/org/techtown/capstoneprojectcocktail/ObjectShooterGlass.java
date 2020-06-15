@@ -12,12 +12,16 @@ import android.graphics.Shader;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import static org.techtown.capstoneprojectcocktail.MJH_SimulatorUiActivity.realisticChecked;
+
 public class ObjectShooterGlass {
 
     int setNumber = 0;
 
     int left = 298;
     int right = 602;
+
+    float alpha = 0;
 
     public void draw(ImageView View, Context context){
 
@@ -253,7 +257,8 @@ public class ObjectShooterGlass {
                 int blue = (int) MJH_SimulatorUiActivity.test.simulatorStep.get(MJH_SimulatorUiActivity.test.simulatorStep.size()-1 ).isColor.get(0).rgb_blue;
 
                 volume = MJH_SimulatorUiActivity.test.simulatorStep.get(MJH_SimulatorUiActivity.test.inGlassStep-1 ).totalVolume;
-
+                alpha = MJH_SimulatorUiActivity.test.simulatorStep.get(MJH_SimulatorUiActivity.test.inGlassStep-1 ).alpha;
+                
                 Paint paint = new Paint();
                 Paint paint_gradient = new Paint();
 
@@ -261,7 +266,9 @@ public class ObjectShooterGlass {
 
                 //상단부
                 paint.setColor(Color.rgb(red ,green ,blue));
-                paint.setAlpha(200);
+                if(realisticChecked == true){
+                    paint.setAlpha(getAlpha(alpha));
+                }
                 RectF rect2 = new RectF();
                 rect2.set(left, height -20, right, height + 20);
                 canvas.drawArc(rect2, 180, 180, true, paint);
@@ -274,7 +281,9 @@ public class ObjectShooterGlass {
 
                 //전체사각
                 paint.setColor(Color.rgb(red ,green ,blue));
-                paint.setAlpha(200);
+                if(realisticChecked == true){
+                    paint.setAlpha(getAlpha(alpha));
+                }
                 canvas.drawRect(left, height, right, 835, paint);
 
                 //경계
@@ -286,7 +295,9 @@ public class ObjectShooterGlass {
 
                 //바닥부
                 paint.setColor(Color.rgb(red ,green ,blue));
-                paint.setAlpha(200);
+                if(realisticChecked == true){
+                    paint.setAlpha(getAlpha(alpha));
+                }
                 RectF rect = new RectF();
                 rect.set(left, 815, right, 855);
                 canvas.drawArc(rect, 0, 180, true, paint);
@@ -311,5 +322,16 @@ public class ObjectShooterGlass {
 
 
         return Bitmap.createScaledBitmap(source, newWidth, newHeight, true);
+    }
+
+    public int getAlpha(float _alpha){
+        //int alphaVal = (int)(_alpha*_alpha);
+        int alphaVal = (int) ((((_alpha)*1.5) + 0.5) * 30);
+
+        if(alphaVal > 255){
+            alphaVal = 255;
+            return alphaVal;
+        }
+        return alphaVal;
     }
 }

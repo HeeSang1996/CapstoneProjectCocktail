@@ -16,6 +16,8 @@ import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 
+import static org.techtown.capstoneprojectcocktail.MJH_SimulatorUiActivity.realisticChecked;
+
 public class ObjectHighballGlass {
 
     int setNumber = 0;
@@ -73,7 +75,9 @@ public class ObjectHighballGlass {
                     height = (int)((float)height - ((float)4.0 * volume));
                 }
                 paint.setColor(Color.rgb(red ,green ,blue));
-                paint.setAlpha(getAlpha(alpha));
+                if(realisticChecked == true){
+                    paint.setAlpha(getAlpha(alpha));
+                }
                 RectF rect2 = new RectF();
                 rect2.set(left, height -20, right, height + 20);
                 canvas.drawArc(rect2, 180, 180, true, paint);
@@ -81,7 +85,10 @@ public class ObjectHighballGlass {
                 height = 1080;
 
                 //잔
-                Bitmap bitmap2 = BitmapFactory.decodeResource(context.getResources(), R.drawable.highball_glass_5_ice);
+                Bitmap bitmap2 = BitmapFactory.decodeResource(context.getResources(), R.drawable.highball_glass_5_ice);;
+                if(realisticChecked == false){
+                    bitmap2= BitmapFactory.decodeResource(context.getResources(), R.drawable.highball_glass_5_ice_2);
+                }
                 bitmap2 = resizeBitmapImg(bitmap2, 1480);
                 canvas.drawBitmap(bitmap2, 0, 0, null);
 
@@ -98,7 +105,9 @@ public class ObjectHighballGlass {
 
                 ///바닥부
                 paint.setColor(Color.rgb(s_red ,s_green ,s_blue));
-                paint.setAlpha(getAlpha(alpha));
+                if(realisticChecked == true){
+                    paint.setAlpha(getAlpha(alpha));
+                }
                 rect.set(left, 1045, right, 1115);
                 canvas.drawArc(rect, 0, 180, true, paint);
 
@@ -118,13 +127,17 @@ public class ObjectHighballGlass {
                 ///전체사각
                 height = (int)((float)height - ((float)4.0 * volume));
                 paint.setColor(Color.rgb(red ,green ,blue));
-                paint.setAlpha(getAlpha(alpha));
+                if(realisticChecked == true){
+                    paint.setAlpha(getAlpha(alpha));
+                }
                 canvas.drawRect(left, height, right, s_height - (int)(((float)4.0 * volume)/2), paint);
                 prev_h = height;
 
                 ///그라데이션 출력
                 paint_gradient.setShader(new LinearGradient(0, s_height - (int)(((float)4.0 * volume)/2), 0, 1080, Color.rgb(red ,green ,blue), Color.rgb(s_red ,s_green ,s_blue), Shader.TileMode.CLAMP));
-                paint_gradient.setAlpha(getAlpha(alpha));
+                if(realisticChecked == true){
+                    paint_gradient.setAlpha(getAlpha(alpha));
+                }
                 canvas.drawRect(left, s_height - (int)(((float)4.0 * volume)/2), right, 1080, paint_gradient);
 
 
@@ -138,14 +151,18 @@ public class ObjectHighballGlass {
 
                         //층 하단
                         paint.setColor(Color.rgb(red ,green ,blue));
-                        paint.setAlpha(getAlpha(alpha));
+                        if(realisticChecked == true){
+                            paint.setAlpha(getAlpha(alpha));
+                        }
                         rect.set(left, height -30, right, height + 30);
                         canvas.drawArc(rect, 0, 180, true, paint);
 
                         //전체사각
                         height = (int)((float)height - ((float)4.0 * volume));
                         paint.setColor(Color.rgb(red ,green ,blue));
-                        //paint.setAlpha(getAlpha(alpha));
+                        if(realisticChecked == true){
+                            paint.setAlpha(getAlpha(alpha));
+                        }
                         canvas.drawRect(left, height, right, prev_h, paint);
                         prev_h = height;
                     }
@@ -206,6 +223,9 @@ public class ObjectHighballGlass {
 
                 //잔
                 Bitmap bitmap2 = BitmapFactory.decodeResource(context.getResources(), R.drawable.highball_glass_5_ice);
+                if(realisticChecked == false){
+                    bitmap2= BitmapFactory.decodeResource(context.getResources(), R.drawable.highball_glass_5_ice_2);
+                }
                 bitmap2 = resizeBitmapImg(bitmap2, 1480);
                 canvas.drawBitmap(bitmap2, 0, 0, null);
 
@@ -268,20 +288,27 @@ public class ObjectHighballGlass {
 
                 //상단부
                 paint.setColor(Color.rgb(red ,green ,blue));
-                paint.setAlpha(getAlpha(alpha));
+                if(realisticChecked == true){
+                    paint.setAlpha(getAlpha(alpha));
+                }
                 RectF rect2 = new RectF();
                 rect2.set(left, height -20, right, height + 20);
                 canvas.drawArc(rect2, 180, 180, true, paint);
 
                 //잔
                 Bitmap bitmap2 = BitmapFactory.decodeResource(context.getResources(), R.drawable.highball_glass_5_ice);
+                if(realisticChecked == false){
+                    bitmap2= BitmapFactory.decodeResource(context.getResources(), R.drawable.highball_glass_5_ice_2);
+                }
                 bitmap2 = resizeBitmapImg(bitmap2, 1480);
                 canvas.drawBitmap(bitmap2, 0, 0, null);
 
 
                 //전체사각
                 paint.setColor(Color.rgb(red ,green ,blue));
-                paint.setAlpha(getAlpha(alpha));
+                if(realisticChecked == true){
+                    paint.setAlpha(getAlpha(alpha));
+                }
                 canvas.drawRect(left, height, right, 1080, paint);
 
                 //경계
@@ -293,7 +320,9 @@ public class ObjectHighballGlass {
 
                 //바닥부
                 paint.setColor(Color.rgb(red ,green ,blue));
-                paint.setAlpha(getAlpha(alpha));
+                if(realisticChecked == true){
+                    paint.setAlpha(getAlpha(alpha));
+                }
                 RectF rect = new RectF();
                 rect.set(left, 1045, right, 1115);
                 canvas.drawArc(rect, 0, 180, true, paint);

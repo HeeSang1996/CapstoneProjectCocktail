@@ -2,6 +2,7 @@ package org.techtown.capstoneprojectcocktail;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -353,6 +354,7 @@ public class MJH_SimulatorUiActivity extends AppCompatActivity implements View.O
                     switchGraphicButton.setText("Realistic");
 
                 }
+                drawingCocktail();
         }
     }
 
@@ -481,6 +483,12 @@ public class MJH_SimulatorUiActivity extends AppCompatActivity implements View.O
             sojuUnit = (abvBuf * volBuf) / 900;
             txt1.setText(Integer.toString((int)abvBuf));
             txt2.setText(Integer.toString((int)sojuUnit));
+            if(sojuUnit >= 4){
+                txt2.setTextColor(Color.RED);
+            }
+            else{
+                txt2.setTextColor(Color.parseColor("#333333"));
+            }
         }catch (Exception e){}
     }
 }
