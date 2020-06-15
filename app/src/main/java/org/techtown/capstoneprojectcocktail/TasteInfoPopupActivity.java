@@ -49,6 +49,7 @@ public class TasteInfoPopupActivity extends Activity {
                         DocumentSnapshot document = task.getResult();
                         if (document.exists()) {
                             Cocktail_name[finalI]= document.get("Recipe_name").toString();
+                            onResume();
                             System.out.println("값 확인용 " + Cocktail_name[finalI]);
                         } else {
                             Log.d(TAG, "No such document");
@@ -111,9 +112,9 @@ public class TasteInfoPopupActivity extends Activity {
                 thirdMaxIndex = i;
             }
         }
-        System.out.println("나와야 하는 값 " +Cocktail_name[maxIndex]);
-        System.out.println(Cocktail_name[secondMaxIndex]);
-        System.out.println(Cocktail_name[thirdMaxIndex]);
+        System.out.println("나와야 하는 값 " + Cocktail_name[maxIndex]);
+        System.out.println("나와야 하는 값 " + Cocktail_name[secondMaxIndex]);
+        System.out.println("나와야 하는 값 " + Cocktail_name[thirdMaxIndex]);
 
         System.out.println(maxIndex);
         System.out.println(secondMaxIndex);
