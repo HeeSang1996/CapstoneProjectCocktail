@@ -470,11 +470,18 @@ public class CocktailRecipeActivity extends AppCompatActivity {
                                     if (task.isSuccessful()) {
                                         adapterForCocktailComment.clearAllForAdapter();
                                         for (QueryDocumentSnapshot document : task.getResult()) {
-                                            Comment_name.add(document.get("사용자 이름").toString());
-                                            Comment_date.add("날짜: "+document.get("댓글 날짜").toString());
-                                            Comment_content.add(document.get("내용").toString());
-                                            Comment_url.add(document.get("사용자 url").toString());
-                                            Comment_uid.add(document.get("사용자 uid").toString());
+                                            if(document.get("사용자 uid").equals("0") )
+                                            {
+                                                System.out.println("얘는 거른다");
+                                            }
+                                            else
+                                            {
+                                                Comment_name.add(document.get("사용자 이름").toString());
+                                                Comment_date.add("날짜: "+document.get("댓글 날짜").toString());
+                                                Comment_content.add(document.get("내용").toString());
+                                                Comment_url.add(document.get("사용자 url").toString());
+                                                Comment_uid.add(document.get("사용자 uid").toString());
+                                            }
                                         }
                                         for(int i = 0; i< Comment_name.size(); i++)
                                         {
@@ -553,11 +560,19 @@ public class CocktailRecipeActivity extends AppCompatActivity {
                                                     if (task.isSuccessful()) {
                                                         adapterForCocktailComment.clearAllForAdapter();
                                                         for (QueryDocumentSnapshot document : task.getResult()) {
-                                                            Comment_name.add(document.get("사용자 이름").toString());
-                                                            Comment_date.add("날짜: "+document.get("댓글 날짜").toString());
-                                                            Comment_content.add(document.get("내용").toString());
-                                                            Comment_url.add(document.get("사용자 url").toString());
-                                                            Comment_uid.add(document.get("사용자 uid").toString());
+                                                            if(document.get("사용자 uid").equals("0") )
+                                                            {
+                                                                System.out.println("얘는 거른다");
+                                                            }
+                                                            else
+                                                            {
+                                                                Comment_name.add(document.get("사용자 이름").toString());
+                                                                Comment_date.add("날짜: "+document.get("댓글 날짜").toString());
+                                                                Comment_content.add(document.get("내용").toString());
+                                                                Comment_url.add(document.get("사용자 url").toString());
+                                                                Comment_uid.add(document.get("사용자 uid").toString());
+                                                            }
+
                                                         }
                                                         for(int i = 0; i< Comment_name.size(); i++)
                                                         {
