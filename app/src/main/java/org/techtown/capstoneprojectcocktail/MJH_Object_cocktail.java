@@ -25,10 +25,11 @@ public class MJH_Object_cocktail implements Cloneable{
     int isGradient = 0;
 
     //맛에 대한 정보
-    ArrayList<Float> sugar  = new ArrayList<Float>();
-    ArrayList<Float> sour  = new ArrayList<Float>();
-    ArrayList<Float> salty  = new ArrayList<Float>();
-    ArrayList<Float> bitter  = new ArrayList<Float>();
+    double sugar  = 0.0;
+    double sour  = 0.0;
+    double salty  = 0.0;
+    double bitter  = 0.0;
+    double hot = 0.0;
 
     String[] flavour = new String[15];
 
@@ -38,12 +39,6 @@ public class MJH_Object_cocktail implements Cloneable{
         specificGravity.add((float)0);
 
         isColor.add(new MJH_Object_color(0,0,0));
-
-        sugar.add((float)0);
-        sour.add((float)0);
-        salty.add((float)0);
-        bitter.add((float)0);
-
     }
 
 
@@ -125,38 +120,6 @@ public class MJH_Object_cocktail implements Cloneable{
 
     public void setIsGradient(int isGradient) {
         this.isGradient = isGradient;
-    }
-
-    public ArrayList<Float> getSugar() {
-        return sugar;
-    }
-
-    public void setSugar(ArrayList<Float> sugar) {
-        this.sugar = sugar;
-    }
-
-    public ArrayList<Float> getSour() {
-        return sour;
-    }
-
-    public void setSour(ArrayList<Float> sour) {
-        this.sour = sour;
-    }
-
-    public ArrayList<Float> getSalty() {
-        return salty;
-    }
-
-    public void setSalty(ArrayList<Float> salty) {
-        this.salty = salty;
-    }
-
-    public ArrayList<Float> getBitter() {
-        return bitter;
-    }
-
-    public void setBitter(ArrayList<Float> bitter) {
-        this.bitter = bitter;
     }
 
     public String[] getFlavour() {

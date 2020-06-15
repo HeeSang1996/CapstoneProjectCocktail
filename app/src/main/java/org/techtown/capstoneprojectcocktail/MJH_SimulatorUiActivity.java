@@ -258,7 +258,20 @@ public class MJH_SimulatorUiActivity extends AppCompatActivity implements View.O
                 break;
             case R.id.button_simulation_action: // 맛 예측 팝업 작동시키기
                 Intent intentForTasteInfo = new Intent(this, TasteInfoPopupActivity.class);
-                startActivity(intentForTasteInfo);
+                try {
+                    double heesangSugar = test.simulatorStep.get(test.simulatorStep.size() - 1).sugar;
+                    double heesangSour = test.simulatorStep.get(test.simulatorStep.size() - 1).sour;
+                    double heesangSalty = test.simulatorStep.get(test.simulatorStep.size() - 1).salty;
+                    double heesangBitter = test.simulatorStep.get(test.simulatorStep.size() - 1).bitter;
+                    double heesangHot = test.simulatorStep.get(test.simulatorStep.size() - 1).hot;
+                    //단맛, 쓴맛, 신맛,짠맛,매운맛
+                    intentForTasteInfo.putExtra("sugarValue",heesangSugar);
+                    intentForTasteInfo.putExtra("bitterValue",heesangBitter);
+                    intentForTasteInfo.putExtra("sourValue",heesangSour);
+                    intentForTasteInfo.putExtra("saltyValue",heesangSalty);
+                    intentForTasteInfo.putExtra("spicyValue",heesangHot);
+                    startActivity(intentForTasteInfo);
+                }catch (Exception e){}
                 break;
                 //글래스 선택 버튼
             case R.id.switch_glass_simulation:
@@ -381,10 +394,11 @@ public class MJH_SimulatorUiActivity extends AppCompatActivity implements View.O
                                 ingredientList[listCount].name = (String)document.get("Ingredient_name");
                                 ingredientList[listCount].id = 5001+ listCount;
                                 ingredientList[listCount].abv = Float.parseFloat(document.get("abv").toString());
-                                ingredientList[listCount].sugar = Float.parseFloat(document.get("sugar_rate").toString());
-                                ingredientList[listCount].sour = Float.parseFloat(document.get("sour").toString());
-                                ingredientList[listCount].salty = Float.parseFloat(document.get("salty").toString());
-                                ingredientList[listCount].bitter = Float.parseFloat(document.get("bitter").toString());
+                                ingredientList[listCount].sugar = Double.parseDouble(document.get("단맛").toString());
+                                ingredientList[listCount].sour = Double.parseDouble(document.get("신맛").toString());
+                                ingredientList[listCount].salty = Double.parseDouble(document.get("짠맛").toString());
+                                ingredientList[listCount].bitter = Double.parseDouble(document.get("쓴맛").toString());
+                                ingredientList[listCount].hot = Double.parseDouble(document.get("매운맛").toString());
                                 ingredientList[listCount].specific_gravity = Float.parseFloat(document.get("specific_gravity").toString());
 
                                 ingredientRGB = (Map<String, Number>) document.getData().get("Ingredient_color");

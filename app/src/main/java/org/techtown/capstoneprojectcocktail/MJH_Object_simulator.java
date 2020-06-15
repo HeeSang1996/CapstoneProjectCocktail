@@ -60,13 +60,12 @@ public class MJH_Object_simulator {
                     //량 추가
                     cocktailBuffer.totalVolume = cocktailBuffer.totalVolume + this.simulatorStep.get(associateStep.get(i) - 1).totalVolume;
 
-                    //기타 피쳐 추가
-                    cocktailBuffer.sugar.set(0, cocktailBuffer.sugar.get(0) + this.simulatorStep.get(associateStep.get(i) - 1).sugar.get(0));
-                    cocktailBuffer.sour.set(0, cocktailBuffer.sour.get(0) + this.simulatorStep.get(associateStep.get(i) - 1).sour.get(0));
-                    cocktailBuffer.salty.set(0, cocktailBuffer.salty.get(0) + this.simulatorStep.get(associateStep.get(i) - 1).salty.get(0));
-                    cocktailBuffer.bitter.set(0, cocktailBuffer.bitter.get(0) + this.simulatorStep.get(associateStep.get(i) - 1).bitter.get(0));
-                    //cocktail_buffer.sour[0] = cocktail_buffer.sour[0] + simulator_step[associate_step[i]].sour[0];
-                    //(this.simulator_step[step_num].flavour[0] = @@@
+                    //노희상 맛표현
+                    cocktailBuffer.sugar = cocktailBuffer.sugar + this.simulatorStep.get(associateStep.get(i) - 1).sugar;
+                    cocktailBuffer.sour = cocktailBuffer.sour + this.simulatorStep.get(associateStep.get(i) - 1).sour;
+                    cocktailBuffer.salty = cocktailBuffer.salty + this.simulatorStep.get(associateStep.get(i) - 1).salty;
+                    cocktailBuffer.bitter = cocktailBuffer.bitter + this.simulatorStep.get(associateStep.get(i) - 1).bitter;
+                    cocktailBuffer.hot = cocktailBuffer.hot + this.simulatorStep.get(associateStep.get(i) - 1).hot;
                 }
             }
 
@@ -106,13 +105,12 @@ public class MJH_Object_simulator {
                 cocktailBuffer.totalVolume = cocktailBuffer.totalVolume + inputAmount.get(i);
                 cocktailBuffer.eachVolume.set(0, cocktailBuffer.totalVolume);
 
-                //기타 피쳐 추가
-                cocktailBuffer.sugar.set(0, cocktailBuffer.sugar.get(0) + inputIngredient.get(i).sugar);
-                cocktailBuffer.sour.set(0, cocktailBuffer.sour.get(0)+ inputIngredient.get(i).sour);
-                cocktailBuffer.salty.set(0, cocktailBuffer.salty.get(0) + inputIngredient.get(i).salty);
-                cocktailBuffer.bitter.set(0, cocktailBuffer.bitter.get(0) + inputIngredient.get(i).bitter);
-                //(this.simulator_step[step_num].flavour[0] = @@@
-
+                //노희상 맛표현
+                cocktailBuffer.sugar = cocktailBuffer.sugar + inputIngredient.get(i).sugar * inputAmount.get(i);
+                cocktailBuffer.sour = cocktailBuffer.sour + inputIngredient.get(i).sour * inputAmount.get(i);
+                cocktailBuffer.salty = cocktailBuffer.salty + inputIngredient.get(i).salty * inputAmount.get(i);
+                cocktailBuffer.bitter = cocktailBuffer.bitter + inputIngredient.get(i).bitter * inputAmount.get(i);
+                cocktailBuffer.hot = cocktailBuffer.hot + inputIngredient.get(i).hot * inputAmount.get(i);
             }
 
         }catch (Exception e){e.printStackTrace();}
@@ -197,13 +195,12 @@ public class MJH_Object_simulator {
             simulatorStep.get(inGlassStep - 1).getSpecificGravity().add(inputIngredient.specific_gravity);
             simulatorStep.get(inGlassStep - 1).getIs_color().add(inputIngredient.my_color);
 
-            //맛에 대한 정보 (기타 피쳐)
-            simulatorStep.get(inGlassStep - 1).getSugar().add(inputIngredient.sugar);
-            simulatorStep.get(inGlassStep - 1).getSour().add(inputIngredient.sour);
-            simulatorStep.get(inGlassStep - 1).getSalty().add(inputIngredient.salty);
-            simulatorStep.get(inGlassStep - 1).getBitter().add(inputIngredient.bitter);
-            //(this.simulator_step[step_num].flavour[0] = @@@
-
+            //노희상 맛표현
+            simulatorStep.get(inGlassStep - 1).sugar = simulatorStep.get(inGlassStep - 1).sugar + inputIngredient.sugar*inputAmount;
+            simulatorStep.get(inGlassStep - 1).sour = simulatorStep.get(inGlassStep - 1).sour + inputIngredient.sour*inputAmount;
+            simulatorStep.get(inGlassStep - 1).salty = simulatorStep.get(inGlassStep - 1).salty + inputIngredient.salty*inputAmount;
+            simulatorStep.get(inGlassStep - 1).bitter = simulatorStep.get(inGlassStep - 1).bitter + inputIngredient.bitter*inputAmount;
+            simulatorStep.get(inGlassStep - 1).hot = simulatorStep.get(inGlassStep - 1).hot + inputIngredient.hot*inputAmount;
         }
 
         if(associateStep != 0){ // 연관스탭로 레이어링 할 때
@@ -221,13 +218,12 @@ public class MJH_Object_simulator {
             simulatorStep.get(inGlassStep - 1).getSpecificGravity().add(simulatorStep.get(associateStep  - 1).getSpecificGravity().get(0));
             simulatorStep.get(inGlassStep - 1).getIs_color().add(simulatorStep.get(associateStep  - 1).getIs_color().get(0));
 
-            //맛에 대한 정보 (기타 피쳐)
-            simulatorStep.get(inGlassStep - 1).getSugar().add(simulatorStep.get(associateStep  - 1).getSugar().get(0));
-            simulatorStep.get(inGlassStep - 1).getSour().add(simulatorStep.get(associateStep  - 1).getSour().get(0));
-            simulatorStep.get(inGlassStep - 1).getSalty().add(simulatorStep.get(associateStep  - 1).getSalty().get(0));
-            simulatorStep.get(inGlassStep - 1).getBitter().add(simulatorStep.get(associateStep  - 1).getBitter().get(0));
-            //(this.simulator_step[step_num].flavour[0] = @@@
-
+            //노희상 맛표현
+            simulatorStep.get(inGlassStep - 1).sugar = simulatorStep.get(inGlassStep - 1).sugar + simulatorStep.get(associateStep  - 1).sugar*simulatorStep.get(associateStep  - 1).totalVolume;
+            simulatorStep.get(inGlassStep - 1).sour = simulatorStep.get(inGlassStep - 1).sour + simulatorStep.get(associateStep  - 1).sour*simulatorStep.get(associateStep  - 1).totalVolume;
+            simulatorStep.get(inGlassStep - 1).salty = simulatorStep.get(inGlassStep - 1).salty + simulatorStep.get(associateStep  - 1).salty*simulatorStep.get(associateStep  - 1).totalVolume;
+            simulatorStep.get(inGlassStep - 1).bitter = simulatorStep.get(inGlassStep - 1).bitter + simulatorStep.get(associateStep  - 1).bitter*simulatorStep.get(associateStep  - 1).totalVolume;
+            simulatorStep.get(inGlassStep - 1).hot = simulatorStep.get(inGlassStep - 1).hot + simulatorStep.get(associateStep  - 1).hot*simulatorStep.get(associateStep  - 1).totalVolume;
         }
     }
 
@@ -262,11 +258,6 @@ public class MJH_Object_simulator {
             n.eachVolume.add(input.eachVolume.get(i));
             n.specificGravity.add(input.specificGravity.get(i));
             n.isColor.add(new MJH_Object_color(input.isColor.get(i).rgb_red, input.isColor.get(i).rgb_green, input.isColor.get(i).rgb_blue));
-
-            n.sugar.add(input.sugar.get(i));
-            n.sour.add(input.sour.get(i));
-            n.salty.add(input.salty.get(i));
-            n.bitter.add(input.bitter.get(i));
         }
 
         n.eachAbv.remove(0);
@@ -274,11 +265,12 @@ public class MJH_Object_simulator {
         n.specificGravity.remove(0);
         n.isColor.remove(0);
 
-        n.sugar.remove(0);
-        n.sour.remove(0);
-        n.salty.remove(0);
-        n.bitter.remove(0);
-
+        //노희상 맛표현
+        n.sugar = input.sugar;
+        n.sour = input.sour;
+        n.salty = input.salty;
+        n.bitter = input.bitter;
+        n.hot = input.hot;
         return n;
     }
 }
