@@ -8,6 +8,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -17,15 +18,19 @@ import java.util.ArrayList;
 
 import static org.techtown.capstoneprojectcocktail.CocktailAdapterForSearch.useByMinFlag;
 import static org.techtown.capstoneprojectcocktail.MJH_SimulatorUiActivity.adapterMIN;
+import static org.techtown.capstoneprojectcocktail.MJH_SimulatorUiActivity.highBallChecked;
+import static org.techtown.capstoneprojectcocktail.MJH_SimulatorUiActivity.martiniChecked;
+import static org.techtown.capstoneprojectcocktail.MJH_SimulatorUiActivity.shooterChecked;
+import static org.techtown.capstoneprojectcocktail.MJH_SimulatorUiActivity.uiMain;
 import static org.techtown.capstoneprojectcocktail.MJH_SimulatorUiActivity.usingStepNum;
 
 public class MJH_Popup2Activity extends Activity {
     public Context uiMe;
 
     ListView listview;
-    int updateTotalVol = 0;
+    public static float updateTotalVol = 0;
 
-    MJH_SimulatorUiActivity simulatorUiAddress;
+    MJH_SimulatorUiActivity simulatorUiAddress = ((MJH_SimulatorUiActivity) uiMain);
     public ArrayList<Integer> bufferUpdateStep = new ArrayList<Integer>();
 
     @Override
@@ -35,7 +40,6 @@ public class MJH_Popup2Activity extends Activity {
         //타이틀바 없애기
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.mjh_popup2);
-        simulatorUiAddress = ((MJH_SimulatorUiActivity)MJH_SimulatorUiActivity.uiMain);
 
         // 리스트뷰 참조 및 Adapter달기
         listview = (ListView) findViewById(R.id.listviewPopup2);
@@ -55,13 +59,27 @@ public class MJH_Popup2Activity extends Activity {
                     try{
                         MJH_ListviewItem item = (MJH_ListviewItem) parent.getItemAtPosition(position) ;
                         if(!simulatorUiAddress.usingStep.contains(position+1)){
-                            simulatorUiAddress.usingStep.add(position+1);
-                            bufferUpdateStep.add(position+1);
-                            usingStepNum.set(usingStepNum.size() - 1, usingStepNum.get(usingStepNum.size() - 1) + 1);
-                            Toast myToast = Toast.makeText(uiMe,"스텝 " + Integer.toString(position+1) + " 추가", Toast.LENGTH_SHORT);
-                            myToast.show();
+                            updateTotalVol = updateTotalVol + simulatorUiAddress.test.simulatorStep.get(position).totalVolume;
 
-                            //updateTotalVol
+                            if(highBallChecked == true && updateTotalVol > 250){
+                                Toast.makeText(uiMe,"하이볼 잔의 용량을 넘습니다!", Toast.LENGTH_SHORT).show();
+                                updateTotalVol = updateTotalVol - simulatorUiAddress.test.simulatorStep.get(position).totalVolume;
+                            }
+                            else if(martiniChecked == true && updateTotalVol > 140) {
+                                Toast.makeText(uiMe,"칵테일 잔의 용량을 넘습니다!", Toast.LENGTH_SHORT).show();
+                                updateTotalVol = updateTotalVol - simulatorUiAddress.test.simulatorStep.get(position).totalVolume;
+                            }
+                            else if(shooterChecked == true && updateTotalVol > 60) {
+                                Toast.makeText(uiMe,"슈터 잔의 용량을 넘습니다!", Toast.LENGTH_SHORT).show();
+                                updateTotalVol = updateTotalVol - simulatorUiAddress.test.simulatorStep.get(position).totalVolume;
+                            }
+                            else{
+                                simulatorUiAddress.usingStep.add(position+1);
+                                bufferUpdateStep.add(position+1);
+                                usingStepNum.set(usingStepNum.size() - 1, usingStepNum.get(usingStepNum.size() - 1) + 1);
+                                Toast myToast = Toast.makeText(uiMe,"스텝 " + Integer.toString(position+1) + " 추가", Toast.LENGTH_SHORT);
+                                myToast.show();
+                            }
                         }
                         else{
                             Toast myToast = Toast.makeText(uiMe,"이미 사용된 스텝입니다.", Toast.LENGTH_SHORT);
@@ -74,6 +92,12 @@ public class MJH_Popup2Activity extends Activity {
                 }
             }
         }) ;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        updateTotalVol = 0;
     }
 
     public void mClose(View v){

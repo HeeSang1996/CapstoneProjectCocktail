@@ -63,9 +63,9 @@ public class MJH_SimulatorUiActivity extends AppCompatActivity implements View.O
     public CheckBox cb2;
 
     //잔의 초기상태는 하이볼
-    private boolean highBallChecked = true;
-    private boolean martiniChecked = false;
-    private boolean shooterChecked = false;
+    public static boolean highBallChecked = true;
+    public static boolean martiniChecked = false;
+    public static boolean shooterChecked = false;
 
     @Override
     public void onCreate(Bundle saveInstanceState){
@@ -192,6 +192,46 @@ public class MJH_SimulatorUiActivity extends AppCompatActivity implements View.O
                             usingStep.remove(usingStep.size() - 1);
                         }
 
+                        float nowCupVol = 0;
+                        try{
+                            nowCupVol = test.simulatorStep.get(test.simulatorStep.size() - 1).totalVolume;
+                        }catch(Exception e){ }
+                        if(highBallChecked == true && nowCupVol <= 250 ){
+
+                            try{
+                                test.glassType = 0;
+                                drawingCocktail();
+                            }catch(Exception e){ }
+                        }
+                        //현재 잔이 마티니일 경우
+                        //슈터로 잔 변경
+                        else if (martiniChecked == true && nowCupVol <= 140){
+                            try{
+                                test.glassType = 1;
+                                drawingCocktail();
+                            }catch(Exception e){ }
+                        }
+                        else if (shooterChecked  == true && nowCupVol <= 60){
+
+                            try{
+                                test.glassType = 2;
+                                drawingCocktail();
+                            }catch(Exception e){ }
+                        }
+                        else{
+                            martiniChecked = false;
+                            shooterChecked = false;
+                            highBallChecked = true;
+                            switchGlassButton.setText("Highball");
+
+                            try{
+                                test.glassType = 0;
+                                drawingCocktail();
+                            }catch(Exception e){ }
+                            Toast myToast = Toast.makeText(this.getApplicationContext(),"해당 용량은 현재 잔에 불가합니다! 하이볼 잔으로 변환 됩니다.", Toast.LENGTH_SHORT);
+                            myToast.show();
+                        }
+
                     }catch(Exception e){
                         Toast myToast = Toast.makeText(this.getApplicationContext(), e.toString(), Toast.LENGTH_LONG);
                         myToast.show();
@@ -213,42 +253,20 @@ public class MJH_SimulatorUiActivity extends AppCompatActivity implements View.O
                     lastStepTechFlag = 0;
                     drawingCocktail();
                 }
-
-
                 break;
-            case R.id.button_simulation_action: // 시뮬레이션 작동시키기
-                try{
-                    if(test.simulatorStep.size() == 0) {
-                        Toast myToast = Toast.makeText(this.getApplicationContext(),"칵테일 시뮬레이션 스텝을 추가해 주세요!", Toast.LENGTH_SHORT);
-                        myToast.show();
-                    }
-                    else if(stepNum != 0){
-                        if(test.glassType == 0){ // 체크 버튼 점검
-                            Intent intent2 = new Intent(this, MJH_SimulatorGraphicActivity.class);
-                            startActivityForResult(intent2, 1);
-                            break;
-                        }
-                        else if(test.glassType == 1){
-                            //Intent intent2 = new Intent(this, MJH_SimulatorGraphicMartiniActivity.class);
-                            // startActivityForResult(intent2, 1);
-                            break;
-                        }
-                    }
-                    else{
-                        Toast myToast = Toast.makeText(this.getApplicationContext(),"칵테일 시뮬레이션 스텝을 추가해 주세요!", Toast.LENGTH_SHORT);
-                        myToast.show();
-                    }
-                }catch(Exception e){
-                    //Toast myToast = Toast.makeText(this.getApplicationContext(),"칵테일 시뮬레이션 스텝을 추가해 주세요!", Toast.LENGTH_SHORT);
-                    Toast myToast = Toast.makeText(this.getApplicationContext(),e.toString(), Toast.LENGTH_SHORT);
-                    myToast.show();
-                }
+            case R.id.button_simulation_action: // 맛 예측 팝업 작동시키기
+                Intent intentForTasteInfo = new Intent(this, TasteInfoPopupActivity.class);
+                startActivity(intentForTasteInfo);
                 break;
                 //글래스 선택 버튼
             case R.id.switch_glass_simulation:
                 //현재 잔이 하이볼일 경우
                 //마티니로 잔 변경
-                if(highBallChecked == true){
+                float nowCupVol = 0;
+                try{
+                    nowCupVol = test.simulatorStep.get(test.simulatorStep.size() - 1).totalVolume;
+                }catch(Exception e){ }
+                if(highBallChecked == true && nowCupVol <= 140 ){
                     highBallChecked =false;
                     martiniChecked = true;
                     switchGlassButton.setText("Martini");
@@ -260,7 +278,7 @@ public class MJH_SimulatorUiActivity extends AppCompatActivity implements View.O
                 }
                 //현재 잔이 마티니일 경우
                 //슈터로 잔 변경
-                else if (martiniChecked == true){
+                else if (martiniChecked == true && nowCupVol <= 60){
                     martiniChecked = false;
                     shooterChecked = true;
                     switchGlassButton.setText("Shooter");
@@ -270,9 +288,22 @@ public class MJH_SimulatorUiActivity extends AppCompatActivity implements View.O
                         drawingCocktail();
                     }catch(Exception e){ }
                 }
+                else if (martiniChecked == true && nowCupVol > 60){ // 하이볼로 강제 변경
+                    martiniChecked = false;
+                    shooterChecked = false;
+                    highBallChecked = true;
+                    switchGlassButton.setText("Highball");
+
+                    try{
+                        test.glassType = 0;
+                        drawingCocktail();
+                        Toast myToast = Toast.makeText(this.getApplicationContext(),"해당 용량은 슈터잔이 불가 합니다. [하이볼로 대체되었습니다.]", Toast.LENGTH_SHORT);
+                        myToast.show();
+                    }catch(Exception e){ }
+                }
                 //현재 잔이 슈터일 경우
                 //하이볼로 잔 변경
-                else if (shooterChecked == true){
+                else if (shooterChecked == true ){
                     shooterChecked = false;
                     highBallChecked = true;
                     switchGlassButton.setText("Highball");
@@ -281,6 +312,10 @@ public class MJH_SimulatorUiActivity extends AppCompatActivity implements View.O
                         test.glassType = 0;
                         drawingCocktail();
                     }catch(Exception e){ }
+                }
+                else{
+                    Toast myToast = Toast.makeText(this.getApplicationContext(),"해당 용량은 하이볼 잔만 가능입니다!", Toast.LENGTH_SHORT);
+                    myToast.show();
                 }
                 break;
         }
@@ -411,5 +446,8 @@ public class MJH_SimulatorUiActivity extends AppCompatActivity implements View.O
             txt2.setText(Integer.toString((int)sojuUnit));
         }catch (Exception e){}
     }
+
+
+
 
 }

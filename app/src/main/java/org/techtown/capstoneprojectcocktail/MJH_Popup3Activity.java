@@ -35,6 +35,7 @@ import java.util.List;
 import java.util.Map;
 
 import static org.techtown.capstoneprojectcocktail.CocktailAdapterForSearch.useByMinFlag;
+import static org.techtown.capstoneprojectcocktail.MJH_Popup2Activity.updateTotalVol;
 import static org.techtown.capstoneprojectcocktail.MJH_SimulatorUiActivity.listUpdateTech;
 import static org.techtown.capstoneprojectcocktail.MJH_SimulatorUiActivity.test;
 import static org.techtown.capstoneprojectcocktail.MJH_SimulatorUiActivity.usingStepNum;
@@ -60,7 +61,7 @@ public class MJH_Popup3Activity extends Activity {
     private ArrayList I_ref = new ArrayList();
 
     //비중
-   private ArrayList I_gravity = new ArrayList();
+    private ArrayList I_gravity = new ArrayList();
     /////////////////////////////////////////////
     MJH_SimulatorUiActivity simulatorUiAddress;
     public static Context uiThis;
@@ -151,6 +152,8 @@ public class MJH_Popup3Activity extends Activity {
 
     public void mClose(View v){
         usingStepNum.remove(usingStepNum.size() - 1);
+        updateTotalVol = 0;
+        useByMinFlag = 0;
         finish();
     }
 
@@ -159,10 +162,11 @@ public class MJH_Popup3Activity extends Activity {
         super.onStop();
     }
 
-    //확인 버튼 클릭
+    //이전
     public void mBefore(View v){
         //데이터 전달하기
 
+        useByMinFlag = 0;
         finish();
     }
     public void mNext(View v){
@@ -175,6 +179,7 @@ public class MJH_Popup3Activity extends Activity {
             simulatorUiAddress.listUpdateIngredient = bufferUpdateIngredient;
             simulatorUiAddress.listUpdateIngredientAmount =  bufferUpdateIngredientAmount;
             useByMinFlag = 0;
+            updateTotalVol = 0;
             finish();
         }
 ;

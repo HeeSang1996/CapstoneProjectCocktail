@@ -20,6 +20,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import java.util.List;
 
 import static org.techtown.capstoneprojectcocktail.CocktailAdapterForSearch.useByMinFlag;
+import static org.techtown.capstoneprojectcocktail.MJH_Popup2Activity.updateTotalVol;
 import static org.techtown.capstoneprojectcocktail.MJH_Popup3Activity.ingreAmount;
 import static org.techtown.capstoneprojectcocktail.MJH_Popup3Activity.ingreAmountFlag;
 import static org.techtown.capstoneprojectcocktail.MJH_SimulatorUiActivity.test;
@@ -45,12 +46,15 @@ public class MJH_Popup4Activity  extends Activity {
     public void mClose(View v){
         ingreAmountFlag = 1;
         ingreAmount = -1;
+
         finish();
     }
 
     public void mNext(View v){
         //데이터 전달하기
         ingreAmountFlag = 1;
+
+        MJH_SimulatorUiActivity simulatorUiAddress = ((MJH_SimulatorUiActivity)MJH_SimulatorUiActivity.uiMain);
 
         editText = (EditText) findViewById(R.id.editText) ;
         String strText = editText.getText().toString() ;
@@ -61,14 +65,17 @@ public class MJH_Popup4Activity  extends Activity {
 
                 float nowVolume = 0;
                 try{
-                    nowVolume = test.simulatorStep.get(test.inGlassStep-1 ).totalVolume;
+
+                    if(simulatorUiAddress.listUpdateTech.equals("Layering") || simulatorUiAddress.listUpdateTech.equals("Gradient")){
+                        nowVolume = test.simulatorStep.get(test.inGlassStep-1 ).totalVolume;
+                    }
                 }catch(Exception e){
 
                 }
                 ingreAmount = Integer.parseInt(strText);
 
                 if( test.glassType == 0 ) {
-                    if((nowVolume + ingreAmount) > 250){
+                    if((nowVolume + ingreAmount + updateTotalVol) > 250){
                         Toast.makeText(this,"하이볼 잔의 용량을 넘습니다!", Toast.LENGTH_SHORT).show();
                     }
                     else{
@@ -76,7 +83,7 @@ public class MJH_Popup4Activity  extends Activity {
                     }
                 }
                 if( test.glassType == 1 ) {
-                    if((nowVolume + ingreAmount) > 140){
+                    if((nowVolume + ingreAmount + updateTotalVol) > 140){
                         Toast.makeText(this,"칵테일 잔의 용량을 넘습니다!", Toast.LENGTH_SHORT).show();
                     }
                     else{
@@ -84,7 +91,7 @@ public class MJH_Popup4Activity  extends Activity {
                     }
                 }
                 if( test.glassType == 2 ) {
-                    if((nowVolume + ingreAmount) > 60){
+                    if((nowVolume + ingreAmount + updateTotalVol) > 60){
                         Toast.makeText(this,"슈터 잔의 용량을 넘습니다!", Toast.LENGTH_SHORT).show();
                     }
                     else{
