@@ -190,7 +190,7 @@ public class MJH_Popup3Activity extends Activity {
                     ingreAmountFlag = 0;
                 }
                 else{
-                    Toast.makeText(this,"량 입력 완료", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this,"양 입력 완료", Toast.LENGTH_SHORT).show();
                     bufferUpdateIngredientAmount.add(ingreAmount);
                     ingreAmountFlag = 0;
                 }
@@ -246,7 +246,7 @@ public class MJH_Popup3Activity extends Activity {
                                             I_ID.add(document.getId());
                                             I_flavour.add(document.get("flavour"));
                                             I_sugar.add(document.get("sugar_rate"));
-                                            I_abv.add(document.get("abv"));
+                                            I_abv.add(document.get("abv") + "%");
                                             I_ref.add(document.get("ref"));
                                             I_gravity.add(document.get("specific_gravity"));
                                             adapterForCocktailSearch.addItem(new Cocktail((String) I_name.get(I_name.size()-1),
@@ -302,7 +302,7 @@ public class MJH_Popup3Activity extends Activity {
                                 I_ID.add(document.getId());
                                 I_flavour.add(document.get("flavour"));
                                 I_sugar.add(document.get("sugar_rate"));
-                                I_abv.add(document.get("abv"));
+                                I_abv.add(document.get("abv") + "%");
                                 I_ref.add(document.get("ref"));
                                 I_gravity.add(document.get("specific_gravity"));
 
