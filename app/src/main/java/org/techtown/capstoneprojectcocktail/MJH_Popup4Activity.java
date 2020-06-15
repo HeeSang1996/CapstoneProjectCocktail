@@ -23,6 +23,7 @@ import static org.techtown.capstoneprojectcocktail.CocktailAdapterForSearch.useB
 import static org.techtown.capstoneprojectcocktail.MJH_Popup2Activity.updateTotalVol;
 import static org.techtown.capstoneprojectcocktail.MJH_Popup3Activity.ingreAmount;
 import static org.techtown.capstoneprojectcocktail.MJH_Popup3Activity.ingreAmountFlag;
+import static org.techtown.capstoneprojectcocktail.MJH_Popup3Activity.thisStepPopup3AddAmount;
 import static org.techtown.capstoneprojectcocktail.MJH_SimulatorUiActivity.test;
 
 public class MJH_Popup4Activity  extends Activity {
@@ -75,26 +76,29 @@ public class MJH_Popup4Activity  extends Activity {
                 ingreAmount = Integer.parseInt(strText);
 
                 if( test.glassType == 0 ) {
-                    if((nowVolume + ingreAmount + updateTotalVol) > 250){
+                    if((nowVolume + ingreAmount + updateTotalVol + thisStepPopup3AddAmount) > 250){
                         Toast.makeText(this,"하이볼 잔의 용량을 넘습니다!", Toast.LENGTH_SHORT).show();
                     }
                     else{
+                        thisStepPopup3AddAmount = thisStepPopup3AddAmount + ingreAmount;
                         finish();
                     }
                 }
                 if( test.glassType == 1 ) {
-                    if((nowVolume + ingreAmount + updateTotalVol) > 140){
+                    if((nowVolume + ingreAmount + updateTotalVol + thisStepPopup3AddAmount) > 140){
                         Toast.makeText(this,"칵테일 잔의 용량을 넘습니다!", Toast.LENGTH_SHORT).show();
                     }
                     else{
+                        thisStepPopup3AddAmount = thisStepPopup3AddAmount + ingreAmount;
                         finish();
                     }
                 }
                 if( test.glassType == 2 ) {
-                    if((nowVolume + ingreAmount + updateTotalVol) > 60){
+                    if((nowVolume + ingreAmount + updateTotalVol + thisStepPopup3AddAmount) > 60){
                         Toast.makeText(this,"슈터 잔의 용량을 넘습니다!", Toast.LENGTH_SHORT).show();
                     }
                     else{
+                        thisStepPopup3AddAmount = thisStepPopup3AddAmount + ingreAmount;
                         finish();
                     }
                 }

@@ -316,7 +316,6 @@ public class ObjectHighballGlass {
         int newWidth = 900;
         int newHeight = 1200;
 
-
         return Bitmap.createScaledBitmap(source, newWidth, newHeight, true);
     }
 

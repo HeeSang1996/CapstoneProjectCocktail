@@ -69,6 +69,8 @@ public class MJH_Popup3Activity extends Activity {
     public static int ingreAmountFlag = 0;
     public static float ingreAmount = 0;
 
+    public static float thisStepPopup3AddAmount= 0;
+
     public int buttonPressCheck = 0;
 
     @Override
