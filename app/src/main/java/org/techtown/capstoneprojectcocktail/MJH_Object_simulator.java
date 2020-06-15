@@ -96,6 +96,14 @@ public class MJH_Object_simulator {
                     cocktailBuffer.alpha = (cocktailBuffer.totalVolume*cocktailBuffer.alpha +  inputAmount.get(i)*inputIngredient.get(i).alpha) / (cocktailBuffer.totalVolume + inputAmount.get(i));
                 }
 
+                //0615
+                float inputIngerAlpha = inputIngredient.get(i).alpha;
+
+                if(inputIngredient.get(i).muddy == 1){
+                    inputIngerAlpha = 12;
+                }
+                cocktailBuffer.alpha = ((cocktailBuffer.alpha * cocktailBuffer.totalVolume) + (inputIngerAlpha * inputAmount.get(i))) / (cocktailBuffer.totalVolume + inputAmount.get(i));
+
 
 
                 //량 추가
