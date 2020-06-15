@@ -19,30 +19,60 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/do_select_glass"
-                android:layout_width="wrap_content"
+                android:layout_width="100dp"
                 android:layout_height="wrap_content"
-                android:text=" ● 잔을 골라주세요"
+                android:text="ABV:"
+                android:textSize="30dp"
+                android:gravity="center"
+                android:layout_marginLeft="20dp"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textColor="#fff" />
-
-            <CheckBox
-                android:id="@+id/checkBox1"
-                android:layout_width="wrap_content"
+                android:textColor="#ffc800"/>
+            <TextView
+                android:id="@+id/abv_print"
+                android:layout_width="35dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:checked="true"
-                android:text="하이볼 잔"
-                android:textColor="#fff" />
-
-            <CheckBox
-                android:id="@+id/checkBox2"
-                android:layout_width="wrap_content"
+                android:text="00"
+                android:textSize="30dp"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="#ffc800"/>
+            <TextView
+                android:layout_width="30dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:checked="false"
-                android:text="칵테일 잔"
-                android:textColor="#fff"/>
+                android:text="%"
+                android:textSize="30dp"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="#ffc800"/>
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <ImageView
+                android:id="@+id/soju"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="right"
+                android:background="@drawable/jinro_glass" />
+            <TextView
+                android:layout_width="20dp"
+                android:layout_height="wrap_content"
+                android:text=" X "
+                android:textSize="20dp"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="#ffc800"/>
+            <TextView
+                android:id="@+id/soju_num"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:textSize="30dp"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="#ffc800"
+                android:layout_marginRight="15dp"/>
+
+
+
         </LinearLayout>
 
         <ImageView

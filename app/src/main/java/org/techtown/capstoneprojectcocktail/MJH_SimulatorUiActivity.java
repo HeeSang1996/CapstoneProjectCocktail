@@ -9,6 +9,7 @@ import android.widget.AdapterView;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -66,53 +67,7 @@ public class MJH_SimulatorUiActivity extends AppCompatActivity implements View.O
         setContentView(R.layout.mjh_test);
         uiMain = this;
 
-        cb1 = (CheckBox)findViewById(R.id.checkBox1);
-        cb1.setOnClickListener(new CheckBox.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (((CheckBox)v).isChecked()) {
-                    cb2.setChecked(false);
-                    glassType = 0;
-                    try{
-                        test.glassType = glassType;
-                        drawingCocktail();
-                    }catch(Exception e){
-                        Toast myToast = Toast.makeText(uiMain,e.toString(), Toast.LENGTH_SHORT);
-                        myToast.show();
-                    }
-                    //Toast myToast = Toast.makeText(uiMain,"하이볼잔", Toast.LENGTH_SHORT);
-                    //myToast.show();
-                }
-            }
-        }) ;
 
-        cb2 = (CheckBox)findViewById(R.id.checkBox2);
-        cb2.setOnClickListener(new CheckBox.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (((CheckBox)v).isChecked()) {
-                    cb1.setChecked(false);
-                    glassType = 1;
-
-                    try{
-                        if(test.simulatorStep.get(test.inGlassStep-1 ).totalVolume >140){
-                            Toast.makeText(uiMain,"칵테일 잔의 용량을 넘습니다!", Toast.LENGTH_SHORT).show();
-                            cb1.setChecked(true);
-                            cb2.setChecked(false);
-                        }
-                        else{
-                            test.glassType = glassType;
-                            drawingCocktail();
-                        }
-                    }catch(Exception e){
-                        Toast myToast = Toast.makeText(uiMain,e.toString(), Toast.LENGTH_SHORT);
-                        myToast.show();
-                    }
-                    //Toast myToast = Toast.makeText(uiMain,"마티니잔", Toast.LENGTH_SHORT);
-                    //myToast.show();
-                }
-            }
-        }) ;
 
         floatingActionButtonForAddList = (FloatingActionButton) findViewById(R.id.floatingActionButtonForAddList);
         floatingActionButtonForAddList.setOnClickListener(this);
@@ -383,6 +338,20 @@ public class MJH_SimulatorUiActivity extends AppCompatActivity implements View.O
             ObjectMartiniGlass graphic = new  ObjectMartiniGlass();
             graphic.draw(View, uiMain);
         }
+
+        try{
+            int testIndex = test.simulatorStep.size();
+            float abvBuf = test.simulatorStep.get(testIndex - 1).totalAbv;
+            float volBuf = test.simulatorStep.get(testIndex - 1).totalVolume;
+
+            TextView txt1 = (TextView)findViewById(R.id.abv_print);
+            TextView txt2 = (TextView)findViewById(R.id.soju_num);
+
+            float sojuUnit = 0;
+            sojuUnit = (abvBuf * volBuf) / 900;
+            txt1.setText(Integer.toString((int)abvBuf));
+            txt2.setText(Integer.toString((int)sojuUnit));
+        }catch (Exception e){}
     }
 
 }
