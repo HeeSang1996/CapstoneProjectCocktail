@@ -26,6 +26,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -226,7 +227,7 @@ public class MJH_Popup3Activity extends Activity {
 //                    }
 //                }
 //                recyclerViewForCocktailSearch.setAdapter(adapterForCocktailSearch);
-                db.collection("Ingredient")
+                db.collection("Ingredient").orderBy("Ingredient_name", Query.Direction.ASCENDING)
                         .get()
                         .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                             @Override
@@ -284,7 +285,7 @@ public class MJH_Popup3Activity extends Activity {
 
     private void setAdapterForIngredientSearchByType(String _type){
         //Ingredient_type이 시럽인것만 나오도록
-        db.collection("Ingredient").whereEqualTo("Ingredient_type", _type)
+        db.collection("Ingredient").whereEqualTo("Ingredient_type", _type).orderBy("Ingredient_name", Query.Direction.ASCENDING)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
