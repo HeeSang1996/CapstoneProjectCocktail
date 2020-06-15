@@ -6,11 +6,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -61,24 +59,12 @@ public class MJH_SimulatorUiActivity extends AppCompatActivity implements View.O
     public CheckBox cb1;
     public CheckBox cb2;
 
-    Button button1;
     @Override
     public void onCreate(Bundle saveInstanceState){
         setAdapterForIngredientSearch();
         super.onCreate(saveInstanceState);
         setContentView(R.layout.mjh_test);
         uiMain = this;
-        button1=(Button) findViewById(R.id.button);
-
-
-
-        button1.setOnClickListener(new View.OnClickListener() {
-            String resultTest = "";
-            @Override
-            public void onClick(View v){
-            }
-        });
-
 
         cb1 = (CheckBox)findViewById(R.id.checkBox1);
         cb1.setOnClickListener(new CheckBox.OnClickListener() {
