@@ -699,7 +699,7 @@ public class CocktailSearchActivity extends AppCompatActivity{
                     for (QueryDocumentSnapshot document : task.getResult()) {
                         Ingredient_name[count] = (String) document.get("Ingredient_name"); //재료 이름
                         System.out.println("array_count : "+ count + "   Ingredient_name data: " +Ingredient_name[count]);
-                        Ingredient_ID[count] = 5001+ count;
+                        Ingredient_ID[count] = Integer.parseInt(document.getId());
                         Ingredient_flavour[count] = (String) document.get("flavour"); //향(칵테일에선 설명 method)
 
                         Ingredient_sugar[count] = (Number) document.get("sugar_rate"); //suger_rate(칵테일에선 재료와 용량)
