@@ -75,7 +75,7 @@ public class ObjectMartiniGlass {
 
                     //좌측삼각
                     path.moveTo(215, 285-firstConeHeight);
-                    path.lineTo(237 - firstConeX, 285-firstConeHeight);
+                    path.lineTo(247 - firstConeX, 285-firstConeHeight);
                     path.lineTo(215, 285);
                     path.close();
                     canvas.drawPath(path, paint);
@@ -83,7 +83,7 @@ public class ObjectMartiniGlass {
                     //우측삼각
                     Path path1 = new Path();
                     path1.moveTo(285, 285-firstConeHeight);
-                    path1.lineTo(263 + firstConeX, 285-firstConeHeight);
+                    path1.lineTo(253 + firstConeX, 285-firstConeHeight);
                     path1.lineTo(285, 285);
                     path1.close();
                     canvas.drawPath(path1, paint);
@@ -127,7 +127,7 @@ public class ObjectMartiniGlass {
 
                 //좌측삼각
                 path.moveTo(215, 285-firstConeHeight);
-                path.lineTo(240 - firstConeX, 285-firstConeHeight);
+                path.lineTo(247 - firstConeX, 285-firstConeHeight);
                 path.lineTo(215, 285);
                 path.close();
                 canvas.drawPath(path, paint_gradient);
@@ -135,7 +135,7 @@ public class ObjectMartiniGlass {
                 //우측삼각
                 Path path1 = new Path();
                 path1.moveTo(285, 285-firstConeHeight);
-                path1.lineTo(260 + firstConeX, 285-firstConeHeight);
+                path1.lineTo(253 + firstConeX, 285-firstConeHeight);
                 path1.lineTo(285, 285);
                 path1.close();
                 canvas.drawPath(path1, paint_gradient);
@@ -163,7 +163,7 @@ public class ObjectMartiniGlass {
                 View.setImageBitmap(bitmap);
 
                 float realVolume;
-                float remainVolume = MJH_SimulatorUiActivity.test.simulatorStep.get(MJH_SimulatorUiActivity.test.inGlassStep-1 ).totalVolume;;
+                float remainVolume = MJH_SimulatorUiActivity.test.simulatorStep.get(MJH_SimulatorUiActivity.test.inGlassStep-1 ).totalVolume;
                 float graphicVolumeWeight = (float)82687;
 
                 double graphicVol = 0;
@@ -201,7 +201,7 @@ public class ObjectMartiniGlass {
 
                     //좌측삼각
                     path.moveTo(215, 285-firstConeHeight);
-                    path.lineTo(240 - firstConeX, 285-firstConeHeight);
+                    path.lineTo(247 - firstConeX, 285-firstConeHeight);
                     path.lineTo(215, 285);
                     path.close();
                     canvas.drawPath(path, paint);
@@ -209,7 +209,7 @@ public class ObjectMartiniGlass {
                     //우측삼각
                     Path path1 = new Path();
                     path1.moveTo(285, 285-firstConeHeight);
-                    path1.lineTo(260 + firstConeX, 285-firstConeHeight);
+                    path1.lineTo(253 + firstConeX, 285-firstConeHeight);
                     path1.lineTo(285, 285);
                     path1.close();
                     canvas.drawPath(path1, paint);
@@ -271,7 +271,7 @@ public class ObjectMartiniGlass {
 
                 //좌측삼각
                 path.moveTo(215, 285-firstConeHeight);
-                path.lineTo(240 - firstConeX, 285-firstConeHeight);
+                path.lineTo(247 - firstConeX, 285-firstConeHeight);
                 path.lineTo(215, 285);
                 path.close();
                 canvas.drawPath(path, paint);
@@ -279,7 +279,7 @@ public class ObjectMartiniGlass {
                 //우측삼각
                 Path path1 = new Path();
                 path1.moveTo(285, 285-firstConeHeight);
-                path1.lineTo(260 + firstConeX, 285-firstConeHeight);
+                path1.lineTo(253 + firstConeX, 285-firstConeHeight);
                 path1.lineTo(285, 285);
                 path1.close();
                 canvas.drawPath(path1, paint);

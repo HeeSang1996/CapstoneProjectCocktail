@@ -89,6 +89,7 @@ public class MJH_SimulatorUiActivity extends AppCompatActivity implements View.O
                     glassType = 0;
                     try{
                         test.glassType = glassType;
+                        drawingCocktail();
                     }catch(Exception e){
                         Toast myToast = Toast.makeText(uiMain,e.toString(), Toast.LENGTH_SHORT);
                         myToast.show();
@@ -96,7 +97,6 @@ public class MJH_SimulatorUiActivity extends AppCompatActivity implements View.O
                     //Toast myToast = Toast.makeText(uiMain,"하이볼잔", Toast.LENGTH_SHORT);
                     //myToast.show();
                 }
-                drawingCocktail();
             }
         }) ;
 
@@ -107,8 +107,17 @@ public class MJH_SimulatorUiActivity extends AppCompatActivity implements View.O
                 if (((CheckBox)v).isChecked()) {
                     cb1.setChecked(false);
                     glassType = 1;
+
                     try{
-                        test.glassType = glassType;
+                        if(test.simulatorStep.get(test.inGlassStep-1 ).totalVolume >140){
+                            Toast.makeText(uiMain,"칵테일 잔의 용량을 넘습니다!", Toast.LENGTH_SHORT).show();
+                            cb1.setChecked(true);
+                            cb2.setChecked(false);
+                        }
+                        else{
+                            test.glassType = glassType;
+                            drawingCocktail();
+                        }
                     }catch(Exception e){
                         Toast myToast = Toast.makeText(uiMain,e.toString(), Toast.LENGTH_SHORT);
                         myToast.show();
@@ -116,7 +125,6 @@ public class MJH_SimulatorUiActivity extends AppCompatActivity implements View.O
                     //Toast myToast = Toast.makeText(uiMain,"마티니잔", Toast.LENGTH_SHORT);
                     //myToast.show();
                 }
-                drawingCocktail();
             }
         }) ;
 
@@ -212,6 +220,10 @@ public class MJH_SimulatorUiActivity extends AppCompatActivity implements View.O
                         int deleteBuff;
                         deleteBuff = adapterMIN.listViewItemList.size();
                         stepNum--;
+
+                        if( adapterMIN.listViewItemList.get(deleteBuff-1).getTech().equals("Gradient")){
+                            test.isGradient = 0;
+                        }
                         adapterMIN.listViewItemList.remove(deleteBuff-1);
                         listview.setAdapter(adapterMIN);
 

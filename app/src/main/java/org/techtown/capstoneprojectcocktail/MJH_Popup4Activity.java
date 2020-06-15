@@ -22,6 +22,7 @@ import java.util.List;
 import static org.techtown.capstoneprojectcocktail.CocktailAdapterForSearch.useByMinFlag;
 import static org.techtown.capstoneprojectcocktail.MJH_Popup3Activity.ingreAmount;
 import static org.techtown.capstoneprojectcocktail.MJH_Popup3Activity.ingreAmountFlag;
+import static org.techtown.capstoneprojectcocktail.MJH_SimulatorUiActivity.test;
 
 public class MJH_Popup4Activity  extends Activity {
     EditText editText;
@@ -56,8 +57,43 @@ public class MJH_Popup4Activity  extends Activity {
         if(strText.equals(""))
             Toast.makeText(this,"량을 입력해주세요!", Toast.LENGTH_SHORT).show();
         else{
-            ingreAmount = Integer.parseInt(strText);
-            finish();
+            try{
+
+                float nowVolume = 0;
+                try{
+                    nowVolume = test.simulatorStep.get(test.inGlassStep-1 ).totalVolume;
+                }catch(Exception e){
+
+                }
+                ingreAmount = Integer.parseInt(strText);
+
+                if( test.glassType == 0 ) {
+                    if((nowVolume + ingreAmount) > 250){
+                        Toast.makeText(this,"하이볼 잔의 용량을 넘습니다!", Toast.LENGTH_SHORT).show();
+                    }
+                    else{
+                        finish();
+                    }
+                }
+                if( test.glassType == 1 ) {
+                    if((nowVolume + ingreAmount) > 140){
+                        Toast.makeText(this,"칵테일 잔의 용량을 넘습니다!", Toast.LENGTH_SHORT).show();
+                    }
+                    else{
+                        finish();
+                    }
+                }
+                if( test.glassType == 2 ) {
+                    if((nowVolume + ingreAmount) > 60){
+                        Toast.makeText(this,"슈터 잔의 용량을 넘습니다!", Toast.LENGTH_SHORT).show();
+                    }
+                    else{
+                        finish();
+                    }
+                }
+            }catch(Exception e){
+                Toast.makeText(this,"숫자를 입력하여 주세요!", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 

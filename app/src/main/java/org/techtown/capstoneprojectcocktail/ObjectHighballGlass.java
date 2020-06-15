@@ -74,7 +74,7 @@ public class ObjectHighballGlass {
                 paint.setAlpha(200);
                 RectF rect2 = new RectF();
                 rect2.set(left, height -20, right, height + 20);
-                canvas.drawArc(rect2, 0, 360, true, paint);
+                canvas.drawArc(rect2, 180, 180, true, paint);
 
                 height = 1080;
 
@@ -199,7 +199,7 @@ public class ObjectHighballGlass {
                 paint.setColor(Color.rgb(red ,green ,blue));
                 RectF rect2 = new RectF();
                 rect2.set(left, height -20, right, height + 20);
-                canvas.drawArc(rect2, 0, 360, true, paint);
+                canvas.drawArc(rect2, 180, 180, true, paint);
 
                 //잔
                 Bitmap bitmap2 = BitmapFactory.decodeResource(context.getResources(), R.drawable.highball_glass_5_ice);
@@ -267,7 +267,7 @@ public class ObjectHighballGlass {
                 paint.setAlpha(200);
                 RectF rect2 = new RectF();
                 rect2.set(left, height -20, right, height + 20);
-                canvas.drawArc(rect2, 0, 360, true, paint);
+                canvas.drawArc(rect2, 180, 180, true, paint);
 
                 //잔
                 Bitmap bitmap2 = BitmapFactory.decodeResource(context.getResources(), R.drawable.highball_glass_5_ice);
