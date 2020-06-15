@@ -124,6 +124,12 @@ public class MJH_Popup3Activity extends Activity {
                 //Toast.makeText(getActivity().getApplicationContext(),"선택된 칵테일: " + item.getName(),Toast.LENGTH_LONG).show();
                 for(int i = 0; i < 140; i++){
                     if(simulatorUiAddress.ingredientList[i].name.equals(item.getName())){
+                        for(int j = 0; j < bufferUpdateIngredient.size(); j++){
+                            if( bufferUpdateIngredient.get(j).name.equals(item.getName())){
+                                Toast.makeText(uiThis,"이미 추가된 재료 입니다",Toast.LENGTH_LONG).show();
+                                return;
+                            }
+                        }
                         Toast.makeText(uiThis,"선택된 재료: " + item.getName(),Toast.LENGTH_LONG).show();
                         bufferUpdateIngredient.add(simulatorUiAddress.ingredientList[i]);
                     }
