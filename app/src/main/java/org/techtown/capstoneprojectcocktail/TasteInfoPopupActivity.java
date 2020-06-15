@@ -18,6 +18,11 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.ArrayList;
 
 import static androidx.constraintlayout.widget.Constraints.TAG;
 
@@ -31,6 +36,26 @@ public class TasteInfoPopupActivity extends Activity {
     int maxIndex = 0;
     int secondMaxIndex = 0;
     int thirdMaxIndex = 0;
+    double sugarValue;
+    double bitterValue;
+    double sourValue;
+    double saltyValue;
+    double spicyValue;
+
+    double[] tempArray = new double[81];
+    double max = tempArray[0]; //최대값
+    double secondMax = tempArray[0]; //최대값
+    double thirdMax = tempArray[0]; //최대값
+
+    //재선언
+    private ArrayList Recipe_name;
+
+    //맛 선언
+    private ArrayList Recipe_sugar;
+    private ArrayList Recipe_hot;
+    private ArrayList Recipe_sour;
+    private ArrayList Recipe_bitter;
+    private ArrayList Recipe_salty;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -38,28 +63,6 @@ public class TasteInfoPopupActivity extends Activity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.taste_info_popup_activity);
 
-        for(int i = 0; i< 81; i++)
-        {
-            DocumentReference docRef = db.collection("Recipe").document(String.valueOf(i+6001));
-            final int finalI = i;
-            docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                    if (task.isSuccessful()) {
-                        DocumentSnapshot document = task.getResult();
-                        if (document.exists()) {
-                            Cocktail_name[finalI]= document.get("Recipe_name").toString();
-                            onResume();
-                            System.out.println("값 확인용 " + Cocktail_name[finalI]);
-                        } else {
-                            Log.d(TAG, "No such document");
-                        }
-                    } else {
-                        Log.d(TAG, "get failed with ", task.getException());
-                    }
-                }
-            });
-        }
         //키보드 숨기기
         inputKeyboardHide = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
 
@@ -74,16 +77,52 @@ public class TasteInfoPopupActivity extends Activity {
         super.onResume();
         Intent intent = getIntent();
         //넘겨받은 칵테일 아아디
-        double sugarValue = intent.getDoubleExtra("sugarValue",0);
-        double bitterValue = intent.getDoubleExtra("bitterValue",0);
-        double sourValue = intent.getDoubleExtra("sourValue",0);
-        double saltyValue = intent.getDoubleExtra("saltyValue",0);
-        double spicyValue = intent.getDoubleExtra("spicyValue",0);
+        sugarValue = intent.getDoubleExtra("sugarValue",0);
+        bitterValue = intent.getDoubleExtra("bitterValue",0);
+        sourValue = intent.getDoubleExtra("sourValue",0);
+        saltyValue = intent.getDoubleExtra("saltyValue",0);
+        spicyValue = intent.getDoubleExtra("spicyValue",0);
 
-        double[] tempArray = new double[81];
-        double max = tempArray[0]; //최대값
-        double secondMax = tempArray[0]; //최대값
-        double thirdMax = tempArray[0]; //최대값
+        tempArray = new double[81];
+        max = tempArray[0]; //최대값
+        secondMax = tempArray[0]; //최대값
+        thirdMax = tempArray[0]; //최대값
+
+        //재선언 초기화
+        Recipe_name = new ArrayList();
+
+        //맛 선언 초기화
+        Recipe_sugar = new ArrayList();
+        Recipe_hot = new ArrayList();
+        Recipe_sour = new ArrayList();
+        Recipe_bitter = new ArrayList();
+        Recipe_salty = new ArrayList();
+
+
+        db.collection("Recipe")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Recipe_name.add(document.get("Recipe_name").toString());       //레시피 이름
+                                Recipe_sugar.add(document.get("단맛").toString());             //레시피의 단맛
+                                Recipe_hot.add(document.get("매운맛").toString());             //레시피의 매운맛
+                                Recipe_sour.add(document.get("신맛").toString());              //레시피의 신맛
+                                Recipe_bitter.add(document.get("쓴맛").toString());            //레시피의 쓴맛
+                                Recipe_salty.add(document.get("짠맛").toString());             //레시피의 짠맛
+                            }
+                            SetDocument();
+                        } else {
+                            System.out.println("오류 발생 Grading 컬렉션에서 정상적으로 불러와지지 않음.");
+                        }
+                    }
+                });
+
+    }
+
+    public void SetDocument(){
         for (int i =0;i<81;i++){
             //단맛, 쓴맛, 신맛,짠맛,매운맛
             double[] tasteInfo = {sugarValue,bitterValue,sourValue,saltyValue,spicyValue};
@@ -112,17 +151,9 @@ public class TasteInfoPopupActivity extends Activity {
                 thirdMaxIndex = i;
             }
         }
-        System.out.println("나와야 하는 값 " + Cocktail_name[maxIndex]);
-        System.out.println("나와야 하는 값 " + Cocktail_name[secondMaxIndex]);
-        System.out.println("나와야 하는 값 " + Cocktail_name[thirdMaxIndex]);
-
-        System.out.println(maxIndex);
-        System.out.println(secondMaxIndex);
-        System.out.println(thirdMaxIndex);
-
-        textFor1Cocktail.setText(Cocktail_name[maxIndex]);
-        textFor2Cocktail.setText(Cocktail_name[secondMaxIndex]);
-        textFor3Cocktail.setText(Cocktail_name[thirdMaxIndex]);
+        textFor1Cocktail.setText(Recipe_name.get(maxIndex).toString());
+        textFor2Cocktail.setText(Recipe_name.get(secondMaxIndex).toString());
+        textFor3Cocktail.setText(Recipe_name.get(thirdMaxIndex).toString());
     }
 
     public void tastePopupClose(View v){
