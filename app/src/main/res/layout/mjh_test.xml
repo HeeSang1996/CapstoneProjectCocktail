@@ -9,8 +9,10 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@drawable/cocktailbar"
         android:orientation="vertical"
-        android:background="#333333">
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="0dp">
 
         <LinearLayout
             android:id="@+id/linearLayout"
@@ -21,27 +23,29 @@
             <TextView
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
-                android:text="ABV:"
-                android:textSize="30dp"
-                android:gravity="center"
                 android:layout_marginLeft="20dp"
+                android:gravity="center"
+                android:text="ABV:"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textColor="#ffc800"/>
+                android:textColor="#ffc800"
+                android:textSize="30dp" />
+
             <TextView
                 android:id="@+id/abv_print"
                 android:layout_width="35dp"
                 android:layout_height="wrap_content"
                 android:text="0"
-                android:textSize="30dp"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textColor="#ffc800"/>
+                android:textColor="#ffc800"
+                android:textSize="30dp" />
+
             <TextView
                 android:layout_width="30dp"
                 android:layout_height="wrap_content"
                 android:text="%"
-                android:textSize="30dp"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textColor="#ffc800"/>
+                android:textColor="#ffc800"
+                android:textSize="30dp" />
 
             <View
                 android:layout_width="0dp"
@@ -54,23 +58,24 @@
                 android:layout_height="40dp"
                 android:layout_gravity="right"
                 android:background="@drawable/jinro_glass" />
+
             <TextView
                 android:layout_width="20dp"
                 android:layout_height="wrap_content"
                 android:text=" X "
-                android:textSize="20dp"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textColor="#ffc800"/>
+                android:textColor="#ffc800"
+                android:textSize="20dp" />
+
             <TextView
                 android:id="@+id/soju_num"
                 android:layout_width="50dp"
                 android:layout_height="wrap_content"
+                android:layout_marginRight="15dp"
                 android:text="0"
-                android:textSize="30dp"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textColor="#ffc800"
-                android:layout_marginRight="15dp"/>
-
+                android:textSize="30dp" />
 
 
         </LinearLayout>
@@ -80,15 +85,15 @@
             android:layout_width="200dp"
             android:layout_height="280dp"
             android:layout_gravity="center"
-            android:layout_marginVertical="35dp"/>
+            android:layout_marginVertical="35dp" />
 
         <ListView
             android:id="@+id/listview1"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:background="#333333">
-        </ListView>
+            android:background="#333333"
+            android:textColor="#fff"></ListView>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraintLayout_bottom_background_home"
@@ -97,8 +102,7 @@
             android:background="#171717"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent">
-        </androidx.constraintlayout.widget.ConstraintLayout>
+            app:layout_constraintRight_toRightOf="parent"></androidx.constraintlayout.widget.ConstraintLayout>
     </LinearLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton

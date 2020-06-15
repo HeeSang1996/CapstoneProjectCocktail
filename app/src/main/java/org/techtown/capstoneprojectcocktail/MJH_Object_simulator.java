@@ -99,8 +99,15 @@ public class MJH_Object_simulator {
                 //0615
                 float inputIngerAlpha = inputIngredient.get(i).alpha;
 
-                if(inputIngredient.get(i).muddy == 1){
+                if(inputIngredient.get(i).muddy == 0){
                     inputIngerAlpha = 12;
+                }
+                else if(inputIngredient.get(i).muddy == 1){
+                    inputIngerAlpha = 20;
+                }
+                if(inputIngredient.get(i).alpha == 0)
+                {
+                    inputIngerAlpha = 3;
                 }
                 cocktailBuffer.alpha = ((cocktailBuffer.alpha * cocktailBuffer.totalVolume) + (inputIngerAlpha * inputAmount.get(i))) / (cocktailBuffer.totalVolume + inputAmount.get(i));
 
