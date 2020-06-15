@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -31,6 +32,7 @@ public class MJH_SimulatorUiActivity extends AppCompatActivity implements View.O
     public static Context uiMain;
 
     public FloatingActionButton floatingActionButtonForAddList, floatingActionButtonForAddList2, button_simulation_action;
+    private Button switchGlassButton;
     public static MJH_ListviewAdapter adapterMIN;
     public ListView listview;
 
@@ -60,6 +62,11 @@ public class MJH_SimulatorUiActivity extends AppCompatActivity implements View.O
     public CheckBox cb1;
     public CheckBox cb2;
 
+    //잔의 초기상태는 하이볼
+    private boolean highBallChecked = true;
+    private boolean martiniChecked = false;
+    private boolean shooterChecked = false;
+
     @Override
     public void onCreate(Bundle saveInstanceState){
         setAdapterForIngredientSearch();
@@ -76,6 +83,9 @@ public class MJH_SimulatorUiActivity extends AppCompatActivity implements View.O
 
         button_simulation_action = (FloatingActionButton) findViewById(R.id.button_simulation_action);
         button_simulation_action.setOnClickListener(this);
+
+        switchGlassButton =  (Button) findViewById(R.id.switch_glass_simulation);
+        switchGlassButton.setOnClickListener(this);
 
         // Adapter 생성
         adapterMIN = new MJH_ListviewAdapter() ;
@@ -207,7 +217,6 @@ public class MJH_SimulatorUiActivity extends AppCompatActivity implements View.O
 
                 break;
             case R.id.button_simulation_action: // 시뮬레이션 작동시키기
-
                 try{
                     if(test.simulatorStep.size() == 0) {
                         Toast myToast = Toast.makeText(this.getApplicationContext(),"칵테일 시뮬레이션 스텝을 추가해 주세요!", Toast.LENGTH_SHORT);
@@ -234,6 +243,32 @@ public class MJH_SimulatorUiActivity extends AppCompatActivity implements View.O
                     Toast myToast = Toast.makeText(this.getApplicationContext(),e.toString(), Toast.LENGTH_SHORT);
                     myToast.show();
                 }
+                break;
+                //글래스 선택 버튼
+            case R.id.switch_glass_simulation:
+                //현재 잔이 하이볼일 경우
+                //마티니로 잔 변경
+                if(highBallChecked == true){
+                    highBallChecked =false;
+                    martiniChecked = true;
+                    switchGlassButton.setText("Martini");
+
+                }
+                //현재 잔이 마티니일 경우
+                //슈터로 잔 변경
+                else if (martiniChecked == true){
+                    martiniChecked = false;
+                    shooterChecked = true;
+                    switchGlassButton.setText("Shooter");
+                }
+                //현재 잔이 슈터일 경우
+                //하이볼로 잔 변경
+                else if (shooterChecked == true){
+                    shooterChecked = false;
+                    highBallChecked = true;
+                    switchGlassButton.setText("Highball");
+                }
+                break;
         }
     }
 
