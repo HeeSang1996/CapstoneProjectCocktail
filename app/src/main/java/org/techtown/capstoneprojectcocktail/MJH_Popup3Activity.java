@@ -289,6 +289,7 @@ public class MJH_Popup3Activity extends Activity {
                 setAdapterForIngredientSearchByType("시럽");
                 setAdapterForIngredientSearchByType("주스");
                 setAdapterForIngredientSearchByType("음료");
+                setAdapterForIngredientSearchByType("비터스");
                 Toast myToast = Toast.makeText(uiThis, Integer.toString(I_name.size()), Toast.LENGTH_LONG);
                 myToast.show();
             }
