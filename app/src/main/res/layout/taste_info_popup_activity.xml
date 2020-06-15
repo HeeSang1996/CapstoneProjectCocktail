@@ -14,7 +14,7 @@
 
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="53dp"
+            android:layout_height="40dp"
             android:background="#333333"
             android:gravity="center"
             android:text="칵테일 맛 정보"
@@ -32,7 +32,7 @@
                 android:text="유사한 칵테일"
                 android:background="#424242"
                 android:layout_marginVertical="1dp"
-                android:padding="5dp"
+                android:padding="3dp"
                 android:textColor="#fff"
                 android:textSize="20sp"
                 android:paddingHorizontal="5dp"/>
@@ -69,10 +69,10 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="예측되는 맛 :"
+                android:text="예측되는 맛"
                 android:background="#424242"
-                android:layout_marginTop="1dp"
-                android:padding="5dp"
+                android:layout_marginVertical="1dp"
+                android:padding="3dp"
                 android:textColor="#fff"
                 android:textSize="20sp"
                 android:paddingHorizontal="5dp"/>
@@ -85,15 +85,16 @@
                 android:text="맛"
                 android:background="#424242"
                 android:textSize="16sp"
-                android:textColor="#fff"/>
+                android:textColor="#fff"
+                android:lineSpacingExtra="2dp"/>
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="예측되는 향 :"
-                android:layout_marginTop="1dp"
+                android:text="예측되는 향"
+                android:layout_marginVertical="1dp"
                 android:background="#424242"
-                android:padding="5dp"
+                android:padding="3dp"
                 android:textColor="#fff"
                 android:textSize="20sp"
                 android:paddingHorizontal="5dp"/>
@@ -107,18 +108,17 @@
                 android:layout_marginBottom="1dp"
                 android:background="#424242"
                 android:textSize="16sp"
-                android:textColor="#fff"/>
+                android:textColor="#fff"
+                android:lineSpacingExtra="2dp"/>
 
         </LinearLayout>
 
         <Button
             android:id="@+id/buttonCheck_taste_info"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_height="40dp"
             android:background="#333333"
             android:gravity="center"
-            android:padding="16dp"
             android:text="확인"
             android:textColor="#ffffff"
             android:textSize="15sp"

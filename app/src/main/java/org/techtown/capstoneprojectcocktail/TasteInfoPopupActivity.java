@@ -3,7 +3,6 @@ package org.techtown.capstoneprojectcocktail;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
@@ -15,21 +14,17 @@ import androidx.annotation.Nullable;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 
-import static androidx.constraintlayout.widget.Constraints.TAG;
-
 public class TasteInfoPopupActivity extends Activity {
 
     private InputMethodManager inputKeyboardHide;
     private TextView textFor1Cocktail, textFor2Cocktail, textFor3Cocktail;
+    private TextView textForTasteInfo, textForFlavorInfo;
     CocktailTasteInfo cocktailTasteInfo = new CocktailTasteInfo();
     public FirebaseFirestore db = FirebaseFirestore.getInstance();
     String[] Cocktail_name = new String[81];
@@ -70,6 +65,8 @@ public class TasteInfoPopupActivity extends Activity {
         textFor2Cocktail = (TextView) findViewById(R.id.textView_taste_info_2);
         textFor3Cocktail = (TextView) findViewById(R.id.textView_taste_info_3);
 
+        textForTasteInfo = (TextView) findViewById(R.id.textView_taste_taste_info);
+        textForFlavorInfo = (TextView) findViewById(R.id.textView_flavor_taste_info);
     }
 
     @Override
@@ -124,6 +121,19 @@ public class TasteInfoPopupActivity extends Activity {
     }
 
     public void SetDocument(){
+        //단맛, 쓴맛, 신맛,짠맛,매운맛
+        double recipe_sugar_sum = 0.0;
+        double recipe_bitter_sum = 0.0;
+        double recipe_sour_sum = 0.0;
+        double recipe_salty_sum = 0.0;
+        double recipe_hot_sum = 0.0;
+
+        String recipe_sugar_sum_string;
+        String recipe_bitter_sum_string;
+        String recipe_sour_sum_string;
+        String recipe_salty_sum_string;
+        String recipe_hot_sum_string;
+
         for (int i =0;i<81;i++){
             //단맛, 쓴맛, 신맛,짠맛,매운맛
             double[] tasteInfo = {sugarValue,bitterValue,sourValue,saltyValue,spicyValue};
@@ -152,10 +162,58 @@ public class TasteInfoPopupActivity extends Activity {
                 thirdMaxIndex = i;
             }
         }
-        textFor1Cocktail.setText(Recipe_name.get(maxIndex).toString());
-        textFor2Cocktail.setText(Recipe_name.get(secondMaxIndex).toString());
-        textFor3Cocktail.setText(Recipe_name.get(thirdMaxIndex).toString());
-    }
+        //유사도가 떨어지는 칵테일은 출력하지 않음
+        //단맛, 쓴맛, 신맛,짠맛,매운맛
+        if (max<0.92){
+            textFor1Cocktail.setText("1순위 : 유사한 칵테일 없음");
+            textFor2Cocktail.setText("2순위 : 유사한 칵테일 없음");
+            textFor3Cocktail.setText("3순위 : 유사한 칵테일 없음");
+        }
+        else if(secondMax <0.92){
+            textFor1Cocktail.setText("1순위 : " + Recipe_name.get(maxIndex).toString());
+            textFor2Cocktail.setText("2순위 : 유사한 칵테일 없음");
+            textFor3Cocktail.setText("3순위 : 유사한 칵테일 없음");
+
+            recipe_sugar_sum = Double.parseDouble(Recipe_sugar.get(maxIndex).toString()) *1;
+            recipe_bitter_sum = Double.parseDouble(Recipe_bitter.get(maxIndex).toString()) *1;
+            recipe_sour_sum = Double.parseDouble(Recipe_sour.get(maxIndex).toString()) *1;
+            recipe_salty_sum = Double.parseDouble(Recipe_salty.get(maxIndex).toString()) *1;
+            recipe_hot_sum = Double.parseDouble(Recipe_hot.get(maxIndex).toString()) *1;
+        }
+        else if (thirdMax <0.92){
+            textFor1Cocktail.setText("1순위 : " + Recipe_name.get(maxIndex).toString());
+            textFor2Cocktail.setText("2순위 : " + Recipe_name.get(secondMaxIndex).toString());
+            textFor3Cocktail.setText("3순위 : 유사한 칵테일 없음");
+
+            recipe_sugar_sum = Double.parseDouble(Recipe_sugar.get(maxIndex).toString()) *1+Double.parseDouble(Recipe_sugar.get(secondMaxIndex).toString())*0.5;
+            recipe_bitter_sum = Double.parseDouble(Recipe_bitter.get(maxIndex).toString()) *1+Double.parseDouble(Recipe_bitter.get(secondMaxIndex).toString())*0.5;
+            recipe_sour_sum = Double.parseDouble(Recipe_sour.get(maxIndex).toString()) *1 + Double.parseDouble(Recipe_sour.get(secondMaxIndex).toString())*0.5;
+            recipe_salty_sum = Double.parseDouble(Recipe_salty.get(maxIndex).toString()) *1 +Double.parseDouble(Recipe_salty.get(secondMaxIndex).toString())*0.5;
+            recipe_hot_sum = Double.parseDouble(Recipe_hot.get(maxIndex).toString()) *1 + Double.parseDouble(Recipe_hot.get(secondMaxIndex).toString())*0.5;
+        }
+        else{
+            textFor1Cocktail.setText("1순위 : " + Recipe_name.get(maxIndex).toString());
+            textFor2Cocktail.setText("2순위 : " + Recipe_name.get(secondMaxIndex).toString());
+            textFor3Cocktail.setText("3순위 : " + Recipe_name.get(thirdMaxIndex).toString());
+
+            recipe_sugar_sum = Double.parseDouble(Recipe_sugar.get(maxIndex).toString()) *1+Double.parseDouble(Recipe_sugar.get(secondMaxIndex).toString())*0.5+Double.parseDouble(Recipe_sugar.get(thirdMaxIndex).toString())*0.3;
+            recipe_bitter_sum = Double.parseDouble(Recipe_bitter.get(maxIndex).toString()) *1+Double.parseDouble(Recipe_bitter.get(secondMaxIndex).toString())*0.5+Double.parseDouble(Recipe_bitter.get(thirdMaxIndex).toString())*0.3;
+            recipe_sour_sum = Double.parseDouble(Recipe_sour.get(maxIndex).toString()) *1 + Double.parseDouble(Recipe_sour.get(secondMaxIndex).toString())*0.5+ Double.parseDouble(Recipe_sour.get(thirdMaxIndex).toString())*0.3;
+            recipe_salty_sum = Double.parseDouble(Recipe_salty.get(maxIndex).toString()) *1 +Double.parseDouble(Recipe_salty.get(secondMaxIndex).toString())*0.5+Double.parseDouble(Recipe_salty.get(thirdMaxIndex).toString())*0.3;
+            recipe_hot_sum = Double.parseDouble(Recipe_hot.get(maxIndex).toString()) *1 + Double.parseDouble(Recipe_hot.get(secondMaxIndex).toString())*0.5+ Double.parseDouble(Recipe_hot.get(thirdMaxIndex).toString())*0.3;;
+        }
+
+        recipe_sugar_sum_string = Integer.toString((int)recipe_sugar_sum);
+        recipe_bitter_sum_string = Integer.toString((int)recipe_bitter_sum);
+        recipe_sour_sum_string = Integer.toString((int)recipe_sour_sum);
+        recipe_salty_sum_string=Integer.toString((int)recipe_salty_sum);
+        recipe_hot_sum_string = Integer.toString((int)recipe_hot_sum);
+        textForTasteInfo.setText("단맛 : "+recipe_sugar_sum_string+
+                "\n쓴맛 : "+recipe_bitter_sum_string+
+                "\n신맛 : "+recipe_sour_sum_string+
+                "\n짠맛 : "+recipe_salty_sum_string+
+                "\n매운맛 : "+recipe_hot_sum_string);
+}
 
     public void tastePopupClose(View v){
         finish();
