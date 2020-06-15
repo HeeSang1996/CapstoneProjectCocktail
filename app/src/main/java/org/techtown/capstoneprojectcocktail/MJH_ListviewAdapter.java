@@ -2,12 +2,10 @@ package org.techtown.capstoneprojectcocktail;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -60,8 +58,8 @@ public class MJH_ListviewAdapter extends BaseAdapter {
         techTextView = (TextView) convertView.findViewById(R.id.textView2) ;
         descTextView = (TextView) convertView.findViewById(R.id.textView3) ;
 
-        techTextView.setTextSize(20);
-        descTextView.setTextSize(15);        // Data Set(listViewItemList)에서 position에 위치한 데이터 참조 획득
+        //techTextView.setTextSize(20);
+        //descTextView.setTextSize(15);        // Data Set(listViewItemList)에서 position에 위치한 데이터 참조 획득
         MJH_ListviewItem listViewItem = listViewItemList.get(position);
 
         // 아이템 내 각 위젯에 데이터 반영
@@ -87,8 +85,9 @@ public class MJH_ListviewAdapter extends BaseAdapter {
         techTextView .setText(listViewItem.getTech());
         descTextView.setText(getBufferStr);
 
-        if( callByPopup == 1)
-            descTextView.setTextSize(10);
+        if( callByPopup == 1) {
+            //descTextView.setTextSize(10);
+        }
 
         return convertView;
     }

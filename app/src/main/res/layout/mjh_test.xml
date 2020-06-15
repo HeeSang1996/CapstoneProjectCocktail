@@ -87,8 +87,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:background="#333333"
-            android:textColor="#fff">
+            android:background="#333333">
         </ListView>
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -98,7 +97,8 @@
             android:background="#171717"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"></androidx.constraintlayout.widget.ConstraintLayout>
+            app:layout_constraintRight_toRightOf="parent">
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </LinearLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
