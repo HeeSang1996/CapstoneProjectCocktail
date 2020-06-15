@@ -23,6 +23,7 @@ public class MJH_Popup2Activity extends Activity {
     public Context uiMe;
 
     ListView listview;
+    int updateTotalVol = 0;
 
     MJH_SimulatorUiActivity simulatorUiAddress;
     public ArrayList<Integer> bufferUpdateStep = new ArrayList<Integer>();
@@ -59,6 +60,8 @@ public class MJH_Popup2Activity extends Activity {
                             usingStepNum.set(usingStepNum.size() - 1, usingStepNum.get(usingStepNum.size() - 1) + 1);
                             Toast myToast = Toast.makeText(uiMe,"스텝 " + Integer.toString(position+1) + " 추가", Toast.LENGTH_SHORT);
                             myToast.show();
+
+                            //updateTotalVol
                         }
                         else{
                             Toast myToast = Toast.makeText(uiMe,"이미 사용된 스텝입니다.", Toast.LENGTH_SHORT);

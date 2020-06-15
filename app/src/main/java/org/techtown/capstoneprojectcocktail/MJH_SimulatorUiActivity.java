@@ -253,6 +253,10 @@ public class MJH_SimulatorUiActivity extends AppCompatActivity implements View.O
                     martiniChecked = true;
                     switchGlassButton.setText("Martini");
 
+                    try{
+                        test.glassType = 1;
+                        drawingCocktail();
+                    }catch(Exception e){ }
                 }
                 //현재 잔이 마티니일 경우
                 //슈터로 잔 변경
@@ -260,6 +264,11 @@ public class MJH_SimulatorUiActivity extends AppCompatActivity implements View.O
                     martiniChecked = false;
                     shooterChecked = true;
                     switchGlassButton.setText("Shooter");
+
+                    try{
+                        test.glassType = 2;
+                        drawingCocktail();
+                    }catch(Exception e){ }
                 }
                 //현재 잔이 슈터일 경우
                 //하이볼로 잔 변경
@@ -267,6 +276,11 @@ public class MJH_SimulatorUiActivity extends AppCompatActivity implements View.O
                     shooterChecked = false;
                     highBallChecked = true;
                     switchGlassButton.setText("Highball");
+
+                    try{
+                        test.glassType = 0;
+                        drawingCocktail();
+                    }catch(Exception e){ }
                 }
                 break;
         }
@@ -362,17 +376,26 @@ public class MJH_SimulatorUiActivity extends AppCompatActivity implements View.O
 
 
     public void drawingCocktail(){
-        if(test.glassType == 0){
-            ImageView View = (ImageView) findViewById(R.id.simulatorImage);
-            ObjectHighballGlass graphic = new  ObjectHighballGlass();
-            //ObjectShooterGlass graphic = new  ObjectShooterGlass();
-            graphic.draw(View, uiMain);
-        }
-        else if(test.glassType == 1) {
-            ImageView View = (ImageView) findViewById(R.id.simulatorImage);
-            ObjectMartiniGlass graphic = new  ObjectMartiniGlass();
-            graphic.draw(View, uiMain);
-        }
+        try{
+
+            if(highBallChecked == true){
+                ImageView View = (ImageView) findViewById(R.id.simulatorImage);
+                ObjectHighballGlass graphic = new  ObjectHighballGlass();
+                //ObjectShooterGlass graphic = new  ObjectShooterGlass();
+                graphic.draw(View, uiMain);
+            }
+            else if(martiniChecked == true) {
+                ImageView View = (ImageView) findViewById(R.id.simulatorImage);
+                ObjectMartiniGlass graphic = new  ObjectMartiniGlass();
+                graphic.draw(View, uiMain);
+            }
+
+            else if(shooterChecked == true) {
+                ImageView View = (ImageView) findViewById(R.id.simulatorImage);
+                ObjectShooterGlass graphic = new  ObjectShooterGlass();
+                graphic.draw(View, uiMain);
+            }
+        }catch (Exception e){}
 
         try{
             int testIndex = test.simulatorStep.size();
