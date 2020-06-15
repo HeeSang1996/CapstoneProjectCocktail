@@ -11,6 +11,8 @@ public class MJH_Object_ingredient { // 겟셋, 추상화 시간관계상 구현
     float sour = 0;
     float salty = 0;
     float bitter = 0;
+    //추가한부분
+    float hot = 0;
 
     float specific_gravity = 0;
 
@@ -22,8 +24,8 @@ public class MJH_Object_ingredient { // 겟셋, 추상화 시간관계상 구현
     float alpha = 0;
     float muddy = 0;
 
-
-    public MJH_Object_ingredient(String _name, float _specific_gravity , float _abv, float _sugar, float _sour, float _salty, float _bitter, MJH_Object_color _my_color){
+    //추가한부분
+    public MJH_Object_ingredient(String _name, float _specific_gravity , float _abv, float _sugar, float _sour, float _salty, float _bitter, float _hot, MJH_Object_color _my_color){
         this.name = _name;
         this.specific_gravity = _specific_gravity;
         this.abv =_abv;
@@ -31,6 +33,7 @@ public class MJH_Object_ingredient { // 겟셋, 추상화 시간관계상 구현
         this.sour = _sour;
         this.salty = _salty;
         this.bitter = _bitter;
+        this.hot = _hot;
 
         this.my_color = _my_color;
     }

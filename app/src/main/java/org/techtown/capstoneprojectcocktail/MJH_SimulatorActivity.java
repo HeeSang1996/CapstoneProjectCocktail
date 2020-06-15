@@ -119,10 +119,12 @@ public class MJH_SimulatorActivity extends AppCompatActivity {
                                 ingredientList[listCount].name = (String)document.get("Ingredient_name");
                                 ingredientList[listCount].id = 5001+ listCount;
                                 ingredientList[listCount].abv = Float.parseFloat(document.get("abv").toString());
-                                ingredientList[listCount].sugar = Float.parseFloat(document.get("sugar_rate").toString());
-                                ingredientList[listCount].sour = Float.parseFloat(document.get("sour").toString());
-                                ingredientList[listCount].salty = Float.parseFloat(document.get("salty").toString());
-                                ingredientList[listCount].bitter = Float.parseFloat(document.get("bitter").toString());
+                                ingredientList[listCount].sugar = Float.parseFloat(document.get("단맛").toString());
+                                ingredientList[listCount].sour = Float.parseFloat(document.get("신맛").toString());
+                                ingredientList[listCount].salty = Float.parseFloat(document.get("짠맛").toString());
+                                ingredientList[listCount].bitter = Float.parseFloat(document.get("쓴맛").toString());
+                                ingredientList[listCount].hot = Float.parseFloat(document.get("매운맛").toString());
+                                ingredientList[listCount].flavour = document.get("flavour").toString();
                                 ingredientList[listCount].specific_gravity = Float.parseFloat(document.get("specific_gravity").toString());
 
                                 ingredientRGB = (Map<String, Number>) document.getData().get("Ingredient_color");
