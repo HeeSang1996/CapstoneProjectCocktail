@@ -274,7 +274,7 @@ public class ObjectHighballGlass {
                 canvas.drawArc(rect2, 180, 180, true, paint);
 
                 //잔
-                Bitmap bitmap2 = BitmapFactory.decodeResource(context.getResources(), R.drawable.highball_glass_5_ice);
+                Bitmap bitmap2 = BitmapFactory.decodeResource(context.getResources(), R.drawable.highball_sample2);
                 bitmap2 = resizeBitmapImg(bitmap2, 1480);
                 canvas.drawBitmap(bitmap2, 0, 0, null);
 
