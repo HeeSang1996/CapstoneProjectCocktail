@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.Map;
 
 import static androidx.constraintlayout.widget.Constraints.TAG;
+import static org.techtown.capstoneprojectcocktail.MJH_Popup3Activity.thisStepPopup3AddAmount;
 
 public class MJH_SimulatorUiActivity extends AppCompatActivity implements View.OnClickListener {
     public static Context uiMain;
@@ -147,6 +148,7 @@ public class MJH_SimulatorUiActivity extends AppCompatActivity implements View.O
             drawingCocktail();
         }
         adapterMIN.callByPopup = 0;
+        thisStepPopup3AddAmount = 0;
     }
 
     @Override
@@ -354,6 +356,7 @@ public class MJH_SimulatorUiActivity extends AppCompatActivity implements View.O
 
         ingredientList = new MJH_Object_ingredient[200];
         listCount = 0;
+
         finish();
     }
 

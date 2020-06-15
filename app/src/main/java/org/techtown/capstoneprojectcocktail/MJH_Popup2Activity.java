@@ -3,6 +3,7 @@ package org.techtown.capstoneprojectcocktail;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
@@ -10,6 +11,7 @@ import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.snackbar.Snackbar;
@@ -30,6 +32,7 @@ public class MJH_Popup2Activity extends Activity {
     ListView listview;
     public static float updateTotalVol = 0;
 
+    MJH_ListviewItem buffer;
     MJH_SimulatorUiActivity simulatorUiAddress = ((MJH_SimulatorUiActivity) uiMain);
     public ArrayList<Integer> bufferUpdateStep = new ArrayList<Integer>();
 
@@ -44,7 +47,22 @@ public class MJH_Popup2Activity extends Activity {
         // 리스트뷰 참조 및 Adapter달기
         listview = (ListView) findViewById(R.id.listviewPopup2);
         adapterMIN.callByPopup = 1; // 어댑터 변수에서 팝업에서 콜했다고 셋팅
+
+        //수정
+        if(simulatorUiAddress.listUpdateTech.equals("Layering")){
+            buffer = adapterMIN.listViewItemList.get(adapterMIN.listViewItemList.size() - 1);
+            adapterMIN.listViewItemList.remove(adapterMIN.listViewItemList.size() - 1);
+        }
+
         listview.setAdapter(adapterMIN); //
+
+        if(adapterMIN.listViewItemList.size() == 0){
+             TextView txt = (TextView)findViewById(R.id.title);
+             txt.setText("추가할 스텝이 없습니다!\n 다음으로 넘어가 주세요.\n");
+             txt.setTextColor(Color.GRAY);
+        }
+
+
 
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -102,6 +120,10 @@ public class MJH_Popup2Activity extends Activity {
 
     public void mClose(View v){
         usingStepNum.remove(usingStepNum.size() - 1);
+
+        if(simulatorUiAddress.listUpdateTech.equals("Layering")) {
+            adapterMIN.listViewItemList.add(buffer);
+        }
         finish();
     }
 
@@ -110,11 +132,19 @@ public class MJH_Popup2Activity extends Activity {
         Intent intent = new Intent(this,MJH_Popup1Activity.class);
         startActivityForResult(intent, 1);
         usingStepNum.set(usingStepNum.size() - 1, 0);
+
+        if(simulatorUiAddress.listUpdateTech.equals("Layering")) {
+            adapterMIN.listViewItemList.add(buffer);
+        }
         finish();
     }
     //다음 버튼 클릭
     public void mNext(View v){
-        //데이터 전달하기
+        if(simulatorUiAddress.listUpdateTech.equals("Layering")) {
+            adapterMIN.listViewItemList.add(buffer);
+        }
+
+            //데이터 전달하기
         if(simulatorUiAddress.listUpdateTech.equals("Layering") && bufferUpdateStep.size() > 0){
             simulatorUiAddress.listUpdateStep = bufferUpdateStep;
             simulatorUiAddress.listUpdateIngredient = new ArrayList<MJH_Object_ingredient>();
