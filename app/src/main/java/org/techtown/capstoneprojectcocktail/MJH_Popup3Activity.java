@@ -68,6 +68,8 @@ public class MJH_Popup3Activity extends Activity {
     public static int ingreAmountFlag = 0;
     public static float ingreAmount = 0;
 
+    public int buttonPressCheck = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -125,18 +127,24 @@ public class MJH_Popup3Activity extends Activity {
                 for(int i = 0; i < 140; i++){
                     if(simulatorUiAddress.ingredientList[i].name.equals(item.getName())){
                         for(int j = 0; j < bufferUpdateIngredient.size(); j++){
-                            if( bufferUpdateIngredient.get(j).name.equals(item.getName())){
+                            if( bufferUpdateIngredient.get(j).name.equals(item.getName()) && buttonPressCheck == 0){
                                 Toast.makeText(uiThis,"이미 추가된 재료 입니다",Toast.LENGTH_LONG).show();
                                 return;
                             }
                         }
-                        Toast.makeText(uiThis,"선택된 재료: " + item.getName(),Toast.LENGTH_LONG).show();
-                        bufferUpdateIngredient.add(simulatorUiAddress.ingredientList[i]);
+
+                        if(buttonPressCheck == 0){
+                            Toast.makeText(uiThis,"선택된 재료: " + item.getName(),Toast.LENGTH_LONG).show();
+                            bufferUpdateIngredient.add(simulatorUiAddress.ingredientList[i]);
+                        }
                     }
                 }
 
-                Intent intent2 = new Intent(uiThis, MJH_Popup4Activity.class);
-                startActivityForResult(intent2, 1);
+                if( buttonPressCheck == 0){
+                    buttonPressCheck = 1;
+                    Intent intent2 = new Intent(uiThis, MJH_Popup4Activity.class);
+                    startActivityForResult(intent2, 1);
+                }
             }
         });
     }
@@ -189,6 +197,7 @@ public class MJH_Popup3Activity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
+        buttonPressCheck = 0;
         if(ingreAmountFlag == 1){
             try{
                 if(ingreAmount == -1){
