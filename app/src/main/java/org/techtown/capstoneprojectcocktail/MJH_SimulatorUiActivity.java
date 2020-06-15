@@ -70,7 +70,7 @@ public class MJH_SimulatorUiActivity extends AppCompatActivity implements View.O
     public static boolean shooterChecked = false;
 
     public static boolean realisticChecked = true;
-    public static boolean illustChecked = false;
+    public static boolean illustrationChecked = false;
 
     @Override
     public void onCreate(Bundle saveInstanceState){
@@ -340,8 +340,19 @@ public class MJH_SimulatorUiActivity extends AppCompatActivity implements View.O
                     myToast.show();
                 }
                 break;
+            //그래픽 모드 선택
             case R.id.switch_graphic_mode_simulation:
+                if (realisticChecked == true){
+                    realisticChecked = false;
+                    illustrationChecked = true;
+                    switchGraphicButton.setText("Illustration");
+                }
+                else if (illustrationChecked == true){
+                    illustrationChecked = false;
+                    realisticChecked = true;
+                    switchGraphicButton.setText("Realistic");
 
+                }
         }
     }
 
