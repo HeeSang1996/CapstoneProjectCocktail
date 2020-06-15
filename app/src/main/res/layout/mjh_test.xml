@@ -31,7 +31,7 @@
                 android:id="@+id/abv_print"
                 android:layout_width="35dp"
                 android:layout_height="wrap_content"
-                android:text="00"
+                android:text="0"
                 android:textSize="30dp"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textColor="#ffc800"/>
