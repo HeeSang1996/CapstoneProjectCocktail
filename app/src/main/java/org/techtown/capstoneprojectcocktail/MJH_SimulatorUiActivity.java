@@ -253,36 +253,10 @@ public class MJH_SimulatorUiActivity extends AppCompatActivity implements View.O
                     lastStepTechFlag = 0;
                     drawingCocktail();
                 }
-
-
                 break;
-            case R.id.button_simulation_action: // 시뮬레이션 작동시키기
-                try{
-                    if(test.simulatorStep.size() == 0) {
-                        Toast myToast = Toast.makeText(this.getApplicationContext(),"칵테일 시뮬레이션 스텝을 추가해 주세요!", Toast.LENGTH_SHORT);
-                        myToast.show();
-                    }
-                    else if(stepNum != 0){
-                        if(test.glassType == 0){ // 체크 버튼 점검
-                            Intent intent2 = new Intent(this, MJH_SimulatorGraphicActivity.class);
-                            startActivityForResult(intent2, 1);
-                            break;
-                        }
-                        else if(test.glassType == 1){
-                            //Intent intent2 = new Intent(this, MJH_SimulatorGraphicMartiniActivity.class);
-                            // startActivityForResult(intent2, 1);
-                            break;
-                        }
-                    }
-                    else{
-                        Toast myToast = Toast.makeText(this.getApplicationContext(),"칵테일 시뮬레이션 스텝을 추가해 주세요!", Toast.LENGTH_SHORT);
-                        myToast.show();
-                    }
-                }catch(Exception e){
-                    //Toast myToast = Toast.makeText(this.getApplicationContext(),"칵테일 시뮬레이션 스텝을 추가해 주세요!", Toast.LENGTH_SHORT);
-                    Toast myToast = Toast.makeText(this.getApplicationContext(),e.toString(), Toast.LENGTH_SHORT);
-                    myToast.show();
-                }
+            case R.id.button_simulation_action: // 맛 예측 팝업 작동시키기
+                Intent intentForTasteInfo = new Intent(this, TasteInfoPopupActivity.class);
+                startActivity(intentForTasteInfo);
                 break;
                 //글래스 선택 버튼
             case R.id.switch_glass_simulation:

@@ -58,6 +58,14 @@
         </activity>
 
         <activity
+            android:name=".TasteInfoPopupActivity"
+            android:label="  Taste"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Dialog">
+        </activity>
+
+        <activity
             android:name=".CocktailSearchActivity"
             android:label="  Search"
             android:windowSoftInputMode="adjustNothing"

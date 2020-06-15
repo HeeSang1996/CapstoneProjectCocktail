@@ -97,9 +97,7 @@ public class MJH_Object_simulator {
 
                 //0615
                 float inputIngerAlpha = inputIngredient.get(i).alpha;
-                float inputIngerVolume = inputAmount.get(i);
-
-                cocktailBuffer.alpha = ((cocktailBuffer.alpha * cocktailBuffer.totalVolume) + (inputIngerAlpha * inputAmount.get(i))) / (cocktailBuffer.totalVolume + inputIngerVolume);
+                cocktailBuffer.alpha = ((cocktailBuffer.alpha * cocktailBuffer.totalVolume) + (inputIngerAlpha * inputAmount.get(i))) / (cocktailBuffer.totalVolume + inputAmount.get(i));
                 System.out.println("알파값" + cocktailBuffer.alpha);
 
 
