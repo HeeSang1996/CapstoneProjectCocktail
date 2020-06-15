@@ -95,9 +95,10 @@ public class MyPageCommentActivity extends AppCompatActivity {
         method = new String[200];
         Recipe_Base = new String[200];
         abv = new String[200];
+        count = 0;
 
         db.collection("Comment")
-                .whereEqualTo("사용자 uid", currentUser.getUid())
+                .whereEqualTo("사용자 uid", currentUser.getUid()).orderBy("댓글 날짜", Query.Direction.ASCENDING)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -113,10 +114,67 @@ public class MyPageCommentActivity extends AppCompatActivity {
                                 Comment_RecipeName.add(document.get("레시피 이름").toString());       //칵테일 이름
                                 Comment_RecipeID.add(document.get("레시피 번호").toString());         //칵테일 번호
                                 Comment_RecipeRef.add(document.get("레시피 ref").toString());         //칵테일 이미지
+                                if( Integer.parseInt(String.valueOf(document.get("레시피 번호").toString())) < 10000) {
+                                    DocumentReference docRef = db.collection("Recipe").document(document.get("레시피 번호").toString());
+                                    docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                            if (task.isSuccessful()) {
+                                                DocumentSnapshot document = task.getResult();
+                                                if (document.exists()) {
+                                                    Recipe_Base[count] = String.valueOf(document.get("Ingredient_content"));
+                                                    Recipe_Base[count] = Recipe_Base[count].replaceAll("\\,", "ml ");
+                                                    Recipe_Base[count] = Recipe_Base[count].replaceAll("\\{", " ");
+                                                    Recipe_Base[count] = Recipe_Base[count].replaceAll("\\}", "ml ");
+                                                    Recipe_Base[count] = Recipe_Base[count].replaceAll("\\=", " ");
+                                                    method[count] = (document.get("method").toString());
+                                                    abv[count] = (document.get("abv").toString()) + "%";
+                                                    recyclerViewForCocktailComment.setAdapter(adapterForCocktailComment);
+                                                    adapterForCocktailComment.addItem(new Comment((String) Comment_name.get(count), (String) Comment_date.get(count),
+                                                            (String) Comment_contents.get(count),(String) Comment_url.get(count), (String) Comment_uid.get(count),
+                                                            Comment_RecipeName.get(count).toString(), Integer.parseInt((String) Comment_RecipeID.get(count)),
+                                                            method[count], Recipe_Base[count], abv[count],Comment_RecipeRef.get(count).toString()));
+                                                    count++;
+                                                } else {
+                                                    System.out.println("오류 발생 해당 컬렉션에 문서가 존재하지 않음.");
+                                                }
+                                            } else {
+                                                System.out.println("오류 발생 레시피 컬렉션에서 정상적으로 불러와지지 않음.");
+                                            }
+                                        }
+                                    });
+                                }
+                                else
+                                {
+                                    DocumentReference docRef = db.collection("Self").document(document.get("레시피 번호").toString());
+                                    docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                            if (task.isSuccessful()) {
+                                                DocumentSnapshot document = task.getResult();
+                                                if (document.exists()) {
+                                                    Recipe_Base[count] = String.valueOf(document.get("만드는 방법"));
+                                                    method[count] = (document.get("칵테일 설명").toString());
+                                                    abv[count] = (document.get("칵테일 만든이").toString());
+                                                    recyclerViewForCocktailComment.setAdapter(adapterForCocktailComment);
+                                                    adapterForCocktailComment.addItem(new Comment((String) Comment_name.get(count), (String) Comment_date.get(count),
+                                                            (String) Comment_contents.get(count),(String) Comment_url.get(count), (String) Comment_uid.get(count),
+                                                            Comment_RecipeName.get(count).toString(), Integer.parseInt((String) Comment_RecipeID.get(count)),
+                                                            method[count], Recipe_Base[count], abv[count],Comment_RecipeRef.get(count).toString()));
+                                                    count++;
+                                                } else {
+                                                    System.out.println("오류 발생 해당 컬렉션에 문서가 존재하지 않음.");
+                                                }
+                                            } else {
+                                                System.out.println("오류 발생 셀프 컬렉션에서 정상적으로 불러와지지 않음.");
+                                            }
+                                        }
+                                    });
+                                }
 
                                 System.out.println("first 들어옴" + Comment_contents);
                             }
-                            Set_first();
+                            //Set_first();
                         } else {
                             System.out.println("오류 발생 북마크 컬렉션에서 정상적으로 불러와지지 않음.");
                         }
@@ -124,74 +182,6 @@ public class MyPageCommentActivity extends AppCompatActivity {
                     }
                 });
     }
-    void Set_first()
-    {
-        //가져온 값 프린트
-        System.out.println("first 들어옴" + Comment_RecipeName);
-        for(int i=0; i < Comment_RecipeName.size(); i++)
-        {
-            count = i;
-            if( Integer.parseInt(String.valueOf(Comment_RecipeID.get(i))) < 10000)
-            {
-                DocumentReference docRef = db.collection("Recipe").document(String.valueOf(Comment_RecipeID.get(i)));
-                final int finalI = i;
-                docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        if (task.isSuccessful()) {
-                            DocumentSnapshot document = task.getResult();
-                            if (document.exists()) {
-                                count = finalI;
-                                Recipe_Base[count] = String.valueOf(document.get("Ingredient_content"));
-                                Recipe_Base[count] = Recipe_Base[count].replaceAll("\\,", "ml ");
-                                Recipe_Base[count] = Recipe_Base[count].replaceAll("\\{", " ");
-                                Recipe_Base[count] = Recipe_Base[count].replaceAll("\\}", "ml ");
-                                Recipe_Base[count] = Recipe_Base[count].replaceAll("\\=", " ");
-                                method[count] = (document.get("method").toString());
-                                abv[count] = (document.get("abv").toString()) + "%";
-                                recyclerViewForCocktailComment.setAdapter(adapterForCocktailComment);
-                                adapterForCocktailComment.addItem(new Comment((String) Comment_name.get(count), (String) Comment_date.get(count),
-                                        (String) Comment_contents.get(count),(String) Comment_url.get(count), (String) Comment_uid.get(count),
-                                        Comment_RecipeName.get(count).toString(), Integer.parseInt((String) Comment_RecipeID.get(count)),
-                                        method[count], Recipe_Base[count], abv[count],Comment_RecipeRef.get(count).toString()));
-                            } else {
-                                System.out.println("오류 발생 해당 컬렉션에 문서가 존재하지 않음.");
-                            }
-                        } else {
-                            System.out.println("오류 발생 레시피 컬렉션에서 정상적으로 불러와지지 않음.");
-                        }
-                    }
-                });
-            }
-            else
-            {
-                DocumentReference docRef = db.collection("Self").document(String.valueOf(Comment_RecipeID.get(i)));
-                final int finalI1 = i;
-                docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        if (task.isSuccessful()) {
-                            DocumentSnapshot document = task.getResult();
-                            if (document.exists()) {
-                                count = finalI1;
-                                Recipe_Base[count] = String.valueOf(document.get("만드는 방법"));
-                                method[count] = (document.get("칵테일 설명").toString());
-                                abv[count] = (document.get("칵테일 만든이").toString());
-                                recyclerViewForCocktailComment.setAdapter(adapterForCocktailComment);
-                                adapterForCocktailComment.addItem(new Comment((String) Comment_name.get(count), (String) Comment_date.get(count),
-                                        (String) Comment_contents.get(count),(String) Comment_url.get(count), (String) Comment_uid.get(count),
-                                        Comment_RecipeName.get(count).toString(), Integer.parseInt((String) Comment_RecipeID.get(count)),
-                                        method[count], Recipe_Base[count], abv[count],Comment_RecipeRef.get(count).toString()));
-                            } else {
-                                System.out.println("오류 발생 해당 컬렉션에 문서가 존재하지 않음.");
-                            }
-                        } else {
-                            System.out.println("오류 발생 셀프 컬렉션에서 정상적으로 불러와지지 않음.");
-                        }
-                    }
-                });
-            }
-        }
-    }
+
 }
 //마이 코멘트 액티비티

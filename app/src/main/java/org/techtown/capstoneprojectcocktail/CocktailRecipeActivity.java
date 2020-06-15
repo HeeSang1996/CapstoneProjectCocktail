@@ -719,6 +719,12 @@ public class CocktailRecipeActivity extends AppCompatActivity {
                 //평가는 수정만 가능
                 //영진 파트
                 //평가 수정을 원하는 경우
+
+                //평가 날짜를 위한 format date생성
+                long now = System.currentTimeMillis();
+                Date date = new Date(now);
+                SimpleDateFormat sdfNow = new SimpleDateFormat("yyyy년 MM월 dd일 HH:mm:ss");
+                String formatDate = sdfNow.format(date);
                 if(gradeChecked==true){
                     Intent intent = new Intent(v.getContext(), GradingPopupActivity.class);
                     intent.putExtra("cocktailID",cocktailID);
@@ -731,6 +737,20 @@ public class CocktailRecipeActivity extends AppCompatActivity {
                     DocumentReference Grading_ref = db.collection("Grading").document(GradingName);
                     Grading_ref
                             .update("점수", gradeScore)
+                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    Log.d(TAG, "DocumentSnapshot successfully updated!");
+                                }
+                            })
+                            .addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Log.w(TAG, "Error updating document", e);
+                                }
+                            });
+                    Grading_ref
+                            .update("평가 날짜", formatDate)
                             .addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void aVoid) {
