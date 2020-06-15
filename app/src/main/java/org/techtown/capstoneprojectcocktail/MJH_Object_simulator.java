@@ -98,7 +98,6 @@ public class MJH_Object_simulator {
 
                 //0615
                 float inputIngerAlpha = inputIngredient.get(i).alpha;
-                float inputIngerVolume = inputAmount.get(i);
 
                 if(inputIngredient.get(i).muddy == 1){
                     inputIngerAlpha = 12;
