@@ -126,7 +126,7 @@ public class MyPageCommentActivity extends AppCompatActivity {
                                                     method[count] = (document.get("flavour").toString());
                                                     abv[count] = (document.get("abv").toString()) + "%";
                                                     recyclerViewForCocktailComment.setAdapter(adapterForCocktailComment);
-                                                    adapterForCocktailComment.addItem(new Comment((String) Comment_name.get(count), (String) Comment_date.get(count),
+                                                    adapterForCocktailComment.addItem(new Comment((String) "\""+Comment_RecipeName.get(count)+"\" 에 달았던 댓글", (String) Comment_date.get(count),
                                                             (String) Comment_contents.get(count),(String) Comment_url.get(count), (String) Comment_uid.get(count),
                                                             Comment_RecipeName.get(count).toString(), Integer.parseInt((String) Comment_RecipeID.get(count)),
                                                             method[count], Recipe_Base[count], abv[count],Comment_RecipeRef.get(count).toString()));
@@ -156,7 +156,7 @@ public class MyPageCommentActivity extends AppCompatActivity {
                                                     method[count] = (document.get("method").toString());
                                                     abv[count] = (document.get("abv").toString()) + "%";
                                                     recyclerViewForCocktailComment.setAdapter(adapterForCocktailComment);
-                                                    adapterForCocktailComment.addItem(new Comment((String) Comment_name.get(count), (String) Comment_date.get(count),
+                                                    adapterForCocktailComment.addItem(new Comment((String) "\""+Comment_RecipeName.get(count)+"\" 에 달았던 댓글", (String) Comment_date.get(count),
                                                             (String) Comment_contents.get(count),(String) Comment_url.get(count), (String) Comment_uid.get(count),
                                                             Comment_RecipeName.get(count).toString(), Integer.parseInt((String) Comment_RecipeID.get(count)),
                                                             method[count], Recipe_Base[count], abv[count],Comment_RecipeRef.get(count).toString()));
@@ -183,7 +183,7 @@ public class MyPageCommentActivity extends AppCompatActivity {
                                                     method[count] = (document.get("칵테일 설명").toString());
                                                     abv[count] = (document.get("칵테일 만든이").toString());
                                                     recyclerViewForCocktailComment.setAdapter(adapterForCocktailComment);
-                                                    adapterForCocktailComment.addItem(new Comment((String) Comment_name.get(count), (String) Comment_date.get(count),
+                                                    adapterForCocktailComment.addItem(new Comment((String) "\""+Comment_RecipeName.get(count)+"\" 에 달았던 댓글", (String) Comment_date.get(count),
                                                             (String) Comment_contents.get(count),(String) Comment_url.get(count), (String) Comment_uid.get(count),
                                                             Comment_RecipeName.get(count).toString(), Integer.parseInt((String) Comment_RecipeID.get(count)),
                                                             method[count], Recipe_Base[count], abv[count],Comment_RecipeRef.get(count).toString()));
