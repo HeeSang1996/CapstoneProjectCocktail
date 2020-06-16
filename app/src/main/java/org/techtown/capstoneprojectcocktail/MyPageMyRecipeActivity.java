@@ -173,7 +173,6 @@ public class MyPageMyRecipeActivity extends AppCompatActivity {
                                 recyclerViewForCocktailMyRecipe.setAdapter(adapterForCocktailMyRecipe);
                                 break;
                             case R.id.popup_myRecipe_recipe:
-                                Toast.makeText(getApplication(),"게시물 보기",Toast.LENGTH_SHORT).show();
                                 Intent intent = new Intent(view.getContext(), CocktailRecipeActivity.class);
                                 intent.putExtra("cocktailName", cocktail.getName());
                                 intent.putExtra("cocktailID",cocktail.getId());
@@ -184,7 +183,6 @@ public class MyPageMyRecipeActivity extends AppCompatActivity {
                                 startActivity(intent);
                                 break;
                             default:
-                                Toast.makeText(getApplication(),"취소",Toast.LENGTH_SHORT).show();
                                 break;
                         }
                         return false;
