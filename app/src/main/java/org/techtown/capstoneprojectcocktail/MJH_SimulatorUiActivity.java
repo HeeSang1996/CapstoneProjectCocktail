@@ -139,7 +139,11 @@ public class MJH_SimulatorUiActivity extends AppCompatActivity implements View.O
                     test.addStepLayering(stepNum, 0, listUpdateIngredient.get(0), listUpdateIngredientAmount.get(0), 1);
                 }
                 else{
+                    if(stepNum != 1) {
+                        listUpdateStep.add(stepNum-1);
+                    }
                     test.addStepBuildings(stepNum, listUpdateStep, listUpdateIngredient, listUpdateIngredientAmount, true);
+                    listUpdateStep.remove(0);
                 }
             }catch(Exception e){
             }

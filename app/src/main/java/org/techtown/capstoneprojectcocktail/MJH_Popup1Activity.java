@@ -128,7 +128,7 @@ public class MJH_Popup1Activity extends Activity {
                 finish();
             }
             else{
-                Intent intent = new Intent(this,MJH_Popup2Activity.class);
+                Intent intent = new Intent(this,MJH_Popup3Activity.class);
                 startActivityForResult(intent, 1);
                 finish();
             }
