@@ -14,7 +14,8 @@ public class MJH_Object_simulator {
     ArrayList<MJH_Object_ingredient> muddleList  = new ArrayList<MJH_Object_ingredient>(); // 머들링이 된 재료 목록
 
     public MJH_Object_simulator(int _glassType, int _iceType){ // step1: 잔, 얼음타입 선택
-        this.iceType = _iceType; // 0=없음, 1=박스얼음, 2=원형
+        this.iceType = _iceType; // 0=
+        // 없음, 1=박스얼음, 2=원형
         this.glassType = _glassType; // 0=하이볼, 1=콜린스잔, 2=락글라스, 3=마티니, 4=허리케인?
     }
 
@@ -52,8 +53,15 @@ public class MJH_Object_simulator {
                     cocktailBuffer.specificGravity.set(0, calcSpecificGravity(cocktailBuffer.totalVolume, this.simulatorStep.get(associateStep.get(i) - 1).totalVolume,
                             cocktailBuffer.specificGravity.get(0), this.simulatorStep.get(associateStep.get(i) - 1).specificGravity.get(0)));
                     //색 변경
-                    cocktailBuffer.isColor.set(0, changeColor(cocktailBuffer.isColor.get(0), this.simulatorStep.get(associateStep.get(i) - 1).isColor.get(0) , cocktailBuffer.totalVolume*cocktailBuffer.alpha,
-                            this.simulatorStep.get(associateStep.get(i) - 1).totalVolume*this.simulatorStep.get(associateStep.get(i) - 1).alpha));
+                    float a1 = cocktailBuffer.alpha;
+                    float a2 = this.simulatorStep.get(associateStep.get(i) - 1).alpha;
+
+                    if(a1 < 1)
+                        a1 = 1;
+                    if(a2 < 1)
+                        a2 = 1;
+                    cocktailBuffer.isColor.set(0, changeColor(cocktailBuffer.isColor.get(0), this.simulatorStep.get(associateStep.get(i) - 1).isColor.get(0) , cocktailBuffer.totalVolume*a1,
+                            this.simulatorStep.get(associateStep.get(i) - 1).totalVolume*a2));
 
                     cocktailBuffer.alpha = (cocktailBuffer.totalVolume*cocktailBuffer.alpha + this.simulatorStep.get(associateStep.get(i) - 1).totalVolume*this.simulatorStep.get(associateStep.get(i) - 1).alpha)
                             / (cocktailBuffer.totalVolume + this.simulatorStep.get(associateStep.get(i) - 1).totalVolume);
@@ -99,15 +107,18 @@ public class MJH_Object_simulator {
                     cocktailBuffer.alpha = inputIngredient.get(i).alpha;
                 }
                 else{
-                    cocktailBuffer.isColor.set(0, changeColor(cocktailBuffer.isColor.get(0), inputIngredient.get(i).my_color, cocktailBuffer.totalVolume*cocktailBuffer.alpha,
-                            inputAmount.get(i)*inputIngredient.get(i).alpha));
+                    float a1 = cocktailBuffer.alpha;
+                    float a2 = inputIngredient.get(i).alpha;
+
+                    if(a1 < 1)
+                        a1 = 1;
+                    if(a2 < 1)
+                        a2 = 1;
+                    cocktailBuffer.isColor.set(0, changeColor(cocktailBuffer.isColor.get(0), inputIngredient.get(i).my_color, cocktailBuffer.totalVolume*a1,
+                            inputAmount.get(i)*a2));
                     cocktailBuffer.alpha = (cocktailBuffer.totalVolume*cocktailBuffer.alpha + inputAmount.get(i)*inputIngredient.get(i).alpha) / (cocktailBuffer.totalVolume + inputAmount.get(i));
                 }
 
-                //0615
-                float inputIngerAlpha = inputIngredient.get(i).alpha;
-                cocktailBuffer.alpha = ((cocktailBuffer.alpha * cocktailBuffer.totalVolume) + (inputIngerAlpha * inputAmount.get(i))) / (cocktailBuffer.totalVolume + inputAmount.get(i));
-                System.out.println("알파값" + cocktailBuffer.alpha);
 
 
 
@@ -288,11 +299,17 @@ public class MJH_Object_simulator {
             n.alphaList.add(input.alpha);
         }
         else{
-
             for(int i = 0; i < input.alphaList.size(); i++){
                 n.alphaList.add(input.alphaList.get(i));
             }
         }
+
+
+        n.eachAbv.remove(0);
+        n.eachVolume.remove(0);
+        n.specificGravity.remove(0);
+        n.isColor.remove(0);
+
 
         for(int i = 0; i <input.eachAbv.size(); i++){
             n.eachAbv.add(input.eachAbv.get(i));
@@ -300,11 +317,6 @@ public class MJH_Object_simulator {
             n.specificGravity.add(input.specificGravity.get(i));
             n.isColor.add(new MJH_Object_color(input.isColor.get(i).rgb_red, input.isColor.get(i).rgb_green, input.isColor.get(i).rgb_blue));
         }
-
-        n.eachAbv.remove(0);
-        n.eachVolume.remove(0);
-        n.specificGravity.remove(0);
-        n.isColor.remove(0);
 
         //노희상 맛표현
         n.sugar = input.sugar;
