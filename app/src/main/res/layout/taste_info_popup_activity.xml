@@ -31,10 +31,11 @@
                 android:layout_height="wrap_content"
                 android:text="유사한 칵테일"
                 android:background="#424242"
-                android:layout_marginVertical="1dp"
+                android:layout_marginTop="1dp"
                 android:padding="3dp"
                 android:textColor="#fff"
                 android:textSize="20sp"
+                android:textStyle="bold"
                 android:paddingHorizontal="5dp"/>
             <TextView
                 android:id="@+id/textView_taste_info_1"
@@ -71,10 +72,11 @@
                 android:layout_height="wrap_content"
                 android:text="예측되는 맛"
                 android:background="#424242"
-                android:layout_marginVertical="1dp"
+                android:layout_marginTop="1dp"
                 android:padding="3dp"
                 android:textColor="#fff"
                 android:textSize="20sp"
+                android:textStyle="bold"
                 android:paddingHorizontal="5dp"/>
 
             <TextView
@@ -92,11 +94,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="예측되는 향"
-                android:layout_marginVertical="1dp"
+                android:layout_marginTop="1dp"
                 android:background="#424242"
                 android:padding="3dp"
                 android:textColor="#fff"
                 android:textSize="20sp"
+                android:textStyle="bold"
                 android:paddingHorizontal="5dp"/>
 
             <TextView

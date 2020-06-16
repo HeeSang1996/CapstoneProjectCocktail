@@ -67,12 +67,36 @@ public class ObjectMartiniGlass {
                     remainVolume = remainVolume - MJH_SimulatorUiActivity.test.simulatorStep.get(MJH_SimulatorUiActivity.test.simulatorStep.size()-1 ).eachVolume.get(index);
 
                     paint.setColor(Color.rgb(red ,green ,blue));
+                    if(realisticChecked == true){
+                        alpha = MJH_SimulatorUiActivity.test.simulatorStep.get(MJH_SimulatorUiActivity.test.simulatorStep.size()-1 ).alphaList.get(index);
+                        paint.setAlpha(getAlpha(alpha));
+                    }
 
                     firstConeHeight =(float) (Math.pow(graphicVol/3.14*3/Math.pow(225, 2)*Math.pow(210, 2) ,1d/3d));
                     firstConeX = firstConeHeight * 210 /225;
 
-                    Toast myToast = Toast.makeText(context,  Double.toString(graphicVol), Toast.LENGTH_LONG);
-                    myToast.show();
+
+                    /////도화지 그리기
+                    //좌측삼각
+                    Path path2 = new Path();
+                    Path path3 = new Path();
+                    Paint back= new Paint();;
+                    back.setColor(Color.parseColor("#FFFFFF"));
+                    path2.moveTo(215, 285-firstConeHeight);
+                    path2.lineTo(247 - firstConeX, 285-firstConeHeight);
+                    path2.lineTo(215, 285);
+                    path2.close();
+                    canvas.drawPath(path2, back);
+                    //우측삼각
+                    path3.moveTo(285, 285-firstConeHeight);
+                    path3.lineTo(253 + firstConeX, 285-firstConeHeight);
+                    path3.lineTo(285, 285);
+                    path3.close();
+                    canvas.drawPath(path3, back);
+                    //전체사각
+                    canvas.drawRect(215,287-firstConeHeight, 285, 285, back);
+
+
 
                     Path path = new Path();
 
@@ -91,13 +115,13 @@ public class ObjectMartiniGlass {
                     path1.close();
                     canvas.drawPath(path1, paint);
 
+                    //전체사각
+                    canvas.drawRect(215,287-firstConeHeight, 285, 285, paint);
+
                     //윗원
                     RectF rect = new RectF();
                     rect.set(250 - firstConeX, 275-firstConeHeight, 250 + firstConeX, 295-firstConeHeight);
                     canvas.drawArc(rect, 0, 360, true, paint);
-
-                    //전체사각
-                    canvas.drawRect(215,287-firstConeHeight, 285, 285, paint);
                 }
 
                 s_red = (int) MJH_SimulatorUiActivity.test.simulatorStep.get(MJH_SimulatorUiActivity.test.simulatorStep.size()-1 ).isColor.get(1).rgb_red;
@@ -111,6 +135,10 @@ public class ObjectMartiniGlass {
                 RectF rect1 = new RectF();
                 rect1.set(215, 270, 285, 300);
                 paint.setColor(Color.rgb(s_red ,s_green ,s_blue));
+                if(realisticChecked == true){
+                    alpha = MJH_SimulatorUiActivity.test.simulatorStep.get(MJH_SimulatorUiActivity.test.simulatorStep.size()-1 ).alphaList.get(1);
+                    paint.setAlpha(getAlpha(alpha));
+                }
                 canvas.drawArc(rect1, 0, 360, true, paint);
 
 
@@ -123,8 +151,35 @@ public class ObjectMartiniGlass {
                 firstConeHeight = (firstConeHeight + firstConeHeight + finalIndexHeightBuf) / 2;
                 firstConeX = firstConeHeight * 210 /225;
 
-                paint_gradient.setShader(new LinearGradient(0, 287-firstConeHeight, 0, 285, Color.rgb(red ,green ,blue), Color.rgb(s_red ,s_green ,s_blue), Shader.TileMode.CLAMP));
+                if(realisticChecked == true) {
+                    float alpha_s = MJH_SimulatorUiActivity.test.simulatorStep.get(MJH_SimulatorUiActivity.test.simulatorStep.size()-1 ).alphaList.get(1);
+                    alpha = MJH_SimulatorUiActivity.test.simulatorStep.get(MJH_SimulatorUiActivity.test.simulatorStep.size()-1 ).alphaList.get(0);
+                    paint_gradient.setShader(new LinearGradient(0, 287-firstConeHeight, 0, 285, Color.argb(getAlpha(alpha), red ,green ,blue), Color.argb(getAlpha(alpha_s), s_red ,s_green ,s_blue), Shader.TileMode.CLAMP));
+                }
+                else{
+                    paint_gradient.setShader(new LinearGradient(0, 287-firstConeHeight, 0, 285, Color.rgb(red ,green ,blue), Color.rgb(s_red ,s_green ,s_blue), Shader.TileMode.CLAMP));
+                }
 
+
+                /////도화지 그리기
+                Path path2 = new Path();
+                Path path3 = new Path();
+                Paint back= new Paint();;
+                //좌측삼각
+                back.setColor(Color.parseColor("#FFFFFF"));
+                path2.moveTo(215, 285-firstConeHeight);
+                path2.lineTo(247 - firstConeX, 285-firstConeHeight);
+                path2.lineTo(215, 285);
+                path2.close();
+                canvas.drawPath(path2, back);
+                //우측삼각
+                path3.moveTo(285, 285-firstConeHeight);
+                path3.lineTo(253 + firstConeX, 285-firstConeHeight);
+                path3.lineTo(285, 285);
+                path3.close();
+                canvas.drawPath(path3, back);
+                //전체사각
+                canvas.drawRect(215,287-firstConeHeight, 285, 285, back);
 
                 Path path = new Path();
 
@@ -142,11 +197,6 @@ public class ObjectMartiniGlass {
                 path1.lineTo(285, 285);
                 path1.close();
                 canvas.drawPath(path1, paint_gradient);
-
-                //윗원
-                RectF rect = new RectF();
-                rect.set(250 - firstConeX, 275-firstConeHeight, 250 + firstConeX, 295-firstConeHeight);
-                canvas.drawArc(rect, 0, 360, true, paint_gradient);
 
                 //전체사각
                 canvas.drawRect(215,287-firstConeHeight, 285, 285, paint_gradient);
@@ -193,12 +243,34 @@ public class ObjectMartiniGlass {
                     remainVolume = remainVolume - MJH_SimulatorUiActivity.test.simulatorStep.get(MJH_SimulatorUiActivity.test.simulatorStep.size()-1 ).eachVolume.get(index);
 
                     paint.setColor(Color.rgb(red ,green ,blue));
+                    if(realisticChecked == true){
+                        alpha = MJH_SimulatorUiActivity.test.simulatorStep.get(MJH_SimulatorUiActivity.test.simulatorStep.size()-1 ).alphaList.get(index);
+                        paint.setAlpha(getAlpha(alpha));
+                    }
 
                     firstConeHeight =(float) (Math.pow(graphicVol/3.14*3/Math.pow(225, 2)*Math.pow(210, 2) ,1d/3d));
                     firstConeX = firstConeHeight * 210 /225;
 
-                    Toast myToast = Toast.makeText(context, Double.toString(Math.pow(graphicVol/3.14*3/Math.pow(225, 2)*Math.pow(210, 2) ,1d/3d)), Toast.LENGTH_LONG);
-                    myToast.show();
+
+                    /////도화지 그리기
+                    Path path2 = new Path();
+                    Path path3 = new Path();
+                    Paint back= new Paint();;
+                    //좌측삼각
+                    back.setColor(Color.parseColor("#FFFFFF"));
+                    path2.moveTo(215, 285-firstConeHeight);
+                    path2.lineTo(247 - firstConeX, 285-firstConeHeight);
+                    path2.lineTo(215, 285);
+                    path2.close();
+                    canvas.drawPath(path2, back);
+                    //우측삼각
+                    path3.moveTo(285, 285-firstConeHeight);
+                    path3.lineTo(253 + firstConeX, 285-firstConeHeight);
+                    path3.lineTo(285, 285);
+                    path3.close();
+                    canvas.drawPath(path3, back);
+                    //전체사각
+                    canvas.drawRect(215,287-firstConeHeight, 285, 285, back);
 
                     Path path = new Path();
 
@@ -258,7 +330,6 @@ public class ObjectMartiniGlass {
                 realVolume = MJH_SimulatorUiActivity.test.simulatorStep.get(MJH_SimulatorUiActivity.test.inGlassStep-1 ).totalVolume;
                 graphicVol = (double) (realVolume * graphicVolumeWeight);
 
-                alpha = MJH_SimulatorUiActivity.test.simulatorStep.get(MJH_SimulatorUiActivity.test.inGlassStep-1 ).alpha;
 
                 Paint paint = new Paint();
                 Paint paint_gradient = new Paint();
@@ -267,15 +338,33 @@ public class ObjectMartiniGlass {
                 firstConeHeight =(float) (Math.pow(graphicVol/3.14*3/Math.pow(225, 2)*Math.pow(210, 2) ,1d/3d));
                 firstConeX = firstConeHeight * 210 /225;
 
-                Toast myToast = Toast.makeText(context, Double.toString(Math.pow(graphicVol/3.14*3/Math.pow(225, 2)*Math.pow(210, 2) ,1d/3d)), Toast.LENGTH_LONG);
-                myToast.show();
                 paint.setColor(Color.rgb(red ,green ,blue));
                 if(realisticChecked == true){
+                    alpha = MJH_SimulatorUiActivity.test.simulatorStep.get(MJH_SimulatorUiActivity.test.inGlassStep-1 ).alpha;
                     paint.setAlpha(getAlpha(alpha));
                 }
 
-                Path path = new Path();
+                /////도화지 그리기
+                Path path2 = new Path();
+                Path path3 = new Path();
+                Paint back= new Paint();;
+                //좌측삼각
+                back.setColor(Color.parseColor("#FFFFFF"));
+                path2.moveTo(215, 285-firstConeHeight);
+                path2.lineTo(247 - firstConeX, 285-firstConeHeight);
+                path2.lineTo(215, 285);
+                path2.close();
+                canvas.drawPath(path2, back);
+                //우측삼각
+                path3.moveTo(285, 285-firstConeHeight);
+                path3.lineTo(253 + firstConeX, 285-firstConeHeight);
+                path3.lineTo(285, 285);
+                path3.close();
+                canvas.drawPath(path3, back);
+                //전체사각
+                canvas.drawRect(215,287-firstConeHeight, 285, 285, back);
 
+                Path path = new Path();
 
                 //좌측삼각
                 path.moveTo(215, 285-firstConeHeight);

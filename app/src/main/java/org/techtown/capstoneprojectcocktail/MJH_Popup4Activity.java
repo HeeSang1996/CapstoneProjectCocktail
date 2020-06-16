@@ -24,6 +24,9 @@ import static org.techtown.capstoneprojectcocktail.MJH_Popup2Activity.updateTota
 import static org.techtown.capstoneprojectcocktail.MJH_Popup3Activity.ingreAmount;
 import static org.techtown.capstoneprojectcocktail.MJH_Popup3Activity.ingreAmountFlag;
 import static org.techtown.capstoneprojectcocktail.MJH_Popup3Activity.thisStepPopup3AddAmount;
+import static org.techtown.capstoneprojectcocktail.MJH_SimulatorUiActivity.highBallChecked;
+import static org.techtown.capstoneprojectcocktail.MJH_SimulatorUiActivity.martiniChecked;
+import static org.techtown.capstoneprojectcocktail.MJH_SimulatorUiActivity.shooterChecked;
 import static org.techtown.capstoneprojectcocktail.MJH_SimulatorUiActivity.test;
 
 public class MJH_Popup4Activity  extends Activity {
@@ -34,9 +37,6 @@ public class MJH_Popup4Activity  extends Activity {
         //타이틀바 없애기
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.mjh_popup4);
-
-
-
     }
 
     @Override
@@ -66,16 +66,13 @@ public class MJH_Popup4Activity  extends Activity {
 
                 float nowVolume = 0;
                 try{
-
-                    if(simulatorUiAddress.listUpdateTech.equals("Layering") || simulatorUiAddress.listUpdateTech.equals("Gradient")){
                         nowVolume = test.simulatorStep.get(test.inGlassStep-1 ).totalVolume;
-                    }
                 }catch(Exception e){
 
                 }
                 ingreAmount = Integer.parseInt(strText);
 
-                if( test.glassType == 0 ) {
+                if( highBallChecked == true ) {
                     if((nowVolume + ingreAmount + updateTotalVol + thisStepPopup3AddAmount) > 250){
                         Toast.makeText(this,"하이볼 잔의 용량을 넘습니다!", Toast.LENGTH_SHORT).show();
                     }
@@ -84,7 +81,7 @@ public class MJH_Popup4Activity  extends Activity {
                         finish();
                     }
                 }
-                if( test.glassType == 1 ) {
+                if( martiniChecked == true ) {
                     if((nowVolume + ingreAmount + updateTotalVol + thisStepPopup3AddAmount) > 140){
                         Toast.makeText(this,"칵테일 잔의 용량을 넘습니다!", Toast.LENGTH_SHORT).show();
                     }
@@ -93,7 +90,7 @@ public class MJH_Popup4Activity  extends Activity {
                         finish();
                     }
                 }
-                if( test.glassType == 2 ) {
+                if(shooterChecked == true ) {
                     if((nowVolume + ingreAmount + updateTotalVol + thisStepPopup3AddAmount) > 60){
                         Toast.makeText(this,"슈터 잔의 용량을 넘습니다!", Toast.LENGTH_SHORT).show();
                     }
@@ -130,8 +127,7 @@ public class MJH_Popup4Activity  extends Activity {
             if (resultCode == RESULT_OK){
                 String result = data.getStringExtra("result");
                 if (result == "-1"){
-                    Toast.makeText(this,"call", Toast.LENGTH_SHORT).show();
-                    finish();
+
                 }
             }
         }

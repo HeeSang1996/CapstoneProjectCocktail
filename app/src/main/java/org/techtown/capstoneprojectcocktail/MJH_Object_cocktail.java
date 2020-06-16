@@ -15,6 +15,7 @@ public class MJH_Object_cocktail implements Cloneable{
     ArrayList<Float> eachVolume = new ArrayList<Float>();
     ArrayList<Float> specificGravity  = new ArrayList<Float>();
     ArrayList<MJH_Object_color> isColor  = new ArrayList<MJH_Object_color>();
+    ArrayList<Float> alphaList  = new ArrayList<Float>();
     float alpha = 0;
     float muddy = 0;
 

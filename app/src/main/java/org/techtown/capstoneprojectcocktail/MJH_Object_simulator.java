@@ -208,6 +208,8 @@ public class MJH_Object_simulator {
             simulatorStep.get(inGlassStep - 1).getSpecificGravity().add(inputIngredient.specific_gravity);
             simulatorStep.get(inGlassStep - 1).getIs_color().add(inputIngredient.my_color);
 
+            simulatorStep.get(inGlassStep - 1).alphaList.add(inputIngredient.alpha);
+
             //노희상 맛표현
             simulatorStep.get(inGlassStep - 1).sugar = simulatorStep.get(inGlassStep - 1).sugar + inputIngredient.sugar*inputAmount;
             simulatorStep.get(inGlassStep - 1).sour = simulatorStep.get(inGlassStep - 1).sour + inputIngredient.sour*inputAmount;
@@ -233,6 +235,8 @@ public class MJH_Object_simulator {
             simulatorStep.get(inGlassStep - 1).getEachAbv().add(simulatorStep.get(associateStep  - 1).totalAbv);
             simulatorStep.get(inGlassStep - 1).getSpecificGravity().add(simulatorStep.get(associateStep  - 1).getSpecificGravity().get(0));
             simulatorStep.get(inGlassStep - 1).getIs_color().add(simulatorStep.get(associateStep  - 1).getIs_color().get(0));
+
+            simulatorStep.get(inGlassStep - 1).alphaList.add(simulatorStep.get(associateStep  - 1).alpha);
 
             //노희상 맛표현
             simulatorStep.get(inGlassStep - 1).sugar = simulatorStep.get(inGlassStep - 1).sugar + simulatorStep.get(associateStep  - 1).sugar*simulatorStep.get(associateStep  - 1).totalVolume;
@@ -277,6 +281,14 @@ public class MJH_Object_simulator {
         n.totalSpecificGravity = input.totalSpecificGravity;
 
         n.alpha = input.alpha;
+        if(input.alphaList.size() == 0){
+            n.alphaList.add(input.alpha);
+        }
+        else{
+            for(int i = 0; i < input.alphaList.size(); i++){
+                n.alphaList.add(input.alphaList.get(i));
+            }
+        }
 
         for(int i = 0; i <input.eachAbv.size(); i++){
             n.eachAbv.add(input.eachAbv.get(i));

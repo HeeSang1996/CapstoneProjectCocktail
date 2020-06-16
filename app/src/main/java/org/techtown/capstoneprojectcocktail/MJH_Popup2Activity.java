@@ -105,8 +105,6 @@ public class MJH_Popup2Activity extends Activity {
                             myToast.show();
                         }
                     }catch(Exception e){
-                        Toast myToast = Toast.makeText(uiMe, e.toString(), Toast.LENGTH_LONG);
-                        myToast.show();
                     }
                 }
             }
@@ -128,17 +126,7 @@ public class MJH_Popup2Activity extends Activity {
         finish();
     }
 
-    //이전 버튼 클릭
-    public void mBefore(View v){
-        Intent intent = new Intent(this,MJH_Popup1Activity.class);
-        startActivityForResult(intent, 1);
-        usingStepNum.set(usingStepNum.size() - 1, 0);
 
-        if(simulatorUiAddress.listUpdateTech.equals("Layering")) {
-            adapterMIN.listViewItemList.add(buffer);
-        }
-        finish();
-    }
     //다음 버튼 클릭
     public void mNext(View v){
         if(simulatorUiAddress.listUpdateTech.equals("Layering")) {
@@ -184,7 +172,6 @@ public class MJH_Popup2Activity extends Activity {
             if (resultCode == RESULT_OK){
                 String result = data.getStringExtra("result");
                 if (result == "-1"){
-                    Toast.makeText(this,"call", Toast.LENGTH_SHORT).show();
                     finish();
                 }
             }
