@@ -131,6 +131,9 @@ public class MJH_Object_simulator {
         cocktailBuffer.totalSpecificGravity = cocktailBuffer.specificGravity.get(0);
         cocktailBuffer.eachAbv.set(0, cocktailBuffer.totalAbv);
         cocktailBuffer.isLayering = 1;
+
+        cocktailBuffer.alphaList.clear();
+        cocktailBuffer.alphaList.add( cocktailBuffer.alpha);
         return cocktailBuffer;
     }
     //+
@@ -285,6 +288,7 @@ public class MJH_Object_simulator {
             n.alphaList.add(input.alpha);
         }
         else{
+
             for(int i = 0; i < input.alphaList.size(); i++){
                 n.alphaList.add(input.alphaList.get(i));
             }
