@@ -88,6 +88,7 @@ public class TasteInfoPopupActivity extends Activity {
         textFor3FlavorInfo = (TextView) findViewById(R.id.textView_flavor_taste_info_3);
     }
 
+
     @Override
     protected void onResume() {
         super.onResume();
