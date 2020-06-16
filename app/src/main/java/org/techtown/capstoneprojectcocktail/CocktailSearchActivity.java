@@ -721,50 +721,5 @@ public class CocktailSearchActivity extends AppCompatActivity{
             }
         });
 
-//        for(int i=0; i < 140; i++)
-//        {
-//            List<String> list;
-//
-//            DocumentReference docRef = db.collection("Ingredient").document(String.valueOf(i+5001));
-//
-//            final int finalI = i;
-//            docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-//                @Override
-//                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-//                    if (task.isSuccessful()) {
-//                        DocumentSnapshot document = task.getResult();
-//                        if (document.exists()) {
-//                            count = finalI;
-//                            Ingredient_name[count] = (String) document.get("Ingredient_name"); //재료 이름
-//                            System.out.println("array_count : "+ count + "   Ingredient_name data: " +Ingredient_name[count]);
-//                            Ingredient_ID[count] = 5001+ count;
-//                            Ingredient_flavour[count] = (String) document.get("flavour"); //향(칵테일에선 설명 method)
-//
-//                            Ingredient_sugar[count] = (Number) document.get("sugar_rate"); //suger_rate(칵테일에선 재료와 용량)
-//                            Ingredient_Realsugar[count] = Ingredient_sugar[count] + "%";
-//
-//                            //long형태로 받은 abv를 유저에게 보여줄 수 있도록 %를 붙여 재저장
-//                            Ingredient_Realabv[count] = (long) document.get("abv");
-//                            Ingredient_abv[count] = Ingredient_Realabv[count] + "%";
-//                            Ingredient_ref[count] = (String) document.get("ref");
-//                            adapterForCocktailSearch.addItem(new Cocktail(Ingredient_name[count], Ingredient_ID[count], Ingredient_flavour[count], Ingredient_Realsugar[count], Ingredient_abv[count],Ingredient_ref[count]));
-//                            Log.d(TAG, "Ingredient_ID data: " +  Ingredient_ID[count]);
-//                            //refresh 해주는 함수(아마)
-//                            recyclerViewForCocktailSearch.setAdapter(adapterForCocktailSearch);
-//
-//                            //배열에 잘드갔는지 테스트한 for 구문
-//                            for(int k=0; k < 140; k++)
-//                            {
-//                                System.out.println("array_count : "+ k + "   Ingredient_name data: " +Ingredient_name[k]);
-//                            }
-//                        } else {
-//                            Log.d(TAG, "No such document");
-//                        }
-//                    } else {
-//                        Log.d(TAG, "get failed with ", task.getException());
-//                    }
-//                }
-//            });
-//        }
     }
 }
