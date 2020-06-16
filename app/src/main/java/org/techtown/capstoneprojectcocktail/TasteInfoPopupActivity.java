@@ -19,6 +19,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import static org.techtown.capstoneprojectcocktail.MJH_SimulatorUiActivity.test;
 
@@ -26,7 +27,8 @@ public class TasteInfoPopupActivity extends Activity {
 
     private InputMethodManager inputKeyboardHide;
     private TextView textFor1Cocktail, textFor2Cocktail, textFor3Cocktail;
-    private TextView textForTasteInfo, textForFlavorInfo;
+    private TextView textForTasteInfo;
+    private TextView textFor1FlavorInfo,textFor2FlavorInfo ,textFor3FlavorInfo;
     CocktailTasteInfo cocktailTasteInfo = new CocktailTasteInfo();
     public FirebaseFirestore db = FirebaseFirestore.getInstance();
     String[] Cocktail_name = new String[81];
@@ -54,22 +56,25 @@ public class TasteInfoPopupActivity extends Activity {
     private ArrayList Recipe_bitter;
     private ArrayList Recipe_salty;
 
+    private final double bittersWeight = 10.0;
+    private final double syrupWeight = 2.0;
+    private final double juiceWeight = 1.0;
+    private final double drinkWeight = 0.7;
+    private final double liqueurWeight = 0.7;
+    private final double baseWeight = 0.2;
+
+    private ArrayList volumeWithWeight;
+    private ArrayList volumeWithWeightWithoutDuplicate;
+    private ArrayList<String> flavorList;
+    private ArrayList<String> flavorListWithoutDuplicate;
+
+    private double totalVol = 0.0;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.taste_info_popup_activity);
-
-
-        //준홍예제
-        int ingredSize = test.simulatorStep.get(test.simulatorStep.size() - 1).ingredListForFlavour.size();
-        for(int i = 0; i < ingredSize; i++){
-            String name = test.simulatorStep.get(test.simulatorStep.size() - 1).ingredListForFlavour.get(i).name;
-            String flavour = test.simulatorStep.get(test.simulatorStep.size() - 1).ingredListForFlavour.get(i).flavour;
-            String type = test.simulatorStep.get(test.simulatorStep.size() - 1).ingredListForFlavour.get(i).type;
-            double inputVol = test.simulatorStep.get(test.simulatorStep.size() - 1).ingredListForFlavour.get(i).volForFlavour;
-        }
-
         //키보드 숨기기
         inputKeyboardHide = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
 
@@ -78,7 +83,10 @@ public class TasteInfoPopupActivity extends Activity {
         textFor3Cocktail = (TextView) findViewById(R.id.textView_taste_info_3);
 
         textForTasteInfo = (TextView) findViewById(R.id.textView_taste_taste_info);
-        textForFlavorInfo = (TextView) findViewById(R.id.textView_flavor_taste_info);
+        textFor1FlavorInfo = (TextView) findViewById(R.id.textView_flavor_taste_info_1);
+        textFor2FlavorInfo = (TextView) findViewById(R.id.textView_flavor_taste_info_2);
+        textFor3FlavorInfo = (TextView) findViewById(R.id.textView_flavor_taste_info_3);
+
     }
 
     @Override
@@ -129,7 +137,6 @@ public class TasteInfoPopupActivity extends Activity {
                         }
                     }
                 });
-
     }
 
     public void SetDocument(){
@@ -225,6 +232,113 @@ public class TasteInfoPopupActivity extends Activity {
                 "\n신맛 : "+recipe_sour_sum_string+
                 "\n짠맛 : "+recipe_salty_sum_string+
                 "\n매운맛 : "+recipe_hot_sum_string);
+
+        //향 표현현
+        //트링 공백 지우기
+        volumeWithWeight = new ArrayList();
+        volumeWithWeightWithoutDuplicate = new ArrayList();
+        flavorList = new ArrayList<String>();
+        flavorListWithoutDuplicate = new ArrayList<String>();
+
+        try{
+            int ingredientSize = test.simulatorStep.get(test.simulatorStep.size() - 1).ingredListForFlavour.size();
+            for(int i = 0; i < ingredientSize; i++){
+                //String name = test.simulatorStep.get(test.simulatorStep.size() - 1).ingredListForFlavour.get(i).name.replaceAll(" ","");
+                //String flavour = test.simulatorStep.get(test.simulatorStep.size() - 1).ingredListForFlavour.get(i).flavour.replaceAll(" ","");
+                flavorList.add(test.simulatorStep.get(test.simulatorStep.size() - 1).ingredListForFlavour.get(i).flavour.replaceAll(" ",""));
+                String type = test.simulatorStep.get(test.simulatorStep.size() - 1).ingredListForFlavour.get(i).type;
+                double inputVol = test.simulatorStep.get(test.simulatorStep.size() - 1).ingredListForFlavour.get(i).volForFlavour;
+                if(type.equals("비터스")){
+                    volumeWithWeight.add((double) (inputVol*bittersWeight));
+                }
+                else if (type.equals("시럽")){
+                    volumeWithWeight.add((double) (inputVol*syrupWeight));
+                }
+                else if (type.equals("주스")){
+                    volumeWithWeight.add((double) (inputVol*juiceWeight));
+                }
+                else if (type.equals("음료")){
+                    volumeWithWeight.add((double) (inputVol*drinkWeight));
+                }
+                else if (type.equals("리큐르")){
+                    volumeWithWeight.add((double) (inputVol*liqueurWeight));
+                }
+                else if (type.equals("베이스")){
+                    volumeWithWeight.add((double) (inputVol*baseWeight));
+                }
+                else{
+                    volumeWithWeight.add((double) 0.0);
+                }
+            }
+            for(int i = 0; i < ingredientSize; i++){
+                if(!flavorListWithoutDuplicate.contains(flavorList.get(i))) {
+                    flavorListWithoutDuplicate.add(flavorList.get(i));
+                    volumeWithWeightWithoutDuplicate.add(volumeWithWeight.get(i));
+                }
+                else{
+                    volumeWithWeightWithoutDuplicate.set(flavorListWithoutDuplicate.indexOf(flavorList.get(i)),
+                            (( (double) volumeWithWeight.get(i))+( (double) volumeWithWeightWithoutDuplicate.get(flavorListWithoutDuplicate.indexOf(flavorList.get(i))))));
+                }
+            }
+            //System.out.println(flavorListWithoutDuplicate.size()==volumeWithWeightWithoutDuplicate.size());
+            if (volumeWithWeightWithoutDuplicate.size() <=0){
+                textFor1FlavorInfo.setText("1순위 : 예측되는 향 없음");
+                textFor2FlavorInfo.setText("2순위 : 예측되는 향 없음");
+                textFor3FlavorInfo.setText("3순위 : 예측되는 향 없음");
+            }
+            else if (volumeWithWeightWithoutDuplicate.size()==1){
+                if (((double) Collections.max(volumeWithWeightWithoutDuplicate))>10.0){
+                    textFor1FlavorInfo.setText("1순위 : "+ flavorListWithoutDuplicate.get(volumeWithWeightWithoutDuplicate.indexOf((double) Collections.max(volumeWithWeightWithoutDuplicate))));
+                }
+                else{
+                    textFor1FlavorInfo.setText("1순위 : 예측되는 향 없음");
+                }
+                textFor2FlavorInfo.setText("2순위 : 예측되는 향 없음");
+                textFor3FlavorInfo.setText("3순위 : 예측되는 향 없음");
+            }
+            else if (volumeWithWeightWithoutDuplicate.size()==2){
+                if (((double) Collections.max(volumeWithWeightWithoutDuplicate))>10.0){
+                    textFor1FlavorInfo.setText("1순위 : "+ flavorListWithoutDuplicate.get(volumeWithWeightWithoutDuplicate.indexOf((double) Collections.max(volumeWithWeightWithoutDuplicate))));
+                    volumeWithWeightWithoutDuplicate.set(volumeWithWeightWithoutDuplicate.indexOf((double) Collections.max(volumeWithWeightWithoutDuplicate)),(double)0.0);
+                    if (((double) Collections.max(volumeWithWeightWithoutDuplicate))>10.0){
+                        textFor2FlavorInfo.setText("2순위 : "+ flavorListWithoutDuplicate.get(volumeWithWeightWithoutDuplicate.indexOf((double) Collections.max(volumeWithWeightWithoutDuplicate))));
+                    }
+                    else{
+                        textFor2FlavorInfo.setText("2순위 : 예측되는 향 없음");
+                    }
+                }
+                else{
+                    textFor1FlavorInfo.setText("1순위 : 예측되는 향 없음");
+                    textFor2FlavorInfo.setText("2순위 : 예측되는 향 없음");
+                }
+                textFor3FlavorInfo.setText("3순위 : 예측되는 향 없음");
+            }
+            else{
+                if (((double) Collections.max(volumeWithWeightWithoutDuplicate))>10.0){
+                    textFor1FlavorInfo.setText("1순위 : "+ flavorListWithoutDuplicate.get(volumeWithWeightWithoutDuplicate.indexOf((double) Collections.max(volumeWithWeightWithoutDuplicate))));
+                    volumeWithWeightWithoutDuplicate.set(volumeWithWeightWithoutDuplicate.indexOf((double) Collections.max(volumeWithWeightWithoutDuplicate)),(double)0.0);
+                    if (((double) Collections.max(volumeWithWeightWithoutDuplicate))>10.0){
+                        textFor2FlavorInfo.setText("2순위 : "+ flavorListWithoutDuplicate.get(volumeWithWeightWithoutDuplicate.indexOf((double) Collections.max(volumeWithWeightWithoutDuplicate))));
+                        volumeWithWeightWithoutDuplicate.set(volumeWithWeightWithoutDuplicate.indexOf((double) Collections.max(volumeWithWeightWithoutDuplicate)),(double)0.0);
+                        if (((double) Collections.max(volumeWithWeightWithoutDuplicate))>10.0) {
+                            textFor3FlavorInfo.setText("3순위 : " + flavorListWithoutDuplicate.get(volumeWithWeightWithoutDuplicate.indexOf((double) Collections.max(volumeWithWeightWithoutDuplicate))));
+                        }
+                        else{
+                            textFor3FlavorInfo.setText("3순위 : 예측되는 향 없음");
+                        }
+                    }
+                    else{
+                        textFor2FlavorInfo.setText("2순위 : 예측되는 향 없음");
+                        textFor3FlavorInfo.setText("3순위 : 예측되는 향 없음");
+                    }
+                }
+                else{
+                    textFor1FlavorInfo.setText("1순위 : 예측되는 향 없음");
+                    textFor2FlavorInfo.setText("2순위 : 예측되는 향 없음");
+                    textFor3FlavorInfo.setText("3순위 : 예측되는 향 없음");
+                }
+            }
+        }catch(Exception e){System.out.println(e);}
 }
 
     public void tastePopupClose(View v){

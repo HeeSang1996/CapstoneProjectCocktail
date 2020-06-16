@@ -82,7 +82,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="5dp"
-                android:text="맛"
+                android:text="예측되는 맛 없음"
                 android:background="#424242"
                 android:textSize="16sp"
                 android:textColor="#fff"
@@ -100,16 +100,34 @@
                 android:paddingHorizontal="5dp"/>
 
             <TextView
-                android:id="@+id/textView_flavor_taste_info"
+                android:id="@+id/textView_flavor_taste_info_1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="5dp"
-                android:text="향"
-                android:layout_marginBottom="1dp"
+                android:text="1순위:"
                 android:background="#424242"
                 android:textSize="16sp"
-                android:textColor="#fff"
-                android:lineSpacingExtra="2dp"/>
+                android:textColor="#fff"/>
+
+            <TextView
+                android:id="@+id/textView_flavor_taste_info_2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:text="2순위:"
+                android:background="#424242"
+                android:textSize="16sp"
+                android:textColor="#fff"/>
+
+            <TextView
+                android:id="@+id/textView_flavor_taste_info_3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:text="3순위:"
+                android:background="#424242"
+                android:textSize="16sp"
+                android:textColor="#fff"/>
 
         </LinearLayout>
 
