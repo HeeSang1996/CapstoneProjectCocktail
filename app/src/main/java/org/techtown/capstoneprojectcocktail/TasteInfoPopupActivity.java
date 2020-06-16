@@ -20,6 +20,8 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 
+import static org.techtown.capstoneprojectcocktail.MJH_SimulatorUiActivity.test;
+
 public class TasteInfoPopupActivity extends Activity {
 
     private InputMethodManager inputKeyboardHide;
@@ -57,6 +59,16 @@ public class TasteInfoPopupActivity extends Activity {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.taste_info_popup_activity);
+
+
+        //준홍예제
+        int ingredSize = test.simulatorStep.get(test.simulatorStep.size() - 1).ingredListForFlavour.size();
+        for(int i = 0; i < ingredSize; i++){
+            String name = test.simulatorStep.get(test.simulatorStep.size() - 1).ingredListForFlavour.get(i).name;
+            String flavour = test.simulatorStep.get(test.simulatorStep.size() - 1).ingredListForFlavour.get(i).flavour;
+            String type = test.simulatorStep.get(test.simulatorStep.size() - 1).ingredListForFlavour.get(i).type;
+            double inputVol = test.simulatorStep.get(test.simulatorStep.size() - 1).ingredListForFlavour.get(i).volForFlavour;
+        }
 
         //키보드 숨기기
         inputKeyboardHide = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
