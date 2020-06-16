@@ -30,12 +30,14 @@ public class MyPageBookmarkActivity extends AppCompatActivity {
     private ArrayList Bookmark_name;       //레시피 이름
     private ArrayList Bookmark_id;         //각 문서 이름
     private ArrayList Bookmark_ref;        //레시피 ref
-    private ArrayList Bookmark_uid;        //사용자 uid
 
     //db 레시피들 컬렉션의 데이터를 읽어와 저장할 리스트 선언
     String[] method = new String[200];      //self이면 설명
     String[] Recipe_Base = new String[200]; //self이면 만드는 방법
     String[] abv = new String[200];         //self이면 칵테일 만든이
+    String[] Recipe_name = new String[200]; //self이면 만드는 방법
+    String[] Recipe_id = new String[200]; //self이면 만드는 방법
+    String[] Recipe_ref = new String[200]; //self이면 만드는 방법
     int count = 0;
 
     FirebaseAuth mAuth  = FirebaseAuth.getInstance();
@@ -99,61 +101,22 @@ public class MyPageBookmarkActivity extends AppCompatActivity {
                                 Bookmark_name.add(document.get("레시피 이름").toString());       //레시피 이름
                                 Bookmark_id.add(document.get("레시피 번호").toString());         //각 문서 이름
                                 Bookmark_ref.add(document.get("레시피 ref").toString());        //레시피 ref
-                                if( Integer.parseInt(String.valueOf(document.get("레시피 번호").toString())) < 10000) {
-                                    DocumentReference docRef = db.collection("Recipe").document(document.get("레시피 번호").toString());
-                                    docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                            if (task.isSuccessful()) {
-                                                DocumentSnapshot document = task.getResult();
-                                                if (document.exists()) {
-                                                    Recipe_Base[count] = String.valueOf(document.get("Ingredient_content"));
-                                                    Recipe_Base[count] = Recipe_Base[count].replaceAll("\\,", "ml ");
-                                                    Recipe_Base[count] = Recipe_Base[count].replaceAll("\\{", " ");
-                                                    Recipe_Base[count] = Recipe_Base[count].replaceAll("\\}", "ml ");
-                                                    Recipe_Base[count] = Recipe_Base[count].replaceAll("\\=", " ");
-                                                    method[count] = (document.get("method").toString());
-                                                    abv[count] = (document.get("abv").toString()) + "%";
-                                                    recyclerViewForCocktailBookmark.setAdapter(adapterForCocktailBookmark);
-                                                    adapterForCocktailBookmark.addItem(new Cocktail(Bookmark_name.get(count).toString(), Integer.parseInt((String) Bookmark_id.get(count)),
-                                                            method[count], Recipe_Base[count], abv[count],Bookmark_ref.get(count).toString()));
-                                                    count++;
-                                                } else {
-                                                    System.out.println("오류 발생 해당 컬렉션에 문서가 존재하지 않음.");
-                                                }
-                                            } else {
-                                                System.out.println("오류 발생 레시피 컬렉션에서 정상적으로 불러와지지 않음.");
-                                            }
-                                        }
-                                    });
+
+                                method[count] = document.get("method").toString();
+                                Recipe_Base[count] = document.get("base").toString();
+                                if(Integer.parseInt(Bookmark_id.get(count).toString()) < 7000 && Integer.parseInt(Bookmark_id.get(count).toString()) > 6000)
+                                {
+                                    abv[count] = document.get("abv").toString() + "%";
                                 }
                                 else
                                 {
-                                    DocumentReference docRef = db.collection("Self").document(document.get("레시피 번호").toString());
-                                    docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                            if (task.isSuccessful()) {
-                                                DocumentSnapshot document = task.getResult();
-                                                if (document.exists()) {
-                                                    Recipe_Base[count] = String.valueOf(document.get("만드는 방법"));
-                                                    method[count] = (document.get("칵테일 설명").toString());
-                                                    abv[count] = (document.get("칵테일 만든이").toString());
-                                                    recyclerViewForCocktailBookmark.setAdapter(adapterForCocktailBookmark);
-                                                    adapterForCocktailBookmark.addItem(new Cocktail(Bookmark_name.get(count).toString(), Integer.parseInt((String) Bookmark_id.get(count)),
-                                                            method[count], Recipe_Base[count], abv[count],Bookmark_ref.get(count).toString()));
-                                                    count++;
-                                                } else {
-                                                    System.out.println("오류 발생 해당 컬렉션에 문서가 존재하지 않음.");
-                                                }
-                                            } else {
-                                                System.out.println("오류 발생 셀프 컬렉션에서 정상적으로 불러와지지 않음.");
-                                            }
-                                        }
-                                    });
+                                    abv[count] = document.get("abv").toString();
                                 }
+                                recyclerViewForCocktailBookmark.setAdapter(adapterForCocktailBookmark);
+                                adapterForCocktailBookmark.addItem(new Cocktail((String) Bookmark_name.get(count), Integer.parseInt((String) Bookmark_id.get(count)),
+                                        method[count], Recipe_Base[count], abv[count],Bookmark_ref.get(count).toString()));
+                                count++;
                             }
-                            //Set_first();
                         } else {
                             System.out.println("오류 발생 북마크 컬렉션에서 정상적으로 불러와지지 않음.");
                         }
