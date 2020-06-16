@@ -128,8 +128,6 @@ public class MJH_SimulatorUiActivity extends AppCompatActivity implements View.O
                 listview.setAdapter(adapterMIN);
                 listUpdateFlag = 0;
                 if(listUpdateTech.equals("Layering")){
-                    Toast myToast = Toast.makeText(this.getApplicationContext(),"레이어링 작동", Toast.LENGTH_SHORT);
-                    myToast.show();
                     if(listUpdateStep.size() == 0){
                         test.addStepLayering(stepNum, 0, listUpdateIngredient.get(0), listUpdateIngredientAmount.get(0), 0);
                     }
@@ -138,16 +136,12 @@ public class MJH_SimulatorUiActivity extends AppCompatActivity implements View.O
                     }
                 }
                 else if(listUpdateTech.equals("Gradient")){
-                    Toast myToast = Toast.makeText(this.getApplicationContext(),"그라디언트 작동", Toast.LENGTH_SHORT);
-                    myToast.show();
                     test.addStepLayering(stepNum, 0, listUpdateIngredient.get(0), listUpdateIngredientAmount.get(0), 1);
                 }
                 else{
                     test.addStepBuildings(stepNum, listUpdateStep, listUpdateIngredient, listUpdateIngredientAmount, true);
                 }
             }catch(Exception e){
-                Toast myToast = Toast.makeText(uiMain, e.toString(), Toast.LENGTH_LONG);
-                myToast.show();
             }
             if(listUpdateTech.equals("Layering") || listUpdateTech.equals("Gradient") ){
                 lastStepTechFlag = 1;
@@ -176,6 +170,11 @@ public class MJH_SimulatorUiActivity extends AppCompatActivity implements View.O
                 usingStepNum.add(0);
                 break;
             case R.id.floatingActionButtonForAddList2: // 시뮬스텝 지우기
+                TextView txt1 = (TextView)findViewById(R.id.abv_print);
+                TextView txt2 = (TextView)findViewById(R.id.soju_num);
+                txt1.setText(Integer.toString(0));
+                txt2.setText(Integer.toString(0));
+                txt2.setTextColor(Color.parseColor("#333333"));
                 if(stepNum != 0){
                     try{
                         int deleteBuff;
@@ -243,8 +242,6 @@ public class MJH_SimulatorUiActivity extends AppCompatActivity implements View.O
                         }
 
                     }catch(Exception e){
-                        Toast myToast = Toast.makeText(this.getApplicationContext(), e.toString(), Toast.LENGTH_LONG);
-                        myToast.show();
                     }
                 }
 
@@ -320,7 +317,7 @@ public class MJH_SimulatorUiActivity extends AppCompatActivity implements View.O
                     try{
                         test.glassType = 0;
                         drawingCocktail();
-                        Toast myToast = Toast.makeText(this.getApplicationContext(),"해당 용량은 슈터잔이 불가 합니다. [하이볼로 대체되었습니다.]", Toast.LENGTH_SHORT);
+                        Toast myToast = Toast.makeText(this.getApplicationContext(),"해당 용량은 슈터잔이 불가 합니다.\n[하이볼로 대체되었습니다.]", Toast.LENGTH_SHORT);
                         myToast.show();
                     }catch(Exception e){ }
                 }
@@ -392,6 +389,11 @@ public class MJH_SimulatorUiActivity extends AppCompatActivity implements View.O
         ingredientList = new MJH_Object_ingredient[200];
         listCount = 0;
 
+
+        martiniChecked = false;
+        shooterChecked = false;
+        highBallChecked = true;
+
         test = null;
         finish();
     }
@@ -434,8 +436,6 @@ public class MJH_SimulatorUiActivity extends AppCompatActivity implements View.O
 
                                 ingredientList[listCount].my_color = colorBuffer;
                             }catch (Exception e){
-                                Toast myToast = Toast.makeText(uiMain,e.toString(), Toast.LENGTH_SHORT);
-                                myToast.show();
                             }
 
                         } else {
@@ -459,8 +459,8 @@ public class MJH_SimulatorUiActivity extends AppCompatActivity implements View.O
             for(int i = 0; i < test.simulatorStep.get(test.simulatorStep.size() - 1).ingredListForFlavour.size(); i++){
                 _buff =  _buff + "/" + test.simulatorStep.get(test.simulatorStep.size() - 1).ingredListForFlavour.get(i).flavour;
             }
-            Toast myToast = Toast.makeText(this.getApplicationContext(), _buff, Toast.LENGTH_SHORT);
-            myToast.show();
+            //Toast myToast = Toast.makeText(this.getApplicationContext(), _buff, Toast.LENGTH_SHORT);
+            //myToast.show();
         }catch (Exception e){}
 
         try{

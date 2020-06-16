@@ -77,18 +77,12 @@ public class MJH_Popup1Activity extends Activity {
         }
     }
     public void mBuild(View v){
-        Toast myToast = Toast.makeText(this.getApplicationContext(),"mBuild", Toast.LENGTH_SHORT);
-        myToast.show();
         selectButton(v);
     }
     public void mStir(View v){
-        Toast myToast = Toast.makeText(this.getApplicationContext(),"mStir", Toast.LENGTH_SHORT);
-        myToast.show();
         selectButton(v);
     }
     public void mShake(View v){
-        Toast myToast = Toast.makeText(this.getApplicationContext(),"mShake", Toast.LENGTH_SHORT);
-        myToast.show();
         selectButton(v);
     }
     public void mLayering(View v){
@@ -97,8 +91,6 @@ public class MJH_Popup1Activity extends Activity {
             myToast.show();
         }
         else{
-            Toast myToast = Toast.makeText(this.getApplicationContext(),"mLayering", Toast.LENGTH_SHORT);
-            myToast.show();
             selectButton(v);
         }
     }
@@ -108,33 +100,20 @@ public class MJH_Popup1Activity extends Activity {
             myToast.show();
         }
         else{
-            Toast myToast = Toast.makeText(this.getApplicationContext(),"mGradient", Toast.LENGTH_SHORT);
-            myToast.show();
             selectButton(v);
         }
     }
     public void mBlend(View v){
-        Toast myToast = Toast.makeText(this.getApplicationContext(),"mBlend", Toast.LENGTH_SHORT);
-        myToast.show();
         selectButton(v);
     }
     public void mPour(View v){
-        Toast myToast = Toast.makeText(this.getApplicationContext(),"mPour", Toast.LENGTH_SHORT);
-        myToast.show();
         selectButton(v);
     }
     public void mRolling(View v){
-        Toast myToast = Toast.makeText(this.getApplicationContext(),"mRolling", Toast.LENGTH_SHORT);
-        myToast.show();
         selectButton(v);
     }
 
-    //확인 버튼 클릭
-    public void mBefore(View v){
-        //액티비티(팝업) 닫기
-        usingStepNum.remove(usingStepNum.size() - 1);
-        finish();
-    }
+
     public void mNext(View v){
         if(buttonFlag == 1){
             //데이터 전달하기
@@ -182,7 +161,6 @@ public class MJH_Popup1Activity extends Activity {
             if (resultCode == RESULT_OK){
                 String result = data.getStringExtra("result");
                 if (result == "-1"){
-                    Toast.makeText(this,"call", Toast.LENGTH_SHORT).show();
                     finish();
                 }
             }

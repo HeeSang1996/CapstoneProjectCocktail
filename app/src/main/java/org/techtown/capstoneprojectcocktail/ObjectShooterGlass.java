@@ -30,8 +30,6 @@ public class ObjectShooterGlass {
             //그라데이션
             if(MJH_SimulatorUiActivity.test.isGradient == 1){
                 setNumber++;
-                Toast myToast = Toast.makeText(context,Integer.toString(setNumber), Toast.LENGTH_SHORT);
-                myToast.show();
 
                 Canvas canvas;
                 Bitmap bitmap = Bitmap.createBitmap(900,1200, Bitmap.Config.ARGB_8888);
@@ -71,7 +69,10 @@ public class ObjectShooterGlass {
                     height = (int)((float)height - ((float)8.0 * volume));
                 }
                 paint.setColor(Color.rgb(red ,green ,blue));
-                paint.setAlpha(200);
+                if(realisticChecked == true){
+                    alpha = MJH_SimulatorUiActivity.test.simulatorStep.get(MJH_SimulatorUiActivity.test.simulatorStep.size()-1 ).alphaList.get(lastIndex);
+                    paint.setAlpha(getAlpha(alpha));
+                }
                 RectF rect2 = new RectF();
                 rect2.set(left, height -20, right, height + 20);
                 canvas.drawArc(rect2, 180, 180, true, paint);
@@ -96,7 +97,10 @@ public class ObjectShooterGlass {
 
                 ///바닥부
                 paint.setColor(Color.rgb(s_red ,s_green ,s_blue));
-                paint.setAlpha(200);
+                if(realisticChecked == true){
+                    alpha = MJH_SimulatorUiActivity.test.simulatorStep.get(MJH_SimulatorUiActivity.test.simulatorStep.size()-1 ).alphaList.get(1);
+                    paint.setAlpha(getAlpha(alpha));
+                }
                 rect.set(left, 815, right, 855);
                 canvas.drawArc(rect, 0, 180, true, paint);
 
@@ -116,13 +120,23 @@ public class ObjectShooterGlass {
                 ///전체사각
                 height = (int)((float)height - ((float)8.0 * volume));
                 paint.setColor(Color.rgb(red ,green ,blue));
-                paint.setAlpha(200);
+                if(realisticChecked == true){
+                    alpha = MJH_SimulatorUiActivity.test.simulatorStep.get(MJH_SimulatorUiActivity.test.simulatorStep.size()-1 ).alphaList.get(0);
+                    paint.setAlpha(getAlpha(alpha));
+                }
                 canvas.drawRect(left, height, right, s_height - (int)(((float)8.0 * volume)/2), paint);
                 prev_h = height;
 
+
                 ///그라데이션 출력
-                paint_gradient.setShader(new LinearGradient(0, s_height - (int)(((float)8.0 * volume)/2), 0, 835, Color.rgb(red ,green ,blue), Color.rgb(s_red ,s_green ,s_blue), Shader.TileMode.CLAMP));
-                paint_gradient.setAlpha(200);
+                if(realisticChecked == true){
+                    float alpha_s = MJH_SimulatorUiActivity.test.simulatorStep.get(MJH_SimulatorUiActivity.test.simulatorStep.size()-1 ).alphaList.get(1);
+                    alpha = MJH_SimulatorUiActivity.test.simulatorStep.get(MJH_SimulatorUiActivity.test.simulatorStep.size()-1 ).alphaList.get(0);
+                    paint_gradient.setShader(new LinearGradient(0, s_height - (int)(((float)8.0 * volume)/2), 0, 835, Color.argb(getAlpha(alpha), red ,green ,blue), Color.argb(getAlpha(alpha_s), s_red ,s_green ,s_blue), Shader.TileMode.CLAMP));
+                }
+                else{
+                    paint_gradient.setShader(new LinearGradient(0, s_height - (int)(((float)8.0 * volume)/2), 0, 835, Color.rgb(red ,green ,blue), Color.rgb(s_red ,s_green ,s_blue), Shader.TileMode.CLAMP));
+                }
                 canvas.drawRect(left, s_height - (int)(((float)8.0 * volume)/2), right, 835, paint_gradient);
 
 
@@ -136,14 +150,20 @@ public class ObjectShooterGlass {
 
                         //층 하단
                         paint.setColor(Color.rgb(red ,green ,blue));
-                        paint.setAlpha(200);
+                        if(realisticChecked == true){
+                            alpha = MJH_SimulatorUiActivity.test.simulatorStep.get(MJH_SimulatorUiActivity.test.simulatorStep.size()-1 ).alphaList.get(index);
+                            paint.setAlpha(getAlpha(alpha));
+                        }
                         rect.set(left, height -20, right, height + 20);
                         canvas.drawArc(rect, 0, 180, true, paint);
 
                         //전체사각
                         height = (int)((float)height - ((float)8.0 * volume));
                         paint.setColor(Color.rgb(red ,green ,blue));
-                        paint.setAlpha(200);
+                        if(realisticChecked == true){
+                            alpha = MJH_SimulatorUiActivity.test.simulatorStep.get(MJH_SimulatorUiActivity.test.simulatorStep.size()-1 ).alphaList.get(index);
+                            paint.setAlpha(getAlpha(alpha));
+                        }
                         canvas.drawRect(left, height, right, prev_h, paint);
                         prev_h = height;
                     }
@@ -165,8 +185,6 @@ public class ObjectShooterGlass {
             //레이어링
             else if( MJH_SimulatorUiActivity.test.simulatorStep.get(MJH_SimulatorUiActivity.test.simulatorStep.size()-1 ).isLayering > 1){
                 setNumber++;
-                Toast myToast = Toast.makeText(context,Integer.toString(setNumber), Toast.LENGTH_SHORT);
-                myToast.show();
 
                 Canvas canvas;
                 Bitmap bitmap = Bitmap.createBitmap(900,1200, Bitmap.Config.ARGB_8888);
@@ -197,7 +215,10 @@ public class ObjectShooterGlass {
                     height = (int)((float)height - ((float)8.0 * volume));
                 }
                 paint.setColor(Color.rgb(red ,green ,blue));
-                paint.setAlpha(200);
+                if(realisticChecked == true){
+                    alpha = MJH_SimulatorUiActivity.test.simulatorStep.get(MJH_SimulatorUiActivity.test.simulatorStep.size()-1 ).alphaList.get(lastIndex);
+                    paint.setAlpha(getAlpha(alpha));
+                }
                 RectF rect2 = new RectF();
                 rect2.set(left, height -20, right, height + 20);
                 canvas.drawArc(rect2, 180, 180, true, paint);
@@ -218,14 +239,27 @@ public class ObjectShooterGlass {
 
                     //층 하단
                     paint.setColor(Color.rgb(red ,green ,blue));
+                    if(realisticChecked == true){
+                        alpha = MJH_SimulatorUiActivity.test.simulatorStep.get(MJH_SimulatorUiActivity.test.simulatorStep.size()-1 ).alphaList.get(index);
+                        paint.setAlpha(getAlpha(alpha));
+                    }
                     rect.set(left, height -20, right, height + 20);
                     canvas.drawArc(rect, 0, 180, true, paint);
 
                     //전체사각
                     height = (int)((float)height - ((float)8.0 * volume));
                     paint.setColor(Color.rgb(red ,green ,blue));
+                    if(realisticChecked == true){
+                        alpha = MJH_SimulatorUiActivity.test.simulatorStep.get(MJH_SimulatorUiActivity.test.simulatorStep.size()-1 ).alphaList.get(index);
+                        paint.setAlpha(getAlpha(alpha));
+                    }
                     canvas.drawRect(left, height, right, prev_h, paint);
                     prev_h = height;
+
+                    //상단부
+                    rect2 = new RectF();
+                    rect2.set(left, height -20, right, height + 20);
+                    canvas.drawArc(rect2, 180, 180, true, paint);;
                 }
 
 

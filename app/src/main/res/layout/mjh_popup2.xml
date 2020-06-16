@@ -47,20 +47,7 @@
                 android:gravity="center"
                 android:onClick="mNext"
                 android:padding="16dp"
-                android:text="다음"
-                android:textColor="#ffffff"
-                android:textSize="15sp" />
-
-            <Button
-                android:id="@+id/buttonBefore"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="#333333"
-                android:gravity="center"
-                android:onClick="mBefore"
-                android:padding="16dp"
-                android:text="이전"
+                android:text="확인"
                 android:textColor="#ffffff"
                 android:textSize="15sp" />
         </LinearLayout>

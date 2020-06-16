@@ -164,13 +164,7 @@ public class MJH_Popup3Activity extends Activity {
         super.onStop();
     }
 
-    //이전
-    public void mBefore(View v){
-        //데이터 전달하기
 
-        useByMinFlag = 0;
-        finish();
-    }
     public void mNext(View v){
         //데이터 전달하기
         if(bufferUpdateIngredient.size() == 0 && simulatorUiAddress.listUpdateStep.size() == 0) {
@@ -218,8 +212,6 @@ public class MJH_Popup3Activity extends Activity {
                     ingreAmountFlag = 0;
                 }
             }catch(Exception e){
-                Toast myToast = Toast.makeText(uiThis, e.toString(), Toast.LENGTH_LONG);
-                myToast.show();
             }
         }
     }
@@ -233,8 +225,6 @@ public class MJH_Popup3Activity extends Activity {
                 setAdapterForIngredientSearchByType("시럽");
             }
             else if(listUpdateTech.equals("Layering")){
-                Toast myToast = Toast.makeText(uiThis, Integer.toString(I_name.size()), Toast.LENGTH_LONG);
-                myToast.show();
                 adapterForCocktailSearch.clearAllForAdapter();
 
                 System.out.println("확인용 : " + (I_name.size()-1));
@@ -298,12 +288,8 @@ public class MJH_Popup3Activity extends Activity {
                 setAdapterForIngredientSearchByType("주스");
                 setAdapterForIngredientSearchByType("음료");
                 setAdapterForIngredientSearchByType("비터스");
-                Toast myToast = Toast.makeText(uiThis, Integer.toString(I_name.size()), Toast.LENGTH_LONG);
-                myToast.show();
             }
         }catch(Exception e){
-            Toast myToast = Toast.makeText(uiThis, e.toString(), Toast.LENGTH_LONG);
-            myToast.show();
         }
     }
 
