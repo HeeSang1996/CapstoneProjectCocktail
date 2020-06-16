@@ -18,6 +18,7 @@ import static org.techtown.capstoneprojectcocktail.MJH_SimulatorUiActivity.reali
 public class ObjectMartiniGlass {
 
     float alpha = 0;
+    int tuningVal = 14;
 
     public void draw(ImageView View, Context context){
         try{
@@ -83,13 +84,13 @@ public class ObjectMartiniGlass {
                     Paint back= new Paint();;
                     back.setColor(Color.parseColor("#FFFFFF"));
                     path2.moveTo(215, 285-firstConeHeight);
-                    path2.lineTo(247 - firstConeX, 285-firstConeHeight);
+                    path2.lineTo(247 - firstConeX - tuneGraphic(realVolume), 285-firstConeHeight);
                     path2.lineTo(215, 285);
                     path2.close();
                     canvas.drawPath(path2, back);
                     //우측삼각
                     path3.moveTo(285, 285-firstConeHeight);
-                    path3.lineTo(253 + firstConeX, 285-firstConeHeight);
+                    path3.lineTo(253 + firstConeX + tuneGraphic(realVolume), 285-firstConeHeight);
                     path3.lineTo(285, 285);
                     path3.close();
                     canvas.drawPath(path3, back);
@@ -102,7 +103,7 @@ public class ObjectMartiniGlass {
 
                     //좌측삼각
                     path.moveTo(215, 285-firstConeHeight);
-                    path.lineTo(247 - firstConeX, 285-firstConeHeight);
+                    path.lineTo(247 - firstConeX - tuneGraphic(realVolume), 285-firstConeHeight);
                     path.lineTo(215, 285);
                     path.close();
                     canvas.drawPath(path, paint);
@@ -110,7 +111,7 @@ public class ObjectMartiniGlass {
                     //우측삼각
                     Path path1 = new Path();
                     path1.moveTo(285, 285-firstConeHeight);
-                    path1.lineTo(253 + firstConeX, 285-firstConeHeight);
+                    path1.lineTo(253 + firstConeX + tuneGraphic(realVolume), 285-firstConeHeight);
                     path1.lineTo(285, 285);
                     path1.close();
                     canvas.drawPath(path1, paint);
@@ -120,7 +121,7 @@ public class ObjectMartiniGlass {
 
                     //윗원
                     RectF rect = new RectF();
-                    rect.set(250 - firstConeX, 275-firstConeHeight, 250 + firstConeX, 295-firstConeHeight);
+                    rect.set(250 - firstConeX - tuneGraphic(realVolume), 275-firstConeHeight, 250 + firstConeX + tuneGraphic(realVolume), 295-firstConeHeight);
                     canvas.drawArc(rect, 0, 360, true, paint);
                 }
 
@@ -168,13 +169,13 @@ public class ObjectMartiniGlass {
                 //좌측삼각
                 back.setColor(Color.parseColor("#FFFFFF"));
                 path2.moveTo(215, 285-firstConeHeight);
-                path2.lineTo(247 - firstConeX, 285-firstConeHeight);
+                path2.lineTo(247 - firstConeX - tuneGraphic(realVolume), 285-firstConeHeight);
                 path2.lineTo(215, 285);
                 path2.close();
                 canvas.drawPath(path2, back);
                 //우측삼각
                 path3.moveTo(285, 285-firstConeHeight);
-                path3.lineTo(253 + firstConeX, 285-firstConeHeight);
+                path3.lineTo(253 + firstConeX + tuneGraphic(realVolume), 285-firstConeHeight);
                 path3.lineTo(285, 285);
                 path3.close();
                 canvas.drawPath(path3, back);
@@ -185,7 +186,7 @@ public class ObjectMartiniGlass {
 
                 //좌측삼각
                 path.moveTo(215, 285-firstConeHeight);
-                path.lineTo(247 - firstConeX, 285-firstConeHeight);
+                path.lineTo(247 - firstConeX - tuneGraphic(realVolume), 285-firstConeHeight);
                 path.lineTo(215, 285);
                 path.close();
                 canvas.drawPath(path, paint_gradient);
@@ -193,7 +194,7 @@ public class ObjectMartiniGlass {
                 //우측삼각
                 Path path1 = new Path();
                 path1.moveTo(285, 285-firstConeHeight);
-                path1.lineTo(253 + firstConeX, 285-firstConeHeight);
+                path1.lineTo(253 + firstConeX + tuneGraphic(realVolume), 285-firstConeHeight);
                 path1.lineTo(285, 285);
                 path1.close();
                 canvas.drawPath(path1, paint_gradient);
@@ -259,13 +260,13 @@ public class ObjectMartiniGlass {
                     //좌측삼각
                     back.setColor(Color.parseColor("#FFFFFF"));
                     path2.moveTo(215, 285-firstConeHeight);
-                    path2.lineTo(247 - firstConeX, 285-firstConeHeight);
+                    path2.lineTo(247 - firstConeX - tuneGraphic(realVolume), 285-firstConeHeight);
                     path2.lineTo(215, 285);
                     path2.close();
                     canvas.drawPath(path2, back);
                     //우측삼각
                     path3.moveTo(285, 285-firstConeHeight);
-                    path3.lineTo(253 + firstConeX, 285-firstConeHeight);
+                    path3.lineTo(253 + firstConeX + tuneGraphic(realVolume), 285-firstConeHeight);
                     path3.lineTo(285, 285);
                     path3.close();
                     canvas.drawPath(path3, back);
@@ -276,7 +277,7 @@ public class ObjectMartiniGlass {
 
                     //좌측삼각
                     path.moveTo(215, 285-firstConeHeight);
-                    path.lineTo(247 - firstConeX, 285-firstConeHeight);
+                    path.lineTo(247 - firstConeX - tuneGraphic(realVolume), 285-firstConeHeight);
                     path.lineTo(215, 285);
                     path.close();
                     canvas.drawPath(path, paint);
@@ -284,14 +285,14 @@ public class ObjectMartiniGlass {
                     //우측삼각
                     Path path1 = new Path();
                     path1.moveTo(285, 285-firstConeHeight);
-                    path1.lineTo(253 + firstConeX, 285-firstConeHeight);
+                    path1.lineTo(253 + firstConeX + tuneGraphic(realVolume), 285-firstConeHeight);
                     path1.lineTo(285, 285);
                     path1.close();
                     canvas.drawPath(path1, paint);
 
                     //윗원
                     RectF rect = new RectF();
-                    rect.set(250 - firstConeX, 275-firstConeHeight, 250 + firstConeX, 295-firstConeHeight);
+                    rect.set(250 - firstConeX - tuneGraphic(realVolume), 275-firstConeHeight, 250 + firstConeX + tuneGraphic(realVolume), 295-firstConeHeight);
                     canvas.drawArc(rect, 0, 360, true, paint);
 
                     //전체사각
@@ -351,13 +352,13 @@ public class ObjectMartiniGlass {
                 //좌측삼각
                 back.setColor(Color.parseColor("#FFFFFF"));
                 path2.moveTo(215, 285-firstConeHeight);
-                path2.lineTo(247 - firstConeX, 285-firstConeHeight);
+                path2.lineTo(247 - firstConeX - tuneGraphic(realVolume), 285-firstConeHeight);
                 path2.lineTo(215, 285);
                 path2.close();
                 canvas.drawPath(path2, back);
                 //우측삼각
                 path3.moveTo(285, 285-firstConeHeight);
-                path3.lineTo(253 + firstConeX, 285-firstConeHeight);
+                path3.lineTo(253 + firstConeX + tuneGraphic(realVolume), 285-firstConeHeight);
                 path3.lineTo(285, 285);
                 path3.close();
                 canvas.drawPath(path3, back);
@@ -368,7 +369,7 @@ public class ObjectMartiniGlass {
 
                 //좌측삼각
                 path.moveTo(215, 285-firstConeHeight);
-                path.lineTo(247 - firstConeX, 285-firstConeHeight);
+                path.lineTo(247 - firstConeX - tuneGraphic(realVolume), 285-firstConeHeight);
                 path.lineTo(215, 285);
                 path.close();
                 canvas.drawPath(path, paint);
@@ -376,14 +377,14 @@ public class ObjectMartiniGlass {
                 //우측삼각
                 Path path1 = new Path();
                 path1.moveTo(285, 285-firstConeHeight);
-                path1.lineTo(253 + firstConeX, 285-firstConeHeight);
+                path1.lineTo(253 + firstConeX + tuneGraphic(realVolume), 285-firstConeHeight);
                 path1.lineTo(285, 285);
                 path1.close();
                 canvas.drawPath(path1, paint);
 
                 //윗원
                 RectF rect = new RectF();
-                rect.set(250 - firstConeX, 275-firstConeHeight, 250 + firstConeX, 295-firstConeHeight);
+                rect.set(250 - firstConeX - tuneGraphic(realVolume), 275-firstConeHeight, 250 + firstConeX + tuneGraphic(realVolume), 295-firstConeHeight);
                 canvas.drawArc(rect, 0, 360, true, paint);
 
 
@@ -427,5 +428,21 @@ public class ObjectMartiniGlass {
         }
         return alphaVal;
     }
+
+    public int tuneGraphic(float _vol){
+        int returnVal = 20;
+        int minus = 0;
+
+        minus = (int)_vol / 7;
+
+        if(minus > 20){
+            minus = 20;
+        }
+
+        returnVal = returnVal - minus;
+
+        return returnVal;
+    }
+
 
 }
