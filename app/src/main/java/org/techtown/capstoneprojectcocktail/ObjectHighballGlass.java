@@ -353,7 +353,7 @@ public class ObjectHighballGlass {
         //int alphaVal = (int)(_alpha*_alpha);
 
         if(_alpha == 0){
-            return 50;
+            return 40;
         }
         int alphaVal = (int) ((((_alpha)*1.5) + 0.5) * 30);
 
