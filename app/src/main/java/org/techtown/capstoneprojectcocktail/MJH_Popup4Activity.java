@@ -66,10 +66,7 @@ public class MJH_Popup4Activity  extends Activity {
 
                 float nowVolume = 0;
                 try{
-
-                    if(simulatorUiAddress.listUpdateTech.equals("Layering") || simulatorUiAddress.listUpdateTech.equals("Gradient")){
                         nowVolume = test.simulatorStep.get(test.inGlassStep-1 ).totalVolume;
-                    }
                 }catch(Exception e){
 
                 }
