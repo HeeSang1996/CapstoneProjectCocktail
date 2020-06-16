@@ -54,10 +54,10 @@
 
             <ImageView
                 android:id="@+id/soju"
-                android:layout_width="40dp"
+                android:layout_width="35dp"
                 android:layout_height="40dp"
                 android:layout_gravity="right"
-                android:background="@drawable/jinro_glass" />
+                android:background="@drawable/new_soju_image" />
 
             <TextView
                 android:layout_width="20dp"
