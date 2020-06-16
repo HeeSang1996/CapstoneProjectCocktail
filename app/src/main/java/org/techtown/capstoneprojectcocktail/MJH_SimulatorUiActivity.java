@@ -392,6 +392,7 @@ public class MJH_SimulatorUiActivity extends AppCompatActivity implements View.O
         ingredientList = new MJH_Object_ingredient[200];
         listCount = 0;
 
+        test = null;
         finish();
     }
 
