@@ -68,7 +68,7 @@ public class TasteInfoPopupActivity extends Activity {
     private ArrayList<String> flavorList;
     private ArrayList<String> flavorListWithoutDuplicate;
 
-    private double totalVol = 0.0;
+    //private double totalVol = 0.0;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -86,8 +86,8 @@ public class TasteInfoPopupActivity extends Activity {
         textFor1FlavorInfo = (TextView) findViewById(R.id.textView_flavor_taste_info_1);
         textFor2FlavorInfo = (TextView) findViewById(R.id.textView_flavor_taste_info_2);
         textFor3FlavorInfo = (TextView) findViewById(R.id.textView_flavor_taste_info_3);
-
     }
+
 
     @Override
     protected void onResume() {
@@ -248,6 +248,7 @@ public class TasteInfoPopupActivity extends Activity {
                 flavorList.add(test.simulatorStep.get(test.simulatorStep.size() - 1).ingredListForFlavour.get(i).flavour.replaceAll(" ",""));
                 String type = test.simulatorStep.get(test.simulatorStep.size() - 1).ingredListForFlavour.get(i).type;
                 double inputVol = test.simulatorStep.get(test.simulatorStep.size() - 1).ingredListForFlavour.get(i).volForFlavour;
+                //totalVol+=inputVol;
                 if(type.equals("비터스")){
                     volumeWithWeight.add((double) (inputVol*bittersWeight));
                 }
@@ -280,14 +281,20 @@ public class TasteInfoPopupActivity extends Activity {
                             (( (double) volumeWithWeight.get(i))+( (double) volumeWithWeightWithoutDuplicate.get(flavorListWithoutDuplicate.indexOf(flavorList.get(i))))));
                 }
             }
-            //System.out.println(flavorListWithoutDuplicate.size()==volumeWithWeightWithoutDuplicate.size());
+            //System.out.println(flavorListWithoutDuplicate.size());
+            for(int i = 0; i < volumeWithWeightWithoutDuplicate.size(); i++){
+                if(flavorListWithoutDuplicate.get(i).equals("")) {
+                    volumeWithWeightWithoutDuplicate.set(i,(double) 0.0);
+                }
+            }
+            //System.out.println(totalVol);
             if (volumeWithWeightWithoutDuplicate.size() <=0){
                 textFor1FlavorInfo.setText("1순위 : 예측되는 향 없음");
                 textFor2FlavorInfo.setText("2순위 : 예측되는 향 없음");
                 textFor3FlavorInfo.setText("3순위 : 예측되는 향 없음");
             }
             else if (volumeWithWeightWithoutDuplicate.size()==1){
-                if (((double) Collections.max(volumeWithWeightWithoutDuplicate))>10.0){
+                if (((double) Collections.max(volumeWithWeightWithoutDuplicate))>1.0){
                     textFor1FlavorInfo.setText("1순위 : "+ flavorListWithoutDuplicate.get(volumeWithWeightWithoutDuplicate.indexOf((double) Collections.max(volumeWithWeightWithoutDuplicate))));
                 }
                 else{
@@ -297,10 +304,10 @@ public class TasteInfoPopupActivity extends Activity {
                 textFor3FlavorInfo.setText("3순위 : 예측되는 향 없음");
             }
             else if (volumeWithWeightWithoutDuplicate.size()==2){
-                if (((double) Collections.max(volumeWithWeightWithoutDuplicate))>10.0){
+                if (((double) Collections.max(volumeWithWeightWithoutDuplicate))>1.0){
                     textFor1FlavorInfo.setText("1순위 : "+ flavorListWithoutDuplicate.get(volumeWithWeightWithoutDuplicate.indexOf((double) Collections.max(volumeWithWeightWithoutDuplicate))));
                     volumeWithWeightWithoutDuplicate.set(volumeWithWeightWithoutDuplicate.indexOf((double) Collections.max(volumeWithWeightWithoutDuplicate)),(double)0.0);
-                    if (((double) Collections.max(volumeWithWeightWithoutDuplicate))>10.0){
+                    if (((double) Collections.max(volumeWithWeightWithoutDuplicate))>1.0){
                         textFor2FlavorInfo.setText("2순위 : "+ flavorListWithoutDuplicate.get(volumeWithWeightWithoutDuplicate.indexOf((double) Collections.max(volumeWithWeightWithoutDuplicate))));
                     }
                     else{
@@ -314,13 +321,13 @@ public class TasteInfoPopupActivity extends Activity {
                 textFor3FlavorInfo.setText("3순위 : 예측되는 향 없음");
             }
             else{
-                if (((double) Collections.max(volumeWithWeightWithoutDuplicate))>10.0){
+                if (((double) Collections.max(volumeWithWeightWithoutDuplicate))>1.0){
                     textFor1FlavorInfo.setText("1순위 : "+ flavorListWithoutDuplicate.get(volumeWithWeightWithoutDuplicate.indexOf((double) Collections.max(volumeWithWeightWithoutDuplicate))));
                     volumeWithWeightWithoutDuplicate.set(volumeWithWeightWithoutDuplicate.indexOf((double) Collections.max(volumeWithWeightWithoutDuplicate)),(double)0.0);
-                    if (((double) Collections.max(volumeWithWeightWithoutDuplicate))>10.0){
+                    if (((double) Collections.max(volumeWithWeightWithoutDuplicate))>1.0){
                         textFor2FlavorInfo.setText("2순위 : "+ flavorListWithoutDuplicate.get(volumeWithWeightWithoutDuplicate.indexOf((double) Collections.max(volumeWithWeightWithoutDuplicate))));
                         volumeWithWeightWithoutDuplicate.set(volumeWithWeightWithoutDuplicate.indexOf((double) Collections.max(volumeWithWeightWithoutDuplicate)),(double)0.0);
-                        if (((double) Collections.max(volumeWithWeightWithoutDuplicate))>10.0) {
+                        if (((double) Collections.max(volumeWithWeightWithoutDuplicate))>1.0) {
                             textFor3FlavorInfo.setText("3순위 : " + flavorListWithoutDuplicate.get(volumeWithWeightWithoutDuplicate.indexOf((double) Collections.max(volumeWithWeightWithoutDuplicate))));
                         }
                         else{
