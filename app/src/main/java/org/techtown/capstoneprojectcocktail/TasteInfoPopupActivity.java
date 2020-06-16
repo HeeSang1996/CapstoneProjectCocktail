@@ -227,11 +227,25 @@ public class TasteInfoPopupActivity extends Activity {
         recipe_sour_sum_string = Integer.toString((int)recipe_sour_sum);
         recipe_salty_sum_string=Integer.toString((int)recipe_salty_sum);
         recipe_hot_sum_string = Integer.toString((int)recipe_hot_sum);
+
+        String tResult = printTaste(
+                (int)recipe_sugar_sum
+                ,(int)recipe_bitter_sum
+                ,(int)recipe_sour_sum
+                ,(int)recipe_salty_sum
+                ,(int)recipe_hot_sum);
+
+        if(tResult.equals("두드러지는 맛이 없습니다"))
+            textForTasteInfo.setText(tResult);
+        else
+            textForTasteInfo.setText(tResult + "이 두드러지는 칵테일 입니다.");
+        /*
         textForTasteInfo.setText("단맛 : "+recipe_sugar_sum_string+
                 "\n쓴맛 : "+recipe_bitter_sum_string+
                 "\n신맛 : "+recipe_sour_sum_string+
                 "\n짠맛 : "+recipe_salty_sum_string+
                 "\n매운맛 : "+recipe_hot_sum_string);
+                */
 
         //향 표현현
         //트링 공백 지우기
@@ -389,4 +403,73 @@ public class TasteInfoPopupActivity extends Activity {
             return result;
         }
     }
+
+
+    public String printTaste(int a, int b, int c, int d, int e){
+        ArrayList<Integer> result = new ArrayList<Integer>();
+        result.add((int)a);
+        result.add((int)b);
+        result.add((int)c);
+        result.add((int)d);
+        result.add((int)e);
+
+        int maxOne = Collections.max(result);
+        for(int i = 0; i < result.size(); i++){
+            if(result.get(i) == maxOne){
+                result.remove(i);
+            }
+        }
+
+        if(maxOne == 0)
+            return "두드러지는 맛이 없습니다";
+
+        int maxTwo = Collections.max(result);
+
+        result.clear();
+        result.add((int)a);
+        result.add((int)b);
+        result.add((int)c);
+        result.add((int)d);
+        result.add((int)e);
+
+        String one = "";
+        String two = "";
+
+        int maxCount = -1;
+        for(int i = 0; i < result.size(); i++){
+            if(result.get(i) == maxOne){
+                if(i == 0)
+                    one = one + "단맛 ";
+                if(i == 1)
+                    one = one + "쓴맛 ";
+                if(i == 2)
+                    one = one + "신맛 ";
+                if(i == 3)
+                    one = one + "짠맛 ";
+                if(i == 4)
+                    one = one + "매운맛 ";
+                maxCount++;
+            }
+        }
+
+        if(maxCount < 1){
+            for(int i = 0; i < result.size(); i++){
+                if(result.get(i) == maxTwo){
+                    if(i == 0)
+                        one = one + "단맛 ";
+                    if(i == 1)
+                        one = one + "쓴맛 ";
+                    if(i == 2)
+                        one = one + "신맛 ";
+                    if(i == 3)
+                        one = one + "짠맛 ";
+                    if(i == 4)
+                        one = one + "매운맛 ";
+                    maxCount++;
+                }
+            }
+        }
+        return one.trim();
+    }
+
 }
