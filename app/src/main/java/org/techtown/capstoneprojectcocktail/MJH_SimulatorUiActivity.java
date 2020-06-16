@@ -177,7 +177,7 @@ public class MJH_SimulatorUiActivity extends AppCompatActivity implements View.O
                 TextView txt1 = (TextView)findViewById(R.id.abv_print);
                 TextView txt2 = (TextView)findViewById(R.id.soju_num);
                 txt1.setText(Integer.toString(0));
-                txt2.setText(Integer.toString(0));
+                txt2.setText("0.0");
                 txt2.setTextColor(Color.parseColor("#333333"));
                 if(stepNum != 0){
                     try{
