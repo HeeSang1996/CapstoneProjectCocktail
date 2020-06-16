@@ -70,15 +70,21 @@ public class MJH_ListviewAdapter extends BaseAdapter {
         String getBufferStr = "";
         int stepExistFlag = 0;
         for (int index = 0; index < getStepBuffer.size(); index++) {
-            if (index != 0)
-                getBufferStr = getBufferStr + " / ";
-            getBufferStr = getBufferStr + "step(" + getStepBuffer.get(index).toString() + ")";
+            if(index == getStepBuffer.size() - 1 && getIngredientBuffer.size() == 0){
+                getBufferStr = getBufferStr + "STEP " + getStepBuffer.get(index).toString();
+            }
+            else{
+                getBufferStr = getBufferStr + "STEP " + getStepBuffer.get(index).toString() + "\n";
+            }
             stepExistFlag = 1;
         }
         for (int index = 0; index < getIngredientBuffer.size(); index++) {
-            if (index != 0 || stepExistFlag == 1)
-                getBufferStr = getBufferStr + " / ";
-            getBufferStr = getBufferStr + getIngredientBuffer.get(index).name + "(" + getAmountBuffer.get(index).toString() + ")" ;
+            if(index == getIngredientBuffer.size() - 1 ){
+                getBufferStr = getBufferStr + getIngredientBuffer.get(index).name + " " + getAmountBuffer.get(index).toString() + " ml";
+            }
+            else{
+                getBufferStr = getBufferStr + getIngredientBuffer.get(index).name + " " + getAmountBuffer.get(index).toString() + " ml\n";
+            }
         }
 
         titleTextView.setText(listViewItem.getThisStep());
