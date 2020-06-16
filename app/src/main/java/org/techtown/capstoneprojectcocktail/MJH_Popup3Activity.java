@@ -5,13 +5,11 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.inputmethod.EditorInfo;
-import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -23,16 +21,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 import static org.techtown.capstoneprojectcocktail.CocktailAdapterForSearch.useByMinFlag;
 import static org.techtown.capstoneprojectcocktail.MJH_Popup2Activity.updateTotalVol;
@@ -243,7 +237,7 @@ public class MJH_Popup3Activity extends Activity {
                                     I_gravity.clear();
                                     for (QueryDocumentSnapshot document : task.getResult()) {
                                         float stdSg = test.simulatorStep.get(test.simulatorStep.size() - 1).specificGravity.get(test.simulatorStep.get(test.simulatorStep.size() - 1).specificGravity.size() - 1);
-                                        if(Float.parseFloat(String.valueOf((document.get("specific_gravity")))) < stdSg - 0.02)
+                                        if(Float.parseFloat(String.valueOf((document.get("specific_gravity")))) < stdSg )
                                         {
                                             if(document.get("Ingredient_type").equals("가니쉬"))
                                             {
