@@ -82,7 +82,7 @@ public class ObjectMartiniGlass {
                     Path path2 = new Path();
                     Path path3 = new Path();
                     Paint back= new Paint();;
-                    back.setColor(Color.parseColor("#FFFFFF"));
+                    back.setColor(Color.parseColor("#DDDDDD"));
                     path2.moveTo(215, 285-firstConeHeight);
                     path2.lineTo(247 - firstConeX - tuneGraphic(realVolume), 285-firstConeHeight);
                     path2.lineTo(215, 285);
@@ -167,7 +167,7 @@ public class ObjectMartiniGlass {
                 Path path3 = new Path();
                 Paint back= new Paint();;
                 //좌측삼각
-                back.setColor(Color.parseColor("#FFFFFF"));
+                back.setColor(Color.parseColor("#DDDDDD"));
                 path2.moveTo(215, 285-firstConeHeight);
                 path2.lineTo(247 - firstConeX - tuneGraphic(realVolume), 285-firstConeHeight);
                 path2.lineTo(215, 285);
@@ -258,7 +258,7 @@ public class ObjectMartiniGlass {
                     Path path3 = new Path();
                     Paint back= new Paint();;
                     //좌측삼각
-                    back.setColor(Color.parseColor("#FFFFFF"));
+                    back.setColor(Color.parseColor("#DDDDDD"));
                     path2.moveTo(215, 285-firstConeHeight);
                     path2.lineTo(247 - firstConeX - tuneGraphic(realVolume), 285-firstConeHeight);
                     path2.lineTo(215, 285);
@@ -350,7 +350,7 @@ public class ObjectMartiniGlass {
                 Path path3 = new Path();
                 Paint back= new Paint();;
                 //좌측삼각
-                back.setColor(Color.parseColor("#FFFFFF"));
+                back.setColor(Color.parseColor("#DDDDDD"));
                 path2.moveTo(215, 285-firstConeHeight);
                 path2.lineTo(247 - firstConeX - tuneGraphic(realVolume), 285-firstConeHeight);
                 path2.lineTo(215, 285);
@@ -420,11 +420,18 @@ public class ObjectMartiniGlass {
 
     public int getAlpha(float _alpha){
         //int alphaVal = (int)(_alpha*_alpha);
+
+        if(_alpha == 0){
+            return 50;
+        }
         int alphaVal = (int) ((((_alpha)*1.5) + 0.5) * 30);
 
         if(alphaVal > 255){
             alphaVal = 255;
             return alphaVal;
+        }
+        else if(alphaVal < 135){
+            alphaVal = 135;
         }
         return alphaVal;
     }
