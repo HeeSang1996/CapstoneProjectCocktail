@@ -92,6 +92,7 @@ public class MJH_Popup2Activity extends Activity {
                                 updateTotalVol = updateTotalVol - simulatorUiAddress.test.simulatorStep.get(position).totalVolume;
                             }
                             else{
+                                v.setBackgroundColor(Color.RED);
                                 simulatorUiAddress.usingStep.add(position+1);
                                 bufferUpdateStep.add(position+1);
                                 usingStepNum.set(usingStepNum.size() - 1, usingStepNum.get(usingStepNum.size() - 1) + 1);
