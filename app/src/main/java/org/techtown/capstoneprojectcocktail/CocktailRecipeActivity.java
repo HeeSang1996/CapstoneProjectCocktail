@@ -440,7 +440,7 @@ public class CocktailRecipeActivity extends AppCompatActivity {
                                 @Override
                                 public void onSuccess(Void aVoid) {
                                     Log.d(TAG, "DocumentSnapshot successfully written!");
-                                    Toast.makeText(getApplicationContext(),"댓글 내용: " + stringForCocktailComment,Toast.LENGTH_LONG).show();
+                                    //Toast.makeText(getApplicationContext(),"댓글 내용: " + stringForCocktailComment,Toast.LENGTH_LONG).show();
                                 }
                             })
                             .addOnFailureListener(new OnFailureListener() {
