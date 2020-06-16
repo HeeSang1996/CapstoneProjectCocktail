@@ -188,8 +188,8 @@ public class MyPageGradingActivity extends AppCompatActivity {
                         new Cocktail(
                                 Grading_name.get(id),
                                 Integer.parseInt(id),
-                                method.get(id),
                                 Recipe_Base.get(id),
+                                method.get(id),
                                 abv.get(id),
                                 Grading_ref.get(id),
                                 Grading_score.get(id)));
