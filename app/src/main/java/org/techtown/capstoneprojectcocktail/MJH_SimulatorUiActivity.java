@@ -498,8 +498,10 @@ public class MJH_SimulatorUiActivity extends AppCompatActivity implements View.O
 
             float sojuUnit = 0;
             sojuUnit = (abvBuf * volBuf) / 900;
+            double sojuUnitDouble = 0.0;
+            sojuUnitDouble = Math.round(sojuUnit*10)/10.0;
             txt1.setText(Integer.toString((int)abvBuf));
-            txt2.setText(Integer.toString((int)sojuUnit));
+            txt2.setText(Double.toString((double)sojuUnitDouble));
             if(sojuUnit >= 4){
                 txt2.setTextColor(Color.RED);
             }

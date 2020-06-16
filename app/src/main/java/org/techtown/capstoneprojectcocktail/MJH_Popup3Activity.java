@@ -242,7 +242,8 @@ public class MJH_Popup3Activity extends Activity {
                                     I_ref.clear();
                                     I_gravity.clear();
                                     for (QueryDocumentSnapshot document : task.getResult()) {
-                                        if(Float.parseFloat(String.valueOf((document.get("specific_gravity")))) <= test.simulatorStep.get(test.simulatorStep.size() - 1).specificGravity.get(test.simulatorStep.get(test.simulatorStep.size() - 1).specificGravity.size() - 1))
+                                        float stdSg = test.simulatorStep.get(test.simulatorStep.size() - 1).specificGravity.get(test.simulatorStep.get(test.simulatorStep.size() - 1).specificGravity.size() - 1);
+                                        if(Float.parseFloat(String.valueOf((document.get("specific_gravity")))) < stdSg - 0.02)
                                         {
                                             if(document.get("Ingredient_type").equals("가니쉬"))
                                             {
