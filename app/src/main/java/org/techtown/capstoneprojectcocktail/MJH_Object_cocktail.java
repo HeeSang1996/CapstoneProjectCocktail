@@ -31,6 +31,11 @@ public class MJH_Object_cocktail implements Cloneable{
     double bitter  = 0.0;
     double hot = 0.0;
 
+    //for 노희상 [향정보]
+    ArrayList<MJH_Object_ingredient> ingredListForFlavour = new ArrayList<MJH_Object_ingredient>();
+
+
+    //사용 x
     String[] flavour = new String[15];
 
     public MJH_Object_cocktail() {

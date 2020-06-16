@@ -66,6 +66,16 @@ public class MJH_Object_simulator {
                     cocktailBuffer.salty = cocktailBuffer.salty + this.simulatorStep.get(associateStep.get(i) - 1).salty;
                     cocktailBuffer.bitter = cocktailBuffer.bitter + this.simulatorStep.get(associateStep.get(i) - 1).bitter;
                     cocktailBuffer.hot = cocktailBuffer.hot + this.simulatorStep.get(associateStep.get(i) - 1).hot;
+
+                    //노희상 향 표현
+                    //String _name = this.simulatorStep.get(associateStep.get(i) - 1).ingredListForFlavour.
+                    for(int j = 0; j < this.simulatorStep.get(associateStep.get(i) - 1).ingredListForFlavour.size(); j++){
+                        String _name = this.simulatorStep.get(associateStep.get(i) - 1).ingredListForFlavour.get(j).name;
+                        String _type = this.simulatorStep.get(associateStep.get(i) - 1).ingredListForFlavour.get(j).type;
+                        String _flavour = this.simulatorStep.get(associateStep.get(i) - 1).ingredListForFlavour.get(j).flavour;
+                        double _vol = this.simulatorStep.get(associateStep.get(i) - 1).ingredListForFlavour.get(j).volForFlavour;
+                        cocktailBuffer.ingredListForFlavour.add(new MJH_Object_ingredient(_name, _type, _flavour, _vol));
+                    }
                 }
             }
 
@@ -111,6 +121,9 @@ public class MJH_Object_simulator {
                 cocktailBuffer.salty = cocktailBuffer.salty + inputIngredient.get(i).salty * inputAmount.get(i);
                 cocktailBuffer.bitter = cocktailBuffer.bitter + inputIngredient.get(i).bitter * inputAmount.get(i);
                 cocktailBuffer.hot = cocktailBuffer.hot + inputIngredient.get(i).hot * inputAmount.get(i);
+
+                //노희상 향 표현
+                cocktailBuffer.ingredListForFlavour.add(new MJH_Object_ingredient(inputIngredient.get(i).name, inputIngredient.get(i).type, inputIngredient.get(i).flavour, (double)inputAmount.get(i)));
             }
 
         }catch (Exception e){e.printStackTrace();}
@@ -201,6 +214,9 @@ public class MJH_Object_simulator {
             simulatorStep.get(inGlassStep - 1).salty = simulatorStep.get(inGlassStep - 1).salty + inputIngredient.salty*inputAmount;
             simulatorStep.get(inGlassStep - 1).bitter = simulatorStep.get(inGlassStep - 1).bitter + inputIngredient.bitter*inputAmount;
             simulatorStep.get(inGlassStep - 1).hot = simulatorStep.get(inGlassStep - 1).hot + inputIngredient.hot*inputAmount;
+
+            //노희상
+            simulatorStep.get(inGlassStep - 1).ingredListForFlavour.add(new MJH_Object_ingredient(inputIngredient.name, inputIngredient.type, inputIngredient.flavour, (double)inputAmount));
         }
 
         if(associateStep != 0){ // 연관스탭로 레이어링 할 때
@@ -224,6 +240,15 @@ public class MJH_Object_simulator {
             simulatorStep.get(inGlassStep - 1).salty = simulatorStep.get(inGlassStep - 1).salty + simulatorStep.get(associateStep  - 1).salty*simulatorStep.get(associateStep  - 1).totalVolume;
             simulatorStep.get(inGlassStep - 1).bitter = simulatorStep.get(inGlassStep - 1).bitter + simulatorStep.get(associateStep  - 1).bitter*simulatorStep.get(associateStep  - 1).totalVolume;
             simulatorStep.get(inGlassStep - 1).hot = simulatorStep.get(inGlassStep - 1).hot + simulatorStep.get(associateStep  - 1).hot*simulatorStep.get(associateStep  - 1).totalVolume;
+
+            //노희상 향표현
+            for(int j = 0; j < this.simulatorStep.get(associateStep - 1).ingredListForFlavour.size(); j++){
+                String _name = this.simulatorStep.get(associateStep - 1).ingredListForFlavour.get(j).name;
+                String _type = this.simulatorStep.get(associateStep - 1).ingredListForFlavour.get(j).type;
+                String _flavour = this.simulatorStep.get(associateStep - 1).ingredListForFlavour.get(j).flavour;
+                double _vol = this.simulatorStep.get(associateStep - 1).ingredListForFlavour.get(j).volForFlavour;
+                simulatorStep.get(inGlassStep - 1).ingredListForFlavour.add(new MJH_Object_ingredient(_name, _type, _flavour, _vol));
+            }
         }
     }
 
@@ -271,6 +296,15 @@ public class MJH_Object_simulator {
         n.salty = input.salty;
         n.bitter = input.bitter;
         n.hot = input.hot;
+
+        // 노희상 향표현
+        for(int i =0; i <input.ingredListForFlavour.size(); i ++){
+            String _name = input.ingredListForFlavour.get(i).name;
+            String _type = input.ingredListForFlavour.get(i).type;
+            String _flavour = input.ingredListForFlavour.get(i).flavour;
+            double _vol = input.ingredListForFlavour.get(i).volForFlavour;
+            n.ingredListForFlavour.add(new MJH_Object_ingredient(_name, _type, _flavour, _vol));
+        }
         return n;
     }
 }

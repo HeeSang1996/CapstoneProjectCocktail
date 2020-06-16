@@ -414,6 +414,8 @@ public class MJH_SimulatorUiActivity extends AppCompatActivity implements View.O
                             listCount = finalI;
                             try{
                                 ingredientList[listCount].name = (String)document.get("Ingredient_name");
+                                ingredientList[listCount].type = (String)document.get("Ingredient_type");
+                                ingredientList[listCount].flavour = (String)document.get("flavour");
                                 ingredientList[listCount].id = 5001+ listCount;
                                 ingredientList[listCount].abv = Float.parseFloat(document.get("abv").toString());
                                 ingredientList[listCount].sugar = Double.parseDouble(document.get("단맛").toString());
@@ -450,6 +452,16 @@ public class MJH_SimulatorUiActivity extends AppCompatActivity implements View.O
 
 
     public void drawingCocktail(){
+
+        try{
+            String _buff = "";
+            for(int i = 0; i < test.simulatorStep.get(test.simulatorStep.size() - 1).ingredListForFlavour.size(); i++){
+                _buff =  _buff + "/" + test.simulatorStep.get(test.simulatorStep.size() - 1).ingredListForFlavour.get(i).flavour;
+            }
+            Toast myToast = Toast.makeText(this.getApplicationContext(), _buff, Toast.LENGTH_SHORT);
+            myToast.show();
+        }catch (Exception e){}
+
         try{
 
             if(highBallChecked == true){
