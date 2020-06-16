@@ -351,11 +351,18 @@ public class ObjectHighballGlass {
 
     public int getAlpha(float _alpha){
         //int alphaVal = (int)(_alpha*_alpha);
+
+        if(_alpha == 0){
+            return 50;
+        }
         int alphaVal = (int) ((((_alpha)*1.5) + 0.5) * 30);
 
         if(alphaVal > 255){
             alphaVal = 255;
             return alphaVal;
+        }
+        else if(alphaVal < 135){
+            alphaVal = 135;
         }
         return alphaVal;
     }
